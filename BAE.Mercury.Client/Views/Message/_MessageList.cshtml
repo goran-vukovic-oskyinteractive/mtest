@@ -1,0 +1,98 @@
+﻿@* =================================================
+        %name: _MessageList.cshtml %
+         %version: 15 %
+         Copyright: Copyright 2012 BAE Systems Australia
+                    All rights reserved.
+    =================================================*@
+
+@* This is the partial view for appended messages on ajax load*@
+
+@using BAE.Mercury.Client.App_Code
+
+@model  BAE.Mercury.Client.Models.vmMessageList
+
+
+
+@{
+    if (!Model.MessageItems.Any())
+    {
+        Html.DisplayFor(m => m.NoRecordsMessage);
+        return;
+    }
+    
+    var count = 1;
+    var jsGroupIndex = 0;    
+    var groupcount = 0;
+        
+     @*  set up group controlling variables  *@
+    List<string> groupnames = SessionBag.Current.GroupNames;
+    
+    if(groupnames != null)
+    {
+        groupcount = groupnames.Count;
+    }
+
+    var currentGroupHeader = Model.InitGroupHeader;
+    if (groupnames != null && !string.IsNullOrEmpty(currentGroupHeader))
+    {
+        jsGroupIndex = groupnames.IndexOf(currentGroupHeader);
+    }
+     @*  create array separators for retrieving start groupname metadata from returned data  *@
+    @Html.Raw("--*--")@(currentGroupHeader)@Html.Raw("--*--"); @* set javascript array value to 1 for "full"*@
+    if(groupcount > 0){ 
+        @* Add  first header for first record if ViewBag.VertAlign = "bottom" *@        
+        if (Model.AddGroupHeader || (jsGroupIndex == 0 && Model.IsFirstPage && currentGroupHeader != SessionBag.Current.CurrentGroupHeader))
+        {       
+            <div class="listGroupheader"  data-group="@(currentGroupHeader)"  data-nextgroup="@(groupnames[1])"  > 
+                <h2>@currentGroupHeader</h2>
+            </div>
+        }
+    }
+    
+   @*  cycle through messages  *@
+    foreach (var item in Model.MessageItems)
+    {
+        if(groupcount > 0){
+            if (item.Group != currentGroupHeader && !(count == 0 && Model.AddGroupHeader))
+            {  @*   this group is full so update group record in js *@ 
+              
+                jsGroupIndex++; @* increment group Index*@
+            }         
+            @* Add  a header as group changes, CurrentGroupHeader is set " for first record if ViewBag.VertAlign = "top" *@
+            if (string.IsNullOrEmpty(currentGroupHeader) || item.Group != currentGroupHeader)
+            {
+               
+                  @*   create new group header *@                    
+                <div class="listGroupheader"  data-group="@(item.Group)">      @*   item.GroupIndex is 1 based index of group *@     
+                    <h2>@item.Group</h2>
+                </div>
+    
+                currentGroupHeader = item.Group;
+                SessionBag.Current.CurrentGroupHeader = currentGroupHeader;              
+            } 
+        }  
+        @*   actual message div *@ 
+            string state = item.State;
+            string precedence = item.Precedence;
+            string attachment = (item.HasAttachment) ? "attachment" : "";   
+            
+            string sclass = "message " + state + " " + precedence + " " + attachment;
+            
+            <div tabindex="0" class="@sclass"   data-url='@Url.Action("Details", "Message", new { id = item.MessageId })' data-grp="@(item.GroupIndex)"  >
+			    <div class="message-icon"> <span class="icon-status"></span> <span class="icon-attachment"></span> </div>
+			    <div class="message-summary">
+				    <h3><a href="#">@item.Subject</a></h3>
+				    <p class="sender">@item.Sender</p>
+                    <p class="DTG">@item.SentDtg</p>
+                    <span class="date">@item.ReceivedTime</span>
+			    </div>
+			    <div class="message-precedence"> <span class="icon-precedence"></span> </div>
+		    </div>  
+            
+        count++; @*   increment row counter *@ 
+    }@*  end of  message for loop  *@
+    
+    @*  create array separator for retrieving last groupname metadata from returned data  *@
+    @Html.Raw("--*--")@(count-1)
+   }
+

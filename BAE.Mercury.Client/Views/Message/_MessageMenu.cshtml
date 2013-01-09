@@ -1,0 +1,36 @@
+﻿@*// =================================================
+//          %name: _MessageMenu.cshtml %
+//       %version: 2 %
+//      Copyright: Copyright 2012 BAE Systems Australia
+//                 All rights reserved.
+// =================================================*@
+
+<ul class="buttons">
+    @*<li id="btn-new"><a href="Message/Create" target="_blank">New</a><span>New</span></li>*@
+    <li id="btn-new">@Html.ActionLink("New", "Create", "Message", new { Target="_blank" })<span>New</span></li>
+    @*<li>@Html.ActionLink("New", "Create", "Message", new { Target="_blank" })</li> would prefer to use the Url helper but am currently getting some strange routing problems when using it*@
+
+    <li id="btn-delete"><a href="#">Discard</a><span>Discard</span></li>
+    <li id="btn-mark"><a class="btn-drop-parent" href="#">Mark As</a><span>Mark As</span>
+        <div class="btn-drop">
+            <span><a href="#">Read</a></span>
+            <span><a href="#">Unread</a></span>						
+        </div>
+    </li>
+    <li id="btn-print"><a href="#">Print</a><span>Print</span></li>
+    <li id="btn-release"><a href="#">Release</a><span>Release</span></li>
+    <li id="btn-reject"><a href="#">Reject</a><span>Reject</span></li>
+    <li id="btn-action"><a href="#">Action</a><span>Action</span></li>
+    <li id="btn-reply"><a class="btn-drop-parent" href="#">Reply</a><span>Reply</span>
+        <div class="btn-drop">
+            <span><a href="#">Reply</a></span>
+            <span><a href="#">Reply to all</a></span>						
+        </div>
+    </li>
+    <li id="btn-forward"><a class="btn-drop-parent" href="#">Forward</a><span>Forward</span>
+        <div class="btn-drop">
+            <span><a href="#">Reply</a></span>
+            <span><a href="#">Reply to all</a></span>						
+        </div>
+    </li>
+</ul>

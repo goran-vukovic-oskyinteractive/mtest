@@ -1,0 +1,61 @@
+﻿@model IEnumerable<BAE.Mercury.Client.Models.vmSystemAuditEntry>
+
+@{
+    ViewBag.Title = "System Audit Trail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CSS
+{
+    <link href="@Url.Content("~/Content/AuditTrail.css")" rel="stylesheet" type="text/css" />
+}
+
+<h2>System Audit Trail</h2>
+
+<table>
+    <tr>
+        <th class="firstAuditCol">
+            @Html.DisplayNameFor(model => model.Time)
+        </th>
+        <th class="auditCol">
+            @Html.DisplayNameFor(model => model.Station)
+        </th>
+        <th class="auditCol">
+            @Html.DisplayNameFor(model => model.User)
+        </th>
+        <th class="auditCol">
+            @Html.DisplayNameFor(model => model.ProcessName)
+        </th>
+        <th class="auditCol">
+            @Html.DisplayNameFor(model => model.Severity)
+        </th>
+        <th class="lastAuditCol">
+            @Html.DisplayNameFor(model => model.Message)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td class="firstAuditCol">
+            @Html.DisplayFor(modelItem => item.Time)
+        </td>
+        <td class="auditCol">
+            @Html.DisplayFor(modelItem => item.Station)
+        </td>
+        <td class="auditCol">
+            @Html.DisplayFor(modelItem => item.User)
+        </td>
+        <td class="auditCol">
+            @Html.DisplayFor(modelItem => item.ProcessName)
+        </td>
+        <td class="auditCol">
+            @Html.DisplayFor(modelItem => item.Severity)
+        </td>
+        <td class="lastAuditCol">
+            @Html.DisplayFor(modelItem => item.Message)
+        </td>
+    </tr>
+}
+
+</table>

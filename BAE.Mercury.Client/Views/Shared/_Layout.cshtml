@@ -1,0 +1,72 @@
+﻿@******************************************
+*common layout - aplies to all Mercury pages
+*******************************************@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Mercury - Inbox</title>
+<link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!--[if IE 7]>
+<link href="~/css/ie7.css" rel="stylesheet" type="text/css" media="all" />
+<![endif]-->
+<!--[if IE 8]>
+<link href="~/css/ie8.css" rel="stylesheet" type="text/css" media="all" />
+<![endif]-->
+<link rel="stylesheet" href="~/css/jquery-ui.css" />
+<script src="~/js/jquery-1.8.2.js" type="text/javascript"></script>
+<script src="~/js/jquery-ui.js"  type="text/javascript"></script>
+@****more JS references here *@
+@RenderSection("Scripts")
+</head>
+<body>
+<!-- start wrapper -->
+<div id="wrapper">
+	<div id="header">
+		<div id="logo"><a href="#"><img src="~/images/bg-logo.png" width="138" height="38" alt="Mercury" /></a></div>
+		<div id="top-section">
+			<p>Welcome, user</p>
+			<ul id="top-link">
+				<li><a href="#" id="logout"><img src="~/images/icon-logout_menu.png" alt="Admin Menu" width="16" height="16" />logout</a></li>
+				<li><a href="#" id="admin"><img src="~/images/icon-admin_menu.png" alt="Logout Menu" width="16" height="16" />settings</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="buttons">
+		<div class="col-wrap">
+			<div class="col-left">&nbsp;</div>
+			<div class="col-middle" id="buttons-right">
+                    @*********left buttons here*********@
+                    @RenderSection("LeftButtons")
+			</div>
+			<div class="col-right">
+                    @*********right buttons here*********@
+                    @RenderSection("RightButtons")
+			</div>
+		</div>
+	</div>
+
+	<div id="content">
+		<div class="col-wrap">
+			<div class="col-left" id="mailbox">
+            @*********top left menu here**************@
+                @RenderSection("TopLeftMenu")
+				<div id="mailbox-scroll">
+				</div>
+				<ul id="left-menu">
+					<li class="current"><a href="index.html">Mailboxes</a></li>
+					<li><a href="message_monitor.html">Message Monitor</a></li>
+					<li><a href="#">Audit Trail</a></li>
+					<li><a href="#">Distribution Management</a></li>
+					<li><a href="#">System Preferences</a></li>
+					<li><a href="#">User Management</a></li>
+					<li><a href="address_book_management.html">Address Book Management</a></li>
+				</ul>
+			</div>
+            @RenderBody()
+		</div>
+	</div>
+</div>
+<!-- end wrapper -->
+</body>
+</html>

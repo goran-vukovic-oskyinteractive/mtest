@@ -1,0 +1,83 @@
+/**** ADDRESS BOOK MANAGEMENT ****/
+
+/* Left Column */
+#address-book-list { color:#fff; }
+#address-book-list .address-book { padding:15px 10px; margin:0; border-bottom:1px solid #4f4d4d;}
+#address-book-list .address-book p { margin:0; clear:left; }
+#address-book-list form { overflow:hidden; margin-top:5px; }
+#address-book-list form input.chk { float:left; display:block; clear:left }
+#address-book-list form label { cursor:pointer; display:block; float:left; margin:2px 0 0 5px; }
+#address-book-list .address-book.highlight { background:#c03b3b url(../images/bg-abm_highlight.png) bottom left repeat-x; }
+#address-book-list #pending-session { margin:0; }
+#address-book-list #pending-session li { list-style:none; background:none; margin:0; padding:10px 0 10px 0; background:#4f4d4d; border-bottom:1px solid #3b3d41; border-top:1px solid #5e5e5e; }
+#address-book-list #pending-session li p { padding:0 10px; margin:0; font-weight:bold; }
+#address-book-list #pending-session li p span { color:#ffc001; }
+
+/* Middle Column */
+#session-list { width:400px; border-right:1px solid #DADADA; overflow: hidden; position:relative; }
+#session-list #email-search form input#search-inbox { width:305px; }
+#session { margin:0; padding:0; border-bottom:1px solid #dcdcdc; }
+#session ul { margin:0; padding:0; }
+#session li { margin:0; padding:0; list-style:none; border-top:1px solid #dcdcdc; cursor:pointer; }
+#session li a { display:block; color:#3c3c3c; }
+#session li span { padding:10px 10px 10px 20px; display:block; background:url(../images/bg-arrow_right.png) 10px 50% no-repeat; }
+#session li span.open { background-image:url(../images/bg-arrow_down.png); }
+#session li li span { padding-left:35px; background-position:20px 50%; }
+#session li li li span { padding-left:60px; background-position:40px 50%; }
+#session li li li li span { padding-left:75px; background-position:60px 50%; }
+#session li li li li li span { padding-left:95px; background-position:70px 50%; }
+#session li p { margin:0; }
+#session li.last { border-bottom:1px solid #dcdcdc; }
+#session li.unit span { background:none; }
+#session li.current span,
+#session li a:hover { background:#ccc url(../images/bg-email_list_hover.png); }
+#session li.icon span.ico { background:url(../images/bg-abm_session_icon.png) no-repeat; display:block; float:left; width:12px; height:14px; padding:2px 10px 0 0; }
+#session li.icon.appointment span.ico { background-position:0 -219px; width:15px; height:15px; }
+#session li.icon.building span.ico { background-position:0 -219px; width:15px; height:15px; }
+#session li.icon.list span.ico { background-position:0 -437px; width:17px; height:14px; }
+#session li.icon div { margin:0 0 0 25px; }
+#session li img.icon { vertical-align:middle; margin:0 5px 2px 0 }
+
+/* Right Column */
+#session-content { padding:20px 50px; }
+#session-content h3,
+#session-content h4 { font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size:14px; margin:0 0 20px 0; font-family:'Conv_HelveticaNeueLTStd-Md', Arial, Helvetica, sans-serif; border-bottom:1px solid #dcdcdc; padding:0 0 20px 0; }
+#session-content h4 { border-bottom:none; margin:0 0 10px 0; padding:0; }
+#session-content .sep { border-bottom:1px solid #dcdcdc; margin:0 0 20px; padding:0; height:1px; width:100%; }
+#session-content ul { margin:0 0 20px 0; }
+#session-content ul li { list-style:none; background:url(../images/bg-arrow_right.png) 0 6px no-repeat; padding:0 0 3px 20px; }
+#session-content ul.icon li { list-style:none; background:none; padding-left:0; }
+#session-content ul.icon li span.ico { background:url(../images/bg-abm_session_icon.png) no-repeat; display:block; float:left; width:12px; height:14px; padding:0 10px 0 0; }
+#session-content ul.icon li.unit span.ico { background-position:0 -437px; width:17px; height:14px; }
+#session-content ul li.tooltip { position:relative; }
+#session-content div.tooltip { background:#333; padding:8px; color:#fff; margin:0; border-radius: 5px; font-size:12px; width:180px; z-index:999; display:none; position:absolute; }
+#session-content div.tooltip p { margin:0 0 5px 0; }
+#session-content .item-history { height:200px; background:#efecf4; border:1px solid #e5e4e7; color:#6a6a6a; font-size:11px; overflow:auto; border-radius: 5px; margin:0 0 20px 0; }
+#session-content .item-history ul { margin:0; padding:20px; }
+#session-content .item-history ul li { list-style:none; background:none; padding:0 0 10px 0; }
+#session-content .item-history ul li p { margin:0 0 5px 0; }
+
+/* Buttons */
+#address-book-list .abm-btn { display:block; background:url(../images/bg-abm_buttons.png) top left no-repeat; width:25px; height:24px; text-indent:-9999px; float:right; margin:-4px 0 0 0; }
+#address-book-list .abm-btn:hover { background-position:0 -24px; }
+#address-book-list .abm-btn.addsession { background-position:-25px 0; }
+#address-book-list .abm-btn.addsession:hover { background-position:-25px -24px; }
+#session-content .session-update-button { overflow:hidden; }
+#session-content .session-update-button .btn { background:url(../images/bg-abm_btn.png) top left repeat-x; padding:0; text-align:center; display:block; float:left; width:100px; height:32px; line-height:32px; color:#fff!important; margin:0 10px 0 0; border-radius:5px; border:1px solid #787978; padding:0; cursor:pointer; }
+#session-content .session-update-button .btn:hover { background-image:none; background-color:#cd3d3d; border:1px solid #8b1e1e; }
+#session-content .session-update-button input.btn { background:url(../images/bg-abm_btn.png) top left repeat-x; padding:0; text-align:center; display:block; float:left; width:100px; height:32px; line-height:32px; color:#fff!important; margin:0 10px 0 0; border-radius:5px; border:1px solid #787978; border:none; padding:0 0 3px 0; cursor:pointer; }
+#session-content .session-update-button input.btn:hover { background-image:none; background-color:#cd3d3d; border:1px solid #8b1e1e; }
+
+/**** ABM - ADD UNIT ****/
+.session-content-form { overflow:hidden; margin:0 0 20px 0; }
+.session-content-form p { clear:both; margin:0 0 10px 0; }
+.session-content-form label { display:block; float:left; width:100px; text-align:right; margin:10px 10px 0 0; font-weight:bold; }
+.session-content-form .input { float:left; }
+.session-content-form .date { background:#efecf4; border:1px solid #dedede; padding:5px; border-radius:5px; position:relative; }
+.session-content-form .date input { background:#d5d1db; border:1px solid #bfbebe; text-align:center; padding:2px 5px; font:12px Arial, Helvetica, sans-serif; color:#525252; width:200px; }
+.session-content-form .date input.narrow { width:20px; }
+.session-content-form .date input.wide { width:35px; }
+.session-content-form .ui-datepicker-trigger { display:block; position:absolute; right:-20px; top:9px; width:14px; height:14px; cursor:pointer; }
+.session-content-form textarea { background:#efecf4; border:1px solid #dedede; border-radius:5px; width:201px; height:100px; padding:10px; font:12px Arial, Helvetica, sans-serif; }
+#session-content .session-update-button.align-right { margin:10px 0; padding-left:110px; }
+

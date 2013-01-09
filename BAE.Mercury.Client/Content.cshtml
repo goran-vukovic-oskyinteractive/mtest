@@ -1,0 +1,49 @@
+﻿@*================================================================================
+        %name: Content.cshtml %
+        %version: 4 %
+        %date_created: Wed Nov 28 18:43:52 2012 %
+        %derived_by: DSaustin %
+        Copyright: Copyright 2012 BAE Systems Australia
+        All rights reserved.
+    
+    System available Razor helpers
+================================================================================*@
+@using System
+@using System.Web.Mvc
+
+@helper Script(string scriptName, UrlHelper url)
+    {
+    <script src="@url.Content("/Scripts/"+scriptName)"  type="text/javascript"></script>
+}
+
+@helper DTG(string id, DateTime? dt, UrlHelper url){
+    <div class="dtg"  id="@id">
+        <div class="dtgborder">
+            <table  class="dtgtable">
+                <tbody>
+                    <tr>
+                        @if(dt == null)
+                        {
+                            <td class="dtg1"></td>
+                            <td class="dtg1"></td>
+                            <td class="dtg1"></td>
+                            <td class="dtg2">Z</td>
+                            <td class="dtg3"></td>
+                            <td class="dtg3"></td>
+                        }
+                        else
+                        {
+                            <td class="dtg1">dt.Date</td>
+                            <td class="dtg1">dt.Hour</td>
+                            <td class="dtg1">dt.Minute</td>
+                            <td class="dtg2">Z</td>
+                            <td class="dtg3">dt.ToString("MMM")</td>
+                            <td class="dtg3">dt.ToString("yyyy")</td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+         </div>
+        <img class="DTGCal" src="@url.Content("/Images/Calendar1.gif")" onclick="openDTGCal('@id');"/>
+    </div>
+}

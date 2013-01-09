@@ -1,0 +1,149 @@
+@*================================================================================
+         %name: Alerts.cshtml %
+      %version: 4 %
+ %date_created: Tue Dec  4 16:22:42 2012 %
+   %derived_by: chrisn %
+     Copyright: Copyright 2012 BAE Systems Australia
+                All rights reserved.
+================================================================================*@
+
+@model IEnumerable<BAE.Mercury.Client.Models.vmAlert>
+
+@{
+    ViewBag.Title = "Alerts";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    Html.RenderPartial("AlertPopup");
+}
+<style>
+    
+    /*TODO: This styling should be moved to a CSS file when we get some styling from Osky*/
+    
+    /* Style of individual Dismiss button*/
+    .dismissIndividualAlert {
+        display: inline;
+        float: right;
+        padding-left: 20px;
+        font-size: 0.8em;
+    }
+
+    .alertContent
+    {
+        display:inline-block;
+    }
+
+    /* This is here until the right styling can be applied */
+    #alertList {
+        height:800px;
+        overflow: scroll;
+    }
+
+    /* Give alternate rows a different colour*/
+    #alertList div:nth-child(even) div
+    {
+        background-color: lavender;
+    }
+</style>
+
+<script type="text/javascript">
+    // TODO: The following line disables alerts from being shown in the popup when looking at the alerts list. Until the popup is integrated, this is not needed.
+    //showAlerts(false);
+    
+
+    var alertListUpdatePeriodMS = 30000; // Refreshes every 30 Seconds
+    
+    // Set the initial number of alerts (so that it knows how to keep them in sync after ajax requests
+    var maxAlertId =
+        @if (Model.Any())
+        {
+            @:@Model.Max(alert => alert.Id);
+        }
+        else
+        {
+            @: 0;
+        }
+    var totalAlertCount = 0;
+
+    // Check for new alerts
+    function updateListForNewAlerts()
+    {
+        $.getJSON("@Url.Action("AlertListJSON", "Alert")",
+            { lastAlertId: maxAlertId },
+            function (data)
+            {
+                $('#alertList').prepend(data.View);
+                maxAlertId = data.MaxAlertId;
+                if ($('#alertList > div').length != data.TotalAlertCount)
+                {
+                    $('#alertList').empty();
+                    maxAlertId = -1;
+                    updateListForNewAlerts();
+                }
+                checkDismissAllButton();
+            }
+        );
+                
+    }
+    
+    // Function to dismiss a specific alert
+    function dismissAlert(alertId)
+    {
+        $.getJSON("@Url.Action("RemoveAlert", "Alert")",
+            { id: alertId },
+            function (data) {
+                if (data.Success == true) {
+                    $("#dismissAlertId_" + alertId).remove();
+                    checkDismissAllButton();
+                                          }
+            });
+        return false;
+    }
+
+    // Enables the Dismiss All button if there are alerts shown
+    function checkDismissAllButton()
+    {
+        if ($('#alertList > div').length > 0)
+        {
+            $('#buttonRemoveAll').show();
+        }
+        else
+        {
+            $('#buttonRemoveAll').hide();
+        }
+
+    }
+
+
+    $(document).ready(function () {
+    
+        // Action to dismiss all alerts
+        $("#buttonRemoveAll").click(function () {
+            $.getJSON("@Url.Action("RemoveAllAlerts", "Alert")", function (data) {
+                if (data.Success == true) {
+                    $("#alertList > div").remove();
+                    $('#buttonRemoveAll').hide();
+                                          }
+            });
+            return false;
+        });
+                
+        // Only enable dismiss all if there are alerts to dismiss
+        checkDismissAllButton();
+
+        // Check for new alerts periodically
+        setInterval(updateListForNewAlerts, alertListUpdatePeriodMS);
+    });
+
+</script>
+<h2>Alerts</h2>
+
+<a href="#" id="buttonRemoveAll">Dismiss All</a>
+
+<div id="alertList">
+    @{
+        Html.RenderPartial("AlertList", Model);
+    }
+</div>
+

@@ -1,0 +1,64 @@
+﻿@*================================================================================
+        %name: _MessageFolders.cshtml %
+        %version: 6 %
+        %date_created: Thu Dec  6 14:01:25 2012 %
+        %derived_by: DSaustin %
+        Copyright: Copyright 2012 BAE Systems Australia
+        All rights reserved.
+    View of folders as a Tree with recursive child node creation - uses dynatree jquery plugin
+================================================================================*@
+
+@using BAE.Mercury.Client.Models
+
+@model IEnumerable<vmFolder>
+
+ 
+@* helper to build the mailboxes section -- 2 levels only, structure determined by the vmFolders objects retrieved   *@
+@helper BuildMailBoxes(IEnumerable<vmFolder> folders)
+{
+    <ul id="mailbox-list">
+        @foreach (vmFolder boxObj in folders)
+        {
+            <li id="@boxObj.Title.ToLower()">
+                <div   >
+                    <A href="javascript:  loadList(@boxObj.FolderID)">
+                        <span class="counter">6</span>
+                        <span class="icon" ></span>
+                        <strong>@boxObj.Title</strong>
+                    </a>
+                </div>
+                @if(boxObj.ChildFolders.Any()){
+                    <ul id="list_@boxObj.FolderID"  >
+                        @foreach (var folder in boxObj.ChildFolders)
+                        {
+                            <li><a href="javascript:  loadList(@folder.FolderID)"><span class="counter">10</span>@folder.Title</a></li>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+    </ul>
+}
+
+<div class="col-left" id="mailbox">
+    @if (!(Model is IEnumerable<vmMonitorFolder>))
+    {
+        <h2>Mailboxes</h2>
+    }
+    @BuildMailBoxes(Model)
+    @if (!(Model is IEnumerable<vmMonitorFolder>))
+    {
+        <h2>Folders</h2>
+    }
+    <div class="col-left-bottom">
+        <ul id="action-list">
+            <li>  @Html.ActionLink("Mailboxes", "Index", "Message") </li>
+            <li>  @Html.ActionLink("Message Monitor", "Index", "SiteMessageMonitor") </li>
+            <li>  @Html.ActionLink("Audit Trail", "Index", "AuditTrail") </li>
+            <li><a href="#">Distribution Management</a></li>
+            <li>  @Html.ActionLink("System Preferences", "Index", "Configuration") </li>
+            <li><a href="#">User Management</a></li>
+            <li><a href="#">Address Book Management</a></li>
+        </ul>
+    </div>
+</div>

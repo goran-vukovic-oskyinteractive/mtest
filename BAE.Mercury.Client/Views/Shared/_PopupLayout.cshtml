@@ -1,0 +1,40 @@
+﻿@*================================================================================
+          %name: _PopupLayout.cshtml %
+       %version: 4 %
+ %date_created: Tue Nov  6 13:35:41 2012 %
+    %derived_by: LCameron %
+      Copyright: Copyright 2012 BAE Systems Australia
+                 All rights reserved.
+================================================================================*@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>    
+    @RenderSection("Scripts", required: false)
+    @RenderSection("CSS", required: false)
+</head>
+<body>
+   <div class="page">
+        <div id="header">
+            <div id="title">
+                <h1>Mercury</h1>
+            </div>
+        </div>
+        <div id="main">
+            @RenderBody()    
+            <div class="clear"/>        
+        </div>
+        <div class="clear"/>
+
+        <div id="footer"></div>
+    </div>
+</body>
+</html>

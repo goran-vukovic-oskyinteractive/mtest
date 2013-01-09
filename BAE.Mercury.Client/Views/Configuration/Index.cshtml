@@ -1,0 +1,130 @@
+﻿@*================================================================================
+          %name: Index.cshtml %
+       %version: 5 %
+  %date_created: Mon Dec 10 17:04:28 2012 %
+    %derived_by: LLawley %
+      Copyright: Copyright 2012 BAE Systems Australia
+                 All rights reserved.
+================================================================================*@
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="@Url.Content("/Content/Configuration.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/jquery.input.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/jquery.ui.timepicker.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    
+    // Startup functions to call
+    $(function () {
+        // Create tabbed layout
+        $("#configurationTabs").tabs();
+
+        // format all date/time pickers
+        $('.datePicker').datepicker({ dateFormat: "dd/mm/yy" }); // 10/12/2004 format
+        $('.timePicker').timepicker({ timeSeparator: '' }); // 24hr format, e.g. 1523
+    });
+    
+    // Flags to store whether each tabbed page has been updated
+    var isSiteConfigurationModified = false;
+    var isSwitchConfigurationModified = false;
+    var isUserGroupConfigurationModified = false;
+    var isArchiveConfigurationModified = false;
+    
+    // Called when any elements of the site configuration tab have been updated
+    function siteConfigurationModified() {
+        isSiteConfigurationModified = true;
+        $("#siteConfigurationModified").show();
+    }
+
+    // Called when the site configuration has successfully been updated at the server
+    function siteConfigurationUpdated() {
+        isSiteConfigurationModified = false;
+        $("#siteConfigurationModified").hide();
+        $('#siteConfigUpdateError').hide();
+        $('#siteConfigUpdateSucceed').show().hide("fade", {}, 3000);
+        $("#siteConfigUpdating").hide();
+    }
+
+    // Called when any elements of the switch configuration tab have been updated
+    function switchConfigurationModified() {
+        isSwitchConfigurationModified = true;
+        $("#switchConfigurationModified").show();
+    }
+
+    // Called when the switch configuration has successfully been updated at the server
+    function switchConfigurationUpdated() {
+        isSwitchConfigurationModified = false;
+        $("#switchConfigurationModified").hide();
+    }
+
+    // Called when any elements of the user group configuration tab have been updated
+    function userGroupConfigurationModified() {
+        isUserGroupConfigurationModified = true;
+        $("#userGroupConfigurationModified").show();
+    }
+
+    // Called when the user group configuration has successfully been updated at the server
+    function userGroupConfigurationUpdated() {
+        isUserGroupConfigurationModified = false;
+        $("#userGroupConfigurationModified").hide();
+    }
+    
+    // Called when the archive configuration has successfully been updated at the server
+    function archiveConfigurationUpdated() {
+        isArchiveConfigurationModified = false;
+        $("#archiveConfigurationModified").hide();
+        $('#archiveConfigUpdateError').hide();
+        $('#archiveConfigUpdateSucceed').show().hide("fade", {}, 3000);
+        $("#archiveConfigUpdating").hide();
+    }
+    
+    // Called when any elements of the archive configuration tab have been updated
+    function archiveConfigurationModified() {
+        isArchiveConfigurationModified = true;
+        $("#archiveConfigurationModified").show();
+    }
+
+</script>
+
+<h2>Configuration</h2>
+
+
+<div id="configurationTabs">
+    <ul>
+        <li><a href="#tabs-0">Site Configuration<div id="siteConfigurationModified" class="modified" style="display:none"> (modified)</div></a></li>
+        <li><a href="#tabs-1">Switch Configuration<div id="switchConfigurationModified" class="modified" style="display:none"> (modified)</div></a></li>
+        <li><a href="#tabs-2">User Group Configuration<div id="userGroupConfigurationModified" class="modified" style="display:none"> (modified)</div></a></li>
+        <li><a href="#tabs-3">Archive Settings<div id="archiveConfigurationModified" class="modified" style="display:none"> (modified)</div></a></li>
+    </ul>
+
+    <div id="tabs-0">
+        @{
+            // Render the site configuration tab
+            Html.RenderAction("SiteConfiguration", "Configuration");
+        }
+    </div>
+    <div id="tabs-1">
+        @{
+            // Render the switch configuration tab (TODO this may need to be hidden if the site is not a switch site)
+            Html.RenderAction("SwitchConfiguration", "Configuration");
+        }
+    </div>
+    <div id="tabs-2">
+        @{
+            // Render the user group configuration tab
+            Html.RenderAction("UserGroupConfiguration", "Configuration");
+        }
+    </div>
+        <div id="tabs-3">
+        @{
+            // Render the user group configuration tab
+            Html.RenderAction("ArchiveConfiguration", "Configuration");
+        }
+    </div>
+
+</div>

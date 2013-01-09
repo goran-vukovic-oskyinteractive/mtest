@@ -1,0 +1,157 @@
+﻿
+/*******************************************************************************
+        %name: Site.css %
+        %version: 13 %
+
+        %date_created: Mon Nov 26 14:42:21 2012 %
+
+        %derived_by: LLawley %
+
+        Copyright: Copyright 2012 BAE Systems Australia
+        All rights reserved.
+********************************************************************************/
+
+@import "Reset.css";
+
+
+/* main layout (osky)
+----------------------------------------------------------*/
+
+html, body { overflow: hidden; }
+body { color: #3C3C3C; font: 13px/18px Arial,Helvetica,sans-serif; margin: 0; padding: 0; }
+ul, ol, dl, p, table { font-size: 12px; margin: 0 0 15px; padding: 0; }
+h1, h2, h3, h4, h5, h6, iframe { margin: 0 0 15px; padding: 0; }
+a img { border: medium none; }
+a:link, a:visited { color: #CD3D3D; text-decoration: none; }
+a:hover, a:active, a:focus { color: #000000; }
+strong { font-weight: bold; }
+em { font-style: italic; }
+small { font-size: 11px; }
+h1, h2, h3, h4, h5, h6 {}
+ul li { list-style: disc outside none; padding: 0 0 3px 10px; }
+ol li { list-style: decimal outside none; padding: 0 0 3px 10px; }
+@font-face { font-family: "Conv_HelveticaNeueLTStd-Md"; font-style: normal; font-weight: normal; src: local("☺"), url("/fonts/HelveticaNeueLTStd-Md.ttf") format("truetype"), url("/fonts/HelveticaNeueLTStd-Md.svg") format("svg");}
+@font-face { font-family: "Conv_HelveticaNeueLTStd-Roman"; font-style: normal; font-weight: normal; src: local("☺"), url("/fonts/HelveticaNeueLTStd-Roman.ttf") format("truetype"), url("/fonts/HelveticaNeueLTStd-Roman.svg") format("svg");}
+
+#wrapper { min-width: 920px; width: auto !important; }
+.col-wrap {}
+.col-left { float: left; width: 180px; }
+.col-left-bottom {
+    position: fixed;
+    width: 180px;
+    bottom: 0;
+    float: left;
+}
+.col-middle { float: left; width: 360px; }
+.col-right { margin: 0 0 0 500px; }
+
+#header { background: url("../images/bg-header.png") repeat-x scroll left top #141516; height: 70px; overflow: hidden;}
+#header #logo { float: left; padding: 10px 0 0 15px; }
+#header #logo a img { width: 138px; height:38px; }
+
+#header #top-section { float: right; margin: 0 15px 0 0; }
+#header #top-section p { margin-top: 8px; }
+#header #top-section p, #header #top-section ul li a { color: #FFFFFF; float: left; font-family: 'Conv_HelveticaNeueLTStd-Md',sans-serif; font-size: 10px; font-weight: normal; text-transform: uppercase; }
+#header #top-section ul { float: left; margin: 0; }
+#header #top-section ul li { display: inline; float: left;}
+#header #top-section ul li a { display: block; float: left; height: 30px; line-height: 30px; margin: 2px 0 0; text-align: center; }
+#header #top-section ul li a img { margin: 0 5px 1px 0; vertical-align: middle; }
+#header #top-section ul li a#admin { background: url("/images/bg-admin_menu.png") no-repeat scroll center top transparent; width: 94px; }
+#header #top-section ul li a#admin img { width: 16px; height:16px; }
+#header #top-section ul li a#logout { background: url("../images/bg-logout_menu.png") no-repeat scroll center top transparent; width: 85px; }
+#header #top-section ul li a#logout img { width: 16px; height:16px; }
+
+
+#buttons { background: url("../images/bg-middle.png") no-repeat scroll left top transparent; height: 68px; margin-top: -30px; z-index: 99; }
+#buttons .col-middle { height: 58px; padding-top: 10px; }
+#buttons .col-right { height: 58px; padding-left: 11px; padding-top: 10px; }
+#buttons ul { margin: 0; padding: 0;}
+#buttons ul li { display: inline; float: left; list-style: none outside none; margin: 0; padding: 0; position: relative; text-align: center; }
+#buttons ul li a { background: url("../images/bg-buttons.png") no-repeat scroll 0 0 transparent; color: #525252; display: block; float: left; 
+                   font-family: 'Conv_HelveticaNeueLTStd-Md',sans-serif; font-size: 10px; font-weight: normal; height: 30px; margin: 0 12px 0 13px; 
+                   text-align: center; text-indent: -9999px; text-transform: uppercase; width: 31px; }
+#buttons ul li span { display: block; font-family: 'Conv_HelveticaNeueLTStd-Md',sans-serif; font-size: 10px; font-weight: normal;margin: 33px auto 0; text-align: center; text-transform: uppercase; }
+#buttons ul li a:hover { color: #CD3D3D; }
+
+#buttons ul li#btn-address { float: right; margin-right: 15px; }
+#buttons ul li#btn-address a { background-position: -357px 0; margin-left: 25px; }
+#buttons ul li#btn-address a:hover { background-position: -357px -30px; }
+
+#buttons ul li .btn-drop { background: url("../images/bg-email_hover.png") repeat scroll 0 0 transparent; border: 1px solid #CCCCCC; display: none; left: 15px; padding: 5px 10px; position: absolute; top: 30px; z-index: 9999;}
+#buttons ul li .btn-drop span { display: block; margin: 0; padding: 0; text-align: center; }
+#buttons ul li .btn-drop a { background: none repeat scroll 0 0 transparent !important; font-family: 'Conv_HelveticaNeueLTStd-Md',sans-serif; font-size: 10px; font-weight: normal; height: 25px; margin: 0; padding: 0; text-indent: 0; text-transform: uppercase; width: 100px !important; }
+#buttons ul li .btn-drop a:hover { }
+#buttons ul li .btn-drop * { z-index: 9999; }
+
+#buttons-right.col-middle { float: left; width: 600px; }
+
+/**** MAILBOX LIST ****/
+#mailbox {background:#3b3d41; overflow:auto; overflow-x:hidden;}
+#mailbox h2 {font-family:'Conv_HelveticaNeueLTStd-Md', sans-serif; text-transform:uppercase; font-weight:normal; font-size:12px; color:#fff; margin:10px 0 10px 15px;}
+
+.clear { clear: both; height: 1px; line-height: 1px; }
+
+#mailbox #left-menu {margin:0; padding:0 0 20px 0;}
+#mailbox #left-menu li {margin:0; padding:0; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-size:13px; font-weight:normal; display:block;  }
+#mailbox #left-menu li a {display:block; border-top:1px solid #343434; padding:9px 0 9px 15px; color:#fff; overflow:hidden; background:#3b3d41l}
+#mailbox #left-menu li a:hover,
+#mailbox #left-menu li.current a {background:#343539; color:#8a8c97;}
+
+
+/* Some default styles that came with the MVC project 
+
+/* info and errors */
+.message-info {
+    border: 1px solid;
+    clear: both;
+    padding: 10px 20px;
+}
+
+.message-error {
+    clear: both;
+    color: #e80c4d;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+}
+
+.message-success {
+    color: #7ac0da;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+}
+
+.error {
+    color: #e80c4d;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #e80c4d;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+

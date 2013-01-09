@@ -1,0 +1,186 @@
+﻿@* =================================================
+        %name: _MessageList.cshtml %
+         %version: 15 %
+         Copyright: Copyright 2012 BAE Systems Australia
+                    All rights reserved.
+    =================================================*@
+@using BAE.Mercury.Core.MmhsModel
+@* This is the partial view to appended messages on ajax load*@
+@model  BAE.Mercury.Client.Models.OskyMessageList
+@{
+    //DateTime last = DateTime.MaxValue;
+    int count = Model.Messages.Count;
+    Message message;
+@*  cycle through messages  *@
+    for (int i = 0; i < count; i++)
+    {
+        message = Model.Messages[i];
+        string test = null;
+@*CheckSection(message.LastDate, message.ReceivedTime)*@
+        if ((test = Model.DateChange(message.ReceivedTime)) != null)
+        {
+            <div class="date-bar dlabel_201311">
+                <h2>@test</h2>
+            </div>
+
+        }
+            
+        <div id="mid-@message.Id" class="email action priority @((i == count - 1) ? "last" : "")" unix_max="1357011287">
+            <div class="email-icon">
+                <span class="icon-status"></span><span class="icon-attachment"></span>
+            </div>
+            <div class="email-summary">
+                <h3>
+                    <a href="#">@message.Subject</a></h3>
+                <p class="sender">@message.OriginatingAddressee.Name</p>
+                <p class="date">@message.ReceivedTime.ToString("ddHHmmZ MMM yyyy")</p>
+            </div>
+            <div class="email-precedence">
+                <span class="icon-precedence"></span>
+            </div>
+        </div>           
+        @*this part of the message is not displayed*@
+        <div id="cmid-@(message.Id)" style="display: none">
+                <div style="display: block;" class="classification protected">
+                    <p>
+                        <strong>@message.ClassificationName</strong></p>
+                    <p>
+                        <strong>AUS/CAN/NZL/UK/USA EYES ONLY</strong></p>
+                    <p>Sensitive: Medical</p>
+                </div>
+                <div style="display: block;" class="expiry">
+                    <p>
+                        <a href="#" class="rounded-box">Find related messages</a></p>
+                    <p>
+                        This message will expire at 311200Z DEC 2012 (12:07:30 from now). A later <a href="#">
+                            message</a> has rendered this message obsolete.</p>
+                    <p>
+                        Please reply to this message before 311200Z DEC 2012 (12:07:30 from now).</p>
+                    <p>
+                        Accuracy of this message is doubtful. Correction to follow.</p>
+                </div>
+                <div style="display: block;" class="subject">@message.Subject</div>
+                <div style="display: block;" class="detail">
+                    <div style="display: block;" class="from">
+                        <div style="display: block;" class="originator">
+                            <p>
+                                <strong>Originator Ref:</strong> Example <span class="sep">
+                                    <img src="images/bg-dot.png" alt="Dot" height="5" width="5"></span> <strong>DTG:</strong>
+                                <span class="dtg">@message.ReceivedTime.ToString("ddHHmmZ MMM yyyy")</span></p>
+                        </div>
+                        <div style="display: block;" class="left">
+                            <a href="#" class="expand-arrow expand">From</a></div>
+                        <div style="display: block;" class="right">
+                            Neque Scelerisque</div>
+                        <div style="display: block;" class="hide">
+                            <div style="display: block;" class="left">
+                                <span class="label">Drafter</span></div>
+                            <div style="display: block;" class="right">
+                                Neque Scelerisque</div>
+                            <div style="display: block;" class="left">
+                                <span class="label">Releaser</span></div>
+                            <div style="display: block;" class="right">
+                                Neque Scelerisque</div>
+                        </div>
+                    </div>
+                    <div style="display: block;" class="action">
+                        <div style="display: block;" class="precedence">
+                            <p>
+                                <span class="flash"></span><strong>Flash</strong></p>
+                        </div>
+                        <div style="display: block;" class="left">
+                            <a href="#" class="expand-arrow expand"><span></span>Action</a></div>
+                        <div style="display: block;" class="right">
+                            <ul>
+                                <li class="d exempted"><a href="#"><span class="icon"></span>I QQT 15</a></li><li
+                                    class="a normal"><a href="#"><span class="icon"></span>W IMP 29</a></li><li class="c normal">
+                                        <a href="#"><span class="icon"></span>V NFY 83</a></li><li class="d no-access"><a
+                                            href="#"><span class="icon"></span>G BKK 67</a></li><li class="a no-access"><a href="#">
+                                                <span class="icon"></span>Q QEZ 28</a></li><li class="c exempted"><a href="#"><span
+                                                    class="icon"></span>L HXI 61</a></li><li class="d no-access"><a href="#"><span class="icon">
+                                                    </span>X SNT 20</a></li><li class="c normal"><a href="#"><span class="icon"></span>A
+                                                        VQH 88</a></li><li class="c normal"><a href="#"><span class="icon"></span>O ZWE 62</a></li><li
+                                                            class="a no-access"><a href="#"><span class="icon"></span>X WWI 16</a></li><li class="c normal">
+                                                                <a href="#"><span class="icon"></span>U EOR 86</a></li><li class="b no-access"><a
+                                                                    href="#"><span class="icon"></span>B VDC 63</a></li><li class="b no-access"><a href="#">
+                                                                        <span class="icon"></span>N TBB 74</a></li><li class="b normal"><a href="#"><span
+                                                                            class="icon"></span>J AKH 89</a></li><li class="c no-access"><a href="#"><span class="icon">
+                                                                            </span>B AGV 20</a></li><li class="c normal"><a href="#"><span class="icon"></span>B
+                                                                                XZD 73</a></li><li class="a no-access"><a href="#"><span class="icon"></span>J WQW 60</a></li><li
+                                                                                    class="d exempted"><a href="#"><span class="icon"></span>J QFS 66</a></li><li class="a no-access">
+                                                                                        <a href="#"><span class="icon"></span>O WPP 91</a></li><li class="b no-access"><a
+                                                                                            href="#"><span class="icon"></span>C SZE 62</a></li></ul>
+                            <ul class="hide">
+                                <li class="d exempted"><a href="#"><span class="icon"></span>I QQT 15</a></li><li
+                                    class="a normal"><a href="#"><span class="icon"></span>W IMP 29</a></li><li class="c normal">
+                                        <a href="#"><span class="icon"></span>V NFY 83</a></li><li class="d no-access"><a
+                                            href="#"><span class="icon"></span>G BKK 67</a></li><li class="a no-access"><a href="#">
+                                                <span class="icon"></span>Q QEZ 28</a></li><li class="c exempted"><a href="#"><span
+                                                    class="icon"></span>L HXI 61</a></li><li class="d no-access"><a href="#"><span class="icon">
+                                                    </span>X SNT 20</a></li><li class="c normal"><a href="#"><span class="icon"></span>A
+                                                        VQH 88</a></li><li class="c normal"><a href="#"><span class="icon"></span>O ZWE 62</a></li><li
+                                                            class="a no-access"><a href="#"><span class="icon"></span>X WWI 16</a></li><li class="c normal">
+                                                                <a href="#"><span class="icon"></span>U EOR 86</a></li><li class="b no-access"><a
+                                                                    href="#"><span class="icon"></span>B VDC 63</a></li><li class="b no-access"><a href="#">
+                                                                        <span class="icon"></span>N TBB 74</a></li><li class="b normal"><a href="#"><span
+                                                                            class="icon"></span>J AKH 89</a></li><li class="c no-access"><a href="#"><span class="icon">
+                                                                            </span>B AGV 20</a></li><li class="c normal"><a href="#"><span class="icon"></span>B
+                                                                                XZD 73</a></li><li class="a no-access"><a href="#"><span class="icon"></span>J WQW 60</a></li><li
+                                                                                    class="d exempted"><a href="#"><span class="icon"></span>J QFS 66</a></li><li class="a no-access">
+                                                                                        <a href="#"><span class="icon"></span>O WPP 91</a></li><li class="b no-access"><a
+                                                                                            href="#"><span class="icon"></span>C SZE 62</a></li></ul>
+                        </div>
+                    </div>
+                    <div style="display: block;" class="info">
+                        <div style="display: block;" class="precedence">
+                            <p>
+                                <span class="flash"></span><strong>Flash</strong></p>
+                        </div>
+                        <div style="display: block;" class="left">
+                            <a href="#" class="expand-arrow expand"><span></span>Info</a></div>
+                        <div style="display: block;" class="right">
+                            <ul>
+                                <li class="b exempted"><a href="#"><span class="icon"></span>B OSX 19</a></li><li
+                                    class="c exempted"><a href="#"><span class="icon"></span>X OWO 76</a></li><li class="a exempted">
+                                        <a href="#"><span class="icon"></span>J PTG 20</a></li><li class="a exempted"><a
+                                            href="#"><span class="icon"></span>C VHU 80</a></li><li class="b exempted"><a href="#">
+                                                <span class="icon"></span>T UTV 35</a></li><li class="c normal"><a href="#"><span
+                                                    class="icon"></span>O CGL 64</a></li><li class="d no-access"><a href="#"><span class="icon">
+                                                    </span>K SFU 30</a></li><li class="a exempted"><a href="#"><span class="icon"></span>
+                                                        N IFP 14</a></li><li class="b exempted"><a href="#"><span class="icon"></span>Y YUS
+                                                            73</a></li><li class="c exempted"><a href="#"><span class="icon"></span>C BHQ 15</a></li></ul>
+                            <ul class="hide">
+                                <li class="b exempted"><a href="#"><span class="icon"></span>B OSX 19</a></li><li
+                                    class="c exempted"><a href="#"><span class="icon"></span>X OWO 76</a></li><li class="a exempted">
+                                        <a href="#"><span class="icon"></span>J PTG 20</a></li><li class="a exempted"><a
+                                            href="#"><span class="icon"></span>C VHU 80</a></li><li class="b exempted"><a href="#">
+                                                <span class="icon"></span>T UTV 35</a></li><li class="c normal"><a href="#"><span
+                                                    class="icon"></span>O CGL 64</a></li><li class="d no-access"><a href="#"><span class="icon">
+                                                    </span>K SFU 30</a></li><li class="a exempted"><a href="#"><span class="icon"></span>
+                                                        N IFP 14</a></li><li class="b exempted"><a href="#"><span class="icon"></span>Y YUS
+                                                            73</a></li><li class="c exempted"><a href="#"><span class="icon"></span>C BHQ 15</a></li></ul>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: block;" class="subject-title">
+                    <div style="display: block;" class="label">
+                        <a href="#">A2a</a></div>
+                    <h4>
+                        Subject Title</h4>
+                </div>
+                <div style="display: block;" class="content">
+                    @message.Content
+                </div>
+                <div style="display: block;" class="attachment">
+                    <div style="display: none;" class="attachments">
+                    </div>
+                    <a style="display: none;" href="#" class="download-zip attachments">Download as .zip</a>
+                    <ul style="display: none;" class="attachments">
+                    </ul>
+                </div>
+            </div>
+            <br class="clear">
+        //last = message.ReceivedTime;
+
+    }
+}

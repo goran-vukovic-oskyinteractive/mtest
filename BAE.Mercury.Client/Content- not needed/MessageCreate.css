@@ -1,0 +1,178 @@
+﻿/*******************************************************************************
+//          %name: MessageCreate.css %
+//       %version: 8 %
+//      Copyright: Copyright 2012 BAE Systems Australia
+//                 All rights reserved.
+********************************************************************************/
+
+#editor { }
+
+/*   ------- watermarks -----------------------*/
+input.watermark, textarea.watermark { color: #000; } 
+input.marked, textarea.marked { color: #999; } 
+div .cap {font-weight:bold}
+
+/* -----------------  DateTimePicker control structure  -------------------------   */
+#dtpContainer {display:none; }
+.dpcont {position:relative;width:260px;height:355px;background-color:white;border:1px solid black;  }
+
+.datecap { position:absolute;left:35px;top:5px;font-family: Arial, Helvetica, sans-serif }
+ 
+
+.dpdate {position:absolute;left:35px;top:28px;width: 100px; }
+#dptime1 {position:absolute;left:145px;top:28px;width: 20px; }
+#dptime2 { position:absolute;left:170px;top:28px;width: 20px;} 
+
+#bnow { position:absolute;left:10px;top:325px;width: 100px;z-index:200; }
+#bset {position:absolute;left:150px;top:325px;width: 100px;z-index:200;display:none;   }
+
+#hourcap {position:absolute;left:75px;top:58px;font-family: Arial, Helvetica, sans-serif }
+#mincap {position:absolute;left:134px;top:58px;font-family: Arial, Helvetica, sans-serif  }
+
+.hours {width:70px; position:absolute;left:55px;top:75px; background-color:white;font-size:x-small }
+.mins {width:50px; position:absolute;left:129px;top:75px;  background-color:white;font-size:x-small }
+.hourscol {width:34px; float:left}
+.minscol {width:24px; float:left}
+.hourscol div { width:30px;height:17px; float:left;background-color:#E2F1FF;border:1px solid #7CA0D4;color:#416600;margin-top:1px;margin-left:1px;padding-left:1px;text-align:center;cursor:hand; }
+.minscol div { width:20px;height:17px; float:left;background-color:#E2F1FF;border:1px solid #7CA0D4;color:#416600;margin-top:1px;margin-left:1px;padding-left:1px;text-align:center;cursor:hand; }
+
+/* -----------------  DTG control structure  -------------------------   */
+.dtg { width:220px;height:24px}
+.dtgborder { border:1px solid black;height:24px}
+.dtgtable {height:24px;border:1px solid #cccccc; background-color:white;}
+.dtgtable td{padding:1px; border-spacing: 2px}
+.dtg1 {width:26px;background-color:#EEEEEE;border: 1px solid white; vertical-align:middle;text-align:center   }
+.dtg2 { width:20px;background-color:#FFFFFF ;border: 1px solid white ; vertical-align:middle;text-align:center }
+.dtg3 {width:40px; background-color:#EEEEEE ;border: 1px solid white; vertical-align:middle;text-align:center }
+.DTGCal {float:right;  margin-top:3px;cursor:hand; }
+
+/*   ------- floating containers -----------------------*/
+.editcontainer{float:left;width:780px;padding:4px;}
+
+/*   -------------------------------------------------------------------- #editdiv0 ---------------------------------------------------------------------------------------------------- */
+#editdiv0{width:800px;height:80px;position:relative;}
+#editdiv0 div{position:absolute;}
+
+/*   ------- top buttons captions--------- #editdiv0 */
+#sendcap{top:54px;left:20px;position:absolute;}
+#savecap{top:54px;left:77px;position:absolute;}
+#contactscap{top:54px;left:129px;position:absolute;}
+#attachcap{top:54px;left:202px;position:absolute;}
+
+/*   ------- top buttons--------- #editdiv0 */
+#send{top:20px;left:17px;position:absolute;}
+#save{top:20px;left:74px;position:absolute;}
+#contacts{top:20px;left:135px;position:absolute;}
+#attach{top:20px;left:202px;position:absolute;}
+
+/*   -------------------------------------------------------------------- #editdiv1 ---------------------------------------------------------------------------------------------------- */
+
+#editdiv1{width:800px;height:60px;position:relative;}
+#editdiv1 div{position:absolute;}
+
+/*   -------   control captions --------- #editdiv1   */
+#secclasscap{top:2px;left:17px;position:absolute;}
+#fromcap{top:32px;left:17px;position:absolute;}
+#originatorcap{top:2px;left:437px;position:absolute;}
+#dtgcap{top:32px;left:437px;position:absolute;}
+
+
+/*---------    controls  ---------  #editdiv1   -*/
+#secclass{top:2px;left:167px;width:240px;position:absolute;}
+.originator{top:2px;left:540px;width:230px;position:absolute;}
+#from{top:32px;left:167px;width:240px;position:absolute;border:1px solid #cccccc}
+#DTG{top:32px;left:530px; position:absolute;}
+#open2 {top:2px;left:410px;position:absolute; }
+
+/*   -------------------------------------------------------------------- #editdiv2 ---------------------------------------------------------------------------------------------------- */
+
+#editdiv2{width:680px;height:60px;position:relative;}
+#editdiv2 div{position:absolute;}
+
+/*   -------   control captions --------- #editdiv2*/
+#actionpreccap{top:2px;left:17px;position:absolute;}
+#infopreccap{top:2px;left:437px;position:absolute;}
+#subjectcap{top:35px;left:17px;position:absolute;}
+#siccap{top:35px;left:578px;position:absolute;cursor:hand; text-decoration: underline;color:black}
+
+/*   -------   controls --------- #editdiv2*/
+#actionprec{top:2px;left:167px;width:240px;position:absolute;}
+#infoprec{top:2px;left:553px;width:224px;position:absolute;}
+.subjectInput{top:35px;left:167px;width:400px;position:absolute;}
+#SIC{top:32px;left:605px;width:146px;height:25px ;position:absolute;border:1px solid #cccccc}
+#open1{top:34px;left:755px;position:absolute;}
+
+/*   --------------------------------------------------------------------action info and BCC floating sections ---------------------------------------------------------------------------------------------------- */
+
+/*---------   control captions  ----------*/
+#actioncap{margin-left:17px;float:left;width:130px;}
+#infocap{margin-left:17px;float:left;width:130px;}
+#bcccap{margin-left:17px;float:left;width:130px;}
+
+/*---------    controls  ----------*/
+#actioncont{margin-left:20px;float:left;}
+#infocont{margin-left:20px;float:left;}
+#bcccont{margin-left:20px;float:left;}
+
+/*---------  action, info and BCC internal classes  ----------*/
+.addresscontainer{height:32px;max-height:65px;overflow-y:auto;overflow-x:hidden;border: 1px solid #CCCCCC;float:right}
+.addresscontainer .action{width:604px;padding:2px;}
+.addresscontainer .info{width:604px;padding:2px; } 
+.addresscontainer .bcc{width:604px;padding:2px; } 
+.addresscontainer .addressInput{float:left;margin:6px 2px 2px 2px;border:0px solid white;width:150px;font-size:12px; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; }
+.addresscontainer  div .a, .b, .c {margin:3px 3px 3px 3px; float:left; display:inline; color:#3c3c3c; background:#efecf4; border:solid 1px #efecf4; padding:2px 5px;cursor:hand; }
+.addresscontainer  div .a:hover{ background-color:#d4d4d4;} 
+.addresscontainer  div .b:hover{ background-color:#d4d4d4;} 
+.addresscontainer  div .c:hover{ background-color:#d4d4d4;} 
+.addresstext{white-space:nowrap;}
+.addresscontainer div div.icon {background:url(~/images/bg-message_icon.png) no-repeat; display:inline-block; width:15px; height:15px;border:none; float:left; margin:0 3px 0 0; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; text-transform:uppercase;   font-size:12px;}
+.addresscontainer div.a div.icon {background-position:-28px -24px; display:inline-block; width:15px; height:15px; margin-right:3px;margin-top:1px;}
+.addresscontainer div.b div.icon {background-position:-28px -44px; display:inline-block; width:12px; height:14px;margin-right:3px;margin-top:2px;}
+.addresscontainer div.c div.icon {background-position:-59px -24px; display:inline-block; width:16px; height:13px;margin-right:3px;margin-top:2px;}
+.addresscontainer div.no-access a {color:#333;opacity: .5;}
+.addresscontainer div.exempted a {background:#efecf4 url(~/images/bg-info.png) right center no-repeat; padding-right:25px;}
+.addresscontainer div a {display:block; float:left; background:#efecf4; padding:1px 5px; color:#3c3c3c; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; text-transform:uppercase; margin:0; border-radius: 5px; font-size:12px;}
+
+/*   -------------------------------------------------------------------- #editdiv3 ---------------------------------------------------------------------------------------------------- */
+#editdiv3{width:780px;height:120px;position:relative; display:none;}
+#editdiv3 div{position:absolute;}
+#editdiv3 hr{margin-top:115px}
+/*   -------  control captions --------- #editdiv3*/
+#messagetypecap{top:2px;left:17px;position:absolute;}
+#messageinstructcap{top:2px;left:437px;position:absolute;}
+#expirytimecap{top:42px;left:17px;position:absolute;}
+#obsoletescap{top:42px;left:437px;position:absolute;}
+#replybytimecap{top:82px;left:17px;position:absolute;}
+#relatedcap{top:82px;left:437px;position:absolute;}
+
+/*   -------  controls --------- #editdiv3*/
+#messagetype{top:2px;left:167px;position:absolute;width:87px}
+ .messTypeInput{top:2px;left:257px;position:absolute;width:113px}
+#expirytime {top:42px;left:167px;position:absolute;}
+#replybytime {top:82px;left:167px;position:absolute;}
+#messageInstruct { top:2px;left:605px;position:absolute;width:167px}
+#obsoletes{top:42px;left:555px;position:absolute;width:217px}
+#related{top:82px;left:555px;position:absolute;width:217px}
+/*   -------------------------------------------------------------------- #editdiv4 ---------------------------------------------------------------------------------------------------- */
+
+/*   -------  control captions --------- #editdiv4*/
+
+
+/*   -------  controls --------- #editdiv4*/
+#editdiv4{width:680px;height:320px;position:relative; }
+#editdiv4 div{position:absolute;}
+#editdiv4 .richtext{top:20px;left:17px;}
+
+/*   -------security categories popup --------------------------------------------------------------------------------------------*/
+#securityCategories{top:255px;left:170px;width:300px;position:absolute;padding-top:10px; background-color: White; border:1px solid black;display:none}
+#seccatcap{width:120px;height:22px;float:left;padding:4px;}
+#privmarkcap{width:120px;height:22px;float:left;padding:4px;}
+#seccat{width:140px;float:left;margin:4px;}
+.privmark{width:135px;float:left;margin:4px;}
+.seccat1{float:left;height:70px;width:124px;padding-left:5px;}
+.seccat2{float:right;height:70px;width:160px}
+
+/*--------------message instructions drop-down----------------------*/
+
+
+

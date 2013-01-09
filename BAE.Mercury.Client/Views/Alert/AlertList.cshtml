@@ -1,0 +1,20 @@
+@*================================================================================
+         %name: AlertList.cshtml %
+      %version: 1.1.1 %
+ %date_created: Tue Nov 27 17:39:59 2012 %
+   %derived_by: LLawley %
+     Copyright: Copyright 2012 BAE Systems Australia
+                All rights reserved.
+================================================================================*@
+
+@using BAE.Mercury.Client.Models
+@model IEnumerable<BAE.Mercury.Client.Models.vmAlert>
+
+@foreach (vmAlert alert in Model)
+{
+    <div id="dismissAlertId_@alert.Id">
+        <div class="alertContent">
+            @alert.Message<a href="#" alertId="@alert.Id" class="dismissIndividualAlert" onClick="dismissAlert(@alert.Id)">Dismiss</a>
+        </div>
+    </div>
+}

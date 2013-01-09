@@ -1,0 +1,156 @@
+﻿@*================================================================================
+        %name: _DateTimePicker.cshtml %
+        %version: 4 %         
+        Copyright: Copyright 2012 BAE Systems Australia
+        All rights reserved.  
+================================================================================*@
+ 
+@* html stucture for picker *@
+<div class="dpcont">
+    <div class="datecap" >Select a Date and Time</div>    
+    <input id="dpdate" class="dpdate" readonly="readonly"/>
+    <div id="hourcap">Hour</div>
+    <div id="mincap">Minute</div>
+    <input id="dphours" /> 
+    <div class="hours">
+        <div class="hourscol">
+            <div >00</div> 
+            <div >01</div> 
+            <div >02</div> 
+            <div >03</div> 
+            <div >04</div> 
+            <div >05</div> 
+            <div >06</div> 
+            <div >07</div> 
+            <div >08</div> 
+            <div >09</div> 
+            <div >10</div> 
+            <div >11</div>
+            
+        </div>
+        <div class="hourscol">
+            <div>12</div> 
+            <div>13</div> 
+            <div>14</div> 
+            <div>15</div> 
+            <div>16</div> 
+            <div>17</div> 
+            <div>18</div> 
+            <div>19</div> 
+            <div>20</div> 
+            <div>21</div> 
+            <div>22</div> 
+            <div>23</div> 
+        </div>
+    </div>
+     <div class="mins">
+        <div class="minscol">
+            <div c="1">0</div> 
+            <div c="1">1</div> 
+            <div c="1">2</div> 
+            <div c="1">3</div> 
+            <div c="1">4</div> 
+            <div c="1">5</div> 
+        </div>
+        <div class="minscol">
+            <div c="2">0</div> 
+            <div c="2">1</div> 
+            <div c="2">2</div> 
+            <div c="2">3</div> 
+            <div c="2">4</div> 
+            <div c="2">5</div> 
+            <div c="2">6</div> 
+            <div c="2">7</div> 
+            <div c="2">8</div> 
+            <div c="2">9</div> 
+        </div>
+    </div>
+    <input id="dpmins"/>
+    <input id="bnow" type="button" value="Use Now" onclick="useNow();"/>
+    <input id="bset" type="button" value="Set" onclick="setDTG();"/>
+    <input type="hidden" id="DTGControl" />
+</div>
+ 
+<script type="text/javascript">
+    var min1 = ""; 
+    var div1;
+    var divlast;
+    $(document).ready(function() {
+        $("#dpdate").datepicker({ 
+            showOn: "focus",
+            dateFormat: "dd/mm/yy"
+        } );
+      
+        //event handler for hours divs click event
+        $( ".hours" ).on( "click", ".hours div", function ( event )
+        {
+            var hour = $( event.srcElement );
+            $( "#dphours" ).val( hour[0].innerText );
+            $( ".hourscol div" ).css( "background-color", "#E2F1FF" );//reset all
+            hour.css( "background-color", "#FFFFDB" );
+        } );
+        //event handler for mins divs click event
+        $( ".mins" ).on( "click", ".mins div", function ( event )
+        {
+            var div = $( event.srcElement );
+            if ( div.attr( "c" ) == "1" ) //is 10 minute div
+            {
+                $( ".minscol div" ).css( "background-color", "#E2F1FF" );//reset all mins
+                min1 = div[0].innerText; //get 10 minute value
+                div.css( "background-color", "#FFFFDB" ); //highlight ten minute div
+                div1 = div;//set 10minute div for single minute logic
+                $( "#dpmins" ).val( min1 ); //write to input
+            }
+            else //is single mins div
+            {
+                if ( min1 != "" ) //check for 10 minute div being clicked first
+                {
+                    $( "#dpmins" ).val( min1 + div[0].innerText );//write total of 10 min div and this one to minutes input
+                    if ( divlast !=null){ 
+                        divlast.css( "background-color", "#E2F1FF" )//reset last one
+                    }
+                    div.css( "background-color", "#FFFFDB" );//highlight new minute
+                    divlast = div;//set new last div
+                    div1 = null; //reset 10minute div
+                    $( "#bset" ).css( "display", "block" ); //show set button                   
+                }
+            }
+            event.stopPropagation(); //stop event from firing multiple times in parents           
+        } );
+    } );
+
+    /* 
+    use current datetime for DTG
+    */
+    function useNow()
+    {
+        var id = $( "#DTGControl" ).val();
+        var currentDate = new Date();
+        //create UTC date object
+        var utcDate = new Date( currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate(), currentDate.getUTCHours(), currentDate.getUTCMinutes() );
+        writeToDTG( id, utcDate ); //on message.dtg.js
+        $( "#bset" ).css( "display", "none" );
+        $( "#dtpContainer" ).css( "display", "none" );
+    }
+
+    /*
+    build datetime object from datepicker and inputs
+    and pass to writeToDTG function
+    */
+    function setDTG()
+    {
+        $( "#bset" ).css( "display", "none" );
+        $( "#dtpContainer" ).css( "display", "none" );
+        var id = $( "#DTGControl" ).val();
+        var currentDate = $( "#dpdate" ).datepicker( "getDate" );
+        //create date object
+        var utcDate = new Date( currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), $( "#dphours" ).val(), $( "#dpmins" ).val() );
+        //format correctly and write to input
+        writeToDTG( id, utcDate ); //on message.dtg.js
+    }
+
+
+</script>
+
+
+ 

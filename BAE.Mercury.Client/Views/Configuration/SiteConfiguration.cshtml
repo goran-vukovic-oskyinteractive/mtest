@@ -1,0 +1,60 @@
+﻿@*================================================================================
+          %name: SiteConfiguration.cshtml %
+       %version: 3 %
+  %date_created: Mon Nov 26 16:25:34 2012 %
+    %derived_by: virug %
+      Copyright: Copyright 2012 BAE Systems Australia
+                 All rights reserved.
+================================================================================*@
+@model BAE.Mercury.Client.Models.vmSiteConfiguration
+
+<script type="text/javascript">
+
+    
+    // Startup functions to call
+    $(function () {
+    
+        // Turn check boxes into light switches, for some prettiness
+        $('form#updateSiteConfiguration input:checkbox').lightSwitch({
+            switchImg: '../Scripts/lightswitch/switch-1.png',
+            switchImgCover: '../Scripts/lightswitch/switchplate.png',
+            peekOff: '0px 0px',
+            peekOn: '-37px 0px',
+            modifyFunction: siteConfigurationModified
+        });
+
+        // Ensure that the checkbox change events fire
+        $("form#updateSiteConfiguration input:checkbox").change(function () {
+            siteConfigurationModified();
+        });
+        
+        // Ensure that changes to the text will cause the modify flag to be set, even if not blurred
+        $("form#updateSiteConfiguration input.text-box").input(function () {
+            siteConfigurationModified();
+        });
+        
+
+    });
+    
+    // Called when the site configuration could not be updated at the server
+    function siteConfigUpdateError() {
+        $('#siteConfigUpdateError').show();
+        $("#siteConfigUpdating").hide();
+    }
+    
+    // Called when the site configuration is being updated at the server
+    function startSiteConfigPostBack() {
+        $("#siteConfigUpdating").show();
+    }
+
+</script>
+
+
+@using (Ajax.BeginForm("UpdateSiteConfiguration", "Configuration", new AjaxOptions() { OnSuccess = "siteConfigurationUpdated()", OnBegin = "startSiteConfigPostBack()", OnFailure = "siteConfigUpdateError()" }, new { id = "updateSiteConfiguration" }))
+{
+    <div id="siteConfigUpdateError" class="updateError" style="display:none">There was an error attempting to update the configuration.</div>
+    <div id="siteConfigUpdateSucceed" class="updateSucceed" style="display:none">Configuration was updated.</div>
+    @Html.EditorForModel("EditorTemplates/vmSiteConfiguration")
+    <br/>
+    <input type="submit" id="submitSiteConfigurationForm" value="Update Site Configuration" /><img id="siteConfigUpdating" src="~/Images/loading.gif" style="display:none"/>
+}

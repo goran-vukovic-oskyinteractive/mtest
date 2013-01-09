@@ -1,0 +1,47 @@
+﻿@*================================================================================
+        %name: Content.cshtml %
+        %version: 6 %
+        %date_created: Thu Dec 13 08:47:21 2012 %
+        %derived_by: DSaustin %
+        Copyright: Copyright 2012 BAE Systems Australia
+        All rights reserved.
+    
+    System available Razor helpers
+================================================================================*@
+@using System
+@using System.Web.Mvc
+@using System.Globalization
+
+@*  create script tag with correct path *@
+
+@helper Script(string scriptName, UrlHelper url){
+    <script src="@url.Content("~/Scripts/"+scriptName)"  type="text/javascript"></script>
+}
+
+@* Create DTG entry control *@
+
+@helper DTG(string id, String  dtVal,  UrlHelper url, string validationName)
+{
+    DateTimeFormatInfo auDtfi = new CultureInfo("en-AU", false).DateTimeFormat;
+ 
+    <div class="dtg"  id="@id">
+        <div class="dtgborder">
+             
+            @if (dtVal == null)
+            {
+                    <input   class="dtginput"/>                             
+            }
+            else
+            {
+                if(dtVal!=""){
+                    DateTimeOffset dt = DateTimeOffset.Parse(dtVal, auDtfi); 
+                    <input class="dtginput" value="@(dt.ToString( "ddHHmmZ MMM yyyy" ).ToUpper())"  data-vn="@validationName"/>     
+                }else{
+                    <input class="dtginput" value=""  data-vn="@validationName"/>    
+                }                         
+            }
+  
+         </div>
+        <img class="DTGCal" src="@url.Content("~/Images/Calendar1.gif")" onclick="openDTGCal('@id');"   data-vn="@validationName"/>
+    </div>
+}

@@ -1,0 +1,34 @@
+﻿@* =================================================
+//          %name: _MessageDetailsStatus.cshtml %
+//       %version: 4 %
+//      Copyright: Copyright 2012 BAE Systems Australia
+//                 All rights reserved.
+// =================================================*@
+
+@model BAE.Mercury.Client.Models.vmMessageDetails
+    
+@if(Model.HasRelatedMessages)
+    {
+        @:<p><a class="rounded-box" href="#">Find related messages</a><p>
+    }
+    @if(Model.Expiry.HasValue)
+    {
+        if(Model.TimeToExpire != TimeSpan.Zero)
+        {
+            <p>@Model.ExpiringMessage <span class="countdownItem" data-expires-milliseconds="@Model.TimeToExpireMilliSeconds"></span></p>
+        }
+        else
+        {
+            <p>@Model.ExpiredMessage</p>
+        }
+    }
+    @if(Model.IsObsolete)
+    {
+        <p>@Model.ObsoleteMessage</p>
+    }
+    @if(Model.ReplyBy.HasValue)
+    {        
+        <p>@Model.ReplyByDateMessage</p>
+    }
+
+    <p>Accuracy of this message is doubtful. Correction to follow.</p>

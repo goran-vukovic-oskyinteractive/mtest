@@ -1,0 +1,96 @@
+﻿ @* =================================================
+        %name: _ReloadMessageList.cshtml %
+         %version: 17 %
+         Copyright: Copyright 2012 BAE Systems Australia
+                    All rights reserved.
+    =================================================*@
+
+@*    This is the partial view for initial load of  messages on folder click
+    It differs from _MessageList in the creation  and sizing of the surrounding "messageList" div *@
+@using BAE.Mercury.Client.App_Code
+
+@model  BAE.Mercury.Client.Models.vmMessageList
+
+@{ 
+    var count = 1;
+    var jsGroupIndex = 0;
+    var groupcount = 0;
+     @*  work out height of list container div (messagelist) so that scrollbar doesn't resize on ajax load  *@
+    var listContainerHeight = Model.ListCount * 77 + Model.GroupNames.Count * 40;
+    @*  set up group controlling variables  *@
+    List<string> groupnames = Model.GroupNames;
+    groupcount = groupnames.Count;
+
+    var currentGroupHeader = Model.InitGroupHeader;
+    if (!string.IsNullOrEmpty(currentGroupHeader))
+    {
+        jsGroupIndex = groupnames.IndexOf(currentGroupHeader);
+    }
+    @*  store group info in session for _MessageList partial view   *@
+    SessionBag.Current.CurrentGroupHeader = currentGroupHeader;
+    SessionBag.Current.GroupNames = groupnames;
+
+    <input type="hidden" id="msgcount" value="@(Model.ListCount)" />
+    <input type="hidden" id="pagecount" value="@(Model.PageCount)" />  
+    <input type="hidden" id="listheight" value="@(listContainerHeight)" />   
+    <input type="hidden" id="recordsinpage" value="@(Model.RecordsPerPage)" /> 
+    
+    @*   start of messagelist div *@                                                            
+    <div  tabindex='0'  id="messageList" style="height:@(listContainerHeight)px" >
+        @if (!Model.MessageItems.Any())
+        {   
+            <span>@Model.NoRecordsMessage</span>       
+        }
+
+        @if (Model.VertAlign == "bottom")
+        {
+            <div style="height:100%;width:100%" id="spacer"> </div>            
+        }
+        <div data-gp="@(jsGroupIndex+1)" class='offsetCont' >
+            @*  cycle through messages  *@    
+            @foreach (var item in Model.MessageItems)
+            {
+
+                if (currentGroupHeader != null && item.Group != currentGroupHeader)
+                {               
+                    jsGroupIndex++; @* increment group Index*@
+                }    
+            @* Add  a header as group changes, CurrentGroupHeader is set " for first record if ViewBag.VertAlign = "top" *@
+                if (groupcount > 0 && (string.IsNullOrEmpty(currentGroupHeader) || item.Group != currentGroupHeader))
+                {
+ 
+                @*   create new group header *@                  
+                    <div class="listGroupheader" data-group="@(item.Group)"> @*   item.GroupIndex is 1 based index of group *@  
+                        <h2>@item.Group</h2>
+                    </div>                
+                    currentGroupHeader = item.Group;
+                    SessionBag.Current.CurrentGroupHeader = currentGroupHeader; @*   store in session for _MessageList partial view *@ 
+                } 
+            @*   actual message div *@
+                string state = item.State;
+                string precedence = item.Precedence;
+                string attachment = (item.HasAttachment) ? "attachment": "";            
+            
+            
+                string sclass = "message " + state + " " + precedence + " " + attachment;
+            
+                <div tabindex="0" class="@sclass" data-url='@Url.Action("Details", "Message", new { id = item.MessageId })' data-grp="@(item.GroupIndex)"   >
+                    <div class="message-icon"> <span class="icon-status"></span> <span class="icon-attachment"></span> </div>
+                    <div class="message-summary">
+                        <h3><a href="#">@item.Subject</a></h3>
+                        <p class="sender">@item.Sender</p>
+                        <p class="DTG">@item.SentDtg</p>
+                        <span class="date">@item.ReceivedTime</span>
+                    </div>
+                    <div class="message-precedence"> <span class="icon-precedence"></span> </div>
+                </div>  
+            
+                       
+                count++; @*   increment row counter *@ 
+            }@*  end of  message for loop  *@
+        </div>
+    </div>
+        @*   end of messagelist div *@     
+}
+
+

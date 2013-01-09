@@ -1,0 +1,115 @@
+﻿@*================================================================================
+         %name: AlertPopup.cshtml %
+      %version: 4 %
+ %date_created: Tue Dec  4 16:22:40 2012 %
+   %derived_by: chrisn %
+     Copyright: Copyright 2012 BAE Systems Australia
+                All rights reserved.
+================================================================================*@
+
+<style type="text/css">
+    /*TODO: This styling should be moved to a CSS file when we get some styling from Osky*/
+    
+    #alertId {
+        color: crimson;
+        font-weight: bold;
+        border: 1px solid red;
+        background-color: lightpink;
+        padding: 5px 10px;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var showAlertsFlag = true; // Defines whether to show alerts or not
+    var showAlertsTimerId; // The timer id for the alert pop-up
+    var alertCheckPeriodMS = 30000; // Refreshes every 30 Seconds
+
+    function showAlerts(enabled)
+    {
+        showAlertsFlag = enabled;
+
+        // Hide alerts if shown
+        if (!enabled)
+        {
+            // Stop the timer
+            clearInterval(showAlertsTimerId);
+            $("#alertMessageContainer").hide();
+        }
+        else
+        {
+            // Check for any alerts
+            checkForAlerts();
+
+            // Start a timer to check periodically
+            showAlertsTimerId = setInterval(checkForAlerts, alertCheckPeriodMS);
+        }
+    }
+
+    // Checks the server for new alerts
+    function checkForAlerts()
+    {
+        if (showAlertsFlag)
+        {
+            $.getJSON(
+                "@Url.Action("AlertSummary", "Alert")",
+                function (data) {
+                    if (data != null)
+                    {
+                        if (data.AlertCount > 0)
+                        {
+                            $("#alertMessageText").html(data.AlertMessage);
+                            $("#alertMessageContainer").show();
+                        }
+                        else
+                        {
+                            $("#alertMessageContainer").hide("fade", {}, 3000);
+                        }
+                    }
+                }
+            );
+        }
+    }
+
+    $(document).ready(function ()
+    {
+
+        // Hide the popup for a while when the hide button is pressed
+        $("#hidePopup").click(function ()
+        {
+            // Restart the timer. This ensures that the timer starts counting from 0
+            clearInterval(showAlertsTimerId);
+            showAlertsTimerId = setInterval(checkForAlerts, alertCheckPeriodMS); //Refreshes every 3 seconds
+
+            // Hide the alert
+            $("#alertMessageContainer").hide("fade", {}, 500);
+
+            // Don't follow the HTML link
+            return false;
+        });
+
+        // Open the alert page if you click the link
+        $("#showAlerts").click(function ()
+        {
+            //$("#alertId").hide();
+            window.location = "@Url.Action("Alerts", "Alert")";
+            return false;
+        });
+
+        // Check for alerts and start periodic timer
+        showAlerts(showAlertsFlag);
+    });
+
+</script>
+
+
+<div id="alertMessageContainer" style="display: none; position: absolute; left: 50%; top:0;">
+    <div style="position: relative; left: -50%;">
+        <div id="alertId">
+            <span id="alertMessageText"></span>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a id="hidePopup" href="#">Hide</a>&nbsp;|&nbsp;<a id="showAlerts" href="#">Show Alerts</a>
+        </div>
+    </div>
+</div>
+
