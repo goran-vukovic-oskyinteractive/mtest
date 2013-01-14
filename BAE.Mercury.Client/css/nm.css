@@ -1,0 +1,85 @@
+/**** NEW MESSAGE ****/
+
+#email-content.new-message {background:#f0f0f0 url(../images/bg-email_content.png) top left repeat-x;}
+#email-content.new-message form {padding:20px;}
+#email-content.new-message .section {border:1px solid #d8d8d8; padding:10px 0; margin:0 0 20px 0; background:#e8e8e8 url(../images/bg-email_content_section.png) top left repeat-x;}
+#email-content.new-message .section.advance {display:none;}
+#email-content.new-message .section * {font-size:12px;}
+#email-content.new-message .section p {margin:0;}
+#email-content.new-message .section .row {overflow:hidden;margin:0 5px; padding:0;}
+/*
+#email-content.new-message .section .col.left {float:left; width:360px; margin:0 15px 3px 0; padding:3px 0 3px 10px; overflow:hidden;}
+#email-content.new-message .section .col.right {float:left; width:350px; padding:3px 10px 3px 0; overflow:hidden; margin-bottom:3px;}
+#email-content.new-message .section .wide .col {padding:6px 10px; overflow:hidden;}
+#email-content.new-message .section .offset .col.left {float:left; width:440px; margin:0 15px 0 0;}
+#email-content.new-message .section .offset .col.right {float:left; width:270px;}
+{float:left; width:125px; font-weight:normal; cursor:pointer; margin:0 5px 0 0;  padding:4px 0 4px 5px;}
+#email-content.new-message .section label.expand {background:#c9c9c9; -webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px}
+
+#email-content.new-message .section input.txt,
+#email-content.new-message .section select {float:left; border:1px solid #dcdcdc; background:#fff; padding:5px 2px; width:203px;}
+#email-content.new-message .section select {width:211px}
+#email-content.new-message .section input.wide {width:544px;}
+#email-content.new-message .section input.narrow {width:170px;}
+#email-content.new-message .section input.has-icon {width:175px;}
+#email-content.new-message .section .offset .col.left input.txt {width:295px;}
+#email-content.new-message .section .offset .col.right label {width:50px;}
+#email-content.new-message .section .icon {display:block;}
+#email-content.new-message .section .icon a,
+#email-content.new-message .section .ui-datepicker-trigger {display:block; float:left; margin:5px 0 0 10px;}
+
+#email-content.new-message .section input.error {border:1px solid #ff0000; margin-bottom:5px;}
+#email-content.new-message .section span.error {display:block; color:#cd3d3d; margin:0 0 0 135px; clear:left;}
+*/
+
+/** DYNAMIC WIDTH */
+#email-content.new-message .section .arrow {float:left; display:block; margin-left:-20px;}
+#email-content.new-message .section .arrow a {display:block; text-indent:-9999px; background:url(../images/bg-arrow_from.png) 0 0 no-repeat; width:7px; height:6px; margin:10px 0 0 0;} 
+#email-content.new-message .section .arrow a.expanded {background-position:bottom left; margin-top:11px;}
+#email-content.new-message .section label {float:left; width:130px; display:block; cursor:pointer; margin:5px 0 0 0}
+#email-content.new-message .section .col {padding:5px 10px; overflow:hidden;}
+#email-content.new-message .section input.txt,
+#email-content.new-message .section select {float:left; border:1px solid #dcdcdc; background:#fff; padding:5px 2px; width:67%;}
+#email-content.new-message .section select {width:68%;}
+#email-content.new-message .section input.wide {width:84%;}
+
+@media screen and (max-width: 1324px) {
+#email-content.new-message .section input.txt {width:64%}
+#email-content.new-message .section select {width:65%;}
+#email-content.new-message .section input.wide {width:82%;}
+}
+
+@media screen and (max-width: 1224px) {
+#email-content.new-message .section input.txt {width:61%}
+#email-content.new-message .section select {width:63%;}
+#email-content.new-message .section input.wide {width:81%;}
+}
+
+@media screen and (max-width: 1154px) {
+#email-content.new-message .section input.txt {width:59%}
+#email-content.new-message .section select {width:61%;}
+#email-content.new-message .section input.wide {width:80%;}
+}
+
+@media screen and (max-width: 1124px) {
+#email-content.new-message .section input.txt {width:53%}
+#email-content.new-message .section select {width:55%;}
+#email-content.new-message .section input.wide {width:77%;}
+}
+@media screen and (max-width: 1024px) {
+#email-content.new-message .section input.txt {width:50%}
+#email-content.new-message .section select {width:52%;}
+#email-content.new-message .section input.wide {width:76%;}
+}
+
+#email-content.new-message .section .icon {display:block;}
+#email-content.new-message .section .icon a,
+#email-content.new-message .section .ui-datepicker-trigger {display:block; float:left; margin:5px 0 0 10px;}
+
+#email-content.new-message .section input.error {border:1px solid #ff0000; margin-bottom:5px;}
+#email-content.new-message .section span.error {display:block; color:#cd3d3d; margin:0 0 0 130px; clear:left;}
+
+#email-content.new-message .section .hide-control {}
+#email-content.new-message .section .hide-control.open {background:#e9e9ea;}
+#email-content.new-message .section .hide {display:none;}
+#email-content.new-message .section .hide .col{background:#e9e9ea;}

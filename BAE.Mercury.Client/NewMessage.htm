@@ -1,0 +1,314 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Mercury - Inbox</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/nm.css" rel="stylesheet" type="text/css" media="all" />
+<!--[if IE 7]>
+<link href="css/ie7.css" rel="stylesheet" type="text/css" media="all" />
+<![endif]-->
+<!--[if IE 8]>
+<link href="css/ie8.css" rel="stylesheet" type="text/css" media="all" />
+<![endif]-->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+<script type="text/javascript" src="js/jquery.nicescroll.js"></script>
+<script type="text/javascript" src="js/jquery.nicescroll.js"></script>
+<script type="text/javascript" src="js/jquery.simpletip-1.3.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="js/respond.min.js"></script><!-- IE7 min/max width support -->
+<script type="text/javascript" src="js/functions.js"></script>
+</head>
+<body>
+<!-- start wrapper -->
+<div id="wrapper">
+	<div id="header">
+		<div id="logo"><a href="#"><img src="images/bg-logo.png" width="138" height="38" alt="Mercury" /></a></div>
+		<div id="top-section">
+			<p>Welcome, user</p>
+			<ul id="top-link">
+				<li><a href="#" id="logout"><img src="images/icon-logout_menu.png" alt="Admin Menu" width="16" height="16" />logout</a></li>
+				<li><a href="#" id="admin"><img src="images/icon-admin_menu.png" alt="Logout Menu" width="16" height="16" />settings</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="buttons">
+		<div class="col-wrap">
+			<div class="col-left">&nbsp;</div>
+			<div class="col-middle" id="buttons-right">
+				<ul class="buttons">
+					<li id="btn-send"><a href="#">Send</a><span>Send</span></li>
+					<li id="btn-save"><a href="#">Save</a><span>Save</span></li>
+					<li id="btn-discard"><a href="#">Discard</a><span>Discard</span></li>
+					<li id="btn-attach"><a href="#" class="btn-drop-parent">Attach</a><span>attach</span>
+						<div class="btn-drop"> <span><a href="#" class="first">XXX</a></span> <span><a href="#">XXX</a></span> </div>
+					</li>
+				</ul>
+			</div>
+			<div class="col-right">
+				<ul class="buttons">
+					<li id="btn-address"><a href="#">Address Book</a><span>Address Book</span></li>
+					<li id="btn-opennewwindow"><a href="#">Open In A New Window</a><span>Open In A New Window</span></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="content">
+		<div class="col-wrap">
+			<div class="col-left" id="mailbox">
+				<div id="mailbox-scroll">
+					<h2>Mailboxes</h2>
+					<ul id="mailbox-list">
+						<li id="inbox">
+							<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Inbox</strong> </a></div>
+							<ul>
+								<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
+								<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
+								<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+							</ul>
+						</li>
+						<li id="draft">
+							<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Draft</strong> </a></div>
+							<ul>
+								<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
+								<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
+								<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+							</ul>
+						</li>
+						<li id="sent">
+							<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Sent</strong> </a></div>
+							<ul>
+								<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
+								<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
+								<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+							</ul>
+						</li>
+						<li id="trash">
+							<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Discard</strong> </a></div>
+							<ul>
+								<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
+								<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
+								<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+							</ul>
+						</li>
+						<li id="templates">
+							<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Templates</strong> </a></div>
+							<ul>
+								<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
+								<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
+								<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+							</ul>
+						</li>
+						<li id="objectives">
+							<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Objective</strong> </a></div>
+							<ul>
+								<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
+								<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
+								<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+							</ul>
+						</li>
+					</ul>
+					<h2>Folders</h2>
+					<ul id="folder-list">
+						<li><a href="#"><span class="icon"></span><strong>General Mail</strong></a></li>
+						<li><a href="#"><span class="icon"></span><strong>Project Lion</strong></a></li>
+						<li><a href="#"><span class="icon"></span><strong>Project XD</strong></a></li>
+						<li><a href="#"><span class="icon"></span><strong>Project 14W</strong></a></li>
+					</ul>
+				</div>
+				<div id="left-menu-collapse"><a href="#"><img src="images/bg-left_menu_collapse.png" width="30" height="11" align="Close Menu" /></a></div>
+				<ul id="left-menu">
+					<li class="current"><a href="index.html">Mailboxes</a></li>
+					<li><a href="message_monitor.html">Message Monitor</a></li>
+					<li><a href="audit_trail.html">Audit Trail</a></li>
+					<li><a href="#">Distribution Management</a></li>
+					<li><a href="#">System Preferences</a></li>
+					<li><a href="#">User Management</a></li>
+					<li><a href="address_book_management.html">Address Book Management</a></li>
+				</ul>
+			</div>
+			<div class="col-right new-message" id="email-content">
+				<form action="#" class="email new-message" method="post">
+					<input type="hidden" id="timezone" value="Z">
+					<div class="section">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<td width="50%">
+									<div class="col hide-control">
+										<label for="classification" class="expand">Classification</label>
+										<span class="arrow"><a href="#">Expand</a></span>
+										<select id="classification">
+											<option>Unclassified</option>
+											<option>Option #2</option>
+											<option>Option #3</option>
+										</select>
+									</div>
+								</td>
+								<td width="50%">
+									<div class="col">
+										<label for="dtg">DTG</label>
+										<input type="text" id="dtg" class="txt has-icon" />
+									</div>
+								</td>
+							</tr>
+							<tr class="hide">
+								<td>
+									<div class="col">
+										<label for="caveats">Caveats &amp; DLMs</label>
+										<input type="text" id="caveats" class="txt has-icon" />
+										<span class="icon"><a href="#"><img src="images/icon-new_message_dlm.png" width="20" height="19" alt="DLMs" /></a></span>
+									</div>
+								</td>
+								<td>
+									<div class="col">
+										<label for="privacy-marking">Privacy Markings</label>
+										<input type="text" id="privacy-marking" class="txt" />
+									</div>
+								</td>
+							</tr>							
+							<tr>
+								<td>
+									<div class="col">
+										<label for="from">From</label>
+										<input type="text" id="from" class="txt" />
+									</div>
+								</td>
+								<td>
+									<div class="col">
+										<label for="originator-ref">Originator Ref</label>
+										<input type="text" id="originator-ref" class="txt" />
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<div class="col">
+										<label for="action">Action</label>
+										<input type="text" id="action" class="wide txt error" />
+										<span class="icon"><a href="#"><img src="images/icon-new_message_contact.png" width="20" height="19" alt="Action" /></a></span> <span class="error">Invalid Input</span>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<div class="col">
+										<label for="info">Info</label>
+										<input type="text" id="info" class="wide txt" />
+										<span class="icon"><a href="#"><img src="images/icon-new_message_contact.png" width="20" height="19" alt="Info" /></a></span>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="col">
+										<label for="action-precedence">Action Precedence</label>
+										<select id="action-precedence">
+											<option>Routine</option>
+											<option>Option #2</option>
+											<option>Option #3</option>
+										</select>
+									</div>
+								</td>
+								<td>
+									<div class="col">
+										<label for="info-precedence">Info Precedence</label>
+										<select id="info-precedence">
+											<option>Routine</option>
+											<option>Option #2</option>
+											<option>Option #3</option>
+										</select>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="col">
+										<label for="subject">Subject</label>
+										<input type="text" id="subject" class="txt" />
+									</div>
+								</td>
+								<td>
+									<div class="col">
+										<label for="sics">SICs</label>
+										<input type="text" id="sics" class="narrow txt" />
+										<span class="icon"><a href="#"><img src="images/icon-new_message_dlm.png" width="20" height="19" alt="SICs" /></a></span>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="section advance">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">							
+							<tr>
+								<td width="50%">
+									<div class="col">
+										<label for="message-type">Message Type</label>
+										<input id="message-type" type="text" class="txt" />
+									</div>
+								</td>
+								<td width="50%">
+									<div class="col">
+										<label for="message-instructions">Message Instructions</label>
+										<div class="input text">
+											<input type="text" id="message-instructions" class="txt"/>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="col">
+										<label for="exp-date">Expiry Time</label>
+										<div class="input date">
+											<input type="text" id="exp-date"  class="txt has-icon"/>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="col">
+										<label for="obsoletes">Obsoletes</label>
+										<div class="input text">
+											<input type="text" id="obsoletes" class="txt has-icon"/>
+											<span class="icon"><a href="#"><img src="images/icon-new_message_email.png" width="20" height="19" alt="Obsoletes" /></a></span>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="col left">
+										<label for="reply-by-date">Reply By Time</label>
+										<div class="input date">
+											<input type="text" id="reply-by-date" class="txt has-icon"/>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="col right">
+										<label for="related">Related</label>
+										<div class="input text">
+											<input type="text" id="related" class="txt has-icon"/>
+											<span class="icon"><a href="#"><img src="images/icon-new_message_email.png" width="20" height="19" alt="Related" /></a></span>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</form>
+				
+				<!-- EDITOR -->
+				<div id="editor-wrap">
+					<div id="editor"> </div>
+					<div id="advance-button"> <a href="#">Show Advanced Options</a> </div>
+				</div>
+			</div>
+			<br class="clear" />
+		</div>
+	</div>
+</div>
+<!-- end wrapper -->
+</body>
+</html>

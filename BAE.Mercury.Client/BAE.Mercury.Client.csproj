@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DeployIisAppPath>Default Web Site/</DeployIisAppPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -184,6 +185,7 @@
     <Compile Include="Infrastructure\Logging\NLogLogger.cs" />
     <Compile Include="AddressBookService.cs" />
     <Compile Include="MessageService.cs" />
+    <Compile Include="Models\OskyAddressBookAppointments.cs" />
     <Compile Include="Models\OskyMessageFolders.cs" />
     <Compile Include="Models\OskyMessageList.cs" />
     <Compile Include="Models\OskyAddressBooks.cs" />
@@ -278,8 +280,10 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="css\abm.css" />
     <Content Include="css\ie7.css" />
     <Content Include="css\jquery-ui.css" />
+    <Content Include="css\nm.css" />
     <Content Include="css\reset.css" />
     <Content Include="css\style.css" />
     <Content Include="favicon.ico" />
@@ -314,6 +318,7 @@
     <Content Include="Images\bg-icon_small.png" />
     <Content Include="Images\bg-icon_wide.png" />
     <Content Include="Images\bg-info.png" />
+    <Content Include="Images\bg-left_menu_collapse.png" />
     <Content Include="Images\bg-logo.png" />
     <Content Include="Images\bg-logout_menu.png" />
     <Content Include="Images\bg-mailbox_arrow.png" />
@@ -383,8 +388,12 @@
     <Content Include="js\jquery.nicescroll.js" />
     <Content Include="js\jquery.scroll.events.js" />
     <Content Include="js\jquery.selectbox-0.5.js" />
+    <Content Include="js\jquery.simpletip-1.3.1.min.js" />
     <Content Include="js\jquery.simpletip-1.3.1.pack.js" />
+    <Content Include="js\address_book.js" />
+    <Content Include="js\respond.min.js" />
     <Content Include="js\waypoints.min.js" />
+    <Content Include="NewMessage.htm" />
     <Content Include="ReadMe.txt" />
     <Content Include="Scripts\countdown.js" />
     <Content Include="Scripts\Initialise.js" />
@@ -443,7 +452,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Message\_OskyMessageList.cshtml" />
     <Content Include="Views\Folder\OskyMessageFolders.cshtml" />
-    <Content Include="Views\Message\OskyAddrssBookManagement.cshtml" />
     <Content Include="Views\AddressBook\OskyAddressBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -509,7 +517,8 @@
     </Content>
     <Content Include="Views\Message\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Message\OskyMessageList.cshtml" />
+    <Content Include="Views\AddressBook\_AppointmentList.cshtml" />
+    <Content Include="Views\AddressBook\sample1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BAE.Mercury.Business\BAE.Mercury.Business.csproj">

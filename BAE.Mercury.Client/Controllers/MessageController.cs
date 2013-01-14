@@ -90,6 +90,7 @@ namespace BAE.Mercury.Client.Controllers
         /// <returns>ActionResult View </returns>
         public ActionResult Index(int? pageId, int? listId, int reverse = 0, int groupIndex = 0, int count = 0, string @group = "")
         {
+            throw new ApplicationException("this contoller index should not be used");
             if (pageId.HasValue) { pageId = pageId.Value + 1; }  //TODO: Check that it's possible to have a null pageId parameter. If not, then we can use a notmal int.                                     
             else pageId = 1;
 
@@ -98,7 +99,7 @@ namespace BAE.Mercury.Client.Controllers
 
             vmMessageList messageListViewModel = null;
 
-            return View("OskyMessageList"); //we redirect Index to MessageList
+            return View("OskyMessageFolder"); //we redirect Index to MessageList
 
             if (Request != null && Request.IsAjaxRequest())
             {
@@ -472,7 +473,7 @@ namespace BAE.Mercury.Client.Controllers
             }
         }
         [HttpPost]
-        public JsonResult MessageFolder(string fid, int i, int c,  string tl, string tc, int o)
+        public JsonResult MessageFolder(string fid, int i, int c, string tl, string tc, string sort_by_dtg, string sort, string keyword_search)
         {
             _logger.Info("Message controller fired");
 
@@ -495,7 +496,7 @@ namespace BAE.Mercury.Client.Controllers
             //get the message list
             MessageStore messageStore = new MessageStore();
             int f = 0;
-            List<Message> messages =  messageStore.GetMessages(username, fid, i, c, o);
+            List<Message> messages = messageStore.GetMessages(username, fid, i, c, sort_by_dtg, sort, keyword_search);
             OskyMessageList oskyMessageList = new OskyMessageList(messages, last, current);
             string html = RenderPartialViewToString("/Views/Message/_OskyMessageList.cshtml", oskyMessageList);
             int lastId = (messages.Count > 0) ? messages[messages.Count - 1].Id : i;
@@ -507,137 +508,7 @@ namespace BAE.Mercury.Client.Controllers
             OskyMessageListResult oskyMessageListResult = new OskyMessageListResult(html, lastId, lastTime);
             return Json(oskyMessageListResult);
         }
-        //[HttpPost]
-        //public ActionResult MessageList2(int s, int c, int f)
-        //{
-        //    //user identity
-        //    String Username = User.Identity.Name;
-        //    string test = RenderPartialViewToString("~/Views/Message/_test.cshtml");
-        //    return Content(test, "application/json");
-        //    //Note: MS provide JsonResult but do unwanted things such as escaping quotes or producing JSON format that is unsuitable...we do not need that
-        //    MessageStore messageStore = new MessageStore();
-        //    //messageStore.GetMessages();
-        //    string json = "[";
-        //    DateTime Jan1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        //    foreach (Message message in messageStore.GetMessages(s, c))
-        //    {
-        //        if (json.EndsWith("}"))
-        //            json += ",";
-        //        json += "{";
-        //        json += AddJsonMessageProperty("title", message.Subject);
-        //        json += "," + AddJsonMessageProperty("content", message.Content);
-        //        json += "," + AddJsonMessageProperty("from", message.OriginatingAddressee.Name);
-        //        long ticks = ToJavaScriptMilliseconds(DateTime.Now);
-        //        TimeSpan javaSpan = //message.ReceivedTime
-        //            DateTime.Now - Jan1970;
-        //        long newticks =  (long) javaSpan.TotalMilliseconds;
-        //        json += "," + AddJsonMessageProperty("received", ticks); //1356790971);
-        //        json += "," + AddJsonMessageProperty("dtg", "679107D DEC 2012");
-        //        //ToDo: attachments
-        //        json += "," + AddJsonMessageProperty("private", 0);
-        //        json += "," + AddJsonMessageProperty("read", 0);
-        //        json += "," + AddJsonMessageProperty("action", "action");
-        //        json += "," + AddJsonMessageProperty("precedence", "flash");
 
-        //        json += "}";
-        //    }
-        //    json += "]";
-
-        //    return Content(json, "application/json");
-        //}
-        //[HttpPost]
-        //public JsonResult MessageList1()
-        //{
-        //    //StreamReader sr = new StreamReader(@"D:\VS2010Projects\WebSites\BAE.Mercury\BAE.Mercury.Client\test\data.json");
-        //    StreamReader sr = new StreamReader(@"D:\VS2010Projects\WebSites\BAE.Mercury\BAE.Mercury.Client\test\data1.json");
-
-        //    //D:\trash\jsoncheck
-        //    string jsonOriginal = sr.ReadToEnd();
-        //    sr.Close();
-        //    JsonResult jsonResult = new JsonResult();
-        //    jsonResult.Data = jsonOriginal;
-        //    Response.Write("aaaaa");
-        //    return jsonResult; // Json(jsonOriginal);//, "application/json", System.Text.Encoding.UTF8); // Json(messageStore.GetMessages());
-
-        //    //we could use native MS Json functions but we want complete control and processing on the server
-        //    //    JsonResult jsonResult = new JsonResult();
-        //    //    string json = "[";
-        //    //    MessageStore messageStore = new MessageStore();
-        //    //    //messageStore.GetMessages();
-        //    //    foreach (Message message in messageStore.GetMessages())
-        //    //    {
-        //    //        if (json.EndsWith("}"))
-        //    //            json += ",";
-        //    //        json += "{";
-        //    //        //private string _ActionAddressees;
-        //    ////private string[] _Attachments;
-        //    ////private string _ClassificationName;
-        //    ////private string _content;
-        //    ////private DateTime _ExpiryTime;
-        //    ////private int _Id;
-        //    ////private OriginatingAddresseeClass _OriginatingAddressee;
-        //    ////private DateTime _ReceivedTime;
-        //    ////private string _Subject;       
-        //    ////private PrecedenceClass _Precedence;
-        //    //        //string format = "{'ActionAddressees' : '{0}' }";
-        //    //        json += AddJsonMessageProperty("title", message.Subject);
-        //    //        json += "," + AddJsonMessageProperty("content", message.Content);
-        //    //        json += "," + AddJsonMessageProperty("from", message.OriginatingAddressee.Name);
-        //    //        json += "," + AddJsonMessageProperty("received", message.ReceivedTime.Ticks);
-        //    //        json += "," + AddJsonMessageProperty("dtg", "679107D DEC 2012");
-        //    //        //ToDo: attachments
-        //    //        json += "," + AddJsonMessageProperty("private", 0);
-        //    //        json += "," + AddJsonMessageProperty("read", 0);
-        //    //        json += "," + AddJsonMessageProperty("action", "action");
-        //    //        json += "," + AddJsonMessageProperty("precedence", "flash");
-
-        //    //        json += "}";
-
-
-
-
-
-        //    //        //json += String.Format("{{\"title\" : \"{0}\"}}", EscapeJson(message.Content));
-        //    //        //json += String.Format("{\"content\" : \"{0}\"}", EscapeJson(message.Content));
-        //    //        //json += String.Format("{\"from\" : \"{0}\"}", EscapeJson(message.OriginatingAddressee.Name));
-        //    //        //json += String.Format("{\"received\" : \"{0}\"}", message.ReceivedTime.Ticks);
-        //    //        //json += String.Format("{\"dtg\" : \"{0}\"}", "679107D DEC 2012");
-        //    //        ////ToDo: attachments
-        //    //        ////private
-        //    //        //json += String.Format("{\"private\" : \"{0}\"}", 0);
-        //    //        //json += String.Format("{\"read\" : \"{0}\"}", 0);
-        //    //        //json += String.Format("{\"action\" : \"{0}\"}", "action");
-        //    //        //json += String.Format("{\"precedence\" : \"{0}\"}", "flash");
-        //    //        ////json += String.Format("{\"ActionAddressees\" : \"{0}\"}", EscapeJson(message.ActionAddressees));
-        //    //        ////json += String.Format("{\"Classification\" : \"{0}\"}", EscapeJson(message.ClassificationName));
-        //    //        ////json += String.Format("{\"ExpiryTime\" : \"{0}\"}", message.ExpiryTime.Ticks);
-
-        //    //    }
-        //    //    json += "]";
-
-        //    //    jsonResult.Data = json;
-        //    //    StreamWriter sw = new StreamWriter(@"D:\trash\jsoncheck.txt");
-        //    //    sw.Write(json);
-        //    //    sw.Close();
-        //    //    return jsonResult; // Json(messageStore.GetMessages());
-
-        //}
-
-        //private string AddJsonMessageProperty(string name, object value)
-        //{
-        //    Type type = value.GetType();
-        //    if (type == typeof(string))
-        //        return String.Format("\"{0}\" : \"{1}\"", name, ((string)value).Replace("\"", "\\\"").Replace(@"\", "\\"));
-        //    else if (type == typeof(int) || type == typeof(long))
-        //        return String.Format("\"{0}\" : {1}", name, value);
-        //    else
-        //        throw new ApplicationException("undefined type for JSON conversion");
-        //}
-
-        //private string EscapeJson(string s)
-        //{
-        //    return s.Replace("\"", "\\\"");
-        //}
     }
 }
 

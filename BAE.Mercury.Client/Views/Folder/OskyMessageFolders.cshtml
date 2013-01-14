@@ -1,5 +1,4 @@
 ﻿@using BAE.Mercury.Client.Models;
-@model  BAE.Mercury.Client.Models.OskyMessageFolders
 @section Scripts
 {
 <script type="text/javascript">
@@ -18,7 +17,7 @@
     <script type="text/javascript" src="~/js/email_generator.js"></script>
 
 }
-
+@model  BAE.Mercury.Client.Models.OskyMessageFolders
 
 
 @section LeftButtons
@@ -137,7 +136,7 @@
 			<div class="col-middle" id="email-list-wrap">
 				<div id="email-search">
 					<form action="#" id="search" method="post">
-						<input type="text" value="Search Inbox" id="search-inbox" /><a class="remove" href="#"></a><span class="search-right"></span>						
+						<input type="text" value="" placeholder="Search Inbox" id="search-inbox" /><a class="remove" href="#"></a><span class="search-right"></span>						
 						<a href="#" id="advance-search-button"><img src="~/images/icon-advance_search.png" width="21" height="21" alt="Show Advance Search" /></a>
 					<br class="clear" />
 					<div id="advance-search">
@@ -192,9 +191,9 @@
 					</form>
 				</div>
 				<div id="search-results">
-						<div class="group">
+						<div class="group keyword">
 							<ul>
-								<li><a href="#">Message contains: test</a></li>
+								<li><a href="#"></a></li>
 							</ul>
 						</div>
 						<div class="group">
@@ -220,18 +219,18 @@
 					<div id="sort-col-1" class="col"><a href="#" class="col-arrow">Sort by DTG</a>
 					<div class="email-sort-options">
 						<ul>
-							<li><a href="#">Sort by Unread</a></li>
-							<li><a href="#">Sort by Date</a></li>
-							<li><a href="#">Sort by Attachment</a></li>
-							<li class="selected"><a href="#">Sort by DTG</a></li>						
+							<li data="unread"><a href="#">Sort by Unread</a></li>
+							<li data="date"><a href="#">Sort by Date</a></li>
+							<li data="attachment"><a href="#">Sort by Attachment</a></li>
+							<li data="dtg"><a href="#">Sort by DTG</a></li>						
 						</ul>					
 					</div>
 					</div>
 					<div id="sort-col-2" class="col last"><a href="#" class="col-arrow">Newest on Top</a>
 					<div class="email-sort-options">
 						<ul>
-							<li class="selected"><a href="#">Newest on Top</a></li>
-							<li><a href="#">Oldest on Top</a></li>						
+							<li data="desc"><a href="#">Newest on Top</a></li>
+							<li data="asc"><a href="#">Oldest on Top</a></li>						
 						</ul>					
 					</div>
 					</div>

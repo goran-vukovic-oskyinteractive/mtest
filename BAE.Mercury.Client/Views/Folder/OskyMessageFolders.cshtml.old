@@ -1,4 +1,5 @@
-﻿@using BAE.Mercury.Client.Models
+﻿@using BAE.Mercury.Client.Models;
+@model  BAE.Mercury.Client.Models.OskyMessageFolders
 @section Scripts
 {
 <script type="text/javascript">
@@ -14,15 +15,14 @@
     max_receipient['hide'] = "HIDE";
 </script>
     @MessageHelpers.Scripts()
-}
-@model  OskyMessageFolders
+    <script type="text/javascript" src="~/js/email_generator.js"></script>
 
-@section Buttons
+}
+
+
+
+@section LeftButtons
 {
-	<div id="buttons">
-		<div class="col-wrap">
-			<div class="col-left">&nbsp;</div>
-			<div class="col-middle" id="buttons-right">
 				<ul class="buttons">
 					<li id="btn-new"><a href="#">New</a><span>New</span></li>
 					<li id="btn-delete"><a href="#">Discard</a><span>Discard</span></li>
@@ -48,18 +48,17 @@
 							<span><a href="#">Forward to all</a></span>						
 						</div>
 					</li>
-					
-				</ul>
-			</div>
-			<div class="col-right">
-				<ul class="buttons">
-					<li id="btn-address"><a href="#">Address Book</a><span>Address Book</span></li>
-				</ul>
-			</div>
-		</div>
-	</div>
+                </ul>
 
 }
+@section RightButtons
+{
+				<ul class="buttons">
+					<li id="btn-address"><a href="#">Address Book</a><span>Address Book</span></li>
+                </ul>
+
+}
+
 
 @section TopLeftMenu
 {
@@ -67,64 +66,68 @@
 				<h2>Mailboxes</h2>
 				<ul id="mailbox-list">
 					<li id="inbox">
-						<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Inbox</strong> </a></div>
+						<div><a href="#"><span class="counter">@Model.Sum(Model.inbox)</span><span class="icon"></span><strong>Inbox</strong> </a></div>
 						<ul>
-                        @for (int i = 0; i < 5; i++)
+                        @foreach (MailBox mailBox in Model.inbox)
                         {
-                            <li>aaaaaa</li>
-							<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
-							<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
-							<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+							<li class="mbx" fid="@(mailBox.Id)"><a href="#"><span class="counter">@mailBox.Count</span>@mailBox.Account</a></li>
                         }
 						</ul>
 					</li>
 					<li id="draft">
-						<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Draft</strong> </a></div>
+						<div><a href="#"><span class="counter">@Model.Sum(Model.draft)</span><span class="icon"></span><strong>Draft</strong> </a></div>
 						<ul>
-							<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
-							<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
-							<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+                        @foreach (MailBox mailBox in Model.draft)
+                        {
+							<li class="mbx" fid="@(mailBox.Id)"><a href="#"><span class="counter">@mailBox.Count</span>@mailBox.Account</a></li>
+                        }
 						</ul>
 					</li>
 					<li id="sent">
-						<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Sent</strong> </a></div>
+						<div><a href="#"><span class="counter">@Model.Sum(Model.sent)</span><span class="icon"></span><strong>Sent</strong> </a></div>
 						<ul>
-							<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
-							<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
-							<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+                        @foreach (MailBox mailBox in Model.sent)
+                        {
+							<li class="mbx" fid="@(mailBox.Id)"><a href="#"><span class="counter">@mailBox.Count</span>@mailBox.Account</a></li>
+                        }
 						</ul>
 					</li>
-					<li id="trash">
-						<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Discard</strong> </a></div>
+					<li id="discard">
+						<div><a href="#"><span class="counter">@Model.Sum(Model.discard)</span><span class="icon"></span><strong>Discard</strong> </a></div>
 						<ul>
-							<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
-							<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
-							<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+                        @foreach (MailBox mailBox in Model.discard)
+                        {
+							<li class="mbx" fid="@(mailBox.Id)"><a href="#"><span class="counter">@mailBox.Count</span>@mailBox.Account</a></li>
+                        }
 						</ul>
 					</li>
 					<li id="templates">
-						<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Templates</strong> </a></div>
+						<div><a href="#"><span class="counter">@Model.Sum(Model.templates)</span><span class="icon"></span><strong>Templates</strong> </a></div>
 						<ul>
-							<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
-							<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
-							<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+                        @foreach (MailBox mailBox in Model.templates)
+                        {
+							<li class="mbx" fid="@(mailBox.Id)"><a href="#"><span class="counter">@mailBox.Count</span>@mailBox.Account</a></li>
+                        }
 						</ul>
 					</li>
-					<li id="objectives">
-						<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Objective</strong> </a></div>
+					<li id="objective">
+						<div><a href="#"><span class="counter">@Model.Sum(Model.objective)</span><span class="icon"></span><strong>Objective</strong> </a></div>
 						<ul>
-							<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
-							<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
-							<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+                        @foreach (MailBox mailBox in Model.objective)
+                        {
+							<li class="mbx" fid="@(mailBox.Id)"><a href="#"><span class="counter">@mailBox.Count</span>@mailBox.Account</a></li>
+                        }
 						</ul>
 					</li>
+
+
 				</ul>
 				<h2>Folders</h2>
 				<ul id="folder-list">
-					<li><a href="#"><span class="icon"></span><strong>General Mail</strong></a></li>
-					<li><a href="#"><span class="icon"></span><strong>Project Lion</strong></a></li>
-					<li><a href="#"><span class="icon"></span><strong>Project XD</strong></a></li>
-					<li><a href="#"><span class="icon"></span><strong>Project 14W</strong></a></li>
+                    @foreach (MailBox mailBox in Model.folder)
+                    {
+    					<li class="mbx" fid="@(mailBox.Id)"><a href="#"><span class="icon"></span><strong>@mailBox.Name</strong></a></li>
+                    }
 				</ul>
 				</div>
                 <div>
@@ -133,7 +136,7 @@
 }
 			<div class="col-middle" id="email-list-wrap">
 				<div id="email-search">
-					<form action="#" id="search" method="post">
+					<div id="search"> <!--see if this div can be removed -->
 						<input type="text" value="Search Inbox" id="search-inbox" /><a class="remove" href="#"></a><span class="search-right"></span>						
 						<a href="#" id="advance-search-button"><img src="~/images/icon-advance_search.png" width="21" height="21" alt="Show Advance Search" /></a>
 					<br class="clear" />
@@ -186,7 +189,7 @@
 							</span>				
 						</p>					
 					</div>
-					</form>
+					</div>
 				</div>
 				<div id="search-results">
 						<div class="group">
@@ -217,18 +220,16 @@
 					<div id="sort-col-1" class="col"><a href="#" class="col-arrow">Sort by DTG</a>
 					<div class="email-sort-options">
 						<ul>
-							<li><a href="#">Sort by Unread</a></li>
-							<li><a href="#">Sort by Date</a></li>
-							<li><a href="#">Sort by Attachment</a></li>
-							<li class="selected"><a href="#">Sort by DTG</a></li>						
+							<li data="attachment"><a href="#">Sort by Attachment</a></li>
+							<li data="dtg"><a href="#">Sort by DTG</a></li>						
 						</ul>					
 					</div>
 					</div>
 					<div id="sort-col-2" class="col last"><a href="#" class="col-arrow">Newest on Top</a>
 					<div class="email-sort-options">
 						<ul>
-							<li class="selected"><a href="#">Newest on Top</a></li>
-							<li><a href="#">Oldest on Top</a></li>						
+							<li data="asc"><a href="#">Newest on Top</a></li>
+							<li data="desc"><a href="#">Oldest on Top</a></li>						
 						</ul>					
 					</div>
 					</div>

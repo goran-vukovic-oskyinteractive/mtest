@@ -105,6 +105,7 @@ namespace BAE.Mercury.Client
                     MailBox mailBox = new MailBox((int)reader["id"], (string)reader["account"], (string)reader["name"], (int)reader["items"]);
                     oskyMessageFolders.folder.Add(mailBox);
                 }
+                reader.Close();
             }
             catch (SqlException sqlEx)
             {
@@ -117,16 +118,49 @@ namespace BAE.Mercury.Client
             }
             return oskyMessageFolders;
         }
-        public List<MailBox> GetFolders()
+        //public List<MailBox> GetFolders()
+        //{
+        //    return null;
+        //}
+        public OskyAddressBookAppointments GetAddressBookAppointments(string user, int sessionId)
         {
-            return null;
+            OskyAddressBookAppointments oskyAddressBookAppointments = new OskyAddressBookAppointments();
+            string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand com = new SqlCommand(String.Format("get_appointments '{0}', {1}", user, sessionId));
+            com.CommandType = System.Data.CommandType.Text;
+            com.Connection = con;
+            try
+            {
+                con.Open();
+                SqlDataReader reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    Appointment appointment = new Appointment((int)reader["Id"], (string)reader["annotation"], (int)reader["branch"], (string)reader["data"]);
+                    oskyAddressBookAppointments.appointments.Add(appointment);
+                }
+                reader.Close();
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx.Message);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+            return oskyAddressBookAppointments;
         }
-        public List<Message> GetMessages(string user, string folders, int lastMessageId, int count, int order)
+
+        public List<Message> GetMessages(string user, string folders, int lastMessageId, int count, string sort_by_dtg, string sort, string keyword_search)
         {
             List<Message> messages = new List<Message>();
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
             SqlConnection con = new SqlConnection(connectionString);
-            SqlCommand com = new SqlCommand(String.Format("get_messages1 '{0}', {1}, {2}, {3}, {4}", user, folders, lastMessageId, count, order));
+            bool desc = (sort=="desc");
+            SqlCommand com = new SqlCommand(String.Format("get_messages1 '{0}', {1}, {2}, {3}, '{4}', {5}, '{6}'",
+                user, folders, lastMessageId, count, sort_by_dtg, desc, keyword_search));
             com.CommandType = System.Data.CommandType.Text;
             com.Connection = con;
             try
@@ -141,7 +175,7 @@ namespace BAE.Mercury.Client
                     Message message = new Message((string)reader["ActionAddressees"], null, (int)reader["Classification"],
                         (string)reader["content"],
                         (DateTime)reader["ExpiryTime"], (int)reader["Id"], 1, (DateTime)reader["ReceivedTime"],
-                        (int) reader["Precedence"], (string)reader["Subject"]);
+                        (int)reader["Precedence"], (string)reader["Subject"]);
                     messages.Add(message);
                 }
                 reader.Close();

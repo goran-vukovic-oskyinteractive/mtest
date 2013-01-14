@@ -45,7 +45,16 @@ $(document).ready(function () {
         }
 
         function request_emails(max_dt, folder_id) {
-            //alert(folder_id);
+            
+            if( $('#search-inbox').length > 0 )
+            {
+                if( $('#search-inbox').val() != defaultSearchValue )
+                {
+                    keyword_search = $('#search-inbox').val();                    
+                }
+            }
+            
+
             var theCompleteList = '';
 
             var temp_time = Math.round((new Date()).getTime() / 1000);
@@ -74,7 +83,9 @@ $(document).ready(function () {
                     c: count,
                     tl: lastTime, //last record time
                     tc: ts,
-                    o: 1
+                    sort_by_dtg: el_sort_by_dtg,
+                    sort: el_sort,
+                    keyword_search: keyword_search
                 },
                 //url: document.location.protocol + "//" + window.location.hostname + "/sample/emails.php",
                 //url: "/test/data1.json",
@@ -237,8 +248,19 @@ $(document).ready(function () {
     if ($('.max_list_applied').length > 0) {
         hide_max_list_applied();
     }
-    $('.mbx').click(
+
+    /*
+    $('.email-sort-options').click(
 		function () {
+
+		    alert("OK");
+		    //request_emails(mdt, fid);
+		}
+	);
+    */
+
+    $('.mbx').click(function () 
+    {
 		    //make an ajax call to refresh the folder
 		    lastId = -1;
 		    lastTime = '';
@@ -249,8 +271,7 @@ $(document).ready(function () {
 
 		    //alert(fid);
 		    request_emails(mdt, fid);
-		}
-	);
+	});
 
     function Clean() {
         $('#email-list').empty();
