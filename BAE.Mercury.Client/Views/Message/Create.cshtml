@@ -1,0 +1,376 @@
+﻿@*================================================================================
+           %name: Create.cshtml %
+       %version: 29 %
+       Copyright: Copyright 2012 BAE Systems Australia
+                  All rights reserved.
+================================================================================*@
+@using System.Globalization
+@using System.Net.Mime
+@using BAE.Mercury.Client.Models 
+@model BAE.Mercury.Client.Models.vmNewMessage
+
+@{
+    //Layout = "../Shared/_PopupLayout.cshtml";
+    ViewBag.Title = "Create";
+}
+
+@section CSS
+{
+    <link href="@Url.Content("~/Content/themes/base/jquery-ui.css")" rel="stylesheet" type="text/css" />
+     
+    <link href="@Url.Content("~/Content/MessageCreate.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/SicBook.css")" rel="stylesheet" type="text/css" />
+    
+}
+
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>  
+
+    <script src="@Url.Content("~/Scripts/tiny_mce/tiny_mce.js")" type="text/javascript"></script>    
+
+    <script src="@Url.Content("~/Scripts/tinyMCEconfig.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.watermark.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/message.create.js")" type="text/javascript"></script>  
+     <script src="@Url.Content("~/Scripts/jquery.input.js")" type="text/javascript"></script> 
+
+    <script src="@Url.Content("~/Scripts/jquery.simpletip-1.3.1.pack.js")" type="text/javascript"></script> 
+     <script src="@Url.Content("~/Scripts/jquery-ui-timepicker-addon.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Scripts/jquery.selectbox-0.5.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Scripts/respond.min.js")" type="text/javascript"></script> 
+
+    <script src="@Url.Content("~/Scripts/sicBook.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Scripts/message.dtg.js")" type="text/javascript"></script>  
+   
+    
+}
+
+@section MenuButtons
+{
+    @Html.Partial("~/Views/Message/_NewMessageMenu.cshtml")
+}
+
+ 
+
+@ViewBag.SavedMessage
+ 
+@*something seems screwy with our routing. The actionlink builds the wrong url *@
+@*@Html.ActionLink("View Sic Book", "Index", "Sic", new { Target="_blank" }) 
+<a href="../Sic" target="_blank">View Sic Book</a>*@
+
+
+@using (Html.BeginForm("Create", "Message", FormMethod.Post, new { id = "NewMessageForm" }))
+{
+   // DateTimeFormatInfo auDtfi = new CultureInfo("en-AU", false).DateTimeFormat;
+    <div class="validationSummary2"  > </div>
+    <div id="editor">
+        @Html.ValidationSummary(false, "", new { @class = "validationsummary" })
+         
+       <div class="section">
+		    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+			    <tr>
+				    <td width="50%">
+					    <div class="col hide-control">
+						    <label for="classification" class="expand">Classification</label>
+						  <span class="arrow"><a href="#">Expand</a></span>
+				            @{
+                                var items = new List<SelectListItem>{
+                                    new SelectListItem {Value = "", Text = "", Selected = true},
+                                    new SelectListItem {Value = "Unclassified", Text = "Unclassified"},
+                                    new SelectListItem {Value = "Protected", Text = "Protected"},
+                                    new SelectListItem {Value = "Confidential", Text = "Confidential"},
+                                    new SelectListItem {Value = "Secret", Text = "Secret"}
+                                };
+                            }
+                            @Html.DropDownListFor(model => model.ClassificationName, items, new { id = "secclass" })	
+					    </div>
+				    </td>
+				    <td width="50%">
+					    <div class="col">
+						    <label for="dtg">DTG</label>
+						    @*<input type="text" id="dtg" class="txt has-icon" />*@                          
+                             @Content.DTG("dtg_dtg", Model.Dtg,  Url, "Message DTG")
+                            @* hidden bound field for DTG  *@
+                            @Html.TextBoxFor(model => model.Dtg, new { id = "dtg", @class = "hidden", tabindex = "0" })
+					    </div>
+				    </td>
+			    </tr>
+			    <tr class="hide">
+				    <td>
+					    <div class="col">
+						    <label for="caveats">Caveats &amp; DLMs</label>
+						    <input type="text" id="caveats" class="txt has-icon" />
+						    <span class="icon"><a href="#"><img src="~/images/icon-new_message_dlm.png" width="20" height="19" alt="DLMs" /></a></span>
+					    </div>
+				    </td>
+				    <td>
+					    <div class="col">
+						    <label for="privacy-marking">Privacy Markings</label>
+						    <input type="text" id="privacy-marking" class="txt" />
+					    </div>
+				    </td>
+			    </tr>							
+			    <tr>
+				    <td>
+					    <div class="col">
+						    <label for="from">From</label>
+						      @{
+                                var items2 = new List<SelectListItem>{
+                                    new SelectListItem {Value = "Appointment1", Text = "Appointment 1", Selected = true},
+                                    new SelectListItem {Value = "Appointment2", Text = "Appointment 2"}
+                                };
+                            }
+                            @Html.DropDownListFor(model => model.Sender, items2, new { id = "from",  @class = "txt" })	
+					    </div>
+				    </td>
+				    <td>
+					    <div class="col">
+						    <label for="originator-ref">Originator Ref</label>
+						    @Html.TextBoxFor(f => f.OriginatorRef, new { id = "originator-ref", @class = "txt watermark", tabindex = "0", title = "ENTER TEXT..." })	
+					    </div>
+				    </td>
+			    </tr>
+			    <tr>
+				    <td colspan="2">
+					    <div class="col">
+						    <label for="action">Action</label>
+						    @*container for Action *@
+                        
+                                <div tabindex='0' class="addresscontainer wide txt" id="actioncont">
+                                    <div tabindex='0' class="action">
+                                        @{                         
+                                            foreach( string address  in Model.ActionAddressees)
+                                            {
+                                                <DIV class="a" tabIndex=0><DIV class="icon"></DIV><SPAN class="addresstext">@address</SPAN></DIV>
+                                            }
+                                        }  
+                                        <input tabindex='0'  type="text"  title="type an address..." class="addressInput watermark" data-otf-autocomplete="@Url.Action("AddressSearch", "Address")" /><br/>
+                                    </div>                
+                                </div>
+                             
+                            <span class="icon"><a href="#"><img src="~/images/icon-new_message_contact.png" width="20" height="19" alt="Action" /></a></span> 
+                             @Html.ListBox("ActionAddressees", new SelectList(@Model.ActionAddressees), new { id = "ActionAddressees", @class = "hidden" })
+					    </div>
+				    </td>
+			    </tr>
+			    <tr>
+				    <td colspan="2">
+					    <div class="col">
+						    <label for="info">Info</label>
+						    @*container for Info *@
+                            <div tabindex='0' class="addresscontainer wide txt" id="infocont">
+                                <div tabindex='0' class="info">
+                                    @{ 
+                                        foreach( string address  in Model.InfoAddressees)
+                                        {
+                                            <DIV class="a" tabIndex=0><DIV class="icon"></DIV><SPAN class="addresstext">@address</SPAN></DIV>
+                                        } 
+                                      }     
+                                    <input tabindex='0'  type="text"  title="type an address..." class="addressInput watermark" data-otf-autocomplete="@Url.Action("AddressSearch", "Address")" /><br/>
+                                </div>
+                            </div>
+                            <span class="icon"><a href="#"><img src="~/images/icon-new_message_contact.png" width="20" height="19" alt="Info" /></a></span>	
+                             @Html.ListBox("InfoAddressees", new SelectList(@Model.InfoAddressees), new { id = "InfoAddressees", @class = "hidden" })
+					    </div>
+				    </td>
+			    </tr>
+			    <tr>
+				    <td>
+					    <div class="col">
+						    <label for="actionprec">Action Precedence</label>
+						      @*---------------------action  precedence dropdown--------------------------*@
+                            @{
+                                var items3 = new List<SelectListItem>{
+                                new SelectListItem {Value = "", Text = "", Selected = true},
+                                new SelectListItem {Value = "ROUTINE", Text = "ROUTINE"},
+                                new SelectListItem {Value = "PRIORITY", Text = "PRIORITY"},
+                                new SelectListItem {Value = "IMMEDIATE", Text = "IMMEDIATE"},
+                                new SelectListItem {Value = "FLASH", Text = "FLASH"}
+                                };
+                            }
+                            @if (Model.ActionAddressees.Count > 0)
+                            {
+                                @Html.DropDownListFor(model => model.ActionPrecedence, items3, new { id = "actionprec" })
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.ActionPrecedence, items3, new { id = "actionprec", disabled = "true" })
+                            }
+					    </div>
+				    </td>
+				    <td>
+					    <div class="col">
+						    <label for="infoprec">Info Precedence</label>
+						      @*---------------------info  precedence dropdown---------------------------*@
+                            @{
+                                var items4 = new List<SelectListItem>{
+                                new SelectListItem {Value = "", Text = "", Selected = true},
+                                new SelectListItem {Value = "ROUTINE", Text = "ROUTINE"},
+                                new SelectListItem {Value = "PRIORITY", Text = "PRIORITY"},
+                                new SelectListItem {Value = "IMMEDIATE", Text = "IMMEDIATE"},
+                                new SelectListItem {Value = "FLASH", Text = "FLASH"}
+                                };
+                            }
+                             @if (Model.InfoAddressees.Count > 0)
+                             {
+                                @Html.DropDownListFor(model => model.InfoPrecedence, items4, new { id = "infoprec" })
+                             }
+                             else
+                             {
+                                @Html.DropDownListFor(model => model.InfoPrecedence, items4, new { id = "infoprec", disabled = "true" })
+                             }
+					    </div>
+				    </td>
+			    </tr>
+			    <tr>
+				    <td>
+					    <div class="col">
+						    <label for="subject">Subject</label>
+						    	@Html.TextBoxFor(model => model.Subject, new { id = "subject", @class = "txt watermark", tabindex = "0", title = " ENTER TEXT..." }) 	
+					    </div>
+				    </td>
+				    <td>
+					    <div class="col">
+						    <label for="sic">SICs</label>	
+                            <div class="siccloser" onclick="closeSics();"></div>					    
+						      @*container for Sics*@
+                            <div tabindex='0' class="siccontainer narrow txt" id="sic">
+                                <div tabindex='0' class="sic">
+                                    @{ 
+                                        foreach( string sic  in Model.Sics)
+                                        {
+                                            <DIV class="a" tabIndex=0><SPAN class="addresstext">@sic</SPAN></DIV>
+                                        } 
+                                    }     
+                                    <input tabindex='0'  type="text"  title="type a SIC..." class="sicInput watermark" data-otf-autocomplete="@Url.Action("SicSearch", "Sic")" /><br/>
+                                </div>
+                            </div>
+                            
+                            <span id="opensicbook" class="icon"><a href="#"><img src="~/images/icon-new_message_dlm.png" width="20" height="19" alt="SICs" /></a></span>	
+                             @Html.ListBox("Sics", new SelectList(@Model.Sics), new { id = "Sics", @class = "hidden" })  
+					    </div>
+				    </td>
+			    </tr>
+		    </table>
+	    </div>
+	    <div class="section advance">
+		    <table width="100%" border="0" cellspacing="0" cellpadding="0">							
+			    <tr>
+				    <td width="50%">
+					    <div class="col">
+						    <label for="messTypeInput">Message Type</label>
+						    @*---------------------message type dropdown---------------------------*@
+                                @{
+                                 var items5 = new List<SelectListItem>{
+                                        new SelectListItem {Value = "", Text = "", Selected = true},
+                                        new SelectListItem {Value = "type1", Text = "type 1"},
+                                        new SelectListItem {Value = "type2", Text = "type 2"},
+                                        new SelectListItem {Value = "type3", Text = "type 3"},
+                                        new SelectListItem {Value = "type4", Text = "type 4"}
+                                    };
+                                }
+                                @Html.DropDownListFor(model => model.MessageType, items5, new { id = "messagetype" })
+           
+                               @* @Html.TextBoxFor(model => model.MessageTypeText, new { id = "messTypeInput", @class = "txt watermark", tabindex = "0", title = "enter text..." })*@
+                
+					    </div>
+				    </td>
+				    <td width="50%">
+					    <div class="col">
+						    <label for="messageInstruct">Message Instructions</label>
+						    <div class="input text">
+							     @Html.TextBoxFor(model => model.MessageInstructions, new { id = "messageInstruct", @class = "txt has-icon", tabindex = "0" }) 	
+                                <span id="showinstructions" class="icon"><a href="#"><img src="~/images/icon-new_message_email.png" width="20" height="19" alt="Instructions" /></a></span>	
+						    </div>
+					    </div>
+				    </td>
+			    </tr>
+			    <tr>
+				    <td>
+					    <div class="col">
+						    <label for="expirytime">Expiry Time</label>
+						    <div class="input date">
+							       @Content.DTG("expirytime_dtg", Model.Expiry, Url,"Expiry Time")
+                                    @Html.TextBoxFor(model => model.Expiry, new { id = "expirytime", @class = "hidden", tabindex = "0" })
+						    </div>
+					    </div>
+				    </td>
+				    <td>
+					    <div class="col">
+						    <label for="obsoletes">Obsoletes</label>
+						    <div class="input text">
+							    <input type="text" id="obsoletes" class="txt has-icon"/>
+							    <span class="icon"><a href="#"><img src="~/images/icon-new_message_email.png" width="20" height="19" alt="Obsoletes" /></a></span>
+						    </div>
+					    </div>
+				    </td>
+			    </tr>
+			    <tr>
+				    <td>
+					    <div class="col left">
+						    <label for="replybytime_dtg">Reply By Time</label>
+						    <div class="input date">
+							       @Content.DTG("replybytime_dtg", Model.ReplyBy, Url, "ReplyBy Time")
+                                        @Html.TextBoxFor(model => model.ReplyBy, new { id = "replybytime", @class = "hidden", tabindex = "0" })
+						    </div>
+					    </div>
+				    </td>
+				    <td>
+					    <div class="col right">
+						    <label for="related">Related</label>
+						    <div class="input text">
+							    <input type="text" id="related" class="txt has-icon"/>
+							    <span class="icon"><a href="#"><img src="~/images/icon-new_message_email.png" width="20" height="19" alt="Related" /></a></span>
+						    </div>
+					    </div>
+				    </td>
+			    </tr>
+		    </table>
+	    </div>
+    <!-- EDITOR -->
+    <div id="editor-wrap">
+        <div id="editor2">					
+        </div>
+        <div id="advance-button">
+	        <a href="#">Show Advanced Options</a>
+        </div>
+    </div> 
+			
+  
+    @*container for richtext*@  
+        
+        <div id="editdiv4">
+            <textarea class="richtext" id="richtext" name="richText" cols="50" rows="15"> @Model.Body</textarea>
+            @Html.TextAreaFor(model => model.Body, new {@class="hidden", id="body", name="body", cols="50", rows="15" })
+        </div> 
+      
+    <div   tabindex='0'  id="instructionsContainer" >                 
+        @{
+            var boguslist1 = new List<SelectListItem>{                       
+                new SelectListItem {Value = "1", Text = "Correction to follow."},
+                new SelectListItem {Value = "2", Text = "Intended recipients only"},
+                new SelectListItem {Value = "2", Text = "'twas brillig and the slithy tove"},
+                new SelectListItem {Value = "4", Text = "did gyre and gimbal in the wabe"}
+            };
+        }
+        @Html.ListBox("instructionsList", boguslist1, new { id = "instructionsList", @class = "instructionslist", tabindex = "0" });          
+    </div>
+    </div>  @* end of editor*@ 
+}
+		
+<script type="text/javascript">
+    $("form").submit(function (e) {
+        doPagePreparation();
+        var customIsValid = doPageValidation();
+        if ( !customIsValid )
+        {
+            return false;
+        }
+        var standardIsValid = $( this ).validate().form();        
+        if ( !standardIsValid  )
+        {
+            return false;
+        }
+    });
+</script>

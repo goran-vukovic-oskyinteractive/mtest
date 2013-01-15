@@ -1,11 +1,11 @@
 ﻿
 /*******************************************************************************
         %name: Site.css %
-        %version: 13 %
+        %version: 18 %
 
-        %date_created: Mon Nov 26 14:42:21 2012 %
+        %date_created: Mon Dec 17 10:58:24 2012 %
 
-        %derived_by: LLawley %
+        %derived_by: RLim %
 
         Copyright: Copyright 2012 BAE Systems Australia
         All rights reserved.
@@ -28,21 +28,16 @@ strong { font-weight: bold; }
 em { font-style: italic; }
 small { font-size: 11px; }
 h1, h2, h3, h4, h5, h6 {}
-ul li { list-style: disc outside none; padding: 0 0 3px 10px; }
+ul li { list-style: none; padding: 0 0 3px 10px; }
 ol li { list-style: decimal outside none; padding: 0 0 3px 10px; }
-@font-face { font-family: "Conv_HelveticaNeueLTStd-Md"; font-style: normal; font-weight: normal; src: local("☺"), url("/fonts/HelveticaNeueLTStd-Md.ttf") format("truetype"), url("/fonts/HelveticaNeueLTStd-Md.svg") format("svg");}
-@font-face { font-family: "Conv_HelveticaNeueLTStd-Roman"; font-style: normal; font-weight: normal; src: local("☺"), url("/fonts/HelveticaNeueLTStd-Roman.ttf") format("truetype"), url("/fonts/HelveticaNeueLTStd-Roman.svg") format("svg");}
+@font-face { font-family: "Conv_HelveticaNeueLTStd-Md"; font-style: normal; font-weight: normal; src: local("☺"), url("fonts/HelveticaNeueLTStd-Md.ttf") format("truetype"), url("fonts/HelveticaNeueLTStd-Md.svg") format("svg");}
+@font-face { font-family: "Conv_HelveticaNeueLTStd-Roman"; font-style: normal; font-weight: normal; src: local("☺"), url("fonts/HelveticaNeueLTStd-Roman.ttf") format("truetype"), url("fonts/HelveticaNeueLTStd-Roman.svg") format("svg");}
 
 #wrapper { min-width: 920px; width: auto !important; }
 .col-wrap {}
-.col-left { float: left; width: 180px; }
-.col-left-bottom {
-    position: fixed;
-    width: 180px;
-    bottom: 0;
-    float: left;
-}
-.col-middle { float: left; width: 360px; }
+.col-left { float: left; width: 220px; }
+.col-left-bottom { position: fixed; width: 220px; bottom: 0; float: left; }
+.col-middle { float: left; width: 385px; }
 .col-right { margin: 0 0 0 500px; }
 
 #header { background: url("../images/bg-header.png") repeat-x scroll left top #141516; height: 70px; overflow: hidden;}
@@ -56,7 +51,7 @@ ol li { list-style: decimal outside none; padding: 0 0 3px 10px; }
 #header #top-section ul li { display: inline; float: left;}
 #header #top-section ul li a { display: block; float: left; height: 30px; line-height: 30px; margin: 2px 0 0; text-align: center; }
 #header #top-section ul li a img { margin: 0 5px 1px 0; vertical-align: middle; }
-#header #top-section ul li a#admin { background: url("/images/bg-admin_menu.png") no-repeat scroll center top transparent; width: 94px; }
+#header #top-section ul li a#admin { background: url("../images/bg-admin_menu.png") no-repeat scroll center top transparent; width: 94px; }
 #header #top-section ul li a#admin img { width: 16px; height:16px; }
 #header #top-section ul li a#logout { background: url("../images/bg-logout_menu.png") no-repeat scroll center top transparent; width: 85px; }
 #header #top-section ul li a#logout img { width: 16px; height:16px; }
@@ -93,7 +88,7 @@ ol li { list-style: decimal outside none; padding: 0 0 3px 10px; }
 
 #mailbox #left-menu {margin:0; padding:0 0 20px 0;}
 #mailbox #left-menu li {margin:0; padding:0; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-size:13px; font-weight:normal; display:block;  }
-#mailbox #left-menu li a {display:block; border-top:1px solid #343434; padding:9px 0 9px 15px; color:#fff; overflow:hidden; background:#3b3d41l}
+#mailbox #left-menu li a {display:block; border-top:1px solid #343434; padding:9px 0 9px 15px; color:#fff; overflow:hidden; background:#3b3d41}
 #mailbox #left-menu li a:hover,
 #mailbox #left-menu li.current a {background:#343539; color:#8a8c97;}
 

@@ -1,0 +1,59 @@
+﻿/*******************************************************************************
+          %name: AuditTrail.css %
+       %version: 2 %
+ %date_created: %
+    %derived_by: ADuncan %
+      Copyright: Copyright 2012 BAE Systems Australia
+                 All rights reserved.
+********************************************************************************/
+
+#sidebarContainer { width: 20%; height: 768px; float: left; border: solid 1px grey;}
+#rightContentContainer { width: 75%; height: 768px;  float: left; border: solid 1px grey; padding-left: 10px;}
+
+ul#adminLinks li { list-style: none; }
+
+table { 
+    border-collapse: collapse;
+    background-color: white;
+    border-color: grey;
+    border: 1px solid grey;
+    width: 100%;
+    table-layout: fixed;
+}
+
+th.firstAuditCol {
+    width: 12%;
+    border-bottom: 1px solid grey;
+    padding: 5px;
+}
+
+th.auditCol {
+    width: 12%;
+    border-left: 1px solid grey;
+    border-bottom: 1px solid grey;
+    padding: 5px;
+}
+
+td.firstAuditCol {
+    width: 12%;
+    padding: 5px;
+}
+
+td.auditCol {
+    width: 12%;
+    border-left: 1px solid grey;
+    padding: 5px;
+}
+
+th.lastAuditCol {
+    width: 40%;
+    border-left: 1px solid;
+    border-bottom: 1px solid grey;
+    padding: 5px;
+}
+
+td.lastAuditCol {
+    width: 40%;
+    border-left: 1px solid grey;   
+    padding: 5px;
+}

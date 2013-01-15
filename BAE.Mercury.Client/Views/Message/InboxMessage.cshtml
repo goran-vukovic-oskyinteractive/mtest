@@ -1,0 +1,14 @@
+﻿@model BAE.Mercury.Client.Models.vmMessageListItem
+@{
+    var sclass = ViewBag.sClass;
+    <div tabindex="0" class="@sclass"   data-url='@Url.Action("Details", "Message", new {id = Model.MessageId})' data-grp="@(Model.GroupIndex)"  >
+        <div class="message-icon"> <span class="icon-status"></span> <span class="icon-attachment"></span> </div>
+        <div class="message-summary">
+            <h3><a href="#">@Model.Subject</a></h3>
+            <p class="sender">@Model.Sender</p>
+            <p class="DTG">@Model.SentDtg</p>
+            <span class="date">@Model.ReceivedTime</span>
+        </div>
+        <div class="message-precedence"> <span class="icon-precedence"></span> </div>
+    </div>
+}

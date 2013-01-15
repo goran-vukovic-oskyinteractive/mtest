@@ -1,8 +1,8 @@
 ﻿@*================================================================================
     %name: Index.cshtml %
-    %version: 7 %
-    %date_created: Wed Nov 28 16:07:53 2012 %
-    %derived_by: ADuncan %
+    %version: 15 %
+    %date_created: Fri Jan 11 16:57:51 2013 %
+    %derived_by: DSaustin %
       Copyright: Copyright 2012 BAE Systems Australia
                  All rights reserved.
 ================================================================================*@
@@ -11,4 +11,63 @@
     ViewBag.Title = "MWC Message Client";
 }
 
+@section CSS
+{
+  <link href="@Url.Content("~/Content/MessageMain.css")" rel="stylesheet" type="text/css" />
+  <link href="@Url.Content("~/Content/MessageFolders.css")" rel="stylesheet" type="text/css" />
+  <link href="@Url.Content("~/Content/MessageDetails.css")" rel="stylesheet" type="text/css" />
+  <link href="@Url.Content("~/Content/SearchBox.css")" rel="stylesheet" type="text/css" media="all" />
+  <link href="@Url.Content("~/Content/SortOptions.css")" rel="stylesheet" type="text/css" media="all" />
 
+}
+@section Scripts
+{ 
+  @Content.Script("jquery.nicescroll.js", Url)  
+  @Content.Script("jquery.scroll.events.js", Url)
+  @Content.Script("jquery-ui-timepicker-addon.js", Url)  
+  @Content.Script("message.list.js", Url)  
+  @Content.Script("messageDetails.js", Url)  
+  @Content.Script("countdown.js", Url)  
+  @Content.Script("stringUtility.js", Url)
+  @Content.Script("message.dtg.js", Url)
+  @Content.Script("message.sort.js", Url)
+  @Content.Script("searchbox.js", Url)
+}
+
+@section MenuButtons
+{
+    @Html.Partial("~/Views/Message/_MessageMenu.cshtml")
+}
+
+@section SideBar
+{
+    @Html.Action("MessageFolders", "Folder")  
+}
+
+<div class="col-middle" id="message-list-wrap">
+  <div id="message-search">
+    @Html.Partial("_SearchBox") @* Load the search textbox *@
+  </div>
+  <div id="search-results">
+    @Html.Partial("_SearchResults") @* Load the search results*@
+  </div>
+    <div id="message-sort" class="three-col">
+        <div id="sort-criteria" class="col">
+        <a href="#" class="col-arrow m1" id="criteria" tabindex="0">Sort by Time Received</a>
+        </div>
+        <div id="sort-direction" class="col last">
+        <a href="#" class="col-arrow m2" id="orders" tabindex="0">Newest on top</a>
+        </div>
+        <br class="clear" />
+    </div>
+  <div  tabindex='0'  id="listContainer" >                 
+    @Html.Partial("_ReloadMessageList")  @*call method on Home (this) controller *@
+  </div>
+</div>
+<div id="message-content" class="col-right">             
+    <div id="messageDetails"> 
+        @* Message details content is populated within this div via an ajax request.  *@
+    </div>
+</div>
+<br class="clear" />
+@Html.Partial("_SortOptions") @* Load the sort options*@

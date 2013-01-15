@@ -1,0 +1,34 @@
+﻿@*================================================================================
+          %name: vmSiteConfiguration.cshtml %
+       %version: 5 %
+      Copyright: Copyright 2012 BAE Systems Australia
+                 All rights reserved.
+================================================================================*@
+@using BAE.Mercury.Client
+@model BAE.Mercury.Client.Models.vmSiteConfiguration
+
+    <br /><br />
+    @Html.FieldLabelFor(model => model.IncomingReadReceipts)
+    @Html.EditorFor(model => model.IncomingReadReceipts)
+
+    <br /><br />
+    @Html.FieldLabelFor(model => model.OutgoingReadReceipts)
+    @Html.EditorFor(model => model.OutgoingReadReceipts)
+
+    <br /><br />
+    @Html.FieldLabelFor(model => model.SwitchAddress)
+    @Html.EditorFor(model => model.SwitchAddress)
+
+    <br /><br />
+    @Html.FieldLabelFor(model => model.ArchivingUrl)
+    @Html.EditorFor(model => model.ArchivingUrl)
+
+    <br /><br />
+    @Html.FieldLabelFor(model => model.ArchivingUsername)
+    @Html.EditorFor(model => model.ArchivingUsername)
+
+    <br /><br />
+    @Html.FieldLabelFor(model => model.ArchivingPassword)
+    @Html.EditorFor(model => model.ArchivingPassword)
+    <br /><br />
+

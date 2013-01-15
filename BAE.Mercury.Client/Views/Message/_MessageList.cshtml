@@ -1,17 +1,15 @@
-﻿@* =================================================
+﻿ @* =================================================
         %name: _MessageList.cshtml %
-         %version: 15 %
+         %version: 18 %
          Copyright: Copyright 2012 BAE Systems Australia
                     All rights reserved.
     =================================================*@
 
 @* This is the partial view for appended messages on ajax load*@
 
-@using BAE.Mercury.Client.App_Code
+@using BAE.Mercury.Client
 
 @model  BAE.Mercury.Client.Models.vmMessageList
-
-
 
 @{
     if (!Model.MessageItems.Any())
@@ -21,78 +19,71 @@
     }
     
     var count = 1;
-    var jsGroupIndex = 0;    
+   
     var groupcount = 0;
         
      @*  set up group controlling variables  *@
     List<string> groupnames = SessionBag.Current.GroupNames;
-    
-    if(groupnames != null)
-    {
-        groupcount = groupnames.Count;
-    }
 
-    var currentGroupHeader = Model.InitGroupHeader;
-    if (groupnames != null && !string.IsNullOrEmpty(currentGroupHeader))
+    var currentGroupHeader = "";
+    var firstGroupHeader = SessionBag.Current.FirstGroupHeader;
+    var lastGroupHeader = SessionBag.Current.LastGroupHeader;
+
+     if(Model.isGrouped )
     {
-        jsGroupIndex = groupnames.IndexOf(currentGroupHeader);
+        currentGroupHeader = Model.InitGroupHeader;
+        SessionBag.Current.CurrentGroupHeader = currentGroupHeader;
+        SessionBag.Current.FirstGroupHeader = currentGroupHeader; @* store for next page*@
     }
+   
      @*  create array separators for retrieving start groupname metadata from returned data  *@
     @Html.Raw("--*--")@(currentGroupHeader)@Html.Raw("--*--"); @* set javascript array value to 1 for "full"*@
-    if(groupcount > 0){ 
-        @* Add  first header for first record if ViewBag.VertAlign = "bottom" *@        
-        if (Model.AddGroupHeader || (jsGroupIndex == 0 && Model.IsFirstPage && currentGroupHeader != SessionBag.Current.CurrentGroupHeader))
-        {       
-            <div class="listGroupheader"  data-group="@(currentGroupHeader)"  data-nextgroup="@(groupnames[1])"  > 
-                <h2>@currentGroupHeader</h2>
-            </div>
-        }
-    }
+   
     
    @*  cycle through messages  *@
     foreach (var item in Model.MessageItems)
     {
-        if(groupcount > 0){
-            if (item.Group != currentGroupHeader && !(count == 0 && Model.AddGroupHeader))
-            {  @*   this group is full so update group record in js *@ 
-              
-                jsGroupIndex++; @* increment group Index*@
-            }         
-            @* Add  a header as group changes, CurrentGroupHeader is set " for first record if ViewBag.VertAlign = "top" *@
-            if (string.IsNullOrEmpty(currentGroupHeader) || item.Group != currentGroupHeader)
-            {
-               
-                  @*   create new group header *@                    
-                <div class="listGroupheader"  data-group="@(item.Group)">      @*   item.GroupIndex is 1 based index of group *@     
-                    <h2>@item.Group</h2>
-                </div>
-    
-                currentGroupHeader = item.Group;
-                SessionBag.Current.CurrentGroupHeader = currentGroupHeader;              
+         if (Model.isGrouped && count == 1)
+        {
+            SessionBag.Current.FirstGroupHeader = item.Group;//set for next page up
+            @Content.CheckFirstHeader(SessionBag.Current.LastPageIndex, Model.PageIndex, lastGroupHeader, item.Group)
+        }     
+         @* Add  a header as group changes, CurrentGroupHeader is set " for first record if ViewBag.VertAlign = "top" *@
+        if (Model.isGrouped && ((Model.IsFirstPage && count == 1) || item.Group != currentGroupHeader))
+        {
+ 
+            @*   create new group header *@                  
+            <div class="listGroupheader" data-group="@(item.Group)"> @*   item.GroupIndex is 1 based index of group *@  
+                <h2>@item.Group</h2>
+            </div>                
+            currentGroupHeader = item.Group;
+            SessionBag.Current.CurrentGroupHeader = currentGroupHeader; @*   store in session for _MessageList partial view *@ 
             } 
-        }  
         @*   actual message div *@ 
-            string state = item.State;
-            string precedence = item.Precedence;
-            string attachment = (item.HasAttachment) ? "attachment" : "";   
+        string state = item.State;
+        string precedence = item.Precedence;
+        string attachment = (item.HasAttachment) ? "attachment" : "";   
             
-            string sclass = "message " + state + " " + precedence + " " + attachment;
-            
-            <div tabindex="0" class="@sclass"   data-url='@Url.Action("Details", "Message", new { id = item.MessageId })' data-grp="@(item.GroupIndex)"  >
-			    <div class="message-icon"> <span class="icon-status"></span> <span class="icon-attachment"></span> </div>
-			    <div class="message-summary">
-				    <h3><a href="#">@item.Subject</a></h3>
-				    <p class="sender">@item.Sender</p>
-                    <p class="DTG">@item.SentDtg</p>
-                    <span class="date">@item.ReceivedTime</span>
-			    </div>
-			    <div class="message-precedence"> <span class="icon-precedence"></span> </div>
-		    </div>  
-            
+        string sclass = "message " + state + " " + precedence + " " + attachment;
+        ViewBag.sClass = sclass;
+       if(ViewBag.ItemPartial=="Inbox")
+       {
+           @Html.Partial("InboxMessage",item) @* Load the record HTML*@
+       }
+        if (Model.isGrouped && count == Model.RecordsPerPage)
+        {
+            SessionBag.Current.LastGroupHeader = item.Group;//set for next page down
+            @Content.CheckLastHeader(SessionBag.Current.LastPageIndex, Model.PageIndex, firstGroupHeader, item.Group)
+        }     
         count++; @*   increment row counter *@ 
     }@*  end of  message for loop  *@
     
     @*  create array separator for retrieving last groupname metadata from returned data  *@
     @Html.Raw("--*--")@(count-1)
+    
+    if (Model.isGrouped)
+    {
+        SessionBag.Current.LastPageIndex = Model.PageIndex;
+    }
    }
 

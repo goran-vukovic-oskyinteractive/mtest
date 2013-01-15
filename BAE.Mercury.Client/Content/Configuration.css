@@ -1,0 +1,44 @@
+﻿/*******************************************************************************
+          %name: Configuration.css %
+       %version: 2 %
+  %date_created: Thu Nov 15 16:13:06 2012 %
+    %derived_by: chrisn %
+      Copyright: Copyright 2012 BAE Systems Australia
+                 All rights reserved.
+********************************************************************************/
+
+label {
+    padding-top: 10px;
+}
+
+label span.note {
+    display: block;
+    font-weight: normal;
+    font-size: 0.8em;
+}
+
+label em.optional {
+    font-weight: normal;
+    font-size: 0.8em;
+}
+
+.modified {
+    display: inline;
+    font-style: italic;
+    font-size: 0.6em;
+    color: red;
+}
+
+.updateError {
+    background: lightpink;
+    color: red;
+    border: 1px solid red;
+    font-weight: bold;
+}
+
+.updateSucceed {
+    background: palegreen;
+    color: green;
+    border: 1px solid green;
+    font-weight: bold;
+}

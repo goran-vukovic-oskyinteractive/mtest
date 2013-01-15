@@ -1,0 +1,60 @@
+﻿@*================================================================================
+          %name: ArchiveConfiguration.cshtml %
+       %version: 4 %
+      Copyright: Copyright 2012 BAE Systems Australia
+                 All rights reserved.
+================================================================================*@
+@model BAE.Mercury.Client.Models.vmArchiveConfiguration
+
+<script type="text/javascript">
+
+    
+    // Startup functions to call
+    $(function () {
+    
+        // Turn check boxes into light switches, for some prettiness
+        $('form#updateArchiveConfiguration input:checkbox').lightSwitch({
+            switchImg: '../Scripts/lightswitch/switch-1.png',
+            switchImgCover: '../Scripts/lightswitch/switchplate.png',
+            peekOff: '0px 0px',
+            peekOn: '-37px 0px',
+            modifyFunction: archiveConfigurationModified
+        });
+
+        // Ensure that the checkbox change events fire
+        $("form#updateArchiveConfiguration input:checkbox").change(function () {
+            archiveConfigurationModified();
+        });
+        
+        // Ensure that changes to the text will cause the modify flag to be set, even if not blurred
+        $("form#updateArchiveConfiguration input.text-box").input(function () {
+            archiveConfigurationModified();
+        });
+        
+    });
+    
+    // Called when the site configuration could not be updated at the server
+    function archiveConfigUpdateError() {
+        $('#archiveConfigUpdateError').show();
+        $("#archiveConfigUpdating").hide();
+    }
+
+    // Called when the site configuration is being updated at the server
+    function startArchiveConfigPostBack() {
+        $("#archiveConfigUpdating").show();  
+    }
+
+</script>
+
+
+@using (Ajax.BeginForm("UpdateArchiveConfiguration", "Configuration", new AjaxOptions() { OnSuccess = "archiveConfigurationUpdated()", OnBegin = "startArchiveConfigPostBack()", OnFailure = "archiveConfigUpdateError()" }, new { id = "updateArchiveConfiguration" }))
+{
+    <div id="archiveConfigUpdateError" class="updateError" style="display:none">There was an error attempting to update the configuration.</div>
+    <div id="archiveConfigUpdateSucceed" class="updateSucceed" style="display:none">Configuration was updated.</div>
+    @Html.EditorForModel("EditorTemplates/vmArchiveConfiguration")
+    <br/>
+    
+    <div style="position:fixed; top:820px">
+        <input type="submit" id="submitArchiveConfigurationForm" value="Update Archive Settings" /><img id="archiveConfigUpdating" src="~/Images/loading.gif" style="display:none" />
+    </div>
+}

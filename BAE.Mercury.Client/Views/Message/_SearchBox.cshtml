@@ -1,0 +1,70 @@
+﻿@*=============================================================================
+          %name: _SearchBox.cshtml %
+       %version: 3 %
+      Copyright: Copyright 2012 BAE Systems Australia
+                 All rights reserved.
+=============================================================================*@
+
+@{
+  <form action="#" id="search" method="post">
+    <input type="text" value="Search Inbox" id="search-inbox" /><a class="remove" href="#"></a>
+    <span class="search-right"></span>
+    <a href="#" id="advanced-search-button"><img src="~/images/icon-advanced_search.png" width="21" height="21" alt="Show Advanced Search" /></a>
+    <br class="clear" />
+    <div id="advanced-search">
+      <ul>
+        <li><a href="#">From</a></li>
+        <li><a href="#">To</a></li>
+        <li><a href="#">Subject</a></li>
+        <li><a href="#">All</a></li>
+      </ul>
+      <br class="clear" />
+      <p>
+        <span>
+          <label for="classification">Classification: </label>
+          <select name="classification" id="classification">
+            <option>Unclassified</option>
+            <option>Protected</option>
+            <option>Confidential</option>
+            <option>Secret</option>
+          </select>
+        </span>
+        <span class="second">
+          <label for="precedence">Precedence: </label>
+          <select name="precedence" id="precedence">
+            <option>ROUTINE</option>
+            <option>PRIORITY</option>
+            <option>IMMEDIATE</option>
+            <option>FLASH</option>
+          </select>
+        </span>
+        <span class="last">
+          <a href="#" class="btn">SICs</a>
+          <a href="#" class="btn">DTG</a>
+        </span>
+      </p>
+      <p>
+        <span>
+          <label for="date">Date within: </label>
+          <select name="date" id="date">
+            <option>1 day</option>
+            <option>3 days</option>
+          </select>
+        </span>
+        <span class="second">
+          <label for="date2">From DTG: </label>
+          @* The textbox to type the DTG *@
+          <input class="dtginput" id="dtgborder" maxlength="16"/>
+          @* hidden bound field for DTG  *@
+          @Html.TextBox("DTG", Request["DTG"], new { @class="hidden", tabindex="0"})
+        </span>
+        <span class="last">
+          <a href="#" class="btn">
+            <img src="~/images/icon-reply.png" width="22" height="16" alt="Back" /></a>
+          <a href="#" class="btn">
+            <img src="~/images/icon-search.png" width="15" height="16" alt="Search" /></a>
+        </span>
+      </p>
+    </div>
+  </form>
+}

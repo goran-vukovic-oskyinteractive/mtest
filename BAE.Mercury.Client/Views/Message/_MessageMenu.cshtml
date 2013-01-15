@@ -1,6 +1,6 @@
 ﻿@*// =================================================
 //          %name: _MessageMenu.cshtml %
-//       %version: 2 %
+//       %version: 3 %
 //      Copyright: Copyright 2012 BAE Systems Australia
 //                 All rights reserved.
 // =================================================*@
@@ -17,7 +17,7 @@
             <span><a href="#">Unread</a></span>						
         </div>
     </li>
-    <li id="btn-print"><a href="#">Print</a><span>Print</span></li>
+    <li id="btn-print"><a href="@Url.Action("PrintMessage", "Print" )" >Print</a><span>Print</span></li>
     <li id="btn-release"><a href="#">Release</a><span>Release</span></li>
     <li id="btn-reject"><a href="#">Reject</a><span>Reject</span></li>
     <li id="btn-action"><a href="#">Action</a><span>Action</span></li>

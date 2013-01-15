@@ -22,7 +22,7 @@
 
 @helper DTG(string id, String  dtVal,  UrlHelper url, string validationName)
 {
-    DateTimeFormatInfo auDtfi = new CultureInfo("en-AU", false).DateTimeFormat;
+    DateTimeFormatInfo auDtfi = new CultureInfo("en-US", false).DateTimeFormat;
  
     <div class="dtg"  id="@id">
         <div class="dtgborder">
@@ -35,10 +35,12 @@
             {
                 if(dtVal!=""){
                     DateTimeOffset dt = DateTimeOffset.Parse(dtVal, auDtfi); 
-                    <input class="dtginput" value="@(dt.ToString( "ddHHmmZ MMM yyyy" ).ToUpper())"  data-vn="@validationName"/>     
-                }else{
+                    <input class="dtginput" value="@(dt.ToString("ddHHmmZ MMM yyyy").ToUpper())"  data-vn="@validationName"/>     
+                }
+                else
+                {
                     <input class="dtginput" value=""  data-vn="@validationName"/>    
-                }                         
+                }
             }
   
          </div>

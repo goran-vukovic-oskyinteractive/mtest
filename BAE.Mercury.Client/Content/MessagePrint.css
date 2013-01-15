@@ -1,0 +1,94 @@
+﻿/*******************************************************************************
+    %name: MessagePrint.css %
+    %version: 1 %     Copyright: Copyright 2013 BAE Systems Australia
+                 All rights reserved.
+********************************************************************************/
+
+/* Classification */
+fieldset .classification {text-align:center; padding:5px 0;  background:#efecf4;}
+fieldset .classification p {margin:5px 0; font-size:12px; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal;}
+fieldset .classification p strong {font-weight:normal; font-size:16px;}
+
+/* Expiry */
+fieldset .expiry {padding:15px 40px 15px;}
+fieldset .expiry p {margin:0 0 5px 0;}
+fieldset .expiry p a {font-weight:bold; text-decoration:underline; color:#3c3c3c;}
+fieldset .expiry p a.rounded-box {display:block; float:right; background:#efecf4; padding:2px 5px; color:#3c3c3c; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; text-transform:uppercase; margin:0; border-radius: 5px; font-size:12px; text-decoration:none; font-weight:normal;}
+ 
+/* Subject */
+fieldset .message-type {background:#f0f4f5; padding:10px; text-align:center; border-top:1px solid #dcdcdc; border-bottom:1px solid #dcdcdc;}
+fieldset .message-type h3 {margin:0; padding:0; font-size:14px; font-weight:normal; font-family:'Conv_HelveticaNeueLTStd-Md', sans-serif;}
+
+/* Info */
+fieldset .detail {padding:15px 20px 15px 40px;}
+fieldset .detail .from,
+fieldset .detail .action,
+fieldset .detail .info,
+fieldset .detail .message-type { margin-bottom: 5px;overflow:hidden; }
+fieldset .detail .left { float: left; font-size: 12px; width: 55px; white-space: nowrap;}
+fieldset .detail .right { font-size: 12px; margin: 0 20px 0 60px; overflow: hidden; }
+fieldset .detail ul {margin:0; padding:0;}
+fieldset .detail ul li {list-style:none; margin:0 5px 5px 0; float:left; display:inline; color:3c3c3c; padding:0;}
+fieldset .detail ul li a { background: none repeat scroll 0 0 #EFECF4; border-radius: 5px 5px 5px 5px; color: #3C3C3C; display: block; float: left; font-family: 'Conv_HelveticaNeueLTStd-Roman',Arial,Helvetica,sans-serif; font-size: 12px; font-weight: normal; margin: 0; padding: 2px 5px; text-transform: uppercase; }
+fieldset .detail ul li span.icon {background:url(../images/bg-message_icon.png) no-repeat; width:15px; height:15px; float:left; margin:2px 3px 0px 0px;}
+fieldset .detail ul li.a span.icon {background-position:-28px -24px; display:block;}
+fieldset .detail ul li.b span.icon {background-position:-28px -44px; display:block; width:12px; height:14px;}
+fieldset .detail ul li.c span.icon {background-position:-59px -24px; display:block; width:16px; height:13px;}
+
+fieldset .detail ul li.no-access div.itemContainer { color:#333;opacity: .5;}
+fieldset .detail ul li.exempted div.itemContainer {background:#efecf4 url(../images/bg-info.png) right center no-repeat; padding-right:25px;}
+fieldset .detail ul li div.itemContainer{display:block; float:left; background:#efecf4; padding:2px 5px; color:#3c3c3c; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; text-transform:uppercase; margin:0; border-radius: 5px; font-size:12px;white-space: nowrap;}
+fieldset .detail ul li div.itemContainer:hover{cursor:default;}
+fieldset .detail .from ul { overflow: hidden;}
+
+fieldset .detail .originator {float:right; text-align:right;}
+fieldset .detail .originator p {text-align:right; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; font-size:13px; margin:0;}
+fieldset .detail .originator p strong {font-family:'Conv_HelveticaNeueLTStd-Md', sans-serif; font-weight:normal;}
+fieldset .detail .originator p span.sep img {vertical-align:middle; margin:0 8px}
+
+fieldset .detail .precedence {float:right; display:inline; width:100px; text-align:right;}
+fieldset .detail .precedence p {text-align:right; font-size:14px; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal;}
+fieldset .detail .precedence span {display:block; background:url(../images/bg-message_icon.png) no-repeat; float:right; margin-left:10px; width:16px; height:23px;}
+fieldset .detail .precedence strong {float:right; font-weight:normal; text-align:right;}
+fieldset .detail .precedence span.Flash {background-position:0 -73px;}
+fieldset .detail .precedence span.Immediate {background-position:-17px -73px;}
+fieldset .detail .precedence span.Priority {background-position:-34px -73px;}
+fieldset .detail .precedence span.Routine {background-position:-51px -73px;}
+fieldset .detail .precedence span.Deferred {background-position:-51px -73px;}
+fieldset .detail .precedence span.Override {background-position:-51px -73px;}
+
+/* For elements that control expanding and collapsing of other elements*/
+/*fieldset .detail .expand-arrow { background: url("../images/bg-arrow_from.png") no-repeat scroll left top transparent; display: block; float: right; height: 5px; margin: 7px 10px 0 0; width: 5px;}*/
+fieldset .detail .expand-arrow { background: url("../images/bg-arrow_from.png") no-repeat scroll left top transparent; display: block; float: right; height: 5px; margin: 7px 10px 0 0; width: 5px;}
+fieldset .detail .expand.down { background-position: left bottom; }
+/* For expandable containers */
+fieldset .detail .expandable { max-height: 54px; } /*height of two rows*/
+fieldset .detail .expanded { max-height:none; height: auto; } 
+
+fieldset .detail .from .more.hide { display: none;}
+
+
+/* Subject and Sics */
+fieldset .subject {border-top:1px solid #dcdcdc; border-bottom:1px solid #dcdcdc;}
+fieldset .subject .subject-title { min-width: 200px;}
+fieldset .subject .subject-title h4 {font-size:14px; margin:0; padding:0; padding:10px 20px 10px 40px;  font-family:'Conv_HelveticaNeueLTStd-Md', sans-serif; font-weight:normal;}
+fieldset .subject .label { margin-right: 17px;}
+fieldset .subject .label a {display:block; float:right; background:#efecf4; padding:2px 5px; color:#3c3c3c; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; text-transform:uppercase; margin:10px 3px; border-radius: 5px;}
+fieldset .subject .label a:hover {cursor:default;}
+
+/* Content */
+fieldset .content {padding:15px 20px 5px 40px;}
+
+/* Attachment */
+fieldset .attachment {border-top:1px solid #dcdcdc; padding:15px 20px 15px 65px; background:url(../images/bg-attachment.png) 40px 20px no-repeat; overflow:hidden;}
+fieldset .attachment ul {margin:0; padding:0;}
+fieldset .attachment ul li {list-style:none; margin:0 5px 5px 0; float:left; display:inline; color:3c3c3c; padding:0;}
+fieldset .attachment ul li a {display:block; float:left; background:#efecf4; padding:2px 5px; color:#3c3c3c; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; margin:0; border-radius: 5px;}
+fieldset .attachment ul li a span {color:#828282;}
+fieldset .attachment a.download-zip {float:right; display:block; background:url(../images/bg-download.png) 0 50% no-repeat; padding-left:20px; color:#3c3c3c; }
+
+
+
+
+
+ 

@@ -1,0 +1,126 @@
+﻿@*================================================================================
+        %name: _MessageDetails.cshtml %
+        %version: 13 %
+        %date_created: Fri Dec 14 12:22:15 2012 %
+        %derived_by: ADuncan %
+        Copyright: Copyright 2012 BAE Systems Australia
+        All rights reserved.
+================================================================================*@
+@model BAE.Mercury.Client.Models.vmMessageDetails
+
+@if(!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    @Html.DisplayFor(m => m.ErrorMessage);
+    return;
+}
+
+<div class="classification" style="background: @Model.ClassificationColour">
+    <p>
+        <strong>@Model.ClassificationName.ToUpper()</strong>
+    </p>
+    <p>
+        <strong>AUS/CAN/NZL/UK/USA EYES ONLY</strong>
+    </p>
+    <p>Sensitive: Medical</p>
+</div>
+
+<div class="expiry">
+    @Html.Partial("_MessageDetailsStatus", Model)
+</div>
+
+<div class="message-type">
+    <h3>@Model.MessageType</h3>
+</div>
+
+<div class="detail">
+        
+    <div class="from">
+        <div class="originator">
+            <p><strong>Originator Ref:</strong> Example <span class="sep"><img width="5" height="5" alt="Dot" src="images/bg-dot.png"></span> <strong>DTG:</strong> @Model.SentDtg</p>
+        </div>
+        <div class="left">
+            <a id="from-expand-button" class="expand-arrow expand" href="#"></a>
+            From
+        </div>
+        <div class="right">
+            <ul>
+                <li><div class="itemContainer">@Model.Sender</div></li>
+            </ul>
+        </div>                
+        <div class="more hide">
+            <div class="left">Drafter</div>
+            <div class="right">
+                <ul>
+                    <li><div class="itemContainer">@Model.Drafter</div></li>                        
+                </ul>
+            </div>
+            <div class="left">Releaser</div>
+            <div class="right">
+                <ul>
+                    <li><div class="itemContainer">@Model.Releaser</div></li>                        
+                </ul>
+            </div>
+        </div>        
+    </div>
+
+    <div class="action">
+        <div class="precedence">
+            <p><span class="@Model.ActionPrecedence"></span><strong>@Model.ActionPrecedence</strong></p>
+        </div>
+        <div class="left">
+            <a id="action-expand-button" class="expand-arrow expand" href="#" data-expands="actionAddresseeContainer"></a>
+            Action
+        </div>
+        <div id="actionAddresseeContainer" class="right expandable">                
+            <ul>
+                @foreach(var actionAddressee in Model.ActionAddressees)
+                {
+                    <li class="@actionAddressee.OU"><div class="itemContainer"><span class="icon"></span>@actionAddressee.Name</div></li>
+                    
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="info">
+        <div class="precedence">
+            <p><span class="@Model.InfoPrecedence"></span><strong>@Model.InfoPrecedence</strong></p>
+        </div>
+        <div class="left">
+            <a id="info-expand-button" class="expand-arrow expand" href="#" data-expands="infoAddresseeContainer"></a>
+            Info
+        </div>
+        <div id="infoAddresseeContainer" class="right expandable">
+            <ul>
+                @foreach(var infoAddressee in Model.InfoAddressees)
+                {
+                    <li class="@infoAddressee.OU"><div class="itemContainer"><span class="icon"></span>@infoAddressee.Name</div></li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="subject">
+    <div class="label">              
+        @foreach(var sic in Model.Sics)
+        {
+            <a href="#">@sic.Code</a>
+        }        
+    </div>
+    <div class="subject-title">
+        <h4>@Model.Subject</h4>
+    </div>    
+</div>
+
+<div class="content">    
+    @Html.Raw(Model.Body)
+</div>
+<div class="attachment"> <a class="download-zip" href="#">Download as .zip</a>
+	<ul>
+		<li><a href="#">Report.doc <span class="size">68kb</span></a></li>
+		<li><a href="#">Map.jpg <span class="size">168kb</span></a></li>
+	</ul>
+</div>
+
+

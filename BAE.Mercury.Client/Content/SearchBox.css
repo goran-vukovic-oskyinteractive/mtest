@@ -1,0 +1,52 @@
+﻿/*=============================================================================
+         %name: SearchBox.css %
+      %version: 3 %
+     Copyright: Copyright 2012 BAE Systems Australia
+                All rights reserved.
+=============================================================================*/
+
+/* advanced search items*/
+#message-list-wrap { border-right:1px solid #DADADA; overflow: hidden; position:relative;}
+#message-search {border-bottom:1px solid #dadada; padding:8px 10px; overflow:hidden; position:relative;}
+#message-search form { overflow:hidden;}
+#message-search form input#search-inbox {background:url(../images/bg-search.png) top left no-repeat; height:18px; width:290px; padding:5px 5px 5px 25px; border:none; color:#525252; font-size:12px; float:left;}
+#message-search form a.remove {background:url(../images/bg-search_remove.png) top right no-repeat; width:20px; height:28px; position:absolute; right:45px; top:13px; display:none;}
+#message-search form span.search-right {background:url(../images/bg-search.png) top right no-repeat; width:20px; height:28px; display:block; float:left; margin-left:-2px;}
+#message-search form #advanced-search-button {float:right; display:block; vertical-align:middle; margin-top:3px;}
+#message-search form #advanced-search {display:none;}
+#message-search form #advanced-search ul {list-style:none; margin:10px 0; padding:0; overflow:hidden;}
+#message-search form #advanced-search ul li {list-style:none; display:inline; float:left; padding:0; width:22%; margin: 0 1%;}
+#message-search form #advanced-search ul li a {display:block; float:left; background:#efecf4; padding:2px 0; color:#3c3c3c; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; text-transform:uppercase; margin:0; border-radius: 5px; font-size:12px; width:100%; text-align:center;}
+#message-search form #advanced-search ul li a:hover {color:#efecf4; background:#3c3c3c;}
+#message-search form #advanced-search span {display:block; float:left; width:32%;margin:0 2% 0 0;}
+#message-search form #advanced-search span select,
+#message-search form #advanced-search span input {width:100%; padding:3px 0 2px; border:1px solid #ccc; height:20px;}
+#message-search form #advanced-search span input#dtgborder {height:18px}
+#message-search form #advanced-search span select {height:25px; font-size:12px;}
+#message-search form #advanced-search span input {width:98%;}
+#message-search form #advanced-search span a.btn {float:left; margin:0 5px 0 0;}
+#message-search form #advanced-search span a.btn img {margin:8px 0 0 0;}
+#message-search form #advanced-search span.second {width:34%;}
+#message-search form #advanced-search span.last {padding-top:15px; width:28%; margin:0;}
+#message-search form #advanced-search label {font-weight:bold; cursor:pointer; display:block;}
+#message-search form #advanced-search p {overflow:hidden; clear:both; margin:0 0 5px;}
+
+#search-results {border:1px solid #ccc; background:#f2f2f2 url(../images/bg-search_results.png) top left repeat-x; position:absolute; top:40px; left:10px; width:365px; padding:0; z-index:9999;-webkit-box-shadow: 0px 0px 3px 1px #c9c9c9;
+box-shadow: 0px 0px 3px 1px #c9c9c9; display:none; }
+#search-results .group {border-bottom:1px solid #ccc; padding:10px 0;}
+#search-results ul {margin:0; padding:0;}
+#search-results ul li {padding:0; margin:0; list-style:none;}
+#search-results ul li a, 
+#search-results strong {display:block; padding:5px 10px; color:#3C3C3C}
+#search-results strong {color:#666;}
+#search-results ul li a {padding-left:20px;}
+#search-results ul li a:hover {background:#DFDFDF;}
+#search-results ul li a span.highlight {font-weight:bold; color:#119fe9;}
+
+.btn {text-align:center; height:30px; line-height:30px; width:43px; background:url(../images/bg-btn_small.png) no-repeat 0 0; display:block; color:#3c3c3c!important;}
+.btn:hover {background-position:0 -30px;}
+.hidden{display:none;}
+
+.dtginput{vertical-align:middle;text-align:center;padding:0;text-transform:uppercase;}
+ .invalid{background-color:red;color:white; }
+ .valid{background-color:white;color:black; }

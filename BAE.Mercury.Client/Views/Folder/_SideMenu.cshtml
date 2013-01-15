@@ -1,0 +1,17 @@
+﻿@*============================================================================
+          %name: _SideMenu.cshtml %
+       %version: 2 %
+      Copyright: Copyright 2012 BAE Systems Australia
+                 All rights reserved.
+============================================================================*@
+
+<div id="action-list-collapse"><a href="#"><img src="images/bg-left_menu_collapse.png" width="30" height="11" align="Close Menu" /></a></div>
+<ul id="action-list">
+  <li>  @Html.ActionLink("Mailboxes", "Index", "Message") </li>
+  <li>  @Html.ActionLink("Message Monitor", "Index", "SiteMessageMonitor") </li>
+  <li>  @Html.ActionLink("Audit Trail", "Index", "AuditTrail") </li>
+  <li><a href="#">Distribution Management</a></li>
+  <li>  @Html.ActionLink("System Preferences", "Index", "Configuration") </li>
+  <li>  @Html.ActionLink("Privilege Management", "Index", "PrivilegeManagement") </li>
+  <li><a href="#">Address Book Management</a></li>
+</ul>

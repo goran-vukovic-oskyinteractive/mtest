@@ -1,0 +1,48 @@
+﻿@*================================================================================
+          %name: vmSiteScheduleConfiguration.cshtml %
+       %version: 3 %
+      Copyright: Copyright 2012 BAE Systems Australia
+                 All rights reserved.
+================================================================================*@
+@using BAE.Mercury.Client
+@using BAE.Mercury.Core.Configuration
+@model BAE.Mercury.Client.Models.vmSiteScheduleConfiguration
+
+<br /><br />
+<div >
+    @Html.FieldLabelFor(model => model.ArchivingMessagesDailyWeeklyMonthly)
+    @Html.RadioButtonFor(model => model.ArchivingMessagesDailyWeeklyMonthly, ArchiveFrequency.Daily, new {@id = "daily" + Model.Type.ToString() })Daily
+    @Html.RadioButtonFor(model => model.ArchivingMessagesDailyWeeklyMonthly, ArchiveFrequency.Weekly, new {@id = "weekly"+Model.Type.ToString() })Weekly
+    @Html.RadioButtonFor(model => model.ArchivingMessagesDailyWeeklyMonthly, ArchiveFrequency.Monthly, new {@id = "monthly"+Model.Type.ToString() })Monthly
+    <div id="editDaily@(Model.Type.ToString())">
+        <div>Every  @Html.EditorFor(model => model.ArchivingMessagesEveryXDays) Day(s)</div>
+    </div>   
+    <div id="editWeekly@(Model.Type.ToString())">
+        <div>Every @Html.EditorFor(model => model.ArchivingMessagesEveryXWeeks) Week(s) on:</div>
+        @Html.RadioButtonFor(model => model.ArchivingMessagesDayOfWeek, DayOfWeek.Monday)Mon
+        @Html.RadioButtonFor(model => model.ArchivingMessagesDayOfWeek, DayOfWeek.Tuesday)Tue
+        @Html.RadioButtonFor(model => model.ArchivingMessagesDayOfWeek, DayOfWeek.Wednesday)Wed
+        @Html.RadioButtonFor(model => model.ArchivingMessagesDayOfWeek, DayOfWeek.Thursday)Thur
+        @Html.RadioButtonFor(model => model.ArchivingMessagesDayOfWeek, DayOfWeek.Friday)Fri
+        @Html.RadioButtonFor(model => model.ArchivingMessagesDayOfWeek, DayOfWeek.Saturday)Sat
+        @Html.RadioButtonFor(model => model.ArchivingMessagesDayOfWeek, DayOfWeek.Sunday)Sun
+    </div>
+    <div id="editMonthly@(Model.Type.ToString())">
+        <div>@Html.RadioButtonFor(model => model.ArchivingMessagesMonthlyFrequency, ArchiveMonthlyFrequency.ByDay)Day @Html.EditorFor(model => model.ArchivingMessagesDayOfMonth) of Every @Html.EditorFor(model => model.ArchivingMessagesEveryXMonths) Month(s)</div>
+        <div>@Html.RadioButtonFor(model => model.ArchivingMessagesMonthlyFrequency, ArchiveMonthlyFrequency.ByDayOfWeek)The @Html.DropDownListFor(model => model.ArchivingMessagesMonthlyDate, Model.DayOfMonth) @Html.DropDownListFor(model => model.ArchivingMessagesDayOfWeek, Model.DayOfWeek) of Every @Html.EditorFor(model => model.ArchivingMessagesEveryXMonths) Month(s)</div>       
+    </div>
+    
+    <br /><br />
+    <div class="rounded-box" style="padding-top: 5px">
+    @Html.FieldLabelFor(model => model.ArchiveDailyTimesPerDay)
+    <div>@Html.RadioButtonFor(model => model.ArchiveDailyTimesPerDay, ArchiveDailyFrequency.OncePerDay)Occurs Once at:@Html.EditorFor(model => model.ArchivingMessagesOncePerDayTime)</div>
+    <div>@Html.RadioButtonFor(model => model.ArchiveDailyTimesPerDay, ArchiveDailyFrequency.MoreThanOnce)Occurs Every: @Html.EditorFor(model => model.ArchivingMessagesHowOften) @Html.DropDownListFor(model => model.ArchivingMessagesHoursOrMinutes, Model.HoursOrMins) </div>
+    <div>Starting at @Html.EditorFor(model => model.ArchivingMessagesStartTime)</div>
+    <div>Ending at: @Html.EditorFor(model => model.ArchivingMessagesEndTime)</div>
+    <br /><br />
+    <div style="padding-top: 5px">
+    @Html.FieldLabelFor(model => model.ArchivingMessagesStartDate)
+    Start Date: @Html.EditorFor(model => model.ArchivingMessagesStartDate)
+    </div>
+    </div>
+</div>

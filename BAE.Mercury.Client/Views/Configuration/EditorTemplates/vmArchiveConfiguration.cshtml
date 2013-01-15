@@ -1,0 +1,38 @@
+﻿@*================================================================================
+          %name: vmArchiveConfiguration.cshtml %
+       %version: 6 %
+      Copyright: Copyright 2012 BAE Systems Australia
+                 All rights reserved.
+================================================================================*@
+@using BAE.Mercury.Client
+@model BAE.Mercury.Client.Models.vmArchiveConfiguration
+
+<div id="LeftPane" style="float:left; width:420px">
+    <div id="MessageSettings">
+        <br /><br />
+        @Html.FieldLabelFor(model => model.AutomaticallyArchiveMessages)        
+        @Html.EditorFor(model => model.AutomaticallyArchiveMessages)   
+        <br /><br />
+        @Html.FieldLabelFor(model => model.ArchiveMessagesOlderThanDays)
+        @Html.EditorFor(model => model.ArchiveMessagesOlderThanDays) days
+        <br /><br />
+        @Html.FieldLabelFor(model => model.DeleteMessagesOlderThanDays)
+        @Html.EditorFor(model => model.DeleteMessagesOlderThanDays) days
+        <div style="padding-top: 5px"> 
+        @Html.EditorFor(model => model.MessageArchvingSchedule, "EditorTemplates/vmSiteScheduleConfiguration")
+        </div>
+    </div>
+</div>
+
+<div id="AuditTrailSettings" style="padding-left: 420px">
+    <br /><br />
+    @Html.FieldLabelFor(model => model.AutomaticallyArchiveAuditTrail)      
+    @Html.EditorFor(model => model.AutomaticallyArchiveAuditTrail)      
+    <br /><br />
+    @Html.FieldLabelFor(model => model.DeleteAuditTrailOlderThanDays)
+    @Html.EditorFor(model => model.DeleteAuditTrailOlderThanDays) days
+    <div style="padding-top: 80px"> 
+    @Html.EditorFor(model => model.AuditTrailArchivingSchedule, "EditorTemplates/vmSiteScheduleConfiguration")
+    </div>
+    <br /><br />  
+</div>

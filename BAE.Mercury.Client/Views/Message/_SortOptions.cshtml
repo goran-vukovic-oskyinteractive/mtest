@@ -1,0 +1,23 @@
+﻿@*=============================================================================
+          %name: _SortOptions.cshtml %
+       %version: 6 %
+      Copyright: Copyright 2012 BAE Systems Australia
+                 All rights reserved.
+=============================================================================*@
+
+<div id="criterionOptions" class="message-sort-options">
+    <ul id="criterion">
+        <li class="ReceivedTime"><a href="#" onclick="callSort('ReceivedTime', 1);">Sort by Time Received</a></li>
+        <li class="Security"><a href="#" onclick="callSort('Security', 1);">Sort by Security</a></li>
+        <li class="Sender"><a href="#" onclick="callSort('Sender', 1);">Sort by Sender</a></li>
+        <li class="Subject"><a href="#" onclick="callSort('Subject', 1);">Sort by Subject</a></li>
+        <li class="Precedence"><a href="#" onclick="callSort('Precedence', 1);">Sort by Precedence</a></li>
+    </ul>
+</div>
+<div  id="orderOptions" class="message-sort-options">
+    <ul id="order">
+      <li class="1"><a href="#" onclick="callSort('', 1, this);">Newest on top</a></li>
+      <li class="0"><a href="#" onclick="callSort('', 0, this);">Oldest on top</a></li>
+    </ul>
+  </div>
+ 

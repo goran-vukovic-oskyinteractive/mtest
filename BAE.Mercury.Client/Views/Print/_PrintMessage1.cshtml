@@ -1,0 +1,150 @@
+﻿@*================================================================================
+           %name: _PrintMessage1.cshtml %
+       %version: 1 %
+       Copyright: Copyright 2013 BAE Systems Australia
+                  All rights reserved.
+================================================================================*@
+
+
+@using BAE.Mercury.Core.MmhsModel
+@model BAE.Mercury.Client.Models.vmMessageDetails
+
+@section CSS
+{
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    
+     
+    <link href="@Url.Content("~/Content/MessagePrint.css")" rel="stylesheet" type="text/css" />
+   
+}
+
+@{
+    ViewBag.Title = "_PrintMessage1";
+    Layout = "~/Views/Shared/_PrintLayout.cshtml";
+}
+
+<fieldset> 
+       
+    <table style="width:100%; ">
+        <tr>
+            <td style="width:140px">From:&nbsp;</td>
+            <td>@Html.DisplayFor(model => model.Sender)</td>
+        </tr>
+        <tr>
+            <td  >Sent:&nbsp;</td>
+            <td>@Html.DisplayFor(model => model.SentDtg)</td>
+        </tr>
+    </table>
+    
+    
+    <div class="classification" style="background: @Model.ClassificationColour">
+        <p>
+            <strong>@Model.ClassificationName.ToUpper()</strong>
+        </p>
+        <p>
+            <strong>AUS/CAN/NZL/UK/USA EYES ONLY</strong>
+        </p>
+        <p>Sensitive: Medical</p>
+    </div>
+
+    <div class="expiry">
+        @Html.Partial("~/Views/Message/_MessageDetailsStatus.cshtml", Model)
+    </div>
+
+    <div class="message-type">
+        <h3>@Model.MessageType</h3>
+    </div>
+
+    <div class="detail">
+        
+        <div class="from">
+            <div class="originator">
+                <p><strong>Originator Ref:</strong> Example <span class="sep"><img width="5" height="5" alt="Dot" src="~/Views/Message/images/bg-dot.png"></span> <strong>DTG:</strong> @Model.SentDtg</p>
+            </div>
+            <div class="left">
+                <a id="from-expand-button" class="expand-arrow expand" href="#"></a>
+                From
+            </div>
+            <div class="right">
+                <ul>
+                    <li><div class="itemContainer">@Model.Sender</div></li>
+                </ul>
+            </div>                
+            <div class="more hide">
+                <div class="left">Drafter</div>
+                <div class="right">
+                    <ul>
+                        <li><div class="itemContainer">@Model.Drafter</div></li>                        
+                    </ul>
+                </div>
+                <div class="left">Releaser</div>
+                <div class="right">
+                    <ul>
+                        <li><div class="itemContainer">@Model.Releaser</div></li>                        
+                    </ul>
+                </div>
+            </div>        
+        </div>
+
+        <div class="action">
+            <div class="precedence">
+                <p><span class="@Model.ActionPrecedence"></span><strong>@Model.ActionPrecedence</strong></p>
+            </div>
+            <div class="left">
+                <a id="action-expand-button" class="expand-arrow expand" href="#" data-expands="actionAddresseeContainer"></a>
+                Action
+            </div>
+            <div id="actionAddresseeContainer" class="right expandable">                
+                <ul>
+                    @foreach(var actionAddressee in Model.ActionAddressees)
+                    {
+                        <li class="@actionAddressee.OU"><div class="itemContainer"><span class="icon"></span>@actionAddressee.Name</div></li>
+                    
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="info">
+            <div class="precedence">
+                <p><span class="@Model.InfoPrecedence"></span><strong>@Model.InfoPrecedence</strong></p>
+            </div>
+            <div class="left">
+                <a id="info-expand-button" class="expand-arrow expand" href="#" data-expands="infoAddresseeContainer"></a>
+                Info
+            </div>
+            <div id="infoAddresseeContainer" class="right expandable">
+                <ul>
+                    @foreach(var infoAddressee in Model.InfoAddressees)
+                    {
+                        <li class="@infoAddressee.OU"><div class="itemContainer"><span class="icon"></span>@infoAddressee.Name</div></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="subject">
+        <div class="label">              
+            @foreach(var sic in Model.Sics)
+            {
+                <a href="#">@sic.Code</a>
+            }        
+        </div>
+        <div class="subject-title">
+            <h4>@Model.Subject</h4>
+        </div>    
+    </div>
+
+    <div class="content">    
+        @Html.Raw(Model.Body)
+    </div>
+    <div class="attachment"> <a class="download-zip" href="#">Download as .zip</a>
+	    <ul>
+		    <li><a href="#">Report.doc <span class="size">68kb</span></a></li>
+		    <li><a href="#">Map.jpg <span class="size">168kb</span></a></li>
+	    </ul>
+    </div>
+
+</fieldset>
+
