@@ -11,56 +11,62 @@
     <head>
         <meta charset="utf-8" />
         <title>@ViewBag.Title - Mercury Neo</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+@*        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
+*@   
+
+@*     @Styles.Render("~/Content/css")
         @Styles.Render("~/Content/themes/base/css")
         @Scripts.Render("~/bundles/modernizr")
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/jqueryui")        
-        @RenderSection("CSS", required: false)
         @Content.Script("Initialise.js", Url)
-        <!--[if IE 7]><link href="@Url.Content("~/Content/IE7.css")" rel="stylesheet" type="text/css" /><![endif]-->
+*@
+        @RenderSection("CSS", required: false)
+@*        <!--[if IE 7]><link href="@Url.Content("~/Content/IE7.css")" rel="stylesheet" type="text/css" /><![endif]--> *@
+        @RenderSection("scripts")
          
     </head>
     <body>
+<!-- start wrapper -->
         <div id="wrapper">     
             <div id="header">
-                <div id="logo">
-                    <a href="#">
-                        <img alt="Mercury" src="../images/bg-logo.png">
-                    </a>
-                </div>
+                <div id="logo"><a href="#"><img src="/images/bg-logo.png" width="138" height="38" alt="Mercury" /></a></div>
                 <div id="top-section">
                     <p>Welcome, @User.Identity.Name</p>
-                    <ul id="top-link">
-                        <li><a id="logout" href="#"><img alt="Logout" src="../images/icon-logout_menu.png">logout</a></li>
-                        <li><a id="admin" href="#"><img  alt="Settings" src="../images/icon-admin_menu.png">settings</a></li>
-                    </ul>
+			            <ul id="top-link">
+				            <li><a href="#" id="logout"><img src="/images/icon-logout_menu.png" alt="Admin Menu" width="16" height="16" />logout</a></li>
+				            <li><a href="#" id="admin"><img src="/images/icon-admin_menu.png" alt="Logout Menu" width="16" height="16" />settings</a></li>
+			            </ul>
                 </div>
             </div>
 
             <div id="buttons">
+               <div class="col-wrap">
                 <div class="col-left">&nbsp;</div>
-                <div id="buttons-right" class="col-middle">                    
-                    @RenderSection("MenuButtons", required: false)
-                </div>
-                <div class="col-right">
-				    <ul class="buttons">
-                        <li id="btn-address">
-                            <a href="#">Address Book</a><span>Address Book</span>
-                        </li>
-				    </ul>
-			    </div>
+                    <div class="col-middle" id="buttons-right">
+                        @RenderSection("MenuButtons", required: false)
+                    </div>
+			        <div class="col-right">
+				        <ul class="buttons">
+					        <li id="btn-address"><a href="#">Address Book</a><span>Address Book</span></li>
+					        <li id="btn-opennewwindow"><a href="#">Open In A New Window</a><span>Open In A New Window</span></li>
+				        </ul>
+			        </div>
+    		    </div>
             </div>
 
             <div id="content">
 		        <div class="col-wrap">
                     @RenderSection("SideBar", required: false)
-                    @RenderBody()
+                    <div class="col-right new-message" id="email-content">
+                        @RenderBody()
+                    </div>
+
                 </div>
             </div>
-            @RenderSection("Scripts", required: false)
+            @*RenderSection("Scripts", required: false)*@
         </div>
+<!-- end wrapper -->
     </body>
 </html>

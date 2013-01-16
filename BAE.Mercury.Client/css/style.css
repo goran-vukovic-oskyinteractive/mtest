@@ -4,7 +4,7 @@
 /**** BASE ****/
 html, body {overflow:hidden;}
 body {font:13px/18px Arial, Helvetica, sans-serif; color:#3c3c3c; margin:0; padding:0;}
-/*body {background:url(../Images/bg-body.png) repeat-y scroll left top; font:13px/18px Arial, Helvetica, sans-serif; color:#3c3c3c; margin:0; padding:0;} */
+/*body {background:url(../images/bg-body.png) repeat-y scroll left top; font:13px/18px Arial, Helvetica, sans-serif; color:#3c3c3c; margin:0; padding:0;} */
 ul, ol, dl, p, table { margin:0 0 15px 0; padding:0; font-size:12px; }
 h1, h2, h3, h4, h5, h6, iframe { margin:0 0 15px 0; padding:0; }
 a img { border:none; }
@@ -50,7 +50,7 @@ ol li {list-style:decimal; padding:0 0 3px 10px;}
 .col-right .buttons {float:right}
 
 /**** HEADER ****/
-#header {background:#141516 url(../Images/bg-header.png) top left repeat-x; height:70px; overflow:hidden;}
+#header {background:#141516 url(../images/bg-header.png) top left repeat-x; height:70px; overflow:hidden;}
 #header #logo {padding:10px 0 0 15px; float:left;}
 #header #top-section {float:right; margin:0 15px 0 0;}
 #header #top-section p {margin-top:8px;}
@@ -59,17 +59,17 @@ ol li {list-style:decimal; padding:0 0 3px 10px;}
 #header #top-section ul {float:left; margin:0;}
 #header #top-section ul li {float:left; display:inline;}
 #header #top-section ul li a {display:block; float:left; margin:0; text-align:center; height:30px; line-height:30px; margin-top:2px;}
-#header #top-section ul li a#admin {background:url(../Images/bg-admin_menu.png) top center no-repeat; width:94px;}
-#header #top-section ul li a#logout {background:url(../Images/bg-logout_menu.png) top center no-repeat; width: 85px;}
+#header #top-section ul li a#admin {background:url(../images/bg-admin_menu.png) top center no-repeat; width:94px;}
+#header #top-section ul li a#logout {background:url(../images/bg-logout_menu.png) top center no-repeat; width: 85px;}
 #header #top-section ul li a img {vertical-align:middle; margin:0 5px 1px 0;}
 
 /**** BUTTONS ****/
-#buttons {background:url(../Images/bg-middle.png) top left no-repeat; margin-top:-30px; height:68px;}
+#buttons {background:url(../images/bg-middle.png) top left no-repeat; margin-top:-30px; height:68px;}
 #buttons .col-middle {height:58px; padding-top:10px;}
 #buttons .col-right {height:58px; padding-top:10px; padding-left:11px;}
 #buttons ul {margin:0; padding:0;}
 #buttons ul li {margin:0; padding:0; list-style:none; float:left; display:inline;  text-align:center; position:relative;}
-#buttons ul li a {background:url(../Images/bg-buttons.png) 0 0 no-repeat; width:31px; height:30px; display:block; float:left; margin:0 12px 0 13px; text-align:center; font-family:'Conv_HelveticaNeueLTStd-Md', sans-serif; text-transform:uppercase; font-weight:normal; font-size:10px; color:#525252; text-indent:-9999px;}
+#buttons ul li a {background:url(../images/bg-buttons.png) 0 0 no-repeat; width:31px; height:30px; display:block; float:left; margin:0 12px 0 13px; text-align:center; font-family:'Conv_HelveticaNeueLTStd-Md', sans-serif; text-transform:uppercase; font-weight:normal; font-size:10px; color:#525252; text-indent:-9999px;}
 #buttons ul li span {display:block; margin:33px auto 0; text-align:center; font-family:'Conv_HelveticaNeueLTStd-Md', sans-serif; text-transform:uppercase; font-weight:normal; font-size:10px;}
 #buttons ul li a:hover { color:#cd3d3d;}
 #buttons ul li#btn-new a:hover {background-position:0 -30px;}
@@ -119,11 +119,11 @@ ol li {list-style:decimal; padding:0 0 3px 10px;}
 #buttons ul li#btn-addaddresslist a {background-position:-600px 0; margin-left:30px; }
 #buttons ul li#btn-addaddresslist a:hover {background-position:-600px -30px;}
 
-#buttons ul li .btn-drop {position:absolute; top:30px; padding:0; z-index:9999; background:#d0d0d0 url(../Images/bg-dropdown.png) 0 0 repeat-x; left:15px; border:1px solid #b7b7b6; display:none;-webkit-box-shadow: inset 0px 0px 1px 1px #ffffff;
+#buttons ul li .btn-drop {position:absolute; top:30px; padding:0; z-index:9999; background:#d0d0d0 url(../images/bg-dropdown.png) 0 0 repeat-x; left:15px; border:1px solid #b7b7b6; display:none;-webkit-box-shadow: inset 0px 0px 1px 1px #ffffff;
 box-shadow: inset 0px 0px 1px 1px #ffffff; -webkit-border-radius: 0px 0px 5px 5px;border-radius: 0px 0px 5px 5px;  }
 #buttons ul li .btn-drop span {display:block; margin:0; text-align:left; padding:0;}
-#buttons ul li .btn-drop a {font-family:'Conv_HelveticaNeueLTStd-Md', sans-serif; text-transform:uppercase; font-weight:normal; font-size:10px; text-indent:0; margin:0; height:25px; width:45px!important; text-align:left; padding:5px 10px 0; background:url(../Images/bg-dropdown_sep.png) left top repeat-x!important;}
-#buttons ul li .btn-drop a:hover {background:url(../Images/bg-dropdown_sep.png) left top repeat-x!important;}
+#buttons ul li .btn-drop a {font-family:'Conv_HelveticaNeueLTStd-Md', sans-serif; text-transform:uppercase; font-weight:normal; font-size:10px; text-indent:0; margin:0; height:25px; width:45px!important; text-align:left; padding:5px 10px 0; background:url(../images/bg-dropdown_sep.png) left top repeat-x!important;}
+#buttons ul li .btn-drop a:hover {background:url(../images/bg-dropdown_sep.png) left top repeat-x!important;}
 #buttons ul li .btn-drop * {z-index:9999;}
 #buttons ul li .btn-drop a.first {background:none!important;}
 
@@ -169,12 +169,12 @@ box-shadow: inset 0px 0px 1px 1px #ffffff; -webkit-border-radius: 0px 0px 5px 5p
 #mailbox ul#mailbox-list ul li {list-style:none; background:none; display:block;}
 #mailbox ul#mailbox-list ul li a {background:#303030; border-top:1px solid #262626;}
 #mailbox ul#mailbox-list li {margin:0; padding:0; font-size:13px; font-weight:normal; display:block;  }
-#mailbox ul#mailbox-list li div {background:url(../Images/bg-mailbox_arrow.png) 15px 15px no-repeat;}
-#mailbox ul#mailbox-list li div.open {background:#cd3d3d url(../Images/bg-mailbox_arrow_down.png) 15px 15px no-repeat;}
+#mailbox ul#mailbox-list li div {background:url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat;}
+#mailbox ul#mailbox-list li div.open {background:#cd3d3d url(../images/bg-mailbox_arrow_down.png) 15px 15px no-repeat;}
 
-#mailbox ul#mailbox-list li div:hover {background:#cd3d3d url(../Images/bg-mailbox_arrow.png) 15px 15px no-repeat;}
+#mailbox ul#mailbox-list li div:hover {background:#cd3d3d url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat;}
 
-#mailbox ul#mailbox-list li div.open:hover {background:#cd3d3d url(../Images/bg-mailbox_arrow_down.png) 15px 15px no-repeat;}
+#mailbox ul#mailbox-list li div.open:hover {background:#cd3d3d url(../images/bg-mailbox_arrow_down.png) 15px 15px no-repeat;}
 
 #mailbox ul#mailbox-list li a {display:block; border-top:1px solid #343434; padding:9px 0 9px 30px; color:#fff; overflow:hidden;}
 #mailbox ul#mailbox-list li ul li a:hover {background:#cd3d3d;}
@@ -184,7 +184,7 @@ box-shadow: inset 0px 0px 1px 1px #ffffff; -webkit-border-radius: 0px 0px 5px 5p
 #mailbox ul#mailbox-list li a:hover span.counter,
 #mailbox ul#mailbox-list li div.open span.counter {background:#992424!important; border:1px solid #872020!important;}
 
-#mailbox ul#mailbox-list li span.icon {background:url(../Images/bg-mailbox_icon.png) 0 0 no-repeat; display:block; width:16px; height:15px; float:left; margin-top:0px;}
+#mailbox ul#mailbox-list li span.icon {background:url(../images/bg-mailbox_icon.png) 0 0 no-repeat; display:block; width:16px; height:15px; float:left; margin-top:0px;}
 #mailbox ul#mailbox-list li strong {font-weight:normal; float:left; margin:0 0 0 10px;}
 
 #mailbox ul#mailbox-list li#inbox div:hover span.icon {background-position:0 -15px}
@@ -209,7 +209,7 @@ box-shadow: inset 0px 0px 1px 1px #ffffff; -webkit-border-radius: 0px 0px 5px 5p
 #mailbox ul#folder-list li a {display:block; border-top:1px solid #343434; padding:9px 0 9px 15px; color:#fff; overflow:hidden;}
 #mailbox ul#folder-list li a:hover {background:#cd3d3d;}
 #mailbox ul#folder-list li ul li a:hover {background:#cd3d3d;}
-#mailbox ul#folder-list li span.icon {background:url(../Images/bg-mailbox_icon.png) -93px 1px no-repeat; display:block; width:13px; height:16px; float:left;}
+#mailbox ul#folder-list li span.icon {background:url(../images/bg-mailbox_icon.png) -93px 1px no-repeat; display:block; width:13px; height:16px; float:left;}
 #mailbox ul#folder-list li strong {font-weight:normal; float:left; margin:0 0 0 10px;}
 
 #mailbox ul#precedence-list {margin:0;}
@@ -217,7 +217,7 @@ box-shadow: inset 0px 0px 1px 1px #ffffff; -webkit-border-radius: 0px 0px 5px 5p
 #mailbox ul#precedence-list li a {display:block; border-top:1px solid #343434; padding:9px 0 9px 15px; color:#fff; overflow:hidden;}
 #mailbox ul#precedence-list li a:hover {background:#cd3d3d;}
 #mailbox ul#precedence-list li ul li a:hover {background:#cd3d3d;}
-#mailbox ul#precedence-list li span.icon {background:url(../Images/bg-mailbox_precedence.png) 0 0 no-repeat; display:block; width:16px; height:23px; float:left;}
+#mailbox ul#precedence-list li span.icon {background:url(../images/bg-mailbox_precedence.png) 0 0 no-repeat; display:block; width:16px; height:23px; float:left;}
 #mailbox ul#precedence-list li strong {font-weight:normal; float:left; margin:0 0 0 10px;}
 
 #mailbox ul#precedence-list li#flash span.icon {}
@@ -231,28 +231,31 @@ box-shadow: inset 0px 0px 1px 1px #ffffff; -webkit-border-radius: 0px 0px 5px 5p
 #mailbox #left-menu li a:hover,
 #mailbox #left-menu li.current a {background:#343539; color:#8a8c97;}
 
+#mailbox #left-menu-collapse {margin:20px auto 0; text-align:center;}
+#mailbox #left-menu-collapse a {display:block; margin:0 auto; width:30px;}
+
 /*** Multilevel ***/
 #mailbox ul#mailbox-list.multilevel li {margin:0; padding:0;}
-#mailbox ul#mailbox-list.multilevel li a {padding-left:30px; background:url(../Images/bg-mailbox_arrow.png) 15px 15px no-repeat;}
-#mailbox ul#mailbox-list.multilevel ul li a {background:#303030 url(../Images/bg-mailbox_arrow.png) 25px 15px no-repeat; border-top:1px solid #262626; padding-left:40px;}
-#mailbox ul#mailbox-list.multilevel ul ul li a {padding-left:50px; background:#4f4d4d url(../Images/bg-mailbox_arrow.png) 35px 15px no-repeat;}
-#mailbox ul#mailbox-list.multilevel ul ul ul li a {padding-left:60px; background:#757575 url(../Images/bg-mailbox_arrow.png) 45px 15px no-repeat;}
-#mailbox ul#mailbox-list.multilevel li a:hover {background:#cd3d3d url(../Images/bg-mailbox_arrow.png) 15px 15px no-repeat;;}
-#mailbox ul#mailbox-list.multilevel ul li a:hover {background:#cd3d3d url(../Images/bg-mailbox_arrow.png) 25px 15px no-repeat;}
-#mailbox ul#mailbox-list.multilevel ul ul li a:hover {background:#cd3d3d url(../Images/bg-mailbox_arrow.png) 35px 15px no-repeat;}
-#mailbox ul#mailbox-list.multilevel ul ul ul li a:hover {background:#cd3d3d url(../Images/bg-mailbox_arrow.png) 45px 15px no-repeat;}
-#mailbox ul#mailbox-list.multilevel.open li a {background:#cd3d3d url(../Images/bg-mailbox_arrow.png) 15px 15px no-repeat;;}
-#mailbox ul#mailbox-list.multilevel ul li a.open {background:#cd3d3d url(../Images/bg-mailbox_arrow.png) 25px 15px no-repeat;}
-#mailbox ul#mailbox-list.multilevel ul ul li a.open {background:#cd3d3d url(../Images/bg-mailbox_arrow.png) 35px 15px no-repeat;}
-#mailbox ul#mailbox-list.multilevel ul ul ul li a.open {background:#cd3d3d url(../Images/bg-mailbox_arrow.png) 45px 15px no-repeat;}
+#mailbox ul#mailbox-list.multilevel li a {padding-left:30px; background:url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat;}
+#mailbox ul#mailbox-list.multilevel ul li a {background:#303030 url(../images/bg-mailbox_arrow.png) 25px 15px no-repeat; border-top:1px solid #262626; padding-left:40px;}
+#mailbox ul#mailbox-list.multilevel ul ul li a {padding-left:50px; background:#4f4d4d url(../images/bg-mailbox_arrow.png) 35px 15px no-repeat;}
+#mailbox ul#mailbox-list.multilevel ul ul ul li a {padding-left:60px; background:#757575 url(../images/bg-mailbox_arrow.png) 45px 15px no-repeat;}
+#mailbox ul#mailbox-list.multilevel li a:hover {background:#cd3d3d url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat;;}
+#mailbox ul#mailbox-list.multilevel ul li a:hover {background:#cd3d3d url(../images/bg-mailbox_arrow.png) 25px 15px no-repeat;}
+#mailbox ul#mailbox-list.multilevel ul ul li a:hover {background:#cd3d3d url(../images/bg-mailbox_arrow.png) 35px 15px no-repeat;}
+#mailbox ul#mailbox-list.multilevel ul ul ul li a:hover {background:#cd3d3d url(../images/bg-mailbox_arrow.png) 45px 15px no-repeat;}
+#mailbox ul#mailbox-list.multilevel.open li a {background:#cd3d3d url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat;;}
+#mailbox ul#mailbox-list.multilevel ul li a.open {background:#cd3d3d url(../images/bg-mailbox_arrow.png) 25px 15px no-repeat;}
+#mailbox ul#mailbox-list.multilevel ul ul li a.open {background:#cd3d3d url(../images/bg-mailbox_arrow.png) 35px 15px no-repeat;}
+#mailbox ul#mailbox-list.multilevel ul ul ul li a.open {background:#cd3d3d url(../images/bg-mailbox_arrow.png) 45px 15px no-repeat;}
 
 /**** EMAIL LIST ****/
 #email-list-wrap { border-right:1px solid #DADADA; overflow: hidden; position:relative;}
 #email-search {border-bottom:1px solid #dadada; padding:8px 10px; overflow:hidden; position:relative;}
 #email-search form { overflow:hidden;}
-#email-search form input#search-inbox {background:url(../Images/bg-search.png) top left no-repeat; height:18px; width:225px; padding:5px 5px 5px 25px; border:none; color:#525252; font-size:12px; float:left;}
-#email-search form a.remove {background:url(../Images/bg-search_remove.png) top right no-repeat; width:20px; height:28px; position:absolute; right:45px; top:13px; display:none;}
-#email-search form span.search-right {background:url(../Images/bg-search.png) top right no-repeat; width:20px; height:28px; display:block; float:left; margin-left:-2px;}
+#email-search form input#search-inbox {background:url(../images/bg-search.png) top left no-repeat; height:18px; width:225px; padding:5px 5px 5px 25px; border:none; color:#525252; font-size:12px; float:left;}
+#email-search form a.remove {background:url(../images/bg-search_remove.png) top right no-repeat; width:20px; height:28px; position:absolute; right:45px; top:13px; display:none;}
+#email-search form span.search-right {background:url(../images/bg-search.png) top right no-repeat; width:20px; height:28px; display:block; float:left; margin-left:-2px;}
 #email-search form #advance-search-button {float:right; display:block; vertical-align:middle; margin-top:3px;}
 #email-search form #advance-search {display:none;}
 #email-search form #advance-search ul {list-style:none; margin:10px 0; padding:0; overflow:hidden;}
@@ -270,7 +273,7 @@ box-shadow: inset 0px 0px 1px 1px #ffffff; -webkit-border-radius: 0px 0px 5px 5p
 #email-search form #advance-search label {font-weight:bold; cursor:pointer; display:block;}
 #email-search form #advance-search p {overflow:hidden; clear:both; margin:0 0 5px;}
 
-#search-results {border:1px solid #ccc; background:#f2f2f2 url(../Images/bg-search_results.png) top left repeat-x; position:absolute; top:40px; left:10px; width:300px; padding:0; z-index:9999;-webkit-box-shadow: 0px 0px 3px 1px #c9c9c9;
+#search-results {border:1px solid #ccc; background:#f2f2f2 url(../images/bg-search_results.png) top left repeat-x; position:absolute; top:40px; left:10px; width:300px; padding:0; z-index:9999;-webkit-box-shadow: 0px 0px 3px 1px #c9c9c9;
 box-shadow: 0px 0px 3px 1px #c9c9c9; display:none;  }
 #search-results .group {border-bottom:1px solid #ccc; padding:10px 0;}
 #search-results ul {margin:0; padding:0;}
@@ -288,23 +291,21 @@ box-shadow: 0px 0px 3px 1px #c9c9c9; display:none;  }
 #email-sort.three-col .col {font-size:11px;}
 #email-sort .col {float:left; width:33.33%; font-size:12px; position:relative;}
 #email-sort .col.last {float:right; text-align:right;}
-#email-sort .col-arrow {background:url(../Images/bg-arrow_down.png) right 5px no-repeat; padding-right:10px}
+#email-sort .col-arrow {background:url(../images/bg-arrow_down.png) right 5px no-repeat; padding-right:10px}
 #email-sort .email-sort-options {background:#F2F2F2; border:1px solid #b7b7b6; position:absolute; top:30px; border-top:none; display:none; left:0; min-width:150px; width:auto!important; width:150px;}
 #email-sort .col.last .email-sort-options {right:0; left:auto; text-align:left;}
 #email-sort .email-sort-options ul {list-style:none;margin:0;padding:0;}
-#email-sort .email-sort-options ul li {list-style:none; margin:0; padding:0;  background:url(../Images/bg-dropdown_sep.png) left top repeat-x!important; width:100%;}
+#email-sort .email-sort-options ul li {list-style:none; margin:0; padding:0;  background:url(../images/bg-dropdown_sep.png) left top repeat-x!important; width:100%;}
 #email-sort .email-sort-options ul li.selected {}
-#email-sort .email-sort-options ul li.selected a {background:url(../Images/icon-selected.png) 10px center no-repeat; padding-left:25px;}
+#email-sort .email-sort-options ul li.selected a {background:url(../images/icon-selected.png) 10px center no-repeat; padding-left:25px;}
 #email-sort .email-sort-options ul li a {display:block; padding:5px 10px; color:#525252; font-family:'Conv_HelveticaNeueLTStd-Md', sans-serif; text-transform:uppercase; font-weight:normal; font-size:10px; text-indent:0; margin:0;}
 #email-sort .email-sort-options ul li a:hover {color:#CD3D3D;}
 
 #email-list {overflow-x:hidden; clear:both;}
 #email-list .date-bar {background:#f0f4f5; padding:10px; text-align:center; text-transform:uppercase; border-bottom:1px solid #dadada;}
 #email-list .date-bar h2 {text-transform:uppercase; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; margin:0}
-#email-list .email {border-bottom:1px solid #dadada; padding:10px 0 10px 10px; overflow:hidden; background:#fff; }
-#email-list .email:hover {background:#eee url(../Images/bg-email_hover3.png);}
-#email-list .email.onFocus {background:#ccc url(../Images/bg-email_hover.png);}
-#email-list .email.onFocus:hover {background:#aaa url(../Images/bg-email_hover2.png);}
+#email-list .email {border-bottom:1px solid #dadada; padding:10px 0 10px 10px; overflow:hidden; background:#fff; cursor: pointer; }
+#email-list .email:hover {background:#ccc url(../images/bg-email_hover.png);}
 #email-list .email .email-icon {width:25px; float:left; min-height:50px; height:auto!important; height:50px;}
 #email-list .email .email-summary {float:left; width:80%; }
 #email-list .email .email-summary h3 {font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size:13px; margin:0 0 5px 0;}
@@ -319,7 +320,7 @@ box-shadow: 0px 0px 3px 1px #c9c9c9; display:none;  }
 #email-list .email.timer .email-summary h3 a {color:#fe0000;}
 #email-list .email .email-icon .icon-status,
 #email-list .email .email-icon .icon-attachment,
-#email-list .email .email-precedence .icon-precedence {background:url(../Images/bg-email_icon.png) no-repeat;margin:2px 0 8px;}
+#email-list .email .email-precedence .icon-precedence {background:url(../images/bg-email_icon.png) no-repeat;margin:2px 0 8px;}
 
 #email-list .email.reply .email-icon .icon-status {background-position:-18px 0; width:17px; height:16px; display:block; }
 #email-list .email.forward .email-icon .icon-status {background-position:-37px 0; width:17px; height:16px; display:block; }
@@ -342,7 +343,7 @@ box-shadow: 0px 0px 3px 1px #c9c9c9; display:none;  }
 /*
 #email-list .email.last{background: red;}
 #email-list .load-bar {
-	background: white url('../Images/loading.gif') no-repeat center 70px;
+	background: white url('../images/loading.gif') no-repeat center 70px;
 	height: 100%;
 	border-top: 2px solid #DDD;
 	z-index: 10;
@@ -393,14 +394,14 @@ box-shadow: 0px 0px 3px 1px #c9c9c9; display:none;  }
 #email-content .detail ul {margin:0; padding:0; position:relative; z-index:999}
 #email-content .detail ul li {list-style:none; margin:0 5px 5px 0; float:left; display:block; color:#3c3c3c; padding:0; white-space:nowrap; position:relative;}
 #email-content .detail ul li.more {}
-#email-content .detail ul li span.icon {background:url(../Images/bg-email_icon.png) no-repeat; width:15px; height:15px; float:left; margin:2px 3px 0 0;}
+#email-content .detail ul li span.icon {background:url(../images/bg-email_icon.png) no-repeat; width:15px; height:15px; float:left; margin:2px 3px 0 0;}
 #email-content .detail ul li.a span.icon {background-position:-28px -24px; display:block;}
 #email-content .detail ul li.b span.icon {background-position:-28px -44px; display:block; width:12px; height:14px;}
 #email-content .detail ul li.c span.icon {background-position:-59px -24px; display:block; width:16px; height:13px;}
 #email-content .detail ul li.cyan a {background:#b0e2f0;}
 #email-content .detail ul li.yellow a {background:#ffe8aa;}
 #email-content .detail ul li.no-access a {color:#333;opacity: .5;}
-#email-content .detail ul li.exempted a {background:#efecf4 url(../Images/bg-info.png) right center no-repeat; padding-right:25px;}
+#email-content .detail ul li.exempted a {background:#efecf4 url(../images/bg-info.png) right center no-repeat; padding-right:25px;}
 #email-content .detail ul li a {display:block; float:left; background:#efecf4; padding:2px 8px; color:#3c3c3c; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; text-transform:uppercase; margin:0; border-radius: 5px; font-size:12px; position:relative;}
 #email-content .detail .originator {float:right; text-align:right;}
 #email-content .detail .originator p {text-align:right; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; font-size:13px; margin:0;}
@@ -410,15 +411,15 @@ box-shadow: 0px 0px 3px 1px #c9c9c9; display:none;  }
 
 #email-content .detail ul {overflow:hidden;}
 #email-content .detail .hide {display:none;}
-#email-content .detail .expand-arrow {color:#3C3C3C;background:url(../Images/bg-arrow_from.png) right 8px no-repeat; display:block; width:50px; padding:2px 4px; margin:0; color:#3c3c3c; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; border-radius: 5px; font-size:12px;}
+#email-content .detail .expand-arrow {color:#3C3C3C;background:url(../images/bg-arrow_from.png) right 8px no-repeat; display:block; width:50px; padding:2px 4px; margin:0; color:#3c3c3c; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; border-radius: 5px; font-size:12px;}
 #email-content .detail span.label {color:#3C3C3C;display:block; width:54px; padding:2px 4px; margin:0; color:#3c3c3c; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; font-size:12px;}
-#email-content .detail .expand-arrow:hover {background:#efecf4 url(../Images/bg-arrow_from.png) right 8px no-repeat}
+#email-content .detail .expand-arrow:hover {background:#efecf4 url(../images/bg-arrow_from.png) right 8px no-repeat}
 #email-content .detail .expand-arrow.down {background-position:right -35px;}
-#email-content .detail ul li.verified a {background:#58a206 url(../Images/bg-verified.png) 5px center no-repeat; padding-left:20px; color:#fff;}
+#email-content .detail ul li.verified a {background:#58a206 url(../images/bg-verified.png) 5px center no-repeat; padding-left:20px; color:#fff;}
 
 #email-content .detail .precedence {float:right; display:inline; width:100px; text-align:right;}
 #email-content .detail .precedence p {text-align:right; font-size:14px; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal;}
-#email-content .detail .precedence span {display:block; background:url(../Images/bg-email_icon.png) no-repeat; float:right; margin-left:10px; width:16px; height:23px;}
+#email-content .detail .precedence span {display:block; background:url(../images/bg-email_icon.png) no-repeat; float:right; margin-left:10px; width:16px; height:23px;}
 #email-content .detail .precedence strong {float:right; font-weight:normal; text-align:right;}
 #email-content .detail .precedence span.flash {background-position:0 -73px;}
 #email-content .detail .precedence span.immediate {background-position:-17px -73px;}
@@ -438,12 +439,12 @@ box-shadow: 0px 0px 3px 1px #c9c9c9; display:none;  }
 
 /* Attachment */
 #email-content .attachment {border-top:1px solid #dcdcdc; padding:15px 20px 15px 40px; overflow:hidden;}
-#email-content .attachment div { background:url(../Images/bg-attachment.png) 0 3px no-repeat; width: 25px; height: 25px; float:left;}
+#email-content .attachment div { background:url(../images/bg-attachment.png) 0 3px no-repeat; width: 25px; height: 25px; float:left;}
 #email-content .attachment ul {margin:0; padding:0;}
 #email-content .attachment ul li {list-style:none; margin:0 5px 5px 0; float:left; display:inline; color:3c3c3c; padding:0;}
 #email-content .attachment ul li a {display:block; float:left; background:#efecf4; padding:2px 5px; color:#3c3c3c; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-weight:normal; margin:0; border-radius: 5px;}
 #email-content .attachment ul li a span {color:#828282;}
-#email-content .attachment a.download-zip {float:right; display:block; background:url(../Images/bg-download.png) 0 50% no-repeat; padding-left:20px; color:#3c3c3c; }
+#email-content .attachment a.download-zip {float:right; display:block; background:url(../images/bg-download.png) 0 50% no-repeat; padding-left:20px; color:#3c3c3c; }
 
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
@@ -462,7 +463,7 @@ div.selectbox-wrapper ul { list-style-type:none; margin:0px; padding:0px; }
 div.selectbox-wrapper ul li.selected { background-color: #191a1c!important; background-image:none; color:#fff!important; }
 div.selectbox-wrapper ul li.current { background-color: #191a1c!important; color:#fff!important; }
 div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; padding:5px 3px!important; ; cursor:pointer; background-image:none!important; ; }
-.selectbox { display : block; text-align:left; background:#efecf4 url(../Images/bg-selectbox.png) right center no-repeat; cursor: pointer; border:1px solid #dedede; padding:5px; border-radius:5px; position:relative; width:212px; }
+.selectbox { display : block; text-align:left; background:#efecf4 url(../images/bg-selectbox.png) right center no-repeat; cursor: pointer; border:1px solid #dedede; padding:5px; border-radius:5px; position:relative; width:212px; }
 
 /* Restyle the calendar */
 .ui-datepicker-header { background:#cd3d3d!important; color:#fff!important; border:1px solid #fff!important; }
@@ -472,18 +473,18 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 .ui-timepicker-div { padding:0 10px; }
 
 /* Editor */
-#editor-wrap {position:relative; background:url(../Images/bg-editor.png) top left repeat-x; height:36px;}
+#editor-wrap {position:relative; background:url(../images/bg-editor.png) top left repeat-x; height:36px;}
 #editor-wrap #advance-button,
-#editor-wrap #advance-button {position:absolute; right:0; top:0; background:url(../Images/bg-editor_advance_button_close.png) top left no-repeat; width:274px; height:30px;}
-#editor-wrap #advance-button.close {background:url(../Images/bg-editor_advance_button.png) no-repeat;}
+#editor-wrap #advance-button {position:absolute; right:0; top:0; background:url(../images/bg-editor_advance_button_close.png) top left no-repeat; width:274px; height:30px;}
+#editor-wrap #advance-button.close {background:url(../images/bg-editor_advance_button.png) no-repeat;}
 #editor-wrap #advance-button a {display:block; color:#3c3c3c; height:30px; line-height:26px; text-align:center; margin:0;}
 
 /**** CLASSES ****/
 
 .clear {clear:both; height:1px; line-height:1px;}
 
-.load-bar {background: white url('../Images/loading.gif') no-repeat center 5px;height: 25px;border-top: 2px solid #DDD;padding: 8px 0 25px;}
-/*.load-bar-email {background: url("../Images/loading.gif") no-repeat scroll center 5px transparent;height: 25px;margin: 0 auto;position: absolute;text-align: center;top: 50%;width: 100px; left:50%;z-index: 999; }*/
-.load-bar-email {background: url("../Images/loading.gif") no-repeat scroll center 5px transparent;height: 25px;margin: 35% auto;width: 100px;}
-.btn {text-align:center; height:30px; line-height:30px; width:43px; background:url(../Images/bg-btn_small.png) no-repeat 0 0; display:block; color:#3c3c3c!important;}
+.load-bar {background: white url('../images/loading.gif') no-repeat center 5px;height: 25px;border-top: 2px solid #DDD;padding: 8px 0 25px;}
+/*.load-bar-email {background: url("../images/loading.gif") no-repeat scroll center 5px transparent;height: 25px;margin: 0 auto;position: absolute;text-align: center;top: 50%;width: 100px; left:50%;z-index: 999; }*/
+.load-bar-email {background: url("../images/loading.gif") no-repeat scroll center 5px transparent;height: 25px;margin: 35% auto;width: 100px;}
+.btn {text-align:center; height:30px; line-height:30px; width:43px; background:url(../images/bg-btn_small.png) no-repeat 0 0; display:block; color:#3c3c3c!important;}
 .btn:hover {background-position:0 -30px;}

@@ -28,7 +28,6 @@
 
 #email-content.new-message .section {width:100%;}
 
-
 /** ADD NEW MESSAGE **/
 #email-content.new-message .section {overflow: hidden;}
 #editor-wrap {position:absolute; height:36px; width:100%;}

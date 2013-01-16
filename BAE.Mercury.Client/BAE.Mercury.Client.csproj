@@ -281,6 +281,8 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="css\abm.css" />
+    <Content Include="css\at.css" />
+    <Content Include="css\editor.css" />
     <Content Include="css\ie7.css" />
     <Content Include="css\jquery-ui.css" />
     <Content Include="css\nm.css" />
@@ -392,8 +394,19 @@
     <Content Include="js\jquery.simpletip-1.3.1.pack.js" />
     <Content Include="js\address_book.js" />
     <Content Include="js\respond.min.js" />
+    <Content Include="js\tinymce.js" />
+    <Content Include="js\tiny_mce\jquery.tinymce.js" />
+    <Content Include="js\tiny_mce\license.txt" />
+    <Content Include="js\tiny_mce\plugins\fullscreen\editor_plugin.js" />
+    <Content Include="js\tiny_mce\plugins\fullscreen\editor_plugin_src.js" />
+    <Content Include="js\tiny_mce\plugins\fullscreen\fullscreen.htm" />
+    <Content Include="js\tiny_mce\plugins\spellchecker\editor_plugin.js" />
+    <Content Include="js\tiny_mce\plugins\spellchecker\editor_plugin_src.js" />
+    <Content Include="js\tiny_mce\tiny_mce.js" />
+    <Content Include="js\tiny_mce\tiny_mce_popup.js" />
+    <Content Include="js\tiny_mce\tiny_mce_src.js" />
     <Content Include="js\waypoints.min.js" />
-    <Content Include="NewMessage.htm" />
+    <Content Include="NewMessageZZ.htm" />
     <Content Include="ReadMe.txt" />
     <Content Include="Scripts\countdown.js" />
     <Content Include="Scripts\Initialise.js" />
@@ -460,6 +473,7 @@
     <Folder Include="Client\" />
     <Folder Include="Content\images\" />
     <Folder Include="External\" />
+    <Folder Include="js\tiny_mce\plugins\spellchecker\classes\utils\" />
     <Folder Include="logs\" />
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Configuration\EditorTemplates\" />

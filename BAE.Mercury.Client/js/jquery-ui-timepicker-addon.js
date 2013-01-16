@@ -8,6 +8,14 @@
  * You may use this project under MIT or GPL licenses.
  * http://trentrichardson.com/Impromptu/GPL-LICENSE.txt
  * http://trentrichardson.com/Impromptu/MIT-LICENSE.txt
+
+**
+
+THIS VERSION HAS BEEN HACKED BY OSKY INTERACTIVE 
+SEARCH FOR "osky"
+
+**
+
  */
 
 /*jslint evil: true, white: false, undef: false, nomen: false */
@@ -772,11 +780,19 @@
 				formattedDateTime = this.formattedTime;
 			} else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {
 				//osky
-				//formattedDateTime += this._defaults.separator + this.formattedTime + this._defaults.timeSuffix;
-				formattedDateTime = this.formattedTime + this._defaults.separator + this._defaults.timeSuffix + formattedDateTime;
-			}
 
-			this.formattedDateTime = formattedDateTime;
+				//ori
+				//formattedDateTime += this._defaults.separator + this.formattedTime + this._defaults.timeSuffix;
+				
+				//version1
+				//formattedDateTime = this.formattedTime + this._defaults.separator + this._defaults.timeSuffix + formattedDateTime;
+				
+				//version2
+				var tmpDate = formattedDateTime.split('|');
+				formattedDateTime = tmpDate[0] + this.formattedTime;
+				formattedDateTime += this._defaults.separator + this._defaults.timeSuffix + tmpDate[1].toUpperCase();			}
+
+				this.formattedDateTime = formattedDateTime;
 
 			if (!this._defaults.showTimepicker) {
 				this.$input.val(this.formattedDate);
@@ -1508,6 +1524,8 @@
 	$.datepicker.parseDate = function(format, value, settings) {
 		var date;
 		//osky
+		/*
+		version 1
 		if( ($('#eff-timezone').length > 0) && (value != '') )
 		{
 			var separator = $('#eff-timezone').val();
@@ -1517,7 +1535,26 @@
 				if(newParts.length == 2)
 				{
 					value = newParts[1] + ' ' + separator + ' ' + newParts[0];
-					console.log(value);
+					//console.log(value);
+				}
+			}
+		}
+		*/
+
+		//version 2
+		if( ($('#eff-timezone').length > 0) && (value != '') )
+		{
+			var separator = $('#eff-timezone').val();
+			if( (separator != '') && (value != undefined) )
+			{
+				var newParts = value.split(separator + ' ');
+				if(newParts.length == 2)
+				{
+					var tempdd = newParts[0].substr(0, 2);
+					newParts[0] = newParts[0].replace(tempdd, '');
+
+					newParts[1] = tempdd + '|' + newParts[1];
+					value = newParts[1] + separator + ' ' + newParts[0];
 				}
 			}
 		}

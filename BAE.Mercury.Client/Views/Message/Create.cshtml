@@ -14,35 +14,30 @@
     ViewBag.Title = "Create";
 }
 
+
 @section CSS
 {
-    <link href="@Url.Content("~/Content/themes/base/jquery-ui.css")" rel="stylesheet" type="text/css" />
-     
-    <link href="@Url.Content("~/Content/MessageCreate.css")" rel="stylesheet" type="text/css" />
-    <link href="@Url.Content("~/Content/SicBook.css")" rel="stylesheet" type="text/css" />
-    
+<link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/css/nm.css" rel="stylesheet" type="text/css" media="all" />
+<!--[if IE 7]>
+<link href="css/ie7.css" rel="stylesheet" type="text/css" media="all" />
+<![endif]-->
+<!--[if IE 8]>
+<link href="css/ie8.css" rel="stylesheet" type="text/css" media="all" />
+<![endif]-->
+<link rel="stylesheet" href="/css/jquery-ui.css" />
 }
 
 @section Scripts
 {
-    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>  
-    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>  
-
-    <script src="@Url.Content("~/Scripts/tiny_mce/tiny_mce.js")" type="text/javascript"></script>    
-
-    <script src="@Url.Content("~/Scripts/tinyMCEconfig.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery.watermark.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/message.create.js")" type="text/javascript"></script>  
-     <script src="@Url.Content("~/Scripts/jquery.input.js")" type="text/javascript"></script> 
-
-    <script src="@Url.Content("~/Scripts/jquery.simpletip-1.3.1.pack.js")" type="text/javascript"></script> 
-     <script src="@Url.Content("~/Scripts/jquery-ui-timepicker-addon.js")" type="text/javascript"></script> 
-    <script src="@Url.Content("~/Scripts/jquery.selectbox-0.5.js")" type="text/javascript"></script> 
-    <script src="@Url.Content("~/Scripts/respond.min.js")" type="text/javascript"></script> 
-
-    <script src="@Url.Content("~/Scripts/sicBook.js")" type="text/javascript"></script>  
-    <script src="@Url.Content("~/Scripts/message.dtg.js")" type="text/javascript"></script>  
-   
+<script type="text/javascript" src="/js/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="/js/jquery-ui.js"></script>
+<script type="text/javascript" src="/js/jquery.nicescroll.js"></script>
+<script type="text/javascript" src="/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="/js/respond.min.js"></script><!-- IE7 min/max width support -->
+<script type="text/javascript" src="/js/functions.js"></script>
+<script type="text/javascript" src="/js/tiny_mce/jquery.tinymce.js"></script>
+<script type="text/javascript" src="/js/tinymce.js"></script>   
     
 }
 
@@ -54,18 +49,23 @@
  
 
 @ViewBag.SavedMessage
- 
-@*something seems screwy with our routing. The actionlink builds the wrong url *@
-@*@Html.ActionLink("View Sic Book", "Index", "Sic", new { Target="_blank" }) 
-<a href="../Sic" target="_blank">View Sic Book</a>*@
 
 
-@using (Html.BeginForm("Create", "Message", FormMethod.Post, new { id = "NewMessageForm" }))
+
+@using (Html.BeginForm("Create", "Message", FormMethod.Post, new { /*id = "NewMessageForm",*/ @class = "email new-message" }))
 {
-   // DateTimeFormatInfo auDtfi = new CultureInfo("en-AU", false).DateTimeFormat;
-    <div class="validationSummary2"  > </div>
+    char[] c = {(char) 13};
+    Response.Write(new String(c));
+    
+    <input type="hidden" id="timezone" value="Z"/>
+    
+    // DateTimeFormatInfo auDtfi = new CultureInfo("en-AU", false).DateTimeFormat;
+    
+@*    <div class="validationSummary2"  > </div>
     <div id="editor">
-        @Html.ValidationSummary(false, "", new { @class = "validationsummary" })
+*@
+
+        @*Html.ValidationSummary(false, "", new { @class = "validationsummary" })*@
          
        <div class="section">
 		    <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -75,7 +75,7 @@
 						    <label for="classification" class="expand">Classification</label>
 						  <span class="arrow"><a href="#">Expand</a></span>
 				            @{
-                                var items = new List<SelectListItem>{
+    var items = new List<SelectListItem>{
                                     new SelectListItem {Value = "", Text = "", Selected = true},
                                     new SelectListItem {Value = "Unclassified", Text = "Unclassified"},
                                     new SelectListItem {Value = "Protected", Text = "Protected"},
@@ -83,16 +83,16 @@
                                     new SelectListItem {Value = "Secret", Text = "Secret"}
                                 };
                             }
-                            @Html.DropDownListFor(model => model.ClassificationName, items, new { id = "secclass" })	
+                            @Html.DropDownListFor(model => model.ClassificationName, items, new { id = "classification" })	
 					    </div>
 				    </td>
 				    <td width="50%">
 					    <div class="col">
 						    <label for="dtg">DTG</label>
-						    @*<input type="text" id="dtg" class="txt has-icon" />*@                          
-                             @Content.DTG("dtg_dtg", Model.Dtg,  Url, "Message DTG")
+						    <input type="text" id="dtg" class="txt has-icon" />                          
+                             @*Content.DTG("dtg_dtg", Model.Dtg, Url, "Message DTG")*@
                             @* hidden bound field for DTG  *@
-                            @Html.TextBoxFor(model => model.Dtg, new { id = "dtg", @class = "hidden", tabindex = "0" })
+                            @*Html.TextBoxFor(model => model.Dtg, new { id = "dtg", @class = "hidden", tabindex = "0" })*@
 					    </div>
 				    </td>
 			    </tr>
@@ -116,12 +116,12 @@
 					    <div class="col">
 						    <label for="from">From</label>
 						      @{
-                                var items2 = new List<SelectListItem>{
+    var items2 = new List<SelectListItem>{
                                     new SelectListItem {Value = "Appointment1", Text = "Appointment 1", Selected = true},
                                     new SelectListItem {Value = "Appointment2", Text = "Appointment 2"}
                                 };
                             }
-                            @Html.DropDownListFor(model => model.Sender, items2, new { id = "from",  @class = "txt" })	
+                            @Html.DropDownListFor(model => model.Sender, items2, new { id = "from", @class = "txt" })	
 					    </div>
 				    </td>
 				    <td>
@@ -137,20 +137,20 @@
 						    <label for="action">Action</label>
 						    @*container for Action *@
                         
-                                <div tabindex='0' class="addresscontainer wide txt" id="actioncont">
+                                <div tabindex='0' id="actioncont">
                                     <div tabindex='0' class="action">
                                         @{                         
-                                            foreach( string address  in Model.ActionAddressees)
-                                            {
-                                                <DIV class="a" tabIndex=0><DIV class="icon"></DIV><SPAN class="addresstext">@address</SPAN></DIV>
-                                            }
+    foreach (string address in Model.ActionAddressees)
+    {
+                                                <div class="a" tabIndex=0><div class="icon"></div><span class="addresstext">@address</span></div>
+    }
                                         }  
-                                        <input tabindex='0'  type="text"  title="type an address..." class="addressInput watermark" data-otf-autocomplete="@Url.Action("AddressSearch", "Address")" /><br/>
+                                        <input tabindex='0'  type="text"  title="type an address..." class="addressInput watermark wide txt error" data-otf-autocomplete="@Url.Action("AddressSearch", "Address")" /><br/>
                                     </div>                
                                 </div>
                              
-                            <span class="icon"><a href="#"><img src="~/images/icon-new_message_contact.png" width="20" height="19" alt="Action" /></a></span> 
-                             @Html.ListBox("ActionAddressees", new SelectList(@Model.ActionAddressees), new { id = "ActionAddressees", @class = "hidden" })
+                            <span class="icon"><a href="#"><img src="/images/icon-new_message_contact.png" width="20" height="19" alt="Action" /></a></span> 
+                             @*Html.ListBox("ActionAddressees", new SelectList(@Model.ActionAddressees), new { id = "ActionAddressees", @class = "hidden" })*@
 					    </div>
 				    </td>
 			    </tr>
@@ -162,16 +162,16 @@
                             <div tabindex='0' class="addresscontainer wide txt" id="infocont">
                                 <div tabindex='0' class="info">
                                     @{ 
-                                        foreach( string address  in Model.InfoAddressees)
-                                        {
-                                            <DIV class="a" tabIndex=0><DIV class="icon"></DIV><SPAN class="addresstext">@address</SPAN></DIV>
-                                        } 
+    foreach (string address in Model.InfoAddressees)
+    {
+                                            <div class="a" tabIndex=0><div class="icon"></div><span class="addresstext">@address</span></div>
+    } 
                                       }     
-                                    <input tabindex='0'  type="text"  title="type an address..." class="addressInput watermark" data-otf-autocomplete="@Url.Action("AddressSearch", "Address")" /><br/>
+                                    <input tabindex='0'  type="text"  title="type an address..." class="wide txt" data-otf-autocomplete="@Url.Action("AddressSearch", "Address")" /><br/>
                                 </div>
                             </div>
                             <span class="icon"><a href="#"><img src="~/images/icon-new_message_contact.png" width="20" height="19" alt="Info" /></a></span>	
-                             @Html.ListBox("InfoAddressees", new SelectList(@Model.InfoAddressees), new { id = "InfoAddressees", @class = "hidden" })
+                             @*Html.ListBox("InfoAddressees", new SelectList(@Model.InfoAddressees), new { id = "InfoAddressees", @class = "hidden" })*@
 					    </div>
 				    </td>
 			    </tr>
@@ -181,7 +181,7 @@
 						    <label for="actionprec">Action Precedence</label>
 						      @*---------------------action  precedence dropdown--------------------------*@
                             @{
-                                var items3 = new List<SelectListItem>{
+    var items3 = new List<SelectListItem>{
                                 new SelectListItem {Value = "", Text = "", Selected = true},
                                 new SelectListItem {Value = "ROUTINE", Text = "ROUTINE"},
                                 new SelectListItem {Value = "PRIORITY", Text = "PRIORITY"},
@@ -195,7 +195,7 @@
                             }
                             else
                             {
-                                @Html.DropDownListFor(model => model.ActionPrecedence, items3, new { id = "actionprec", disabled = "true" })
+                                @Html.DropDownListFor(model => model.ActionPrecedence, items3, new { id = "actionprec", disabled = "disabled" })
                             }
 					    </div>
 				    </td>
@@ -203,23 +203,12 @@
 					    <div class="col">
 						    <label for="infoprec">Info Precedence</label>
 						      @*---------------------info  precedence dropdown---------------------------*@
-                            @{
-                                var items4 = new List<SelectListItem>{
-                                new SelectListItem {Value = "", Text = "", Selected = true},
-                                new SelectListItem {Value = "ROUTINE", Text = "ROUTINE"},
-                                new SelectListItem {Value = "PRIORITY", Text = "PRIORITY"},
-                                new SelectListItem {Value = "IMMEDIATE", Text = "IMMEDIATE"},
-                                new SelectListItem {Value = "FLASH", Text = "FLASH"}
-                                };
-                            }
-                             @if (Model.InfoAddressees.Count > 0)
-                             {
-                                @Html.DropDownListFor(model => model.InfoPrecedence, items4, new { id = "infoprec" })
-                             }
-                             else
-                             {
-                                @Html.DropDownListFor(model => model.InfoPrecedence, items4, new { id = "infoprec", disabled = "true" })
-                             }
+                                <select disabled="disabled" id="infoprec" name="InfoPrecedence"><option selected="selected" value=""></option>
+                                <option value="ROUTINE">ROUTINE</option>
+                                <option value="PRIORITY">PRIORITY</option>
+                                <option value="IMMEDIATE">IMMEDIATE</option>
+                                <option value="FLASH">FLASH</option>
+                                </select>
 					    </div>
 				    </td>
 			    </tr>
@@ -231,27 +220,15 @@
 					    </div>
 				    </td>
 				    <td>
-					    <div class="col">
-						    <label for="sic">SICs</label>	
-                            <div class="siccloser" onclick="closeSics();"></div>					    
-						      @*container for Sics*@
-                            <div tabindex='0' class="siccontainer narrow txt" id="sic">
-                                <div tabindex='0' class="sic">
-                                    @{ 
-                                        foreach( string sic  in Model.Sics)
-                                        {
-                                            <DIV class="a" tabIndex=0><SPAN class="addresstext">@sic</SPAN></DIV>
-                                        } 
-                                    }     
-                                    <input tabindex='0'  type="text"  title="type a SIC..." class="sicInput watermark" data-otf-autocomplete="@Url.Action("SicSearch", "Sic")" /><br/>
-                                </div>
-                            </div>
-                            
-                            <span id="opensicbook" class="icon"><a href="#"><img src="~/images/icon-new_message_dlm.png" width="20" height="19" alt="SICs" /></a></span>	
-                             @Html.ListBox("Sics", new SelectList(@Model.Sics), new { id = "Sics", @class = "hidden" })  
-					    </div>
-				    </td>
-			    </tr>
+                        <div class="col">
+                            <label for="sics">
+                                SICs</label>
+                            <input type="text" id="sics" class="narrow txt" />
+                            <span class="icon"><a href="#">
+                                <img src="/images/icon-new_message_dlm.png" width="20" height="19" alt="SICs"></a></span>
+                        </div>
+                    </td>
+                </tr>
 		    </table>
 	    </div>
 	    <div class="section advance">
@@ -262,7 +239,7 @@
 						    <label for="messTypeInput">Message Type</label>
 						    @*---------------------message type dropdown---------------------------*@
                                 @{
-                                 var items5 = new List<SelectListItem>{
+                             var items5 = new List<SelectListItem>{
                                         new SelectListItem {Value = "", Text = "", Selected = true},
                                         new SelectListItem {Value = "type1", Text = "type 1"},
                                         new SelectListItem {Value = "type2", Text = "type 2"},
@@ -291,8 +268,10 @@
 					    <div class="col">
 						    <label for="expirytime">Expiry Time</label>
 						    <div class="input date">
-							       @Content.DTG("expirytime_dtg", Model.Expiry, Url,"Expiry Time")
-                                    @Html.TextBoxFor(model => model.Expiry, new { id = "expirytime", @class = "hidden", tabindex = "0" })
+                                <input type="text" id="exp-date" class="txt has-icon hasDatepicker" style="border-color: rgb(191, 190, 190);"/>
+                                <img class="ui-datepicker-trigger" src="images/icon-abm_calendar.png" alt="..." title="..."/>
+							       @*Content.DTG("expirytime_dtg", Model.Expiry, Url, "Expiry Time")
+                                    @Html.TextBoxFor(model => model.Expiry, new { id = "expirytime", @class = "hidden", tabindex = "0" })*@
 						    </div>
 					    </div>
 				    </td>
@@ -308,14 +287,12 @@
 			    </tr>
 			    <tr>
 				    <td>
-					    <div class="col left">
-						    <label for="replybytime_dtg">Reply By Time</label>
-						    <div class="input date">
-							       @Content.DTG("replybytime_dtg", Model.ReplyBy, Url, "ReplyBy Time")
-                                        @Html.TextBoxFor(model => model.ReplyBy, new { id = "replybytime", @class = "hidden", tabindex = "0" })
-						    </div>
-					    </div>
-				    </td>
+                        <div class="col left">
+										<label for="reply-by-date">Reply By Time</label>
+										<div class="input date">
+											<input type="text" id="reply-by-date" class="txt has-icon hasDatepicker"><img class="ui-datepicker-trigger" src="/images/icon-abm_calendar.png" alt="..." title="..."/>
+										</div>
+									</div>				    </td>
 				    <td>
 					    <div class="col right">
 						    <label for="related">Related</label>
@@ -329,48 +306,97 @@
 		    </table>
 	    </div>
     <!-- EDITOR -->
-    <div id="editor-wrap">
-        <div id="editor2">					
-        </div>
-        <div id="advance-button">
-	        <a href="#">Show Advanced Options</a>
-        </div>
-    </div> 
+						
+
+				<div id="editor-wrap">
+					<div id="editor">
+						
+					<textarea class="tinymce" id="textarea" rows="20" cols="50"></textarea>
+					
+					</div>
+					<div id="advance-button"> <a href="#">Show Advanced Options</a> </div>
+				</div>
+
+					
+    <br class="clear" />
 			
   
-    @*container for richtext*@  
-        
-        <div id="editdiv4">
-            <textarea class="richtext" id="richtext" name="richText" cols="50" rows="15"> @Model.Body</textarea>
-            @Html.TextAreaFor(model => model.Body, new {@class="hidden", id="body", name="body", cols="50", rows="15" })
-        </div> 
-      
-    <div   tabindex='0'  id="instructionsContainer" >                 
-        @{
-            var boguslist1 = new List<SelectListItem>{                       
-                new SelectListItem {Value = "1", Text = "Correction to follow."},
-                new SelectListItem {Value = "2", Text = "Intended recipients only"},
-                new SelectListItem {Value = "2", Text = "'twas brillig and the slithy tove"},
-                new SelectListItem {Value = "4", Text = "did gyre and gimbal in the wabe"}
-            };
-        }
-        @Html.ListBox("instructionsList", boguslist1, new { id = "instructionsList", @class = "instructionslist", tabindex = "0" });          
-    </div>
-    </div>  @* end of editor*@ 
 }
 		
-<script type="text/javascript">
-    $("form").submit(function (e) {
-        doPagePreparation();
-        var customIsValid = doPageValidation();
-        if ( !customIsValid )
-        {
-            return false;
-        }
-        var standardIsValid = $( this ).validate().form();        
-        if ( !standardIsValid  )
-        {
-            return false;
-        }
-    });
-</script>
+
+@section SideBar
+{
+
+			<div class="col-left" id="mailbox">
+				<div id="mailbox-scroll">
+					<h2>Mailboxes</h2>
+					<ul id="mailbox-list">
+						<li id="inbox">
+							<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Inbox</strong> </a></div>
+							<ul>
+								<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
+								<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
+								<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+							</ul>
+						</li>
+						<li id="draft">
+							<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Draft</strong> </a></div>
+							<ul>
+								<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
+								<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
+								<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+							</ul>
+						</li>
+						<li id="sent">
+							<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Sent</strong> </a></div>
+							<ul>
+								<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
+								<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
+								<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+							</ul>
+						</li>
+						<li id="trash">
+							<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Discard</strong> </a></div>
+							<ul>
+								<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
+								<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
+								<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+							</ul>
+						</li>
+						<li id="templates">
+							<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Templates</strong> </a></div>
+							<ul>
+								<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
+								<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
+								<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+							</ul>
+						</li>
+						<li id="objectives">
+							<div><a href="#"><span class="counter">6</span><span class="icon"></span><strong>Objective</strong> </a></div>
+							<ul>
+								<li><a href="#"><span class="counter">8</span>Appointment/Unit</a></li>
+								<li><a href="#"><span class="counter">16</span>Appointment 2</a></li>
+								<li><a href="#"><span class="counter">999</span>Appointment 3</a></li>
+							</ul>
+						</li>
+					</ul>
+					<h2>Folders</h2>
+					<ul id="folder-list">
+						<li><a href="#"><span class="icon"></span><strong>General Mail</strong></a></li>
+						<li><a href="#"><span class="icon"></span><strong>Project Lion</strong></a></li>
+						<li><a href="#"><span class="icon"></span><strong>Project XD</strong></a></li>
+						<li><a href="#"><span class="icon"></span><strong>Project 14W</strong></a></li>
+					</ul>
+				</div>
+				<div id="left-menu-collapse"><a href="#"><img src="/images/bg-left_menu_collapse.png" width="30" height="11" align="Close Menu" alt="bg-left_menu_collapse"/></a></div>
+				<ul id="left-menu">
+					<li class="current"><a href="index.html">Mailboxes</a></li>
+					<li><a href="message_monitor.html">Message Monitor</a></li>
+					<li><a href="audit_trail.html">Audit Trail</a></li>
+					<li><a href="#">Distribution Management</a></li>
+					<li><a href="#">System Preferences</a></li>
+					<li><a href="#">User Management</a></li>
+					<li><a href="address_book_management.html">Address Book Management</a></li>
+				</ul>
+            </div>
+            }
