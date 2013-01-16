@@ -14,6 +14,10 @@
     ViewBag.Title = "Create";
 }
 
+@*something seems screwy with our routing. The actionlink builds the wrong url *@
+@*@Html.ActionLink("View Sic Book", "Index", "Sic", new { Target="_blank" }) 
+<a href="../Sic" target="_blank">View Sic Book</a>*@
+
 
 @section CSS
 {
@@ -54,9 +58,7 @@
 
 @using (Html.BeginForm("Create", "Message", FormMethod.Post, new { /*id = "NewMessageForm",*/ @class = "email new-message" }))
 {
-    char[] c = {(char) 13};
-    Response.Write(new String(c));
-    
+
     <input type="hidden" id="timezone" value="Z"/>
     
     // DateTimeFormatInfo auDtfi = new CultureInfo("en-AU", false).DateTimeFormat;
@@ -135,22 +137,8 @@
 				    <td colspan="2">
 					    <div class="col">
 						    <label for="action">Action</label>
-						    @*container for Action *@
-                        
-                                <div tabindex='0' id="actioncont">
-                                    <div tabindex='0' class="action">
-                                        @{                         
-    foreach (string address in Model.ActionAddressees)
-    {
-                                                <div class="a" tabIndex=0><div class="icon"></div><span class="addresstext">@address</span></div>
-    }
-                                        }  
-                                        <input tabindex='0'  type="text"  title="type an address..." class="addressInput watermark wide txt error" data-otf-autocomplete="@Url.Action("AddressSearch", "Address")" /><br/>
-                                    </div>                
-                                </div>
-                             
-                            <span class="icon"><a href="#"><img src="/images/icon-new_message_contact.png" width="20" height="19" alt="Action" /></a></span> 
-                             @*Html.ListBox("ActionAddressees", new SelectList(@Model.ActionAddressees), new { id = "ActionAddressees", @class = "hidden" })*@
+										<input type="text" id="action" class="wide txt error" />
+										<span class="icon"><a href="#"><img src="/images/icon-new_message_contact.png" width="20" height="19" alt="Action" /></a></span> <span class="error">Invalid Input</span>
 					    </div>
 				    </td>
 			    </tr>
@@ -159,19 +147,8 @@
 					    <div class="col">
 						    <label for="info">Info</label>
 						    @*container for Info *@
-                            <div tabindex='0' class="addresscontainer wide txt" id="infocont">
-                                <div tabindex='0' class="info">
-                                    @{ 
-    foreach (string address in Model.InfoAddressees)
-    {
-                                            <div class="a" tabIndex=0><div class="icon"></div><span class="addresstext">@address</span></div>
-    } 
-                                      }     
-                                    <input tabindex='0'  type="text"  title="type an address..." class="wide txt" data-otf-autocomplete="@Url.Action("AddressSearch", "Address")" /><br/>
-                                </div>
-                            </div>
-                            <span class="icon"><a href="#"><img src="~/images/icon-new_message_contact.png" width="20" height="19" alt="Info" /></a></span>	
-                             @*Html.ListBox("InfoAddressees", new SelectList(@Model.InfoAddressees), new { id = "InfoAddressees", @class = "hidden" })*@
+										<input type="text" id="info" class="wide txt" />
+										<span class="icon"><a href="#"><img src="images/icon-new_message_contact.png" width="20" height="19" alt="Info" /></a></span>
 					    </div>
 				    </td>
 			    </tr>
