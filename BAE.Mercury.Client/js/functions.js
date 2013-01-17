@@ -45,7 +45,8 @@ function addScroll() {
 		zindex  : 99
 	});	
 }
-	var ie7 = (document.all && !window.opera && window.XMLHttpRequest && typeof window.external.AddToFavoritesBar=='undefined') ? true : false;
+
+var ie7 = (document.all && !window.opera && window.XMLHttpRequest && typeof window.external.AddToFavoritesBar=='undefined') ? true : false;	
 
 $(document).ready(function() {
 
@@ -99,7 +100,7 @@ $(document).ready(function() {
 			});
 		$( "#email-list-wrap" ).resizable({
 				maxWidth: 500,
-				minWidth: 320,
+				minWidth: 350,
 				handles: 'e',
 				alsoResize: "#search-inbox,#search-results",
 				start: function(event, ui) {
@@ -290,28 +291,42 @@ $(document).ready(function() {
 
 	if( $('#eff-date, #exp-date, #reply-by-date, #dtg, #audit-from, #audit-to').length > 0 )
 	{
+		try {
+			//ie6 fix
+		    document.execCommand("BackgroundImageCache", false, true);
+		} catch(exception) {
+		    // other browsers do nothing
+		}
+
+
 		//DO NOT MAKE ANY CHANGES HERE SEE jquery-ui-timepicker-addon.js
-		$('#eff-date, #exp-date, #reply-by-date, #dtg, #audit-from, #audit-to').datetimepicker({    
-				showOn: 'button',
-				buttonImage: "images/icon-abm_calendar.png",
-				buttonImageOnly: true,
-				timeFormat: "hhmm",
-				dateFormat: "dd|M yy",
-				timeSuffix: '',
-				isRTL: false,
-				separator: theTimeZone + " ",
-				constrainInput: false,
-				numberOfMonths: 1,
-				showTime: true,
-				setDefaults: true,
-				controlType: 'select',
-				onSelect: function(returnText){
-					executeRepair(this, returnText);
-				},
-				onClose: function(returnText){
-					executeRepair(this, returnText);
-				}
-			});
+		var datetimepicker_opt = new Object;
+
+		datetimepicker_opt = {
+								showOn: 'button',
+								buttonImage: "images/icon-abm_calendar.png",
+								buttonImageOnly: true,
+								timeFormat: "hhmm",
+								dateFormat: "dd|M yy",
+								//timeSuffix: '',
+								//isRTL: false,
+								separator: theTimeZone + " ",
+								//constrainInput: false,
+								//numberOfMonths: 1,
+								showTime: true
+								//setDefaults: true,
+								//controlType: 'select'			
+								/*onSelect: function(returnText){
+									executeRepair(this, returnText);
+								},
+								onClose: function(returnText){
+									executeRepair(this, returnText);
+								}*/
+							};
+		//IE having issue with drop-down
+		if(!ie7) { datetimepicker_opt.controlType = 'select'; }
+
+		$('#eff-date, #exp-date, #reply-by-date, #dtg, #audit-from, #audit-to').datetimepicker(datetimepicker_opt);
 
 		$('#eff-date, #exp-date, #reply-by-date, #dtg').keyup(function(){
 			executeRepair(this, $(this).val() );
@@ -500,5 +515,86 @@ $(document).ready(function() {
 
 	});
 	// End Collapsible left menu - new (Firdaus)
+
+
+	//ryan collapsible left-menu (#mailbox)
+	//ryan collapsible mail-listing (#email-list-wrap)
+	var setOfcollapsible = [
+							{
+								'id'	: 'mailbox',
+								'parent': 'email-search',
+								'width'	: 0,
+								'fade'	: '.counter, #mailbox-list li div a strong, #folder-list li a strong'
+							},
+							{
+								'id'	: 'email-list-wrap',
+								'parent': 'email-content',
+								'width'	: 0,
+								'fade'	: '#email-sort, #advance-search-button, .email div, #search .search-right'
+							}
+						];
+
+	var fade_animateDuration = 100;		
+	var collapsible_class = 'collapse-box';
+	//var collapsible_animateDuration = 300;		
+	//var collapsible_animationType = 'swing';
+
+	var runningVar = new Object;
+	$(setOfcollapsible).each(function(index, setDom)
+	{
+		if(
+			($('#' + setDom.parent + ' div.collapse a').length > 0)
+			&&
+			($('#' + setDom.id).length > 0)
+		)
+		{
+			setOfcollapsible[index].width = $('#' + setDom.id).css('width');
+			
+			$('#' + setDom.parent + ' div.collapse a').click(function(event){				
+				event.preventDefault();
+				removeScroll();
+				var aThis = $(this);				
+				$(setDom.fade).fadeOut(fade_animateDuration);
+				/*if($('#' + setDom.id).css('width').replace('px','') != 0)
+				{
+					runningVar[setDom.id] = $('#' + setDom.id).css('width').replace('px','');
+				}*/
+				var searchInputWidth = $('#search-inbox').css('width').replace('px','');				
+
+				/*$('#' + setDom.id).animate(
+					{
+						width: ($('#' + setDom.id).css('width') >= setDom.width ? 0 : runningVar[setDom.id])
+					}, 
+					collapsible_animateDuration, 
+					collapsible_animationType, 
+					function(){
+						addScroll();
+						$(aThis).toggleClass('active'); 
+						
+						$('#search-inbox').css('width', searchInputWidth );
+
+						$(setDom.fade).fadeIn(fade_animateDuration);
+					}
+				);*/
+				
+				if( $('#' + setDom.id).hasClass(collapsible_class) )
+				{
+					$('#' + setDom.id).show();
+					$('#' + setDom.id).removeClass(collapsible_class);
+					$(setDom.fade).fadeIn(fade_animateDuration);
+				}
+				else
+				{
+					$('#' + setDom.id).hide();	
+					$('#' + setDom.id).addClass(collapsible_class);
+				}
+				setTimeout(function(){
+					addScroll();
+					$(aThis).toggleClass('active'); 					
+					$('#search-inbox').css('width', searchInputWidth );
+				}, 200);
+			});
+		}
+	});
 
 });

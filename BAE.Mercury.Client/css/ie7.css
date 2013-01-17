@@ -31,3 +31,6 @@
 /** ADD NEW MESSAGE **/
 #email-content.new-message .section {overflow: hidden;}
 #editor-wrap {position:absolute; height:36px; width:100%;}
+
+
+#email-search form #advance-search ul li {width:22.5%;}

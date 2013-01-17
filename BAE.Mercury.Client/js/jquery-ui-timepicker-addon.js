@@ -61,7 +61,8 @@ SEARCH FOR "osky"
 			secondText: 'Second',
 			millisecText: 'Millisecond',
 			timezoneText: 'Time Zone',
-			isRTL: false
+			isRTL: false,
+			showAnim: ''
 		};
 		this._defaults = { // Global defaults for all the datetime picker instances
 			showButtonPanel: true,
@@ -113,7 +114,8 @@ SEARCH FOR "osky"
 			sliderAccessArgs: null,
 			controlType: 'slider',
 			defaultValue: null,
-			parse: 'strict'
+			parse: 'strict',
+			showAnim: ''
 		};
 		$.extend(this._defaults, this.regional['']);
 	}
@@ -149,6 +151,7 @@ SEARCH FOR "osky"
 		timezoneList: null,
 		units: ['hour','minute','second','millisec'],
 		control: null,
+		showAnim: '',
 
 		/* 
 		* Override the default settings for all instances of the time picker.
@@ -776,9 +779,12 @@ SEARCH FOR "osky"
 			//	return;
 			//}
 
-			if (this._defaults.timeOnly === true) {
+			if (this._defaults.timeOnly === true) 
+			{
 				formattedDateTime = this.formattedTime;
-			} else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) {
+			} 
+			else if (this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) 
+			{
 				//osky
 
 				//ori
@@ -790,9 +796,9 @@ SEARCH FOR "osky"
 				//version2
 				var tmpDate = formattedDateTime.split('|');
 				formattedDateTime = tmpDate[0] + this.formattedTime;
-				formattedDateTime += this._defaults.separator + this._defaults.timeSuffix + tmpDate[1].toUpperCase();			}
-
-				this.formattedDateTime = formattedDateTime;
+				formattedDateTime += this._defaults.separator + this._defaults.timeSuffix + tmpDate[1].toUpperCase();
+			}
+			this.formattedDateTime = formattedDateTime;
 
 			if (!this._defaults.showTimepicker) {
 				this.$input.val(this.formattedDate);

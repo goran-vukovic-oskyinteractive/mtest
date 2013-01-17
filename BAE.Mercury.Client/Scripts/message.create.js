@@ -575,9 +575,10 @@ function openDTGCal( id )
 {
     //calculate position of DTG to be edited
     var container = $( "#dtpContainer" );
-    var input = $( "#" + id );
-    var left =parseInt(input.css( "left" )) + input.parent()[0].offsetLeft  ;
-    var top = parseInt( input.css( "top" ) ) + input.parent()[0].offsetTop + 24;
+    var input = $("#" + id);
+    var off = input.offset();
+    var left = off.left; // parseInt(input.css( "left" )) + input.parent()[0].offsetLeft  ;
+    var top = off.top; // parseInt( input.css( "top" ) ) + input.parent()[0].offsetTop + 24;
     //-position DTG editor div and make visible
     container.css( "display", "block" );
     container.css( "position", "absolute" );
