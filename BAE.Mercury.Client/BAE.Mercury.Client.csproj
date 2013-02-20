@@ -462,7 +462,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\AddressBook\OskyAddressBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -524,10 +523,7 @@
     <Content Include="Views\SiteMessageMonitor\_SiteMonitorMenu.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Views\Message\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\AddressBook\_AppointmentList.cshtml" />
-    <Content Include="Views\AddressBook\sample1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BAE.Mercury.Business\BAE.Mercury.Business.csproj">

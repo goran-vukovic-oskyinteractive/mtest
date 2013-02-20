@@ -60,6 +60,7 @@
 		        <div class="col-wrap">
                     @RenderSection("SideBar", required: false)
                     <div class="col-right new-message" id="email-content">
+                        <input type="hidden" id="timezone" value="Z">
                         @RenderBody()
                     </div>
 
