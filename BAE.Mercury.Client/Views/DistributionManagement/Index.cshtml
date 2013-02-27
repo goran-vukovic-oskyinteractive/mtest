@@ -1,0 +1,106 @@
+﻿@*================================================================================
+           %name: Create.cshtml %
+       %version: 29 %
+       Copyright: Copyright 2012 BAE Systems Australia
+                  All rights reserved.
+================================================================================*@
+@using System.Globalization
+@using System.Net.Mime
+@using BAE.Mercury.Client.Models 
+@model BAE.Mercury.Client.Models.vmNewMessage
+
+@{
+    //Layout = "../Shared/_PopupLayout.cshtml";
+    ViewBag.Title = "Create";
+}
+
+@*something seems screwy with our routing. The actionlink builds the wrong url *@
+@*@Html.ActionLink("View Sic Book", "Index", "Sic", new { Target="_blank" }) 
+<a href="../Sic" target="_blank">View Sic Book</a>*@
+
+
+@section CSS
+{
+<link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="~/css/nm.css" rel="stylesheet" type="text/css" media="all" />
+<!--[if IE 7]>
+<link href="../../css/ie7.css" rel="stylesheet" type="text/css" media="all" />
+<![endif]-->
+<!--[if IE 8]>
+<link href="../../css/ie8.css" rel="stylesheet" type="text/css" media="all" />
+<![endif]-->
+<link href="~/css/jquery-ui.css" rel="stylesheet"  type="text/css" />
+<link href="~/css/dm.css" rel="stylesheet"  type="text/css" />
+<link href="~/css/reset.css" rel="stylesheet" type="text/css" />
+<link href="~/css/colorbox.css" rel="stylesheet" type="text/css" />
+}
+
+@section Scripts
+{
+<script src="~/Scripts/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery-ui-1.8.20.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.nicescroll.js" type="text/javascript" ></script>
+<script src="~/Scripts/jquery.colorbox-min.js" type="text/javascript"></script>
+<script src="~/Scripts/respond.min.js" type="text/javascript"></script><!-- IE7 min/max width support -->
+<script src="~/Scripts/functions.js" type="text/javascript"></script>
+<script src="~/Scripts/functions_dm.js" type="text/javascript"></script>
+
+
+}
+
+@section MenuButtons
+{
+@*no buttons for now*@    
+}
+
+@section LeftMenuButtons
+{
+@*no buttons for now*@    
+}
+
+@section SideBar
+
+{
+<div class="col-left ui-resizable" id="mailbox">
+				<div tabindex="5000" style="height: 77px; overflow-y: hidden;" id="mailbox-scroll">
+					<h2>Distribution Management ZZ</h2>
+					<p class="title"><a href="#" class="dm-btn">Add Set</a><strong>Add Set</strong></p>
+					<ul id="mailbox-list">
+						<li class="set">
+							<div><a href="#"><span class="icon"></span><strong>Set 1</strong></a>
+								<div class="btn-set"><a href="#"><img src="~/images/btn-dm_edit.png" alt="Edit" height="24" width="25"></a><a href="#"><img src="~/images/btn-dm_delete.png" alt="Delete" height="24" width="25"></a><a href="#"><img src="~/images/btn-dm_copy.png" alt="Copy" height="24" width="25"></a></div>
+							</div>
+							<ul style="display: none;">
+								<li class="lock"><a href="#">Unit = 1 RAR</a></li>
+								<li class="lock"><a href="#">Unit = 2 RAR</a></li>
+								<li><a href="#">Unit = 3 RAR</a></li>
+							</ul>
+						</li>
+						<li class="set">
+							<div><a href="#"><span class="icon"></span><strong>Set 2</strong></a>
+								<div class="btn-set"><a href="#"><img src="~/images/btn-dm_edit.png" alt="Edit" height="24" width="25"></a><a href="#"><img src="~/images/btn-dm_copy.png" alt="Copy" height="24" width="25"></a></div>
+							</div>
+							<ul style="display: none;">
+								<li><a href="#">Unit = 1 RAR</a></li>
+								<li><a href="#">Unit = 2 RAR</a></li>
+								<li><a href="#">Unit = 3 RAR</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div id="left-menu-collapse"><a href="#"><img src="~/images/bg-left_menu_collapse.png" align="Close Menu" height="11" width="30"/></a></div>
+				<ul id="left-menu">
+					<li><a href="index.html">Mailboxes</a><span class="badges"><span>999</span></span></li>
+					<li><a href="message_monitor.html">Message Monitor</a> <span class="badges"><span>9</span></span></li>
+					<li><a href="audit_trail.html">Audit Trail</a></li>
+					<li class="current"><a href="distribution_management.html">Distribution Management</a></li>
+					<li><a href="#">System Preferences</a></li>
+					<li><a href="#">User Management</a></li>
+					<li><a href="address_book_management.html">Address Book Management</a></li>
+				</ul>
+			<div style="z-index: 1000;" class="ui-resizable-handle ui-resizable-e"></div></div>
+}
+
+
+
+

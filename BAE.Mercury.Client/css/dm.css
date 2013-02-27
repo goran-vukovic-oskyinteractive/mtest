@@ -1,0 +1,111 @@
+/**** DISTRIBUTION MANAGEMENT ****/
+
+/* Left Column */
+#mailbox #message-icon.dm {}
+#mailbox #message-icon.dm li {list-style:none; display:block; margin:0 5%; padding:0; float:left;  text-align:center; width:60px;}
+#mailbox #message-icon.dm li:first-child {margin-left:15%;}
+#mailbox #message-icon.dm li input[type="checkbox"] {position:absolute; right:0;}
+
+#mailbox ul#mailbox-list li.set {position:relative; padding:0;}
+#mailbox ul#mailbox-list li.set div.btn-set {position:absolute; right:10px; top:7px; background-image:none;}
+#mailbox ul#mailbox-list li.set div.btn-set a {border:none; padding:0; background:none; display:inline; margin:0 0 0 5px;}
+#mailbox ul#mailbox-list li.set li.lock a {background-image:url(../images/icon-dm_lock.png); background-repeat:no-repeat; background-position:12px 9px;}
+
+#mailbox p.title {color:#fff; padding:0 10px 10px; margin:0 0 10px 0; overflow:hidden;  border-top:2px solid #343434; padding-top:10px;}
+#mailbox p.title a {background:url(../images/bg-abm_buttons.png) -25px 0; no-repeat; display: block;width: 25px;height: 24px;text-indent: -9999px;float: right;margin: -4px 0 0 0; }
+#mailbox p.title a:hover {background-position:-25px -24px;}
+
+
+
+/* Middle Column */
+#graph {width:69%; border:1px solid #e4e4e4; background:#fff; margin:0 0 20px 0; float:left; min-height:300px; height:auto!important; height:300px;}
+#graph > div {padding:20px;}
+#rule-visualiser {width:90%; margin:0 0 20px 0; background:none; border:none; border-radius:0; padding:0; font:12px/18px Arial, Helvetica, sans-serif!important;}
+#rule-visualiser * {font:12px/18px Arial, Helvetica, sans-serif;}
+#rule-visualiser .ui-tabs-nav {background:none; border:none; margin:0; padding:0;}
+#rule-visualiser .ui-tabs-nav li a {}
+#rule-visualiser .ui-tabs-panel {background:#fff; border:1px solid #e4e4e4; padding:10px;}
+#rule-visualiser .ui-tabs-panel p {margin:0 0 5px 0;}
+#rule-visualiser .ui-state-active,
+#rule-visualiser .ui-state-hover {background:#fff!important; border:1px solid #e4e4e4!important; border-bottom:1px solid #fff!important;}
+
+#select-field {margin:0;}
+#select-field li {list-style:none; padding:0 0 10px 0; overflow:hidden; position:relative;}
+#select-field li input,
+#select-field li select {float:left; margin:0 10px 0 0; width:40%; min-width:100px; background: #FFFFFF; border: 1px solid #DCDCDC;padding: 5px 2px;}
+#select-field li select {padding:4px 2px;}
+#select-field li .btn-add {float:left;}
+#select-field li .btn-add a {display:block; float:left; background:url(../images/btn-plusminus.png) 0 0 no-repeat; width:17px; height:17px; text-indent:-9999px; margin:5px 5px 0 0;}
+#select-field li .btn-add a.btn-minus {background-position:0 -17px;}
+
+#rule-visualiser-wrap {width:30%; float:right; overflow:hidden;}
+
+/* Style for nodes */
+#graph .node {background:#e7e7e8; padding:5px; width:110px; border-radius:20px; text-align:center; border:1px solid #e7e7e8; position:relative; }
+#graph .node.wide {width:110px; border-radius:5px; position:relative;}
+#graph .node p {margin:0;}
+#graph .node.action {background:#b6d2eb; border:1px solid #b6d2eb }
+#graph .node.info {background:#bcdc96; border:1px solid #bcdc96 }
+#graph .node.action.dotted {border:1px dashed #95a584;}
+#graph .node.info.dotted {border:1px dashed #8496a5;}
+#graph .node.infoaction {background:url(../images/bg-node_action_info.png) center center repeat-x; padding:6px; border:none;}
+
+#graph .node.expandible {padding-right:10px; width:105px;}
+#graph .node.expandible .arrow {background:url(../images/btn-dm_arrow.png) 0 0 no-repeat; display:block; width:8px; height:8px; position:absolute; right:5px; top:50%; cursor:pointer;}
+#graph .node.expandible .expand {height:200px; overflow:auto; display:block; position:absolute; right:0; background:#e5f5fc; z-index:99; padding:5px; width:110px; top:auto; border-radius:5px; display:none;}
+
+#graph .node.vertical {border-radius:5px; margin-top:60px; margin-left:-35px;}
+#graph .node.vertical {
+/* Safari */
+-webkit-transform: rotate(-90deg);
+/* Firefox */
+-moz-transform: rotate(-90deg);
+/* IE */
+-ms-transform: rotate(-90deg);
+/* Internet Explorer */
+filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+
+/* Style for icons */
+#graph .node-btn {}
+#graph .node-btn a {display:block; margin:0 2px 3px; text-indent:-9999px;}
+#graph .node-btn.inline {overflow:hidden;}
+#graph .node-btn.inline a {float:left;}
+#graph .node-btn a.add,
+#graph .node-btn a.delete,
+#graph .node-btn a.edit {width:13px; height:13px; background:url(../images/icon-node_plusminus.png) 0 0 no-repeat;}
+#graph .node-btn a.add:hover {background-position:-13px 0;}
+#graph .node-btn a.delete {background-position:0 -13px;}
+#graph .node-btn a.delete:hover {background-position:-13px -13px;}
+#graph .node-btn a.edit {background-position:0 -26px;}
+#graph .node-btn a.edit:hover {background-position:-13px -26px;}
+
+#graph .node-btn a.yes,
+#graph .node-btn a.no {width:14px; height:13px; background:url(../images/btn-dm_yesno.png) 0 0 no-repeat; }
+#graph .node-btn a.no {background-position:bottom left;}
+
+#graph .node-btn a.stop,
+#graph .node-btn a.stopdisable {width:28px; height:27px; background:url(../images/btn-dm_stop.png) 0 0 no-repeat;}
+#graph .node-btn a.stopdisable {background-position:0 -27px;}
+
+#graph .node-btn a.actioninfo {}
+
+/**** NEW GRAPH ****/
+#graph .row {overflow:hidden;  margin:0 0 5px 0; color:#fff; font-size:12px; }
+#graph .row .col {float:left; border-radius:5px;}
+#graph .row .col span {padding:10px;}
+#graph .row .col span.highlight {background:yellow; padding:0 2px; border-radius:2px; color:black}
+#graph .row .col.unit {width:29%; margin:0 1% 0 0; background:blue; height:22px;}
+#graph .row .col.sic {width:59%; margin:0 1% 0 0}
+#graph .row .col.sic .item {background:red; margin:0 0 1px 0; border-radius:5px; height:21px; line-height:21px;}
+#graph .row .col.control {width:10%; background:blue}
+
+#graph .row .col.unit.h1 {height:22px;}
+#graph .row .col.unit.h2 {height:44px;}
+#graph .row .col.unit.h3 {height:66px;}
+#graph .row .col.unit.h4 {height:88px;}
+#graph .row .col.unit.h5 {height:110px;}
+#graph .row .col.unit.h6 {height:66px;}
+#graph .row .col.unit.h7 {height:66px;}
+#graph .row .col.unit.h8 {height:66px;}
