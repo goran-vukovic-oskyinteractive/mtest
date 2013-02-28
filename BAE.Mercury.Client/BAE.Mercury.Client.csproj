@@ -286,6 +286,7 @@
     <Content Include="css\abm.css" />
     <Content Include="css\at.css" />
     <Content Include="css\colorbox.css" />
+    <Content Include="css\dm-ie.css" />
     <Content Include="css\dm.css" />
     <Content Include="css\editor.css" />
     <Content Include="css\ie7.css" />
@@ -295,7 +296,7 @@
     <Content Include="css\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Images\Attach.gif" />
+    <Content Include="Images\attach.gif" />
     <Content Include="Images\bg-abm_btn.png" />
     <Content Include="Images\bg-abm_buttons.png" />
     <Content Include="Images\bg-abm_highlight.png" />
@@ -308,6 +309,7 @@
     <Content Include="Images\bg-body.png" />
     <Content Include="Images\bg-btn_small.png" />
     <Content Include="Images\bg-buttons.png" />
+    <Content Include="Images\bg-dm-appointment.png" />
     <Content Include="Images\bg-dot.png" />
     <Content Include="Images\bg-download.png" />
     <Content Include="Images\bg-dropdown.png" />
@@ -338,6 +340,10 @@
     <Content Include="Images\bg-message_list_hover.png" />
     <Content Include="Images\bg-middle.png" />
     <Content Include="Images\bg-middle_sep.png" />
+    <Content Include="Images\bg-node_blue.png" />
+    <Content Include="Images\bg-node_blue_highlight.png" />
+    <Content Include="Images\bg-node_green.png" />
+    <Content Include="Images\bg-node_green_highlight.png" />
     <Content Include="Images\bg-search.png" />
     <Content Include="Images\bg-search_remove.png" />
     <Content Include="Images\bg-search_results.png" />
@@ -360,6 +366,7 @@
     <Content Include="Images\icon-advance_search.png" />
     <Content Include="Images\icon-back.png" />
     <Content Include="Images\icon-delete.png" />
+    <Content Include="Images\icon-edit.png" />
     <Content Include="Images\icon-forward.png" />
     <Content Include="Images\icon-inbox.png" />
     <Content Include="Images\icon-logout_menu.png" />
@@ -368,10 +375,12 @@
     <Content Include="Images\icon-mail_navy.png" />
     <Content Include="Images\icon-mail_raaf.png" />
     <Content Include="Images\icon-mark.png" />
+    <Content Include="Images\icon-minus.png" />
     <Content Include="Images\icon-new.png" />
     <Content Include="Images\icon-new_message_contact.png" />
     <Content Include="Images\icon-new_message_dlm.png" />
     <Content Include="Images\icon-new_message_email.png" />
+    <Content Include="Images\icon-plus.png" />
     <Content Include="Images\icon-print.png" />
     <Content Include="Images\icon-reject.png" />
     <Content Include="Images\icon-release.png" />
@@ -389,6 +398,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\countdown.js" />
+    <Content Include="Scripts\dm.js" />
     <Content Include="Scripts\functions.js" />
     <Content Include="Scripts\functions_dm.js" />
     <Content Include="Scripts\Initialise.js" />
@@ -401,7 +411,9 @@
     <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
     <Content Include="Scripts\jquery-ui.custom.js" />
     <Content Include="Scripts\jquery-ui.custom.min.js" />
+    <Content Include="Scripts\jquery.colorbox-min.js" />
     <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\jquery.corner.js" />
     <Content Include="Scripts\jquery.dynatree-1.2.2.js" />
     <Content Include="Scripts\jquery.dynatree.min.js" />
     <Content Include="Scripts\jquery.input.js" />
@@ -623,7 +635,7 @@
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
+          <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>8381</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>

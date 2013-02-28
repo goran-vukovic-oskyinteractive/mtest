@@ -1,135 +1,25 @@
-#audit-header-wrap
-{
-	background:url(../images/bg-audit-trail-top.png) top left no-repeat;
-	height:30px;
-	position:relative;
-	width: 283px;
-}
+#audit-header-wrap { background:url(../images/bg-audit-trail-top.png) top left no-repeat; height:30px; position:relative; width: 283px; }
+h3.audit-sp { color: #fff; line-height: 30px; padding-left: 30px; }
+#email-content.new-message .section label.l-audit { width:90px; }
+#email-content.new-message .section input.txt.t-audit, #email-content.new-message .section select {  }
+#email-content.new-message .section input.txt.t-audit.has-dp { }
+#email-content.new-message .section input.txt.t-audit-wide {  }
+#email-content.new-message .section span.error-audit { margin:0 0 0 90px; }
+#audit-btn {margin:10px 0 0 100px; overflow:hidden;}
+#audit-btn ul li { display: inline; float: left; list-style: none; margin: 0; padding: 0; position: relative; text-align: center; }
+#audit-btn ul li a { background: url(../images/bg-audit-btn.png) 0 0 no-repeat; width: 92px; height: 30px; display: block; float: left; line-height: 30px; margin: 0 10px 0 0; text-align: center; font-weight: normal; font-size: 12px; color: #3c3c3c; }
+#audit-btn ul li#btn-audit-search a, #audit-btn ul li#btn-audit-reset a, #audit-btn ul li#btn-audit-export a { background-position: 0 0; }
+#audit-btn ul li#btn-audit-search a:hover, #audit-btn ul li#btn-audit-reset a:hover, #audit-btn ul li#btn-audit-export a:hover { background-position: 0 -30px; }
 
-h3.audit-sp
-{
-	color: #fff;
-	line-height: 30px;
-	padding-left: 30px;
-}
+img.ui-datepicker-trigger { cursor: pointer; }
+table#audit-table-top, table#audit-table-btm { margin: 0 auto; }
+div#audit-table-container-top { background-color: #45484c; padding:0 15px }
+div#audit-table-container-btm { margin:20px 0; padding:0 20px}
 
-#email-content.new-message .section label.l-audit
-{
-	width: 70px;
-}
+table#audit-table-top { color: #fff; width:100%; margin:0 auto; }
+table#audit-table-btm { background-color: #fff; width: 100%; margin:0 auto; }
+table#audit-table-btm tr {  }
+table#audit-table-btm tr td { padding: 15px 10px; border-bottom: 1px solid #dcdcdc;}
+table#audit-table-top th, table#audit-table-btm td { vertical-align: middle; height:20px; text-align:left;}
 
-#email-content.new-message .section input.txt.t-audit,
-#email-content.new-message .section select 
-{
-	width: 255px;
-}
-
-#email-content.new-message .section input.txt.t-audit.has-dp
-{
-	width: 228px;
-}
-
-#email-content.new-message .section input.txt.t-audit-wide 
-{
-	width: 630px;
-}
-
-#email-content.new-message .section span.error-audit 
-{
-	margin:0 0 0 85px; 
-}
-
-#audit-btn ul li 
-{
-	display: inline;  
-	float: left; 
-	list-style: none; 
-	margin: 0; 
-	padding: 0; 
-	position: relative;
-	text-align: center; 
-}
-
-#audit-btn ul li a 
-{
-	background: url(../images/bg-audit-btn.png) 0 0 no-repeat; 
-	width: 92px; 
-	height: 30px; 
-	display: block; 
-	float: left; 
-	line-height: 30px;
-	margin: 0 5px 5px; 
-	text-align: center; 
-	font-weight: normal; 
-	font-size: 12px; 
-	color: #3c3c3c; 
-}
-
-#audit-btn ul li#btn-audit-search a, #audit-btn ul li#btn-audit-reset a, #audit-btn ul li#btn-audit-export a  
-{
-	background-position: 0 0;
-}
-
-#audit-btn ul li#btn-audit-search a:hover, #audit-btn ul li#btn-audit-reset a:hover, #audit-btn ul li#btn-audit-export a:hover 
-{
-	background-position: 0 -30px;
-}
-
-#audit-btn ul li#btn-audit-search a
-{
-	margin-left: 90px;
-}
-
-img.ui-datepicker-trigger
-{
-	cursor: pointer;
-}
-
-table#audit-table-top, table#audit-table-btm
-{
-	margin: 0 auto;
-	width: 920px;
-}
-
-div#audit-table-container-top
-{
-	background-color: #45484c;
-	padding: 5px;
-}
-
-div#audit-table-container-btm
-{
-	margin-bottom: 20px;
-	padding: 5px;
-}
-
-table#audit-table-top
-{
-	color: #fff;
-	width: 85%;
-}
-
-table#audit-table-btm
-{
-	background-color: #fff;
-	margin: 10px auto 0;
-	width: 85%;
-}
-
-table#audit-table-btm tr
-{
-	border-bottom: 1px solid #dcdcdc;
-}
-
-table#audit-table-btm tr td
-{
-	padding: 10px;
-	text-align: center;
-}
-
-table#audit-table-top th, table#audit-table-btm td
-{
-	vertical-align: middle;
-	width: 16%;
-}
-
+table#audit-table-top th {padding:10px;}

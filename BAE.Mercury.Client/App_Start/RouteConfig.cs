@@ -17,10 +17,10 @@ namespace BAE.Mercury.Client
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Message", action = "Create", id = UrlParameter.Optional }
+                //defaults: new { controller = "Message", action = "Create", id = UrlParameter.Optional }
                 //defaults: new { controller = "Folder", action = "Index", id = UrlParameter.Optional }
                 //defaults: new { controller = "AddressBook", action = "Index", id = UrlParameter.Optional }
-                //defaults: new { controller = "DistributionManagement", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "DistributionManagement", action = "Index", id = UrlParameter.Optional }
 
             );
             

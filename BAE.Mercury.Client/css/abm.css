@@ -78,7 +78,7 @@
 .session-content-form .date input.narrow { width:20px; }
 .session-content-form .date input.wide { width:35px; }
 .session-content-form .ui-datepicker-trigger { display:block; position:absolute; right:-20px; top:9px; width:14px; height:14px; cursor:pointer; }
-.session-content-form textarea { background:#efecf4; border:1px solid #dedede; border-radius:5px; width:201px; height:100px; padding:10px; font:12px Arial, Helvetica, sans-serif; }
+.session-content-form textarea { background:#efecf4; border:1px solid #dedede; border-radius:5px; width:201px; height:70px; padding:10px; font:12px Arial, Helvetica, sans-serif; }
 #session-content .session-update-button.align-right { margin:10px 0; padding-left:110px; }
 
 /**** ABM - ADD UNIT ***/
@@ -86,18 +86,23 @@
 .abm-add-new-unit table {width:100%;}
 .abm-add-new-unit table tr td {vertical-align:top;padding:5px 0;}
 .abm-add-new-unit table tr td.label {width:140px;}
-.abm-add-new-unit label {display:block; width:140px; text-align:right; margin:3px 10px 0 0; cursor:pointer; color:#3b3d41;}
+.abm-add-new-unit label {display:block; width:140px; text-align:right; margin:2px 10px 0 0; cursor:pointer; color:#3b3d41;}
 .abm-add-new-unit label a {text-decoration:underline; color:#3b3d41;}
 .abm-add-new-unit input.txt,
 .abm-add-new-unit select,
-.abm-add-new-unit textarea {background:#fff; border:1px solid #c8c8c8; text-align:center; padding:2px; font:12px Arial, Helvetica, sans-serif; color:#525252; width:95%; height:20px; text-align:left; border-radius:2px; float:left;}
-.abm-add-new-unit select {height:25px; width:95%;}
-.abm-add-new-unit textarea {overflow:auto; height:100px; width:95%}
+.abm-add-new-unit textarea {background:#fff; border:1px solid #c8c8c8; padding:2px; font:12px Arial, Helvetica, sans-serif; color:#525252; width:99%; height:20px; text-align:left; border-radius:2px; float:left;}
+.abm-add-new-unit select {height:25px; width:99%;}
+.abm-add-new-unit select.listbox {height:100px;}
+.abm-add-new-unit tr.twocol input.txt,
+.abm-add-new-unit tr.twocol textarea {width:97%;}
+.abm-add-new-unit textarea {overflow:auto; height:70px; width:99%}
 .abm-add-new-unit span.radio {float:left; display:block; margin:0 10px 0 0; overflow:hidden;}
 .abm-add-new-unit span.radio input {display:block; float:left; text-align:left;}
 .abm-add-new-unit span.radio label {width:50px; margin:2px 0 0 0; text-align:left; font-weight:normal;}
 .abm-add-new-unit span.radio.wide {float:none;}
 .abm-add-new-unit span.radio.wide label {width:300px;}
+.abm-add-new-unit span.radio.wide-inline {margin:0 0 10px 0;}
+.abm-add-new-unit span.radio.wide-inline label { float:left; width:auto; margin:0 20px 0 0;}
 /*
 @media screen and (max-width: 1200px) {
 .abm-add-new-unit input.txt,
@@ -115,3 +120,13 @@
 .abm-add-new-unit select {width:51.5%;}
 }
 */
+
+/* Publication History */
+#session-content ul.publication-list {height:600px; overflow:auto; border-radius:5px; width:95%;}
+#session-content ul.publication-list li {list-style:none; display:block; background:#efecf4; padding:20px 15px; border-bottom:1px solid #ccc; overflow:hidden; line-height:45px;}
+#session-content ul.publication-list li:hover {background:url(../images/bg-email_hover.png);}
+#session-content ul.publication-list li span {float:left;} 
+#session-content ul.publication-list li a {display:block; background:url(../images/icon-pdf.png) no-repeat bottom left; width:45px;  height:45px; float:right; text-indent:-9999px;}
+#session-content ul.publication-list li a:hover {background-position:top left;}
+#session-content ul.publication-list li a.resend {background:url(../images/icon-resend.png) bottom left no-repeat;}
+#session-content ul.publication-list li a.resend:hover {background-position:top left;}
