@@ -59,7 +59,49 @@ namespace BAE.Mercury.Client.Models
             actions.Add(sic);
         }
     }
+    public class Unit
+    {
+        private List<DMAppointment> appointments;
+        int id;
+        public Unit(int id)
+        {
+            this.id = id;
+        }
+        public void AddAppointment(DMAppointment appointment)
+        {
+            appointments.Add(appointment);
+        }
+        
+    }
+    public class Set
+    {
+        private List<Unit> units = new List<Unit>();
+        int id;
+        public Set(int id)
+        {
+            this.id = id;
+        }
+        public void AddUnit(Unit unit)
+        {
+            units.Add(unit);
+        }
+    }
     public class DistributionManagement
+    {
+        private List<Set> sets = new List<Set>();
+        public void AddSet(Set set)
+        {
+            sets.Add(set);
+        }
+        public List<Set> Sets
+        {
+            get
+            {
+                return sets;
+            }
+        }
+    }
+    public class DistributionManagementEx
     {
         public class Data
         {

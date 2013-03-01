@@ -15,6 +15,11 @@ namespace BAE.Mercury.Client
 {
     public class MessageStore
     {
+        public DistributionManagement GetDistributionManagement(string userName)
+        {
+            DistributionManagement distributionManagement = new DistributionManagement();
+            return distributionManagement;
+        }
         public OskyAddressBooks GetAddressBooks(string userName)
         {
             OskyAddressBooks oskyAddressBooks = new OskyAddressBooks();

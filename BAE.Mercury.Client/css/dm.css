@@ -132,7 +132,7 @@ div.unit-title
 
 div.templates
 {
-    /*display:none;*/
+    display:none;
 }
 div.canvas
 {
@@ -167,8 +167,8 @@ table.appointment
 td.appointment
 {
     vertical-align:middle;
-    /*padding:1px 1px 1px 5px;
-    background-color:teal;*/
+    /*padding:1px 1px 1px 5px;*/
+    background-color:teal;
     width:200px;    
     
     
