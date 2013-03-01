@@ -83,31 +83,48 @@ function insertPos(parentNode, node, name) {
     });
     return pos;
 }
-function insertNode(parentNode, node, name) {
+function insertNode(parentNode, type, name, seqNo) {
     var pos = insertPos(parentNode, node, name);
+    var node = $("#ta_x").children("tbody").children("tr").eq(0).clone();
+    node.find("#as_x_0").html("AAAAA");
+    node.find("#ad_x_0").attr("id", "ie_5");
+    node.find("#ae_x_0").attr("id", "ie_6");
+
     if (pos != -1)
-        parentNode.children("tr").eq(pos).before(node);
-    else
-        parentNode.append(node);
+        parentNode.children("tbody").children("tr").eq(pos).before(node);
+    else {
+        var tbody = parentNode.children("tbody");
+        //alert(tbody[0].innerHTML);
+        //node = parentNode.children("tbody").children("tr").eq(0).clone();
+        //var child = $(node);
+        tbody.append(node);
+        alert(tbody[0].innerHTML);
+    }
 }
 
 
-function addNode(parentNodeId, name) {
+function addNode(nodeId, type, name) {
     alert("add node");
-    var listId = parentNodeId.replace("a", "c");
+    var listId = nodeId.replace("a", "ti");
     var list = $("#" + listId);
     var seqNo = getNewSeqNo(list);
-    var node = "<td class='sic' style='background-color:red' id='" + listId + "_" + seqNo + "'><span>" + name + "</td>";
-    insertNode(list, node, seqNo);
-    var tdId = parentNodeId.replace("a", "r");
-    var td = $("#" + tdId);
-    var rs = td.attr("rowspan");
-    td[0].rowSpan = rs++;
-    //list.children("li").eq(index).before(li);
+    var suffix = nodeId.replace("a", "") + "_" + seqNo;
+//    var node = //"<td class='sic' style='background-color:red' id='" + listId + "_" + seqNo + "'><span>" + name + "</td>";
+//        "<tr><td class='cinfo'>&nbsp;</td>"
+//     + "<td class='sic info' >&nbsp;</td></td>"
+//         + "<td class='delete'><a id='id" + suffix + "' href='#'><img src='~/images/icon-minus.png' alt='minus' /></a></td>"
+//         + "<td class='edit'><a id='ie" + suffix + "' href='#'><img src='~/images/icon-edit.png' alt='edit' /></a></td></tr>";
+//    //    "<tr><td class='cinfo'>&nbsp;</td>"
+//     + "<td class='sic info' ><span id='is" + suffix + "' class='sic rounded' >" + name + "</span></td>"
+    //     + "<td class='delete'><a id='id" + suffix + "' href='#'><img src='~/images/icon-minus.png' alt='minus' /></a></td>"
+    //     + "<td class='edit'><a id='ie" + suffix + "' href='#'><img src='~/images/icon-edit.png' alt='edit' /></a></td></tr>";
+    //var n = parentNode.children("tbody").children("tr").eq(0).clone();
+
+    insertNode(list, type, name, seqNo);
     return;
-    //list.append(li);
 
 }
+
 
 
 function clicked(id) {
@@ -161,16 +178,17 @@ function deleteNode(nodeId) {
 
 
 function cancel() {
-    $(".edit").remove();
+    $(".xedit").remove();
     uncover();
     return false;
 }
-function add(parentNodeId) {
+function add(nodeId, type) {
     //alert(parentNodeId);
     var nodeEdit = $("#node-edit");
-    addNode(parentNodeId, nodeEdit[0].value);
+    var nodeType = $("#node-type").val();
+    addNode(nodeId, nodeType, nodeEdit[0].value);
     //remove the div
-    $(".edit").remove();
+    $(".xedit").remove();
 
     uncover();
     return false;
@@ -183,7 +201,7 @@ function edit(nodeId) {
     //alert(nodeEdit[0].value);
     updateNode(nodeId, nodeEdit[0].value);
     //remove the div
-    $(".edit").remove();
+    $(".xedit").remove();
 
     uncover();
     return false;
@@ -194,34 +212,34 @@ function remove(nodeId) {
     //alert(nodeEdit[0].value);
     deleteNode(nodeId);
     //remove the div
-    $(".edit").remove();
+    $(".xedit").remove();
     uncover();
     return false;
 }
 
 
-function nodeplus(parentNodeId) {
+function nodeplus(nodeId) {
     //remove buttons
     //removeButtons();
     //add a dialog
-    var edit = "<div class='edit' ><input id='node-edit' type='text'/><div style='width:100%;text-align:center;margin:10px'><a href='#' onclick='add(\"" + parentNodeId + "\")'><img src='images/save.gif' alt='save'/></a>&nbsp;<a href='#' onclick='cancel()'><img src='images/cancel.png' alt='cancel'/></a></div></div>"    //left='" + 400 + "px'
+    var xedit = "<div class='xedit' ><br/><select id='node-type'><option value='1'>1</option><select><br/><input id='node-edit' type='text'/><div style='width:100%;text-align:center;margin:10px'><a href='#' onclick='add(\"" + nodeId + "\")'><img src='images/save.gif' alt='save'/></a>&nbsp;<a href='#' onclick='cancel()'><img src='images/cancel.png' alt='cancel'/></a></div></div>"    //left='" + 400 + "px'
     var body = $("body");
-    body.append(edit);
+    body.append(xedit);
 }
 function nodeedit(nodeId) {
     removeButtons();
     //add a dialog
-    var edit = "<div class='edit' ><input id='node-edit' type='text'/><div style='width:100%;text-align:center;margin:10px'><a href='#' onclick='edit(\"" + nodeId + "\")'><img src='images/save.gif' alt='save'/></a>&nbsp;<a href='#' onclick='cancel()'><img src='images/cancel.png' alt='cancel'/></a></div></div>"    //left='" + 400 + "px'
+    var xedit = "<div class='xedit' ><br/><select id='node-type'><option value='1'>1</option><select><br/><input id='node-edit' type='text'/><div style='width:100%;text-align:center;margin:10px'><a href='#' onclick='edit(\"" + nodeId + "\")'><img src='images/save.gif' alt='save'/></a>&nbsp;<a href='#' onclick='cancel()'><img src='images/cancel.png' alt='cancel'/></a></div></div>"    //left='" + 400 + "px'
     var body = $("body");
-    body.append(edit);
+    body.append(xedit);
 }
 
 function nodeminus(nodeId) {
     removeButtons();
     //add a dialog
-    var edit = "<div class='edit' ><div>Delete this node?</div><div style='width:100%;text-align:center;margin:10px'><a href='#' onclick='remove(\"" + nodeId + "\")'><img src='images/save.gif' alt='save'/></a>&nbsp;<a href='#' onclick='cancel()'><img src='images/cancel.png' alt='cancel'/></a></div></div>"    //left='" + 400 + "px'
+    var xedit = "<div class='xedit' ><div>Delete this node?</div><div style='width:100%;text-align:center;margin:10px'><a href='#' onclick='remove(\"" + nodeId + "\")'><img src='images/save.gif' alt='save'/></a>&nbsp;<a href='#' onclick='cancel()'><img src='images/cancel.png' alt='cancel'/></a></div></div>"    //left='" + 400 + "px'
     var body = $("body");
-    body.append(edit);
+    body.append(xedit);
 }
 
 
@@ -271,16 +289,15 @@ $(document).ready(function () {
 
 
     //alert("reday");
-    //$(".rounded").corner('10px');
-
-/*
-    $(".add").click(function () {
+    //$(".rounded").corner('3px');
+    $("[id^=a_]").click(function () {
         alert("plus");
         cover();
-        var parentId = $(this)[0].id;
-        nodeplus(parentId);
+        var id = $(this)[0].id;
+        nodeplus(id);
         return false;
     });
+
     $(".edit").click(function () {
         alert("edit");
         cover();
@@ -292,7 +309,7 @@ $(document).ready(function () {
         cover();
         return false;
     });
-
+/*
     $(".sic").click(function () {
         // Holds the product ID of the clicked element
         alert("sic click");

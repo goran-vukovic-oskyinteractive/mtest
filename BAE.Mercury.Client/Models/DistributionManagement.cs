@@ -5,6 +5,60 @@ using System.Web;
 
 namespace BAE.Mercury.Client.Models
 {
+    public class SIC
+    {
+
+        string name;
+        public SIC(string name)
+        {
+            this.name = name;
+        }
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+        }
+    }
+    public class DMAppointment
+    {
+        private List<SIC> infos = new List<SIC>(), actions = new List<SIC>();
+        int id;
+        public DMAppointment(int id)
+        {
+            this.id = id;
+        }
+        public int Id
+        {
+            get
+            {
+                return id;
+            }
+        }
+        public List<SIC> Infos
+        {
+            get
+            {
+                return infos;
+            }
+        }
+        public List<SIC> Actions
+        {
+            get
+            {
+                return actions;
+            }
+        }
+        public void AddInfo(SIC sic)
+        {
+            infos.Add(sic);
+        }
+        public void AddAction(SIC sic)
+        {
+            actions.Add(sic);
+        }
+    }
     public class DistributionManagement
     {
         public class Data

@@ -126,8 +126,14 @@ div.unit-title
     text-align:center;
     margin:auto;
     color:white;
+    font-weight:bold;
 }
 
+
+div.templates
+{
+    /*display:none;*/
+}
 div.canvas
 {
     vertical-align:middle;
@@ -257,7 +263,7 @@ td.action
 
 
 
-td.plus
+td.add
 {
     /*position:relative;
     padding:1px 0 1px 0;
@@ -267,7 +273,7 @@ td.plus
     
 }
 
-td.minus, td.edit
+td.delete, td.edit
 {
     vertical-align:middle;
     border-left:solid 10px #3c3c3c;
@@ -293,7 +299,7 @@ opacity: 0.5;
 
 }
 
-div.edit 
+div.xedit 
 {
     z-index:10001;
     position:absolute;

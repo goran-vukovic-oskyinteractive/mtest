@@ -7,7 +7,7 @@
 @using System.Globalization
 @using System.Net.Mime
 @using BAE.Mercury.Client.Models
-@model BAE.Mercury.Client.Models.vmNewMessage
+@model BAE.Mercury.Client.Models.SIC
 @{
     //Layout = "../Shared/_PopupLayout.cshtml";
     ViewBag.Title = "Create";
@@ -63,9 +63,9 @@
                         <a href="#"><span class="icon"></span><strong>Set 1</strong></a>
                         <div class="btn-set">
                             <a href="#">
-                                <img src="~/images/btn-dm_edit.png" alt="Edit" height="24" width="25"></a><a href="#"><img
-                                    src="~/images/btn-dm_delete.png" alt="Delete" height="24" width="25"></a><a href="#"><img
-                                        src="~/images/btn-dm_copy.png" alt="Copy" height="24" width="25"></a></div>
+                                <img src="~/images/btn-dm_edit.png" alt="Edit" height="24" width="25"></a><a href="#">
+                                <img src="~/images/btn-dm_delete.png" alt="Delete" height="24" width="25"></a><a href="#">
+                                <img src="~/images/btn-dm_copy.png" alt="Copy" height="24" width="25"></a></div>
                     </div>
                     <ul style="display: none;">
                         <li class="lock"><a href="#">Unit = 1 RAR</a></li>
@@ -78,8 +78,8 @@
                         <a href="#"><span class="icon"></span><strong>Set 2</strong></a>
                         <div class="btn-set">
                             <a href="#">
-                                <img src="~/images/btn-dm_edit.png" alt="Edit" height="24" width="25"></a><a href="#"><img
-                                    src="~/images/btn-dm_copy.png" alt="Copy" height="24" width="25"></a></div>
+                                <img src="~/images/btn-dm_edit.png" alt="Edit" height="24" width="25"></a><a href="#">
+                                <img src="~/images/btn-dm_copy.png" alt="Copy" height="24" width="25"></a></div>
                     </div>
                     <ul style="display: none;">
                         <li><a href="#">Unit = 1 RAR</a></li>
@@ -115,11 +115,25 @@
                 <div class="unit">
                     <div class="unit-title">
                         DEPT Immigration and Multicultural Affairs</div>
+                        <br />
+
                     <div class="user rounded">Duty Officer = Watchkeeper</div>
                         <br />
+                        <div class="templates">
+                            @{
+                                
+                               DMAppointment appointment = new DMAppointment(-1);
+                               SIC sic = new SIC(String.Empty);
+                               appointment.AddInfo(sic);
+                               appointment.AddAction(sic);
+                                }
+                              @{ Html.RenderPartial("_Table", appointment); 
+                                }
+                        </div>
                         <div class="canvas">
+
                         @{
-                            int apps = 3, sics = 7;
+                            int apps = 2, sics = 3;
                             for (int i = 0; i < apps; i++)
                             {
                                 <table class="appointment" >
@@ -129,41 +143,43 @@
                                         </td>
                                         <td >
                                             <div>
-                                                <table>
+                                                <table id="ti_@Html.Raw(i)">
                                                     @{for (int j = 0; j < sics; j++)
                                                       {
+                                                          string suffix = String.Format("{0}_{1}", i, j);
                                                     <tr>
                                                 
                                                         <td class="cinfo">
                                                             &nbsp;
                                                         </td>
-                                                        <td class="sic info" ><span id="as_@Html.Raw(i)_@Html.Raw(j)" class="sic rounded" >                                                            
+                                                        <td class="sic info" ><span id="is_@Html.Raw(suffix)" class="sic rounded" >                                                            
                                                             SICAAAAAAAAAAAAAAAAAAA @Html.Raw(j)</span></td>
-                                                        <td class="minus"><a id="ad_@Html.Raw(i)_@Html.Raw(j)" href="#"><img src="~/images/icon-minus.png" alt="minus" /></a></td>
-                                                        <td class="edit"><a id="ae_@Html.Raw(i)_@Html.Raw(j)" href="#"><img src="~/images/icon-edit.png" alt="edit" /></a></td>
+                                                        <td class="delete"><a id="id_@Html.Raw(suffix)" href="#"><img src="~/images/icon-minus.png" alt="minus" /></a></td>
+                                                        <td class="edit"><a id="ie_@Html.Raw(suffix)" href="#"><img src="~/images/icon-edit.png" alt="edit" /></a></td>
                                                     </tr>
                                                       }
                                                     }
                                                 </table>
-                                                <table>
+                                                <table id="ta_@Html.Raw(i)">
                                                     @{for (int j = 0; j < sics; j++)
                                                       {
+                                                          string suffix = String.Format("{0}_{1}", i, j);
                                                     <tr>
                                                 
                                                         <td class="caction">
                                                             &nbsp;
                                                         </td>
-                                                        <td class="sic action" ><span id="as_@Html.Raw(i)_@Html.Raw(j)" class="sic rounded" >
+                                                        <td class="sic action" ><span id="as_@Html.Raw(suffix)" class="sic rounded" >
                                                             SICAAAAAAAAAAAAAAAAAAA @Html.Raw(j)</span></td>
-                                                        <td class="minus"><a id="ad_@Html.Raw(i)_@Html.Raw(j)" href="#"><img src="~/images/icon-minus.png" alt="minus" /></a></td>
-                                                        <td class="edit"><a id="ae_@Html.Raw(i)_@Html.Raw(j)" href="#"><img src="~/images/icon-edit.png" alt="edit" /></a></td>
+                                                        <td class="delete"><a id="ad_@Html.Raw(suffix)" href="#"><img src="~/images/icon-minus.png" alt="minus" /></a></td>
+                                                        <td class="edit"><a id="ae_@Html.Raw(suffix)" href="#"><img src="~/images/icon-edit.png" alt="edit" /></a></td>
                                                     </tr>
                                                       }
                                                     }
                                                 </table>
                                             </div>
                                         </td>
-                                        <td class="plus">
+                                        <td class="add">
                                             <a id="a_@Html.Raw(i)" href="#"><img  src="~/images/icon-plus.png" alt="plus" /></a>
                                         </td>
 

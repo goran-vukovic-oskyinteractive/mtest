@@ -306,9 +306,11 @@
     <Content Include="Images\bg-arrow_from.png" />
     <Content Include="Images\bg-arrow_right.png" />
     <Content Include="Images\bg-attachment.png" />
+    <Content Include="Images\bg-badge.png" />
     <Content Include="Images\bg-body.png" />
     <Content Include="Images\bg-btn_small.png" />
     <Content Include="Images\bg-buttons.png" />
+    <Content Include="Images\bg-content_wrap.png" />
     <Content Include="Images\bg-dm-appointment.png" />
     <Content Include="Images\bg-dot.png" />
     <Content Include="Images\bg-download.png" />
@@ -323,6 +325,7 @@
     <Content Include="Images\bg-email_icon.png" />
     <Content Include="Images\bg-email_list.png" />
     <Content Include="Images\bg-email_list_hover.png" />
+    <Content Include="Images\bg-gradient.png" />
     <Content Include="Images\bg-header.png" />
     <Content Include="Images\bg-icon_small.png" />
     <Content Include="Images\bg-icon_wide.png" />
@@ -351,6 +354,10 @@
     <Content Include="Images\bg-verified.png" />
     <Content Include="Images\BlackArrowDown.gif" />
     <Content Include="Images\BlackArrowRight.gif" />
+    <Content Include="Images\btn-dm_copy.png" />
+    <Content Include="Images\btn-dm_delete.png" />
+    <Content Include="Images\btn-dm_edit.png" />
+    <Content Include="Images\btn-grey.png" />
     <Content Include="Images\Calendar1.gif" />
     <Content Include="Images\Contacts.gif" />
     <Content Include="Images\GreyArrowDown.gif" />
@@ -597,6 +604,7 @@
     <Content Include="Views\Message\Create.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\DistributionManagement\_Table.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BAE.Mercury.Business\BAE.Mercury.Business.csproj">
