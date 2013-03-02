@@ -45,7 +45,41 @@ $(document).ready(function() {
 	});
 	
 	// POPUP
-	//$(".popup").colorbox({width:"70%"});
+	$(".popup").colorbox({width:"70%"});
+	
+	// Search SIC
+	$("#search-sic").click(function() {
+		if (this.value == this.defaultValue) {
+			this.value = '';}
+		}
+	);
+	$("#search-sic").blur(function() {
+	if (this.value == '') {
+		this.value = this.defaultValue;}
+		}
+	);
+	
+	// Rule visualiser
+	$("#rule-visualiser-wrap-trigger").click(function(event) {
+		event.preventDefault();
+	  	$("#rule-visualiser-wrap").slideToggle("normal");		
+	});
+	
+	// Checkbox for Set
+	$(".btn-set .checkbox").click(function(event) {
+		event.preventDefault();
+	  	$(this).toggleClass("on");		
+	});
+	
+	// Use Jquery to apply class to first and last td 
+	if( $('#session-content').length > 0 )
+	{
+		//$("table.inner-table tr:first-child td:first-child").addClass("first");
+		//$("table.inner-table tr':last-child td:first-child").addClass("last");
+		
+		$('table.appointment td table.inner-table:first-child tr:first-child td:first-child').addClass("first");
+		$('table.appointment td table.inner-table:last-child tr:last-child td:first-child').addClass("last");
+	}
 	
 	
 });

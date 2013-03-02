@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using BAE.Mercury.Client.Models;
 using BAE.Mercury.Core.MmhsModel;
-
 using System.Diagnostics;
 using System.Configuration;
 using BAE.Mercury.Core.DataTypes;
@@ -15,9 +14,63 @@ namespace BAE.Mercury.Client
 {
     public class MessageStore
     {
-        public DistributionManagement GetDistributionManagement(string userName)
+        public DistributionManagement GetDistributionManagement(string username)
         {
             DistributionManagement distributionManagement = new DistributionManagement();
+
+
+            string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand com = new SqlCommand("getDistributionManagementSets");
+            com.CommandType = System.Data.CommandType.Text;
+            com.Connection = con;
+            try
+            {
+                con.Open();
+                SqlDataReader reader = com.ExecuteReader();
+                //inbox
+                while (reader.Read())
+                {
+                    string setName = (string)reader["nodename"];
+                    int id = (int)reader["nodeid"];
+                    int parent = (int)reader["nodeparentid"];
+                    DMSet set = new DMSet(id, parent, setName);
+                    distributionManagement.AddNode(set);
+                }
+                reader.NextResult();
+                List<DMNode> units = new List<DMNode>();
+                while (reader.Read())
+                {
+                    //distributionManagement.
+                    string setName = (string)reader["nodename"];
+                    int id = (int)reader["nodeid"];
+                    int parent = (int)reader["nodeparentid"];
+                    DMUnit unit = new DMUnit(id, parent, setName);
+                    units.Add(unit);
+                }
+                //now loop through the node list and append to the sets
+                foreach (DMSet set in distributionManagement.Nodes)
+                {
+                    foreach (DMUnit unit in units)
+                    {
+                        if (unit.ParentId == set.Id)
+                        {
+                            set.AddNode(unit);
+                        }
+                    }
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx.Message);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+
+
             return distributionManagement;
         }
         public OskyAddressBooks GetAddressBooks(string userName)

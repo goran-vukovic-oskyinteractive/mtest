@@ -59,48 +59,66 @@ namespace BAE.Mercury.Client.Models
             actions.Add(sic);
         }
     }
-    public class Unit
+    public class DMNode
     {
-        private List<DMAppointment> appointments;
-        int id;
-        public Unit(int id)
+        private List<DMNode> nodes = new List<DMNode>();
+        int id, parentId;
+        string name;
+        public DMNode() { }
+        public DMNode(int id, int parentId, string name)
         {
             this.id = id;
+            this.parentId = parentId;
+            this.name = name;
         }
-        public void AddAppointment(DMAppointment appointment)
+        public void AddNode(DMNode node)
         {
-            appointments.Add(appointment);
+            nodes.Add(node);
         }
-        
-    }
-    public class Set
-    {
-        private List<Unit> units = new List<Unit>();
-        int id;
-        public Set(int id)
-        {
-            this.id = id;
-        }
-        public void AddUnit(Unit unit)
-        {
-            units.Add(unit);
-        }
-    }
-    public class DistributionManagement
-    {
-        private List<Set> sets = new List<Set>();
-        public void AddSet(Set set)
-        {
-            sets.Add(set);
-        }
-        public List<Set> Sets
+        public int Id
         {
             get
             {
-                return sets;
+                return id;
+            }
+        }
+        public int ParentId
+        {
+            get
+            {
+                return parentId;
+            }
+        }
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+        }
+        public List<DMNode> Nodes
+        {
+            get
+            {
+                return nodes;
             }
         }
     }
+    public class DMUnit : DMNode
+    {
+        public DMUnit(int id, int parentId, string name)
+            : base(id, parentId, name) { }
+    }
+    public class DMSet : DMNode
+    {
+        public DMSet(int id, int parentId, string name)
+            : base(id, parentId, name) { }
+    }
+    public class DistributionManagement : DMNode
+    {
+        public DistributionManagement() { }
+    }
+/*
     public class DistributionManagementEx
     {
         public class Data
@@ -199,4 +217,5 @@ namespace BAE.Mercury.Client.Models
         }
 
     }
+ */
 }

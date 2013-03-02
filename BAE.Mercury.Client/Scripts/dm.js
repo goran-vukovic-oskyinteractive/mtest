@@ -284,9 +284,49 @@ function cover() {
     body.append(hidden);
 }
 
+function load(type, id) {
+    //ajax call to load
+    alert("ajax");
+    return;
+    cover();
+    //do an ajax call to get HTML
+    $.ajax({
+        type: "POST",
+        url: "Save.aspx",
+        dataType: "json",
+        success: function (data) {
+            //get canvas
+            //var canvas =  $(
+            //var json1 = data;
+            //alert(data);
+            uncover();
+            init(data);
+            //init(json);
+        },
+        fail: function () {
+            alert("fail");
+        },
+        data: { c: sjs}         //context: document.body
+    }).done(function () {
+        //alert("done");
+        //init(json);
+        //uncover();
+    });
+
+    //unfreeze
+    uncover();
+    return false;
+}
+
 
 $(document).ready(function () {
 
+    $("[id^=s_]").click(function () {
+        load(0, this.id);
+        //alert("set" + this.id);
+        //cover();
+        return false;
+    });
 
     //alert("reday");
     //$(".rounded").corner('3px');
@@ -309,22 +349,22 @@ $(document).ready(function () {
         cover();
         return false;
     });
-/*
+    /*
     $(".sic").click(function () {
-        // Holds the product ID of the clicked element
-        alert("sic click");
-        node_click($(this));
-        return false;
+    // Holds the product ID of the clicked element
+    alert("sic click");
+    node_click($(this));
+    return false;
     });
 
     $(".appointment").click(function () {
-        // Holds the product ID of the clicked element
+    // Holds the product ID of the clicked element
 
-        alert("appointment click");
-        node_click($(this));
-        return false;
+    alert("appointment click");
+    node_click($(this));
+    return false;
     });
-*/
+    */
     //    alert("OK");
 
     //    $("#dm_1_1").click = function () {
