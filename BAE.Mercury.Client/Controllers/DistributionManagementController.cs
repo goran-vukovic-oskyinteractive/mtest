@@ -20,91 +20,11 @@ namespace BAE.Mercury.Client.Controllers
             DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
             return View("Index", distributionManagement);
         }
-
-        //
-        // GET: /DistributionManagement/Details/5
-
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        //
-        // GET: /DistributionManagement/Create
-
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        //
-        // POST: /DistributionManagement/Create
-
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public JsonResult ZZZ()
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return Json(String.Empty);
         }
-
-        //
-        // GET: /DistributionManagement/Edit/5
-
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /DistributionManagement/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /DistributionManagement/Delete/5
-
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /DistributionManagement/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+  
     }
 }

@@ -20,12 +20,12 @@ function saveAll() {
     var hidden = $("<div id='cover'><img src='images/ajax-loader.gif' alt='please wait'/><p>please wait</p> </div>"); //style='background-color:green;position:absolute;left:0;top:0;height:100%;width:100%' 
     var body = $("body");
 
-    var sjs = JSON.stringify(changes);
+    var sjs = "";// JSON.stringify(changes);
     body.append(hidden);
     //do an ajax call to save
     $.ajax({
         type: "POST",
-        url: "Save.aspx",
+        url: "/DistributionManagement/Index",
         dataType: "json",
         success: function (data) {
             //var json1 = data;
@@ -284,17 +284,34 @@ function cover() {
     body.append(hidden);
 }
 
-function load(type, id) {
+function init() {
+    //get the canvas
+
+}
+
+function loadTree(type, id) {
     //ajax call to load
     alert("ajax");
-    return;
+    //return;
     cover();
     //do an ajax call to get HTML
+
+
+
+
     $.ajax({
         type: "POST",
-        url: "Save.aspx",
         dataType: "json",
+        data: {
+            i: 1
+        },
+        url: "DistributionManagement/ZZZ",
+        //async: true,
+        beforeSend: function (xhr) {
+            alert("before");
+        },
         success: function (data) {
+            alert("success");
             //get canvas
             //var canvas =  $(
             //var json1 = data;
@@ -305,10 +322,10 @@ function load(type, id) {
         },
         fail: function () {
             alert("fail");
-        },
-        data: { c: sjs}         //context: document.body
+        }
+       
     }).done(function () {
-        //alert("done");
+        alert("done");
         //init(json);
         //uncover();
     });
@@ -321,8 +338,14 @@ function load(type, id) {
 
 $(document).ready(function () {
 
+
+    $.ajaxSetup({
+        cache: false
+    });
+
     $("[id^=s_]").click(function () {
-        load(0, this.id);
+        loadTree(0, this.id);
+        //saveAll();
         //alert("set" + this.id);
         //cover();
         return false;
