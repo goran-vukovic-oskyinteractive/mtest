@@ -53,8 +53,12 @@
 		        <div class="col-wrap">
                     <!--side bar start -->
                     @RenderSection("SideBar", required: false)
-                    @RenderBody()
                     <!--side bar end -->
+
+                    <!--body start -->
+                    @RenderBody()
+                    <!--body end -->
+
                 </div>
             </div>
             @*RenderSection("Scripts", required: false)*@

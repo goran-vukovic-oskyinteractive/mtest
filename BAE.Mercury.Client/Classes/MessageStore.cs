@@ -14,9 +14,97 @@ namespace BAE.Mercury.Client
 {
     public class MessageStore
     {
+
+        public DMSet GetDMSet(string username, int nodeId, int unitId)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand com = new SqlCommand(String.Format("getDistributionManagementSet {0}, {1}", nodeId, unitId));
+            com.CommandType = System.Data.CommandType.Text;
+            com.Connection = con;
+            try
+            {
+                con.Open();
+                SqlDataReader reader = com.ExecuteReader();
+                DMSet set = new DMSet(nodeId, 0, String.Empty); //set name not a requirement here
+                //the units
+                List<DMUnit> units = new List<DMUnit>();
+                while (reader.Read())
+                {
+                        string setName = (string)reader["nodename"];
+                        int id = (int)reader["nodeid"];
+                        int parent = (int)reader["nodeparentid"];
+                        DMUnit unit = new DMUnit(id, parent, setName);
+                        units.Add(unit);
+                }
+                //the appoinments
+                reader.NextResult();
+                List<DMAppointment> appointments = new List<DMAppointment>();
+                while (reader.Read())
+                {
+                    string setName = (string)reader["nodename"];
+                    int id = (int)reader["nodeid"];
+                    int parent = (int)reader["nodeparentid"];
+                    DMAppointment appointment = new DMAppointment(id, parent, setName);
+                    appointments.Add(appointment);
+                }
+                //the sics
+                reader.NextResult();
+                List<DMSic> sics = new List<DMSic>();
+                while (reader.Read())
+                {
+                    string setName = (string)reader["nodename"];
+                    int id = (int)reader["nodeid"];
+                    int parent = (int)reader["nodeparentid"];
+                    bool action = (bool)reader["nodetype"];
+                    DMSic sic = new DMSic(id, parent, setName, action ? DMSic.SicType.Action : DMSic.SicType.Info);
+                    sics.Add(sic);
+                }
+
+                //now loop through the sics and append to the appoinments
+                    foreach (DMAppointment appointment in appointments)
+                    {
+                        foreach (DMSic sic in sics)
+                        {
+                            if (sic.ParentId == appointment.Id)
+                            {
+                                if (sic.Type == DMSic.SicType.Action)
+                                    appointment.AddAction(sic);
+                                else
+                                    appointment.AddInfo(sic);
+                            }
+                        }
+
+                    }
+                foreach (DMUnit unit in units)
+                {
+                    foreach (DMAppointment appointment in appointments)
+                    {
+                        if (appointment.ParentId == unit.Id)
+                        {
+                            unit.AddNode(appointment);
+                        }
+                    }
+                    set.AddNode(unit);
+                }
+                return set;
+
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx.Message);
+                throw new ApplicationException(sqlEx.Message);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+
+
+        }
         public DistributionManagement GetDistributionManagement(string username)
         {
-            DistributionManagement distributionManagement = new DistributionManagement();
 
 
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
@@ -28,7 +116,7 @@ namespace BAE.Mercury.Client
             {
                 con.Open();
                 SqlDataReader reader = com.ExecuteReader();
-                //inbox
+                DistributionManagement distributionManagement = new DistributionManagement();
                 while (reader.Read())
                 {
                     string setName = (string)reader["nodename"];
@@ -38,14 +126,13 @@ namespace BAE.Mercury.Client
                     distributionManagement.AddNode(set);
                 }
                 reader.NextResult();
-                List<DMNode> units = new List<DMNode>();
+                List<DMUnit> units = new List<DMUnit>();
                 while (reader.Read())
                 {
-                    //distributionManagement.
-                    string setName = (string)reader["nodename"];
                     int id = (int)reader["nodeid"];
-                    int parent = (int)reader["nodeparentid"];
-                    DMUnit unit = new DMUnit(id, parent, setName);
+                    int parentId = (int)reader["nodeparentid"];
+                    string setName = (string)reader["nodename"];
+                    DMUnit unit = new DMUnit(id, parentId, setName);
                     units.Add(unit);
                 }
                 //now loop through the node list and append to the sets
@@ -59,10 +146,12 @@ namespace BAE.Mercury.Client
                         }
                     }
                 }
+                return distributionManagement;
             }
             catch (SqlException sqlEx)
             {
                 Debug.WriteLine(sqlEx.Message);
+                throw new ApplicationException(sqlEx.Message);
             }
             finally
             {
@@ -70,8 +159,6 @@ namespace BAE.Mercury.Client
                     con.Close();
             }
 
-
-            return distributionManagement;
         }
         public OskyAddressBooks GetAddressBooks(string userName)
         {

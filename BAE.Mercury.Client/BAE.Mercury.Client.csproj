@@ -283,6 +283,19 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="cssDavid\jquery-ui.css" />
+    <Content Include="cssDavid\jquery.css" />
+    <Content Include="cssDavid\jquery_002.css" />
+    <Content Include="cssDavid\jquery_003.css" />
+    <Content Include="cssDavid\jquery_004.css" />
+    <Content Include="cssDavid\jquery_005.css" />
+    <Content Include="cssDavid\MessageDetails.css" />
+    <Content Include="cssDavid\MessageFolders.css" />
+    <Content Include="cssDavid\MessageMain.css" />
+    <Content Include="cssDavid\SearchBox.css" />
+    <Content Include="cssDavid\Site.css" />
+    <Content Include="cssDavid\SortOptions.css" />
+    <Content Include="cssDavid\ui.css" />
     <Content Include="css\abm.css" />
     <Content Include="css\at.css" />
     <Content Include="css\colorbox.css" />
@@ -294,6 +307,7 @@
     <Content Include="css\nm.css" />
     <Content Include="css\reset.css" />
     <Content Include="css\style.css" />
+    <Content Include="distribution_management.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Images\attach.gif" />
@@ -401,9 +415,28 @@
     <Content Include="Images\message-c.png" />
     <Content Include="Images\Save.gif" />
     <Content Include="Images\Send.gif" />
+    <Content Include="MessageList.htm" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="ScriptsDavid\countdown.js" />
+    <Content Include="ScriptsDavid\Initialise.js" />
+    <Content Include="ScriptsDavid\jquery-1.js" />
+    <Content Include="ScriptsDavid\jquery-1_002.js" />
+    <Content Include="ScriptsDavid\jquery-ui-timepicker-addon.js" />
+    <Content Include="ScriptsDavid\jquery-ui.js" />
+    <Content Include="ScriptsDavid\jquery.js" />
+    <Content Include="ScriptsDavid\jquery_002.js" />
+    <Content Include="ScriptsDavid\jquery_003.js" />
+    <Content Include="ScriptsDavid\jquery_004.js" />
+    <Content Include="ScriptsDavid\jquery_005.js" />
+    <Content Include="ScriptsDavid\message.js" />
+    <Content Include="ScriptsDavid\messageDetails.js" />
+    <Content Include="ScriptsDavid\message_002.js" />
+    <Content Include="ScriptsDavid\modernizr-2.js" />
+    <Content Include="ScriptsDavid\resources.js" />
+    <Content Include="ScriptsDavid\searchbox.js" />
+    <Content Include="ScriptsDavid\stringUtility.js" />
     <Content Include="Scripts\countdown.js" />
     <Content Include="Scripts\dm.js" />
     <Content Include="Scripts\functions.js" />
@@ -418,6 +451,7 @@
     <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
     <Content Include="Scripts\jquery-ui.custom.js" />
     <Content Include="Scripts\jquery-ui.custom.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery.colorbox-min.js" />
     <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery.corner.js" />
@@ -531,6 +565,7 @@
     <Content Include="Scripts\tiny_mce\utils\form_utils.js" />
     <Content Include="Scripts\tiny_mce\utils\mctabs.js" />
     <Content Include="Scripts\tiny_mce\utils\validate.js" />
+    <Content Include="Scripts\waypoints.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -604,7 +639,9 @@
     <Content Include="Views\Message\Create.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Views\DistributionManagement\_Table.cshtml" />
+    <Content Include="Views\DistributionManagement\_DMTable.cshtml" />
+    <Content Include="Views\DistributionManagement\_DMReference.cshtml" />
+    <Content Include="Views\DistributionManagement\_DMSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BAE.Mercury.Business\BAE.Mercury.Business.csproj">

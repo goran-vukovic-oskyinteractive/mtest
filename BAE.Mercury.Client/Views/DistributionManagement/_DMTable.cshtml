@@ -1,0 +1,60 @@
+﻿@using BAE.Mercury.Client.Models
+
+@{
+    DMAppointment appointment = (DMAppointment)Model;
+    if (!((appointment.Infos.Count == 0) && (appointment.Infos.Count == 0)))
+    {
+
+        string appointmentId = appointment.Id < 0 ? "x" : appointment.Id.ToString(); 
+
+        <table id="ti_@Html.Raw(appointmentId)">
+        @{ for (int i = 0; i < appointment.Infos.Count; i++)
+            {
+                string suffix = String.Format("{0}_{1}", appointmentId, i);
+            <tr>
+                <td class="cinfo">
+                    &nbsp;
+                </td>
+                <td class="sic info">
+                    <span id="is_@Html.Raw(suffix)" class="sic rounded" >@Html.Raw(appointment.Infos[i].Name)</span>
+                </td>
+                <td class="delete">
+                    <a id="id_@Html.Raw(suffix)" href="#">
+                        <img src="~/images/icon-minus.png" alt="minus" /></a>
+                </td>
+                <td class="edit">
+                    <a id="ie_@Html.Raw(suffix)" href="#">
+                        <img src="~/images/icon-edit.png" alt="edit" /></a>
+                </td>
+            </tr>
+            }
+        }
+        </table>
+        <table id="ta_@Html.Raw(appointmentId)">
+        @{ for (int i = 0; i < appointment.Actions.Count; i++)
+            {
+                string suffix = String.Format("{0}_{1}", appointmentId, i);
+            <tr>
+                <td class="caction">
+                    &nbsp;
+                </td>
+                <td class="sic action">
+                    <span id="as_@Html.Raw(suffix)" class="sic rounded" >@Html.Raw(appointment.Actions[i].Name)</span>
+                </td>
+                <td class="delete">
+                    <a id="ad_@Html.Raw(suffix)" href="#">
+                        <img src="~/images/icon-minus.png" alt="minus" /></a>
+                </td>
+                <td class="edit">
+                    <a href="#">
+                        <img src="~/images/icon-edit.png" alt="edit" /></a>
+                </td>
+            </tr>
+            }
+        }
+        </table>
+    } else
+    {
+        <div class="appointment-empty-wrap"><div class="appointment-empty"></div></div>        
+    }
+}

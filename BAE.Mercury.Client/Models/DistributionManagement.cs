@@ -5,65 +5,11 @@ using System.Web;
 
 namespace BAE.Mercury.Client.Models
 {
-    public class SIC
-    {
-
-        string name;
-        public SIC(string name)
-        {
-            this.name = name;
-        }
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-        }
-    }
-    public class DMAppointment
-    {
-        private List<SIC> infos = new List<SIC>(), actions = new List<SIC>();
-        int id;
-        public DMAppointment(int id)
-        {
-            this.id = id;
-        }
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-        }
-        public List<SIC> Infos
-        {
-            get
-            {
-                return infos;
-            }
-        }
-        public List<SIC> Actions
-        {
-            get
-            {
-                return actions;
-            }
-        }
-        public void AddInfo(SIC sic)
-        {
-            infos.Add(sic);
-        }
-        public void AddAction(SIC sic)
-        {
-            actions.Add(sic);
-        }
-    }
     public class DMNode
     {
-        private List<DMNode> nodes = new List<DMNode>();
-        int id, parentId;
-        string name;
+        protected List<DMNode> nodes = new List<DMNode>();
+        protected int id, parentId;
+        protected string name;
         public DMNode() { }
         public DMNode(int id, int parentId, string name)
         {
@@ -104,6 +50,54 @@ namespace BAE.Mercury.Client.Models
             }
         }
     }
+    public class DMSic : DMNode
+    {
+        public enum SicType
+        {
+            Action = 0, Info =1
+        }
+        private SicType sicType;
+        public DMSic(int id, int parentId, string name, SicType sicType) : base(id, parentId, name)
+        {
+            this.sicType = sicType;
+        } 
+        public SicType Type
+        {
+            get
+            {
+              return sicType;
+            }
+        }
+    }
+
+    public class DMAppointment : DMNode
+    {
+        private List<DMSic> infos = new List<DMSic>(), actions = new List<DMSic>();
+        public DMAppointment(int id, int parentId, string name)
+            : base(id, parentId, name) { }
+        public List<DMSic> Infos
+        {
+            get
+            {
+                return infos;
+            }
+        }
+        public List<DMSic> Actions
+        {
+            get
+            {
+                return actions;
+            }
+        }
+        public void AddInfo(DMSic sic)
+        {
+            infos.Add(sic);
+        }
+        public void AddAction(DMSic sic)
+        {
+            actions.Add(sic);
+        }
+    }
     public class DMUnit : DMNode
     {
         public DMUnit(int id, int parentId, string name)
@@ -116,7 +110,6 @@ namespace BAE.Mercury.Client.Models
     }
     public class DistributionManagement : DMNode
     {
-        public DistributionManagement() { }
     }
 /*
     public class DistributionManagementEx

@@ -19,6 +19,7 @@ create table DMNode(
 	NodeId int not null identity,
 	ParentId int null,
 	NodeName varchar(255) not null,
+	NodeType bit default null
 	constraint PK_Node primary key(NodeId)
 	--constraint UK_NodeName unique(NodeName)
 )
@@ -102,13 +103,29 @@ go
 
 SET IDENTITY_INSERT DMNode ON
 insert into DMNode(NodeId, ParentId, NodeName) values(0, null, 'Root')
-insert into DMNode(NodeId, ParentId, NodeName) values(1, 0, 'Set 1')
-insert into DMNode(NodeId, ParentId, NodeName) values(2, 1, 'Unit = 1 RAR')
-insert into DMNode(NodeId, ParentId, NodeName) values(3, 1, 'Unit = 2 RAR')
+insert into DMNode(NodeId, ParentId, NodeName) values(1, 0, 'Ken Ong')
+insert into DMNode(NodeId, ParentId, NodeName) values(2, 1, 'Unit = Set1 1 RAR')
+insert into DMNode(NodeId, ParentId, NodeName) values(3, 1, 'Unit = Set1 2 RAR')
 insert into DMNode(NodeId, ParentId, NodeName) values(4, 0, 'Set 2')
-insert into DMNode(NodeId, ParentId, NodeName) values(5, 1, 'Unit = 1 RAR')
-insert into DMNode(NodeId, ParentId, NodeName) values(6, 1, 'Unit = 2 RAR')
-insert into DMNode(NodeId, ParentId, NodeName) values(7, 1, 'Root')
+insert into DMNode(NodeId, ParentId, NodeName) values(5, 4, 'Unit = Set2 1 RAR')
+insert into DMNode(NodeId, ParentId, NodeName) values(6, 4, 'Unit = Set2 2 RAR')
+insert into DMNode(NodeId, ParentId, NodeName) values(7, 4, 'Unit = Set2 3 RAR')
+insert into DMNode(NodeId, ParentId, NodeName) values(8, 5, 'APP = AAAA')
+insert into DMNode(NodeId, ParentId, NodeName) values(9, 5, 'APP = BBBBB')
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(10, 8, 'SIC = CCCCCCCC', 1)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(11, 8, 'SIC = CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(12, 8, 'SIC = CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(13, 9, 'SIC = CCCCCCCC', 1)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(14, 9, 'SIC = CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName) values(15, 2, 'APP = AAAA')
+insert into DMNode(NodeId, ParentId, NodeName) values(16, 2, 'APP = BBBBB')
+insert into DMNode(NodeId, ParentId, NodeName) values(17, 5, 'APP = AAAA')
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(18, 15, 'SIC = CCCCCCCC', 1)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(19, 15, 'SIC = CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(20, 15, 'SIC = CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(21, 17, 'SIC = CCCCCCCC', 1)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(22, 3, 'SIC = CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName) values(23, 0, 'Set 3')
 /*
 insert into DMNode(NodeId, ParentId, NodeName) values(0, null, 'Root')
 insert into DMNode(NodeId, ParentId, NodeName) values(1, null, 'Unit = 2 RAR')
@@ -153,9 +170,9 @@ select * from DMTree
 
 
 --gets all descendants of the DMNode 2
-select c.*
+select c.*, t.level
 from DMNode n, DMTree t, DMNode c
-where n.NodeId=2
+where n.NodeId=1
 	and n.NodeId = t.ParentId
 	and t.NodeId = c.NodeId
 

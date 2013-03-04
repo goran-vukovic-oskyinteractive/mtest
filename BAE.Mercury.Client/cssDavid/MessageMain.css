@@ -1,0 +1,177 @@
+﻿/*******************************************************************************
+//         %name: MessageMain.css %
+//      %version: 33 %
+//     Copyright: Copyright 2012-2013 BAE Systems Australia
+//                 All rights reserved.
+********************************************************************************/
+
+/**** message LIST ****/
+#message-search {border-bottom:1px solid #dadada; padding:8px 10px;}
+#message-search form input#search-inbox {background:url(../images/bg-search.png) top left no-repeat; width:241px; height:18px; padding:5px 5px 5px 25px; border:none; color:#525252; font-size:12px;}
+#message-search form a#advance-search img {vertical-align:middle; margin:0 0 0 4px;}
+ 
+#messageList {}
+#messageList .listGroupheader {background:#f0f4f5; padding:10px; text-align:center; text-transform:uppercase; border-bottom:1px solid #dadada;} 
+#messageList .listGroupheader h2 {text-transform:uppercase; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; margin:0}
+#messageList .message {border-bottom:1px solid #dadada; padding:10px 0 10px 10px;  overflow:hidden; background:#fff;-moz-user-select: none;-webkit-user-select: none;}
+#messageList .message:hover {background:#ccc url(../images/bg-message_hover.png);}
+
+#messageList .selected.message {background:  url(../images/bg-message_selected.png);}
+#messageList .selected.message:hover {background:#ccc url(../images/bg-message_selected_hover.png);}
+#messageList .message .message-icon {width:25px; float:left; min-height:50px; height:auto!important; height:50px;}
+#messageList .message .unread {font-weight: bold; }
+#messageList .message .message-summary {float:left; width:80%; }
+#messageList .message .message-summary h3 {font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size:13px; margin:0 3px 5px 0;text-overflow:ellipsis;white-space:nowrap;overflow:hidden; }
+#messageList .message .message-summary h3 span {color:#0a0505;}
+#messageList .message .message-summary.unread h3 {font-weight:bold;}
+#messageList .message .message-summary p.sender {margin:0 0 5px 0; color:#858585; font-size:12px;}
+#messageList .message .message-summary p.DTG {margin:0; color:#858585; font-size:12px; text-transform:uppercase;}
+#messageList .message .message-summary span.date {float:right;margin:0; margin-top:-18px; color:#858585; font-size:12px; text-transform:uppercase;}
+#messageList .message .message-precedence { float:right; width:25px;}
+#messageList .message .message-summary p.switch-id {margin:0; color:#858585; font-size:12px;}
+#messageList .message .message-summary p.switch-size {margin:0; color:#858585; font-size:12px;}
+#messageList .message .message-summary span.switch-age {float:right;margin:0; margin-top:-18px; color:#858585; font-size:12px;}
+
+
+/* message icon */
+
+#messageList .message .message-icon .icon-status,
+#messageList .message .message-icon .icon-attachment,
+#messageList .message .message-precedence .icon-precedence {background:url(../images/bg-message_icon.png) no-repeat;margin:2px 0 8px;}
+
+#messageList .message.reply .message-icon .icon-status {background-position:-18px 0; width:17px; height:16px; display:block; }
+#messageList .message.forward .message-icon .icon-status {background-position:-37px 0; width:17px; height:16px; display:block; }
+#messageList .message.release .message-icon .icon-status {background-position:-58px 0; width:12px; height:16px; display:block; }
+
+#messageList .message.action.flash .message-icon .icon-status {background-position:-1px -23px; width:18px; height:18px; display:block; }
+#messageList .message.action .message-icon .icon-status {background-position:-1px -42px; width:18px; height:18px; display:block; }
+
+#messageList .message.attachment .message-icon .icon-attachment {background-position:0 0; width:17px; height:16px; display:block; }
+
+#messageList .message.flash .message-precedence .icon-precedence {background-position:0 -73px; width:16px; height:23px; display:block; }
+#messageList .message.override .message-precedence .icon-precedence {background-position:0 -73px; width:16px; height:23px; display:block; }
+#messageList .message.immediate .message-precedence .icon-precedence {background-position:-17px -73px; width:16px; height:23px; display:block; }
+#messageList .message.priority .message-precedence .icon-precedence {background-position:-34px -73px; width:16px; height:23px; display:block; }
+#messageList .message.routine .message-precedence .icon-precedence {background-position:-51px -73px; width:16px; height:23px; display:block; }
+#messageList .message.deferred .message-precedence .icon-precedence {background-position:-51px -73px; width:16px; height:23px; display:block; }
+#spacer{height:0px}
+/*______________________________________________________________________________________________________________________________________*/
+
+#message-content{}
+
+
+ul.messageMenu li { list-style: none;display: inline;padding: 5px; }
+
+/*-----------------------------------Menu Buttons */
+#buttons ul li#btn-new a:hover {background-position: 0 -30px; }
+#buttons ul li#btn-delete a { background-position: -31px 0; }
+#buttons ul li#btn-delete a:hover { background-position: -31px -30px; }
+#buttons ul li#btn-mark a { background-position: -62px 0; width: 57px; }
+#buttons ul li#btn-mark a:hover { background-position: -62px -30px; }
+#buttons ul li#btn-print a { background-position: -119px 0; }
+#buttons ul li#btn-print a:hover { background-position: -119px -30px; }
+#buttons ul li#btn-release a { background-position: -150px 0; }
+#buttons ul li#btn-release a:hover { background-position: -150px -30px; }
+#buttons ul li#btn-reject a { background-position: -181px 0; }
+#buttons ul li#btn-reject a:hover { background-position: -181px -30px; }
+#buttons ul li#btn-action a { background-position: -212px 0; }
+#buttons ul li#btn-action a:hover { background-position: -212px -30px; }
+#buttons ul li#btn-reply a { background-position: -243px 0; width: 57px; }
+#buttons ul li#btn-reply a:hover { background-position: -243px -30px; }
+#buttons ul li#btn-forward a { background-position: -300px 0; margin-left: 0; margin-right: 0; width: 57px; }
+#buttons ul li#btn-forward a:hover { background-position: -300px -30px; }
+
+#buttons ul li .btn-drop {position:absolute; top:30px; padding:0; z-index:9999; background:#d0d0d0 url(../images/bg-dropdown.png) 0 0 repeat-x; left:15px; border:1px solid #b7b7b6; display:none;-webkit-box-shadow: inset 0px 0px px 1px #ffffff;box-shadow: inset 0px 0px px 1px #ffffff; -webkit-border-radius: 0px 0px 5px 5px;border-radius: 0px 0px 5px 5px;  }
+#buttons ul li .btn-drop span {display:block; margin:0; text-align:left; padding:0;}
+#buttons ul li .btn-drop a {font-family:'Conv_HelveticaNeueLTStd-Md', sans-serif; text-transform:uppercase; font-weight:normal; font-size:10px; text-indent:0; margin:0; height:25px; width:45px!important; text-align:left; padding:5px 10px 0; background:url(../images/bg-dropdown_sep.png) left top repeat-x!important;}
+#buttons ul li .btn-drop a:hover {background:url(../images/bg-dropdown_sep.png) left top repeat-x!important;}
+#buttons ul li .btn-drop * {z-index:9999;}
+#buttons ul li .btn-drop a.first {background:none!important;}
+
+#buttons ul li#btn-reply .btn-drop a {width:75px!important;}
+#buttons ul li#btn-forward .btn-drop{left:0;}
+#buttons ul li#btn-forward .btn-drop a,
+#buttons ul li#btn-mmreply .btn-drop a {width:95px!important;}
+
+#dialog-confirm-discard { display: none }
+/*-----------------------------------Folder List */
+.FolderList
+{
+    overflow-y:scroll;
+    width:100%;
+    height:650px;
+    background-color: white;
+    border: 1px solid #CCCCCC;
+   
+} 
+ 
+
+/*------------------------------------Message List */
+#loading
+{
+    width:32px;
+}
+ 
+#message-list
+{
+    zoom: 1;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    width:100%;
+}
+#listContainer
+{
+    position: relative;
+    background-color: white;
+    overflow-y:scroll;
+    width:100%;
+    height:90%;
+    margin-top:0;
+    border-top:1px solid #CCCCCC;
+    background:url(../images/loading.gif) no-repeat;
+    background-position:center;
+}
+
+.itemselected
+{
+   background-color: lightskyblue
+}
+ 
+#messageList .mailImg
+{
+    position:absolute;
+    left:3px;
+    top:5px;
+}
+#messageList .subject
+{     
+    position:absolute;
+    left:28px;
+    top:2px;
+    width:250px;
+}
+#messageList .received
+{
+    color:grey;
+    text-align:right;
+    position:absolute;
+    right:3px;
+    top:2px;
+    width:200px;
+}
+#messageList .from
+{    
+    color:grey;
+    position:absolute;
+    left:28px;
+    bottom:2px;
+    width:250px;
+}
+#messageList .precedence
+{
+    color:#ac9e50;
+    position:absolute;
+    right:3px;
+    bottom:2px;
+    width:100px;    
+}

@@ -1033,7 +1033,7 @@
       self.cursor.css({height:self.cursorheight,top:self.scroll.y});
       if (self.zoom) self.zoom.stop().css({opacity:self.opt.cursoropacitymax});
     };
-    //#############################################################################################
+    
     this.hideCursor = function(tm) {
       if (self.cursortimeout) return;
       if (!self.rail) return;
@@ -1044,9 +1044,9 @@
            if (self.zoom) self.zoom.stop().animate({opacity:self.opt.cursoropacitymin});
          }
          self.cursortimeout = 0;
-      },tm||1800);  //set delay here
+      },tm||400);
     };
-    //#############################################################################################
+    
     this.noticeCursor = function(tm,py) {
       self.showCursor(py);
       self.hideCursor(tm);

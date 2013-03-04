@@ -1,0 +1,77 @@
+﻿/*******************************************************************************
+//          %name: MessageFolders.css %
+//       %version: 7 %
+//      Copyright: Copyright 2012-2013 BAE Systems Australia
+//                 All rights reserved.
+********************************************************************************/
+
+
+#mailbox ul#mailbox-list {margin:0; display:block;}
+#mailbox ul#mailbox-list ul {list-style:none; display:none; margin:0;}
+#mailbox ul#mailbox-list ul li {list-style:none; background:none; display:block;}
+#mailbox ul#mailbox-list li.selected {background:#cd3d3d  url(../images/bg-folder_selected.png);}
+#mailbox ul#mailbox-list li.selected:hover {background:#cd3d3d url(../images/bg-folder_selected_hover.png);}
+#mailbox ul#mailbox-list li ul li a:hover {background:#343434;}
+#mailbox ul#mailbox-list li ul li.selected a {background:#cd3d3d  url(../images/bg-folder_selected.png);}
+#mailbox ul#mailbox-list li ul li.selected a:hover{background:#cd3d3d url(../images/bg-folder_selected_hover.png);}
+#mailbox ul#mailbox-list ul li a {background:#303030; border-top:1px solid #262626;}
+#mailbox ul#mailbox-list li {margin:0; padding:0; font-size:13px; font-weight:normal; display:block;  }
+#mailbox ul#mailbox-list li:hover {background:#494949;}
+#mailbox ul#mailbox-list li div.hasChildren {background:url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat;}
+#mailbox ul#mailbox-list li div.open {background: url(../images/bg-mailbox_arrow_down.png) 15px 15px no-repeat;}
+#mailbox ul#mailbox-list li div.hasChildren:hover {background:#494949 url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat;}
+#mailbox ul#mailbox-list li.selected div.hasChildren:hover{background:#cd3d3d url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat;}
+#mailbox ul#mailbox-list li div.open:hover {background:#494949 url(../images/bg-mailbox_arrow_down.png) 15px 15px no-repeat;}
+#mailbox ul#mailbox-list li.selected div.open:hover{background:#cd3d3d url(../images/bg-mailbox_arrow_down.png) 15px 15px no-repeat;}
+#mailbox ul#mailbox-list li a {display:block; border-top:1px solid #343434; padding:9px 0 9px 30px; color:#fff; overflow:hidden;}
+#mailbox ul#mailbox-list li span.counter {display:block; padding:0 7px; text-align:center; background:#6c6c6c; float:right; margin:0 10px 0 0; border-radius: 5px; border:1px solid #5f5f5f; font-size:12px; height:20px; line-height:20px; position:relative;}
+#mailbox ul#mailbox-list li div:hover span.counter,
+#mailbox ul#mailbox-list li a:hover span.counter,
+#mailbox ul#mailbox-list li div.open span.counter {background:#992424!important; border:1px solid #872020!important;}
+
+#mailbox ul#mailbox-list li span.icon {background:url(../images/bg-mailbox_icon.png) 0 0 no-repeat; display:block; width:16px; height:15px; float:left; margin-top:0px;}
+#mailbox ul#mailbox-list li strong {font-weight:normal; float:left; margin:0 0 0 10px;}
+
+#mailbox ul#mailbox-list li#inbox div:hover span.icon {background-position:0 -15px}
+
+#mailbox ul#mailbox-list li#draft span.icon {background-position:-18px 0; width:14px;}
+#mailbox ul#mailbox-list li#draft div:hover span.icon {background-position:-18px -15px;}
+
+#mailbox ul#mailbox-list li#sent span.icon {background-position:-32px 0;}
+#mailbox ul#mailbox-list li#sent div:hover span.icon {background-position:-32px -15px;}
+
+#mailbox ul#mailbox-list li#discard span.icon {background-position:-49px 0;}
+#mailbox ul#mailbox-list li#discard div:hover span.icon {background-position:-49px -15px;}
+
+#mailbox ul#mailbox-list li#templates span.icon {background-position:-79px 0; width:14px;}
+#mailbox ul#mailbox-list li#templates div:hover span.icon {background-position:-79px -15px;}
+
+#mailbox ul#mailbox-list li#objective span.icon {background-position:-65px 0; width:13px;}
+#mailbox ul#mailbox-list li#objective div:hover span.icon {background-position:-65px -15px;}
+
+#mailbox ul#folder-list {margin:0;}
+#mailbox ul#folder-list li {margin:0; padding:0; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-size:13px; font-weight:normal; display:block;  }
+#mailbox ul#folder-list li a {display:block; border-top:1px solid #343434; padding:9px 0 9px 15px; color:#fff; overflow:hidden;}
+#mailbox ul#folder-list li a:hover {background:#cd3d3d;}
+#mailbox ul#folder-list li ul li a:hover {background:#cd3d3d;}
+#mailbox ul#folder-list li span.icon {background:url(../images/bg-mailbox_icon.png) -93px 1px no-repeat; display:block; width:13px; height:16px; float:left;}
+#mailbox ul#folder-list li strong {font-weight:normal; float:left; margin:0 0 0 10px;}
+
+#mailbox ul#precedence-list {margin:0;}
+#mailbox ul#precedence-list li {margin:0; padding:0; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-size:13px; font-weight:normal; display:block;  }
+#mailbox ul#precedence-list li a {display:block; border-top:1px solid #343434; padding:9px 0 9px 15px; color:#fff; overflow:hidden;}
+#mailbox ul#precedence-list li a:hover {background:#cd3d3d;}
+#mailbox ul#precedence-list li ul li a:hover {background:#cd3d3d;}
+#mailbox ul#precedence-list li span.icon {background:url(../images/bg-mailbox_precedence.png) 0 0 no-repeat; display:block; width:16px; height:23px; float:left;}
+#mailbox ul#precedence-list li strong {font-weight:normal; float:left; margin:0 0 0 10px;}
+
+#mailbox ul#precedence-list li#flash span.icon {}
+#mailbox ul#precedence-list li#immediate span.icon {background-position:-17px 0;}
+#mailbox ul#precedence-list li#priority span.icon {background-position:-34px 0;}
+#mailbox ul#precedence-list li#routine span.icon {background-position:-51px 0;}
+
+ #action-list {margin:0; padding:0 0 20px 0;}
+ #action-list li {margin:0; padding:0; font-family:'Conv_HelveticaNeueLTStd-Roman', Arial, Helvetica, sans-serif; font-size:13px; font-weight:normal; display:block;  }
+ #action-list li a {display:block; border-top:1px solid #343434; padding:9px 0 9px 15px; color:#fff; overflow:hidden; background:#3b3d41l}
+ #action-list li a:hover,
+ #action-list li.current a {background:#343539; color:#8a8c97;}

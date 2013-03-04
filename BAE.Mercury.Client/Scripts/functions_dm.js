@@ -28,9 +28,9 @@ $(document).ready(function() {
 		
 	});
 	
-	// Add scollbar for expadible nodes
+	// Add scollbar for expandible nodes
 	$("#graph .node.expandible .expand").niceScroll({
-		autohidemode : true,
+		autohidemode : false,
 		cursorborder : "none",
 		cursorcolor : "#6c6c6c",
 		zindex  : 99
@@ -45,7 +45,7 @@ $(document).ready(function() {
 	});
 	
 	// POPUP
-	$(".popup").colorbox({width:"70%"});
+	//$(".popup").colorbox({width:"70%"});
 	
 	// Search SIC
 	$("#search-sic").click(function() {
@@ -61,8 +61,8 @@ $(document).ready(function() {
 	
 	// Rule visualiser
 	$("#rule-visualiser-wrap-trigger").click(function(event) {
-		event.preventDefault();
-	  	$("#rule-visualiser-wrap").slideToggle("normal");		
+	    event.preventDefault();
+	    $("#rule-visualiser-wrap").slideToggle("normal");
 	});
 	
 	// Checkbox for Set

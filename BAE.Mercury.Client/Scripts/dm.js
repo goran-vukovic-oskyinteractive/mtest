@@ -284,12 +284,33 @@ function cover() {
     body.append(hidden);
 }
 
-function init() {
-    //get the canvas
+function init(data) {
+    //get the graph
+    var graph = $("#graph");
+    graph.empty();
+    //alert(data);
+    graph.append(data);
+    //var graph = $("#graph");
+    //var height = $("#graph").css("height");
+    //var nice = graph.getNiceScroll();
+    //nice.remove();
+    //nice.resize();
+    //nice.show();
+    //event.preventDefault();
+    //$("#graph").getNiceScroll().resize();
+    //$("#rule-visualiser-wrap-trigger").click(); //.slideToggle("normal");		
+
+//    $("#graph .node.expandible .expand").niceScroll({
+    //        autohidemode: false,
+    //        cursorborder: "none",
+    //        cursorcolor: "#6c6c6c",
+    //        zindex: 999
+    //    });	
+//    
 
 }
 
-function loadTree(type, id) {
+function loadTree(id) {
     //ajax call to load
     alert("ajax");
     //return;
@@ -303,9 +324,9 @@ function loadTree(type, id) {
         type: "POST",
         dataType: "json",
         data: {
-            i: 1
+            i: id
         },
-        url: "DistributionManagement/ZZZ",
+        url: "DistributionManagement/GetSet",
         //async: true,
         beforeSend: function (xhr) {
             alert("before");
@@ -335,8 +356,22 @@ function loadTree(type, id) {
     return false;
 }
 
+function test() {
+alert("OK")
+};
+
 
 $(document).ready(function () {
+
+
+//$(".popup").click = function () {alert("OK")};
+
+    //    $("#graph").scroll(function () {
+    //        $("#graph").getNiceScroll().resize();
+    //    });
+    //    var graph = $("#graph");
+    //    var nice = graph.getNiceScroll();
+    //    nice.remove();
 
 
     $.ajaxSetup({
@@ -344,7 +379,60 @@ $(document).ready(function () {
     });
 
     $("[id^=s_]").click(function () {
-        loadTree(0, this.id);
+        //alert("set" + this.id);
+        loadTree(this.id);
+        return;
+        var graph = $("#graph");
+        var height = graph.height();
+        graph.height(2000); // css("height", "2000px");
+        var nice = graph.getNiceScroll();
+        //        //nice.remove();
+        //        nice.resize();
+        //        nice = graph.niceScroll({
+
+        //                    cursorcolor: "#CCC",
+        //                    autohidemode: false,
+        //                    cursorborder: "none",
+        //                    cursorcolor: "#6c6c6c",
+        //                    zindex: 999
+
+
+        //        });
+        //$("graph").getNiceScroll().resize();
+        //nice.resize();
+        var h = graph.height();
+        //$('div[id^="ascrail"]').remove();
+        nice.remove();
+        $("#graph").niceScroll({
+                        cursorcolor : "#6699FF",
+                        cursorwidth : "50px",
+                        grabcursorenabled : "false",
+                        preservenativescrolling : "false",
+                        cursorborder : "0px",
+                        scrollspeed : "20",
+                    });
+//        nice = graph.niceScroll({
+//                    cursorcolor: "#CCC",
+//                    autohidemode: false,
+//                    zindex: 999
+//                });
+//                //        $(window).trigger('resize');
+        //        $(window).resize();
+        //nice.resize();
+
+//        $(window).resize();
+//        nice.resize();
+//        nice.show();
+
+////        window.resizeBy(0, -10);
+        //window.resizeBy(0, -1);
+        //window.resizeBy(0, 5);
+        var wh = $(window).height();//.resize(-1, -1);
+        var ww = $(window).width();//.resize(-1, -1);
+        var newWH = wh + 20;
+        window.resizeBy(0, -20);
+        window.resizeBy(0, +21);
+
         //saveAll();
         //alert("set" + this.id);
         //cover();
