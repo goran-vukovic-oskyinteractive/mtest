@@ -41,7 +41,7 @@ function removeScroll() {
 // Add scroll bar
 function addScroll() {
 	$("#mailbox-scroll, #email-list, #email-content").niceScroll({
-		autohidemode : true,
+		autohidemode : false,
 		cursorborder : "none",
 		cursorcolor : "#6c6c6c",
 		zindex  : 99

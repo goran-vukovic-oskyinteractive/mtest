@@ -307,6 +307,7 @@
     <Content Include="css\nm.css" />
     <Content Include="css\reset.css" />
     <Content Include="css\style.css" />
+    <Content Include="css\style_dm.css" />
     <Content Include="distribution_management.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -420,7 +421,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ScriptsDavid\countdown.js" />
-    <Content Include="ScriptsDavid\Initialise.js" />
+    <Content Include="ScriptsDavid\DAInitialise.js" />
     <Content Include="ScriptsDavid\jquery-1.js" />
     <Content Include="ScriptsDavid\jquery-1_002.js" />
     <Content Include="ScriptsDavid\jquery-ui-timepicker-addon.js" />
@@ -642,6 +643,7 @@
     <Content Include="Views\DistributionManagement\_DMTable.cshtml" />
     <Content Include="Views\DistributionManagement\_DMReference.cshtml" />
     <Content Include="Views\DistributionManagement\_DMSet.cshtml" />
+    <Content Include="Views\DistributionManagement\_DMMessageList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BAE.Mercury.Business\BAE.Mercury.Business.csproj">

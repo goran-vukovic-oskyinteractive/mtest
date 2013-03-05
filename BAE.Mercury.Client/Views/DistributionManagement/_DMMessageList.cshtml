@@ -1,0 +1,1019 @@
+﻿<div id="xwrapper" style="z-index:1001">
+        <div id="content">
+            <div class="col-wrap">
+                <div tabindex="5000" style="height: 552px; overflow: hidden;" class="col-left ui-resizable" id="mailbox">
+
+
+
+                    <div tabindex="5000" style="height: 645px; overflow: hidden; " id="mailbox-scroll">
+                        <h2>
+                            Mailboxes</h2>
+
+                    </div>
+
+
+                    <div id="action-list-collapse">
+                        <a href="#">
+                            <img src="/Images/bg-left_menu_collapse.png" align="Close Menu" height="11" width="30"></a></div>
+                    <div style="z-index: 1000;" class="ui-resizable-handle ui-resizable-e">
+                    </div>
+                <div style="z-index: 1000;" class="ui-resizable-handle ui-resizable-e"></div></div>
+
+
+
+
+                <div style="height: 552px;" class="col-middle ui-resizable" id="message-list-wrap" style="background-color: yellow;filter: alpha(opacity=0); opacity: 0">
+
+                    <div id="message-search">
+                        <form action="#" id="search" method="post">
+                        <input value="Search Inbox" id="search-inbox" type="text"><a class="remove" href="#"></a>
+                        <span class="search-right"></span><a href="#" id="advanced-search-button">
+                            <img src="/Images/icon-advanced_search.png" alt="Show Advanced Search" height="21" width="21"></a>
+                        <br class="clear">
+                        <div id="advanced-search">
+                            <ul>
+                                <li><a href="#">From</a></li>
+                                <li><a href="#">To</a></li>
+                                <li><a href="#">Subject</a></li>
+                                <li><a href="#">All</a></li>
+                            </ul>
+                            <br class="clear">
+                            <p>
+                                <span>
+                                    <label for="classification">
+                                        Classification:
+                                    </label>
+                                    <select name="classification" id="classification">
+                                        <option selected="selected">Unclassified</option>
+                                        <option>Protected</option>
+                                        <option>Confidential</option>
+                                        <option>Secret</option>
+                                    </select>
+                                </span><span class="second">
+                                    <label for="precedence">
+                                        Precedence:
+                                    </label>
+                                    <select name="precedence" id="precedence">
+                                        <option selected="selected">ROUTINE</option>
+                                        <option>PRIORITY</option>
+                                        <option>IMMEDIATE</option>
+                                        <option>FLASH</option>
+                                    </select>
+                                </span><span class="last"><a href="#" class="btn">SICs</a> <a href="#" class="btn">DTG</a>
+                                </span>
+                            </p>
+                            <p>
+                                <span>
+                                    <label for="date">
+                                        Date within:
+                                    </label>
+                                    <select name="date" id="date">
+                                        <option selected="selected">1 day</option>
+                                        <option>3 days</option>
+                                    </select>
+                                </span><span class="second">
+                                    <label for="date2">
+                                        From DTG:
+                                    </label>
+                                    <input class="dtginput" id="dtgborder" maxlength="16">
+                                    <input class="hidden" id="DTG" name="DTG" tabindex="0" type="text">
+                                </span><span class="last"><a href="#" class="btn">
+                                    <img src="/Images/icon-reply.png" alt="Back" height="16" width="22"></a> <a href="#" class="btn">
+                                        <img src="/Images/icon-search.png" alt="Search" height="16" width="15"></a>
+                                </span>
+                            </p>
+                        </div>
+                        </form>
+                    </div>
+                    <div id="search-results">
+                        <div class="group">
+                            <ul>
+                                <li><a href="#">Message contains: test</a></li>
+                            </ul>
+                        </div>
+                        <div class="group">
+                            <strong>People</strong>
+                            <ul>
+                                <li><a href="#"><span class="highlight">test</span>@@baesystems.com</a></li>
+                                <li><a href="#"><span class="highlight">test</span>ing@@gmail.com</a></li>
+                                <li><a href="#"><span class="highlight">test</span>er@@hotmail.com</a></li>
+                                <li><a href="#"><span class="highlight">test</span>@@yahoo.com</a></li>
+                                <li><a href="#">hello@@<span class="highlight">test</span>.com</a></li>
+                            </ul>
+                        </div>
+                        <div class="group">
+                            <strong>Subjects</strong>
+                            <ul>
+                                <li><a href="#">BAE <span class="highlight">Test</span></a></li>
+                                <li><a href="#"><span class="highlight">Test</span>ing</a></li>
+                                <li><a href="#"><span class="highlight">Test</span> Results</a></li>
+                            </ul>
+                        </div>
+                        <br class="clear">
+                    </div>
+                    <div id="message-sort" class="three-col">
+                        <div id="sort-criteria" class="col">
+                            <a href="#" class="col-arrow m1" id="criteria" tabindex="0">Sort by Time Received</a>
+                        </div>
+                        <div id="sort-direction" class="col last">
+                            <a href="#" class="col-arrow m2" id="orders" tabindex="0">Newest on top</a>
+                        </div>
+                        <br class="clear">
+                    </div>
+                    <div style="height: 460px; overflow: hidden; background-image: url(&quot;../images/loading.gif&quot;);" tabindex="5001" id="listContainer">
+                        <input id="msgcount" value="322" type="hidden">
+                        <input id="pagecount" value="17" type="hidden">
+                        <input id="listheight" value="27048" type="hidden">
+                        <input id="recordsinpage" value="20" type="hidden">
+                        <input id="recordheight" value="84" type="hidden">
+                        <input id="folderids" value="1,4,7_0" type="hidden">
+                        <input id="hdnPageIndex" value="1" type="hidden">
+                        <div tabindex="0" id="messageList" style="height: 27048px; transform: translate3d(0px, 0px, 0px);">
+                            <div id="spacer">
+                            </div>
+                            <div id="offset0" data-off="0" class="offsetCont">
+                                <div class="listGroupheader" data-group="Monday">
+                                    <h2>
+                                        Monday</h2>
+                                </div>
+                                <div onselectstart="return false;" id="msg_4" tabindex="0" class="msg message action routine  selected" data-url="/Message/Details?id=4" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary">
+                                        <h3>
+                                            <span href="#">Subject4</span></h3>
+                                        <p class="sender">
+                                            Sender4</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">25/02/2013 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div class="listGroupheader" data-group="Last Week">
+                                    <h2>
+                                        Last Week</h2>
+                                </div>
+                                <div onselectstart="return false;" id="msg_9" tabindex="0" class="msg message action flash " data-url="/Message/Details?id=9" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary ">
+                                        <h3>
+                                            <span href="#">Subject9</span></h3>
+                                        <p class="sender">
+                                            Sender9</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">20/02/2013 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_10" tabindex="0" class="msg message action immediate " data-url="/Message/Details?id=10" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary ">
+                                        <h3>
+                                            <span href="#">Subject10</span></h3>
+                                        <p class="sender">
+                                            Sender10</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">19/02/2013 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div class="listGroupheader" data-group="Two Weeks Ago">
+                                    <h2>
+                                        Two Weeks Ago</h2>
+                                </div>
+                                <div onselectstart="return false;" id="msg_13" tabindex="0" class="msg message action immediate " data-url="/Message/Details?id=13" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary ">
+                                        <h3>
+                                            <span href="#">Subject13</span></h3>
+                                        <p class="sender">
+                                            Sender13</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">16/02/2013 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_70" tabindex="0" class="msg message action flash " data-url="/Message/Details?id=70" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject70</span></h3>
+                                        <p class="sender">
+                                            Sender70</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">21/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_71" tabindex="0" class="msg message action routine " data-url="/Message/Details?id=71" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject71</span></h3>
+                                        <p class="sender">
+                                            Sender71</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">20/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="offset3" class="offsetCont" data-off="60">
+                                <div onselectstart="return false;" id="msg_72" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=72" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject72</span></h3>
+                                        <p class="sender">
+                                            Sender72</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">19/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_73" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=73" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject73</span></h3>
+                                        <p class="sender">
+                                            Sender73</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">18/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_74" tabindex="0" class="msg message action priority " data-url="/Message/Details?id=74" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject74</span></h3>
+                                        <p class="sender">
+                                            Sender74</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">17/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_75" tabindex="0" class="msg message action priority " data-url="/Message/Details?id=75" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject75</span></h3>
+                                        <p class="sender">
+                                            Sender75</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">16/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_76" tabindex="0" class="msg message action immediate " data-url="/Message/Details?id=76" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject76</span></h3>
+                                        <p class="sender">
+                                            Sender76</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">15/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_77" tabindex="0" class="msg message action immediate " data-url="/Message/Details?id=77" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject77</span></h3>
+                                        <p class="sender">
+                                            Sender77</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">14/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_78" tabindex="0" class="msg message action flash " data-url="/Message/Details?id=78" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject78</span></h3>
+                                        <p class="sender">
+                                            Sender78</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">13/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_79" tabindex="0" class="msg message action flash " data-url="/Message/Details?id=79" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject79</span></h3>
+                                        <p class="sender">
+                                            Sender79</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">12/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_80" tabindex="0" class="msg message action priority " data-url="/Message/Details?id=80" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject80</span></h3>
+                                        <p class="sender">
+                                            Sender80</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">11/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_81" tabindex="0" class="msg message action immediate " data-url="/Message/Details?id=81" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject81</span></h3>
+                                        <p class="sender">
+                                            Sender81</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">10/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_82" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=82" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject82</span></h3>
+                                        <p class="sender">
+                                            Sender82</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">9/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_83" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=83" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject83</span></h3>
+                                        <p class="sender">
+                                            Sender83</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">8/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_84" tabindex="0" class="msg message action priority " data-url="/Message/Details?id=84" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject84</span></h3>
+                                        <p class="sender">
+                                            Sender84</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">7/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_85" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=85" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject85</span></h3>
+                                        <p class="sender">
+                                            Sender85</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">6/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_86" tabindex="0" class="msg message action routine " data-url="/Message/Details?id=86" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject86</span></h3>
+                                        <p class="sender">
+                                            Sender86</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">5/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_87" tabindex="0" class="msg message action priority " data-url="/Message/Details?id=87" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject87</span></h3>
+                                        <p class="sender">
+                                            Sender87</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">4/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_88" tabindex="0" class="msg message action routine " data-url="/Message/Details?id=88" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject88</span></h3>
+                                        <p class="sender">
+                                            Sender88</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">3/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_89" tabindex="0" class="msg message action flash " data-url="/Message/Details?id=89" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject89</span></h3>
+                                        <p class="sender">
+                                            Sender89</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">2/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_90" tabindex="0" class="msg message action flash " data-url="/Message/Details?id=90" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject90</span></h3>
+                                        <p class="sender">
+                                            Sender90</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">1/12/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_91" tabindex="0" class="msg message action immediate " data-url="/Message/Details?id=91" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject91</span></h3>
+                                        <p class="sender">
+                                            Sender91</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">30/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="offset4" class="offsetCont" data-off="80">
+                                <div onselectstart="return false;" id="msg_92" tabindex="0" class="msg message action flash " data-url="/Message/Details?id=92" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject92</span></h3>
+                                        <p class="sender">
+                                            Sender92</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">29/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_93" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=93" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject93</span></h3>
+                                        <p class="sender">
+                                            Sender93</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">28/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_94" tabindex="0" class="msg message action priority " data-url="/Message/Details?id=94" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject94</span></h3>
+                                        <p class="sender">
+                                            Sender94</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">27/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_95" tabindex="0" class="msg message action priority " data-url="/Message/Details?id=95" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject95</span></h3>
+                                        <p class="sender">
+                                            Sender95</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">26/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_96" tabindex="0" class="msg message action immediate " data-url="/Message/Details?id=96" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject96</span></h3>
+                                        <p class="sender">
+                                            Sender96</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">25/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_97" tabindex="0" class="msg message action immediate " data-url="/Message/Details?id=97" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject97</span></h3>
+                                        <p class="sender">
+                                            Sender97</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">24/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_98" tabindex="0" class="msg message action immediate " data-url="/Message/Details?id=98" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject98</span></h3>
+                                        <p class="sender">
+                                            Sender98</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">23/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_99" tabindex="0" class="msg message action routine " data-url="/Message/Details?id=99" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject99</span></h3>
+                                        <p class="sender">
+                                            Sender99</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">22/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_100" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=100" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject100</span></h3>
+                                        <p class="sender">
+                                            Sender100</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">21/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_101" tabindex="0" class="msg message action flash " data-url="/Message/Details?id=101" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject101</span></h3>
+                                        <p class="sender">
+                                            Sender101</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">20/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_102" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=102" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject102</span></h3>
+                                        <p class="sender">
+                                            Sender102</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">19/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_103" tabindex="0" class="msg message action priority " data-url="/Message/Details?id=103" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject103</span></h3>
+                                        <p class="sender">
+                                            Sender103</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">18/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_104" tabindex="0" class="msg message action flash " data-url="/Message/Details?id=104" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject104</span></h3>
+                                        <p class="sender">
+                                            Sender104</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">17/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_105" tabindex="0" class="msg message action priority " data-url="/Message/Details?id=105" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject105</span></h3>
+                                        <p class="sender">
+                                            Sender105</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">16/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_106" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=106" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject106</span></h3>
+                                        <p class="sender">
+                                            Sender106</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">15/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_107" tabindex="0" class="msg message action priority " data-url="/Message/Details?id=107" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject107</span></h3>
+                                        <p class="sender">
+                                            Sender107</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">14/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_108" tabindex="0" class="msg message action priority " data-url="/Message/Details?id=108" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject108</span></h3>
+                                        <p class="sender">
+                                            Sender108</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">13/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_109" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=109" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject109</span></h3>
+                                        <p class="sender">
+                                            Sender109</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">12/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_110" tabindex="0" class="msg message action routine " data-url="/Message/Details?id=110" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject110</span></h3>
+                                        <p class="sender">
+                                            Sender110</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">11/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_111" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=111" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject111</span></h3>
+                                        <p class="sender">
+                                            Sender111</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">10/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_112" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=111" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject111</span></h3>
+                                        <p class="sender">
+                                            Sender111</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">10/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_113" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=111" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject111</span></h3>
+                                        <p class="sender">
+                                            Sender111</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">10/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                                <div onselectstart="return false;" id="msg_114" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=111" data-grp="0">
+                                    <div class="message-icon">
+                                        <span class="icon-status"></span><span class="icon-attachment"></span>
+                                    </div>
+                                    <div onselectstart="return false;" class="message-summary unread">
+                                        <h3>
+                                            <span href="#">Subject111</span></h3>
+                                        <p class="sender">
+                                            Sender111</p>
+                                        <p class="DTG">
+                                        </p>
+                                        <span class="date">10/11/2012 12:00:00 AM +00:00</span>
+                                    </div>
+                                    <div class="message-precedence">
+                                        <span class="icon-precedence"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div style="width: 8px; z-index: 101; position: absolute; top: 0px; right: 0px; height: 460px; opacity: 0;" id="ascrail2004"><div style="position: relative; top: 0px; float: right; width: 8px; height: 55px; background-color: rgb(108, 108, 108); border: medium none; background-clip: padding-box; border-radius: 5px 5px 5px 5px;"></div></div><div style="height: 9px; z-index: 101; position: absolute; left: 0px; bottom: 0px; display: none; width: 385px; opacity: 0;" id="ascrail2004-hr"><div style="position: relative; top: 0px; height: 8px; width: 385px; background-color: rgb(108, 108, 108); border: medium none; background-clip: padding-box; border-radius: 5px 5px 5px 5px;"></div></div></div>
+                    <div style="z-index: 1000;" class="ui-resizable-handle ui-resizable-e">
+                    </div>
+                <div style="z-index: 1000;" class="ui-resizable-handle ui-resizable-e"></div></div>
+                <div tabindex="5001" style="height: 552px; overflow: hidden;" id="message-content">
+                    
+                </div>
+                <br class="clear">
+                <div id="criterionOptions" class="message-sort-options">
+                    <ul id="criterion">
+                        <li class="ReceivedTime selected"><a href="#" onclick="callSort('ReceivedTime', 1);">
+                            Sort by Time Received</a></li>
+                        <li class="Security"><a href="#" onclick="callSort('Security', 1);">Sort by Security</a></li>
+                        <li class="Sender"><a href="#" onclick="callSort('Sender', 1);">Sort by Sender</a></li>
+                        <li class="Subject"><a href="#" onclick="callSort('Subject', 1);">Sort by Subject</a></li>
+                        <li class="Precedence"><a href="#" onclick="callSort('Precedence', 1);">Sort by Precedence</a></li>
+                    </ul>
+                </div>
+                <div id="orderOptions" class="message-sort-options">
+                    <ul id="order">
+                        <li class="1 selected"><a href="#" onclick="callSort('', 1, this);">Newest on top</a></li>
+                        <li class="0"><a href="#" onclick="callSort('', 0, this);">Oldest on top</a></li>
+                    </ul>
+                </div>
+                <script type="text/jscript">
+
+
+
+                    var MessageResourceObj = { "SICAlreadyAdded": "This SIC (TERM) has already been added to this message", "NoChanges": "No Changes have been made to the message.", "ValidInstructions": "This instruction is invalid.", "TooManySics": "Only 8 SICs may be added to a message", "MultiSelectError": "You have selected too many messages. Please select a smaller number of messages.", "MsgDiscardConfirm": "Are you sure you want to discard the selected message(s)?", "AddresseeAlreadyAdded": "This Addressee (TERM) has already been added to this message", "NotValidAddressee": "TERM is not a valid Addressee", "InstructionAlreadyAdded": "This Instruction (TERM) has already been added to this message", "NotValidSIC": "TERM is not a valid SIC", "MsgDiscardDialogTitle": "Discard Message?", "MultiSelectNone": "You have not selected any messages.", "MultiSelectTooMany": "You may only select a maximum of NUM records." };
+    
+                </script>
+            </div>
+        </div>
+    </div>

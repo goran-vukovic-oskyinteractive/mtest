@@ -88,12 +88,15 @@ function addListContainerScroll()
     scrollspeed: 30,
     mousescrollstep: 15,
     listObject: (typeof (LstObj) != "undefined") ? LstObj : null // Update ChrisN : Code shouldn't reference global vars in other script files
-  });
+});
+var listContainer = $("#listContainer");
+var nice = $("#listContainer").getNiceScroll();
   $( "#listContainer" ).getNiceScroll().resize();
-  $( "#listContainer" ).getNiceScroll()[0].cursor.keydown( function ( event )
-  {
-      keyHandler( event, LstObj.ChosenObj );//function in message.list.js
-  } );
+  //$("#listContainer").getNiceScroll()[0]
+//  nice.cursor.keydown( function ( event )
+//  {
+//      keyHandler( event, LstObj.ChosenObj );//function in message.list.js
+//  } );
 }
 
 // Attaches the toggling behaviour to the folders so that clicking the twistie will expand and collapse the folders children.

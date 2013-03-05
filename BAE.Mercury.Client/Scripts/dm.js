@@ -355,9 +355,44 @@ function loadTree(id) {
     uncover();
     return false;
 }
+function loadjscssfile(filename, filetype){
+ if (filetype=="js"){ //if filename is a external JavaScript file
+  var fileref=document.createElement('script')
+  fileref.setAttribute("type","text/javascript")
+  fileref.setAttribute("src", filename)
+ }
+ else if (filetype=="css"){ //if filename is an external CSS file
+  var fileref=document.createElement("link")
+  fileref.setAttribute("rel", "stylesheet")
+  fileref.setAttribute("type", "text/css")
+  fileref.setAttribute("href", filename)
+ }
+ if (typeof fileref!="undefined")
+  document.getElementsByTagName("head")[0].appendChild(fileref)
+}
+function messageClick($that) {
+    //we have the jQuery object
+    var url = $that.attr("data-url");
+    alert(url);
+}
 
 function test() {
-alert("OK")
+
+//$("#msg_222").click(function () {
+//        alert("plus");
+//});
+//var t = ;
+$("[id^='msg_']").each(function () {
+    $(this).click(function() {messageClick($(this))});
+    });
+var emailList = $("#email-list");
+var emailListNew = emailList.clone(true);
+emailListNew.css("display", "inline");
+$("body").append(emailListNew);
+//loadjscssfile("~/ScriptsDavid/jquery.js", "js") //dynamically load and add this .js file
+//loadjscssfile("~/ScriptsDavid/Initialise.js", "js") //dynamically load and add this .js file
+//listRun();
+addListContainerScroll();
 };
 
 
@@ -438,6 +473,8 @@ $(document).ready(function () {
         //cover();
         return false;
     });
+
+
 
     //alert("reday");
     //$(".rounded").corner('3px');
