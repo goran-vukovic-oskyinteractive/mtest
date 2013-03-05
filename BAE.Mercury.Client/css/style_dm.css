@@ -481,8 +481,8 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 
 
 #xwrapper { min-width:1020px; width:auto!important; width:1020px; }
-.col-wrap { }
-.col-left { float:left; width:220px; }
-.col-middle { float:left; width:385px; background:white}
-.col-right { width:auto }
+#xwrapper .col-wrap { }
+#xwrapper .col-left { float:left; width:220px; }
+#xwrapper .col-middle { float:left; width:385px; background:white}
+#xwrapper .col-right { width:auto }
 

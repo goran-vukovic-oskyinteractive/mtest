@@ -26,7 +26,7 @@ namespace BAE.Mercury.Client
             {
                 con.Open();
                 SqlDataReader reader = com.ExecuteReader();
-                DMSet set = new DMSet(nodeId, 0, String.Empty); //set name not a requirement here
+                DMSet set = new DMSet(nodeId, 0, String.Empty, false); //set name not a requirement here
                 //the units
                 List<DMUnit> units = new List<DMUnit>();
                 while (reader.Read())
@@ -34,7 +34,8 @@ namespace BAE.Mercury.Client
                         string setName = (string)reader["nodename"];
                         int id = (int)reader["nodeid"];
                         int parent = (int)reader["nodeparentid"];
-                        DMUnit unit = new DMUnit(id, parent, setName);
+                        bool readOnly = (bool)reader["readOnly"];
+                        DMUnit unit = new DMUnit(id, parent, setName, readOnly);
                         units.Add(unit);
                 }
                 //the appoinments
@@ -45,7 +46,8 @@ namespace BAE.Mercury.Client
                     string setName = (string)reader["nodename"];
                     int id = (int)reader["nodeid"];
                     int parent = (int)reader["nodeparentid"];
-                    DMAppointment appointment = new DMAppointment(id, parent, setName);
+                    bool readOnly = (bool)reader["readOnly"];
+                    DMAppointment appointment = new DMAppointment(id, parent, setName, readOnly);
                     appointments.Add(appointment);
                 }
                 //the sics
@@ -57,7 +59,8 @@ namespace BAE.Mercury.Client
                     int id = (int)reader["nodeid"];
                     int parent = (int)reader["nodeparentid"];
                     bool action = (bool)reader["nodetype"];
-                    DMSic sic = new DMSic(id, parent, setName, action ? DMSic.SicType.Action : DMSic.SicType.Info);
+                    bool readOnly = (bool)reader["readOnly"];
+                    DMSic sic = new DMSic(id, parent, setName, action ? DMSic.SicType.Action : DMSic.SicType.Info, readOnly);
                     sics.Add(sic);
                 }
 
@@ -122,7 +125,8 @@ namespace BAE.Mercury.Client
                     string setName = (string)reader["nodename"];
                     int id = (int)reader["nodeid"];
                     int parent = (int)reader["nodeparentid"];
-                    DMSet set = new DMSet(id, parent, setName);
+                    bool readOnly = (bool)reader["readOnly"];
+                    DMSet set = new DMSet(id, parent, setName, readOnly);
                     distributionManagement.AddNode(set);
                 }
                 reader.NextResult();
@@ -132,7 +136,8 @@ namespace BAE.Mercury.Client
                     int id = (int)reader["nodeid"];
                     int parentId = (int)reader["nodeparentid"];
                     string setName = (string)reader["nodename"];
-                    DMUnit unit = new DMUnit(id, parentId, setName);
+                    bool readOnly = (bool)reader["readOnly"];
+                    DMUnit unit = new DMUnit(id, parentId, setName, readOnly);
                     units.Add(unit);
                 }
                 //now loop through the node list and append to the sets

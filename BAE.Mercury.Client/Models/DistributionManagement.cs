@@ -10,12 +10,14 @@ namespace BAE.Mercury.Client.Models
         protected List<DMNode> nodes = new List<DMNode>();
         protected int id, parentId;
         protected string name;
+        bool readOnly;
         public DMNode() { }
-        public DMNode(int id, int parentId, string name)
+        public DMNode(int id, int parentId, string name, bool readOnly)
         {
             this.id = id;
             this.parentId = parentId;
             this.name = name;
+            this.readOnly = readOnly;
         }
         public void AddNode(DMNode node)
         {
@@ -42,6 +44,13 @@ namespace BAE.Mercury.Client.Models
                 return name;
             }
         }
+        public bool ReadOnly
+        {
+            get
+            {
+                return readOnly;
+            }
+        }
         public List<DMNode> Nodes
         {
             get
@@ -57,7 +66,8 @@ namespace BAE.Mercury.Client.Models
             Action = 0, Info =1
         }
         private SicType sicType;
-        public DMSic(int id, int parentId, string name, SicType sicType) : base(id, parentId, name)
+        public DMSic(int id, int parentId, string name, SicType sicType, bool readOnly)
+            : base(id, parentId, name, readOnly)
         {
             this.sicType = sicType;
         } 
@@ -73,8 +83,8 @@ namespace BAE.Mercury.Client.Models
     public class DMAppointment : DMNode
     {
         private List<DMSic> infos = new List<DMSic>(), actions = new List<DMSic>();
-        public DMAppointment(int id, int parentId, string name)
-            : base(id, parentId, name) { }
+        public DMAppointment(int id, int parentId, string name, bool readOnly)
+            : base(id, parentId, name, readOnly) { }
         public List<DMSic> Infos
         {
             get
@@ -100,13 +110,13 @@ namespace BAE.Mercury.Client.Models
     }
     public class DMUnit : DMNode
     {
-        public DMUnit(int id, int parentId, string name)
-            : base(id, parentId, name) { }
+        public DMUnit(int id, int parentId, string name, bool readOnly)
+            : base(id, parentId, name, readOnly) { }
     }
     public class DMSet : DMNode
     {
-        public DMSet(int id, int parentId, string name)
-            : base(id, parentId, name) { }
+        public DMSet(int id, int parentId, string name, bool readOnly)
+            : base(id, parentId, name, readOnly) { }
     }
     public class DistributionManagement : DMNode
     {

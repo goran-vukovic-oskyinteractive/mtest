@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Mercury - Inbox</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!--[if IE 7]>
+<link href="css/ie7.css" rel="stylesheet" type="text/css" media="all" />
+<![endif]-->
+<!--[if IE 8]>
+<link href="css/ie8.css" rel="stylesheet" type="text/css" media="all" />
+<![endif]-->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+<script type="text/javascript" src="js/jquery.nicescroll.js"></script>
+<script type="text/javascript" src="js/functions.js"></script>
+</head>
+<body>
+<div id="wrapper">
+	<div id="content">
+	
+	<div id="popup-content">
+		<div class="section">
+			<div class="inner">
+				<label for="desc">Descriptions</label>
+				<textarea id="desc"></textarea>
+			</div>	
+		</div>
+		
+		<div class="section">
+			<div class="inner">
+				<div class="col-wrap select first">
+					<div class="col">
+					<select>
+						<option selected="selected" value="Please select">Please select</option>
+						<option value="Precedence">Precedence</option>
+						<option value="SIC">SIC</option>
+					</select>
+					</div>
+					<div class="col">
+					<select>
+						<option selected="selected" value="Please select">Please select</option>
+						<option>is less than</option>
+						<option>is equal</option>
+					</select>
+					</div>
+					<div class="col last">
+					<select>
+						<option selected="selected" value="Please select">Please select</option>
+						<option>FLASH</option>
+						<option>NORMAL</option>
+					</select>
+					</div>
+					<div class="btn-add"> <a class="btn-plus" href="#">Plus</a> <a class="btn-minus" href="#">Minus</a> </div>
+				</div>
+			</div>	
+		</div>
+		
+		<div class="section">
+			<div class="inner">				
+				<div class="col-wrap select second">
+					<div class="col">
+					<select>
+						<option selected="selected" value="Please select">Please select</option>
+						<option value="Precedence">Precedence</option>
+						<option value="SIC">SIC</option>
+					</select>
+					</div>
+					<div class="col wide">
+					<select>
+						<option selected="selected" value="Please select">Please select</option>
+						<option>to mailbox</option>
+						<option>2nd option</option>
+					</select>
+					</div>					
+					<div class="btn-add"> <a class="btn-plus" href="#">Plus</a> <a class="btn-minus" href="#">Minus</a> </div>
+				</div>				
+			</div>	
+		</div>
+		
+		<div class="section">
+			<div class="inner">				
+				<div class="btn-wrap">
+					<ul>
+						<li><a href="#">Submit</a></li>
+						<li><a href="#">Clear</a></li>
+					</ul>
+				</div>
+			</div>	
+		</div>
+		
+	
+	</div>
+	
+	
+	
+	</div>
+</div>
+<script type="application/javascript">
+$(document).ready(function() {
+	
+	// script to duplicate the row for the select field.
+	
+	$("#popup-content .section .inner .col-wrap.select.first .btn-plus").click(function() {
+		$("#popup-content .section .inner .col-wrap.select.first:last").clone(true).insertAfter($("#popup-content .section .inner .col-wrap.select.first:last"));
+		$("#popup-content .section .inner .col-wrap.select.first input[type='select']").val('');
+		return false;
+	});
+	
+	$("#popup-content .section .inner .col-wrap.select.first .btn-minus").click(function(event) {
+
+		event.preventDefault();
+		$(this).closest("#popup-content .section .inner .col-wrap.select.first").remove();	
+		return false;	
+	});
+	
+	$("#popup-content .section .inner .col-wrap.select.second .btn-minus").click(function(event) {
+
+		event.preventDefault();
+		$(this).closest("#popup-content .section .inner .col-wrap.select.second").remove();	
+		return false;	
+	});
+	
+	$("#popup-content .section .inner .col-wrap.select.second .btn-plus").click(function() {
+		$("#popup-content .section .inner .col-wrap.select.second:last").clone(true).insertAfter($("#popup-content .section .inner .col-wrap.second:last"));
+		$("#popup-content .section .inner .col-wrap.select.second input[type='select']").val('');
+		return false;
+	});
+});
+</script>
+</body>
+</html>

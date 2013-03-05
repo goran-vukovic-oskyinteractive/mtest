@@ -309,6 +309,7 @@
     <Content Include="css\style.css" />
     <Content Include="css\style_dm.css" />
     <Content Include="distribution_management.html" />
+    <Content Include="dm_popup_sic.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Images\attach.gif" />
@@ -644,6 +645,7 @@
     <Content Include="Views\DistributionManagement\_DMReference.cshtml" />
     <Content Include="Views\DistributionManagement\_DMSet.cshtml" />
     <Content Include="Views\DistributionManagement\_DMMessageList.cshtml" />
+    <Content Include="Views\DistributionManagement\_DMPopupSic.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BAE.Mercury.Business\BAE.Mercury.Business.csproj">

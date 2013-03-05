@@ -146,9 +146,9 @@
             <div class="templates">
                 @{
                                 
-                    DMAppointment appointment = new DMAppointment(0, -1, String.Empty);
-                    DMSic sicAction = new DMSic(0, 0, String.Empty, DMSic.SicType.Action);
-                    DMSic sicInfo = new DMSic(0, 0, String.Empty, DMSic.SicType.Info);
+                    DMAppointment appointment = new DMAppointment(0, -1, String.Empty, false);
+                    DMSic sicAction = new DMSic(0, 0, String.Empty, DMSic.SicType.Action, false);
+                    DMSic sicInfo = new DMSic(0, 0, String.Empty, DMSic.SicType.Info, false);
                     appointment.AddAction(sicAction);
                     appointment.AddInfo(sicInfo);
                     Html.RenderPartial("_DMTable", appointment);
@@ -173,7 +173,7 @@
                             Proin elit arcu, rutrum commodo</p>
                         <div class="btn-wrap wide">
                             <ul>
-                                <li><a  href="#" class="popup" onclick="test()">Select Message</a></li>
+                                <li><a  href="#" class="popup" onclick="selectMessage()">Select Message</a></li>
                             </ul>
                         </div>
                     </div>
@@ -216,10 +216,20 @@
     <br class="clear" />
 </div>
 
-<div id="email-list" style="display:none">
-    <div style="z-index:2000;position:absolute; left:10px; top:10px; width:300px;height:400px;">
-        @{ Html.RenderPartial("_DMMessageList", null); } 
-    </div>
+<div id="email-list" style="display:none" onclick="closeList()">
     <div style="z-index:1000; padding:25%; position:absolute; left:0; top:0; width:100%; height:500px; text-align:center; vertical-align:middle; background-color:red; zoom: 1; filter: alpha(opacity=50); opacity: 0.5">
         &nbsp;</div>
+    <div style="z-index:2000;position:absolute; left:10px; top:10px;">
+        @{ Html.RenderPartial("_DMMessageList", null); } 
+    </div>
+</div>
+<div id="sic-popup" style="display:none;" >
+    <div style="z-index:1000; padding:25%; position:absolute; left:0; top:0; width:100%; height:500px; text-align:center; vertical-align:middle; background-color:green; zoom: 1; filter: alpha(opacity=50); opacity: 0.5">
+        &nbsp;</div>
+    <div style=" z-index:2000;position:absolute; top:50px;left:50px; height:400px;width:400px">
+        <a href="#" onclick="closePopupSic()">
+            <img src="~/Images/icon-reject.png" alt="reject" />
+        </a>
+        @{ Html.RenderPartial("_DMPopupSic", null); } 
+        </div>
 </div>

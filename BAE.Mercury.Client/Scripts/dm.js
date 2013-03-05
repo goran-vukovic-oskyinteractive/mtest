@@ -218,10 +218,60 @@ function remove(nodeId) {
 }
 
 
-function nodeplus(nodeId) {
-    //remove buttons
-    //removeButtons();
-    //add a dialog
+function SICinsertAfterFirst()  {
+    $("#popup-content .section .inner .col-wrap.select.first:last").clone(true).insertAfter($("#popup-content .section .inner .col-wrap.select.first:last"));
+    $("#popup-content .section .inner .col-wrap.select.first input[type='select']").val('');
+    return false;
+}
+function SICinsertAfterSecond()  {
+    $("#popup-content .section .inner .col-wrap.select.second:last").clone(true).insertAfter($("#popup-content .section .inner .col-wrap.second:last"));
+    $("#popup-content .section .inner .col-wrap.select.second input[type='select']").val('');
+    return false;
+}
+
+function SICRemoveFirst(event) {
+    event.preventDefault();
+    $(this).closest("#popup-content .section .inner .col-wrap.select.first").remove();
+    return false;
+}
+function SICRemoveSecond(event) {
+    event.preventDefault();
+    $(this).closest("#popup-content .section .inner .col-wrap.select.second").remove();
+    return false;
+}
+
+function nodeplus() {
+    selectSic();
+    return;
+    alert("add sic");
+    //create a sic popup dialog
+    var sicPopup = $("#sic-popup");
+    var sicPopupNew = sicPopup.clone(true);
+    sicPopupNew.attr("id", "sic-popup-new");
+    clickRebind(sicPopupNew, "#popup-sic-save", saveSic);
+    clickRebind(sicPopupNew, ".btn-plus", SICinsertAfterFirst);
+    clickRebind(sicPopupNew, ".btn-plus", SICinsertAfterSecond);
+    clickRebind(sicPopupNew, ".btn-minus", SICRemoveFirst);
+    clickRebind(sicPopupNew, ".btn-minus", SICRemoveSecond);
+
+/*
+        $("#popup-content .section .inner .col-wrap.select.first .btn-plus").click();
+
+        $("#popup-content .section .inner .col-wrap.select.first .btn-minus").click();
+
+        $("#popup-content .section .inner .col-wrap.select.second .btn-minus").click();
+
+        $("#popup-content .section .inner .col-wrap.select.second .btn-plus").click();
+*/
+
+    //clickRebind(sicPopupNew, "[id^='msg_']", messageClick);
+    //sicPopupNew.find$("[id^='msg_']").each(function () {
+    //    $(this).click(function() {messageClick($(this))});
+    //    });
+    sicPopupNew.css("display", "inline");
+    //sicPopup.css("display", "inline");
+    $("body").append(sicPopupNew);
+    return false;
     var xedit = "<div class='xedit' ><br/><select id='node-type'><option value='1'>1</option><select><br/><input id='node-edit' type='text'/><div style='width:100%;text-align:center;margin:10px'><a href='#' onclick='add(\"" + nodeId + "\")'><img src='images/save.gif' alt='save'/></a>&nbsp;<a href='#' onclick='cancel()'><img src='images/cancel.png' alt='cancel'/></a></div></div>"    //left='" + 400 + "px'
     var body = $("body");
     body.append(xedit);
@@ -284,13 +334,40 @@ function cover() {
     body.append(hidden);
 }
 
+
+        // script to duplicate the row for the select field.
+
+
+
+function clickRebind(parent, pattern, func) {
+    parent.find(pattern).each(function () {
+        $(this).click(func);
+        });
+}
+
+
 function init(data) {
     //get the graph
     var graph = $("#graph");
     graph.empty();
     //alert(data);
     graph.append(data);
-    //var graph = $("#graph");
+    clickRebind(graph, "a[id^='a_']", nodeplus);
+    clickRebind(graph, "a[id^='ie_']", null);
+    clickRebind(graph, "a[id^='id_']", null);
+    clickRebind(graph, "a[id^='ae_']", null);
+    clickRebind(graph, "a[id^='ad_']", null);
+    //var trigger = $("#rule-visualiser-wrap-trigger");
+//    graph.find("a[id^='a_']").each(function () {
+//        $(this).click(function() {alert("add");});
+//        });
+//    graph.find("a[id='*d_']").each(function () {
+//        $(this).click(function() {alert("edit");});
+//        });
+//    graph.find("a[id='*a_']").each(function () {
+//        $(this).click(function() {alert("add");});
+//        });
+//    //var graph = $("#graph");
     //var height = $("#graph").css("height");
     //var nice = graph.getNiceScroll();
     //nice.remove();
@@ -312,7 +389,7 @@ function init(data) {
 
 function loadTree(id) {
     //ajax call to load
-    alert("ajax");
+    //alert("ajax");
     //return;
     cover();
     //do an ajax call to get HTML
@@ -329,10 +406,10 @@ function loadTree(id) {
         url: "DistributionManagement/GetSet",
         //async: true,
         beforeSend: function (xhr) {
-            alert("before");
+            //alert("before");
         },
         success: function (data) {
-            alert("success");
+            //alert("success");
             //get canvas
             //var canvas =  $(
             //var json1 = data;
@@ -346,7 +423,7 @@ function loadTree(id) {
         }
        
     }).done(function () {
-        alert("done");
+        //alert("done");
         //init(json);
         //uncover();
     });
@@ -355,43 +432,85 @@ function loadTree(id) {
     uncover();
     return false;
 }
-function loadjscssfile(filename, filetype){
- if (filetype=="js"){ //if filename is a external JavaScript file
-  var fileref=document.createElement('script')
-  fileref.setAttribute("type","text/javascript")
-  fileref.setAttribute("src", filename)
- }
- else if (filetype=="css"){ //if filename is an external CSS file
-  var fileref=document.createElement("link")
-  fileref.setAttribute("rel", "stylesheet")
-  fileref.setAttribute("type", "text/css")
-  fileref.setAttribute("href", filename)
- }
- if (typeof fileref!="undefined")
-  document.getElementsByTagName("head")[0].appendChild(fileref)
+
+function saveSic() {
+    alert("save sic");
 }
-function messageClick($that) {
+
+function selectSic(data) {
+//data = [{'privacy': 'aaaa', 'search': 'bbbbb', 'name' :'cccccc'},{'privacy': 'aaaa', 'search': 'bbbbb', 'name' :'cccccc'}];
+var sicPopup = $("#sic-popup");
+var sicPopupNew = sicPopup.clone(true);
+sicPopupNew.attr("id", "sic-popup-new");
+//clickRebind(sicPopupNew, "#popup-sic-save", saveSic);
+//clickRebind(sicPopupNew, ".btn-plus", SICinsertAfterFirst);
+//clickRebind(sicPopupNew, ".btn-plus", SICinsertAfterSecond);
+//clickRebind(sicPopupNew, ".btn-minus", SICRemoveFirst);
+//clickRebind(sicPopupNew, ".btn-minus", SICRemoveSecond);
+sicPopupNew.css("background-color", "red");
+sicPopupNew.css("width", "2000px");
+sicPopupNew.css("display", "inline");
+$("body").append(sicPopupNew);
+return;
+//populate the list
+var template = $("#sic-entry-template").clone(true);
+var sicList = $("#sic-list");
+sicPopupNew.append("<p>aaaaaa</p>");
+//for(instance in data) {    
+//    sicList.append("<p>aaaaaa</p>");
+//}
+//
+$("body").append(sicPopupNew);
+sicPopupNew.css("display", "inline");
+sicPopupNew.css("background-color", "red");
+sicPopupNew.css("width", "2000px");
+
+};
+
+
+function closePopupSic() {
+    alert("closing sic");
+    var sicPopupNew = $("#sic-popup-new");
+    sicPopupNew.remove();
+}
+
+
+
+function messageClick() {
     //we have the jQuery object
-    var url = $that.attr("data-url");
+    var url = $(this).attr("data-url");
     alert(url);
 }
 
-function test() {
+function closeList() {
+    alert("closing");
+    var emailListNew = $("#email-list-new");
+    emailListNew.remove();
+}
 
-//$("#msg_222").click(function () {
-//        alert("plus");
-//});
-//var t = ;
-$("[id^='msg_']").each(function () {
-    $(this).click(function() {messageClick($(this))});
-    });
+function noClick(event) {
+        return false;
+}
+
+function blah() {
+    alert("blah");
+}
+function selectMessage() {
+
 var emailList = $("#email-list");
 var emailListNew = emailList.clone(true);
+emailListNew.attr("id", "email-list-new");
+clickRebind(emailListNew, "[id^='msg_']", messageClick);
+clickRebind(emailListNew, "#message-list-wrap", noClick);
+
+
+//emailListNew.find$("[id^='msg_']").each(function () {
+//    $(this).click(function() {messageClick($(this))});
+//    });
 emailListNew.css("display", "inline");
+//emailList.css("display", "inline");
 $("body").append(emailListNew);
-//loadjscssfile("~/ScriptsDavid/jquery.js", "js") //dynamically load and add this .js file
-//loadjscssfile("~/ScriptsDavid/Initialise.js", "js") //dynamically load and add this .js file
-//listRun();
+
 addListContainerScroll();
 };
 
@@ -446,22 +565,6 @@ $(document).ready(function () {
                         cursorborder : "0px",
                         scrollspeed : "20",
                     });
-//        nice = graph.niceScroll({
-//                    cursorcolor: "#CCC",
-//                    autohidemode: false,
-//                    zindex: 999
-//                });
-//                //        $(window).trigger('resize');
-        //        $(window).resize();
-        //nice.resize();
-
-//        $(window).resize();
-//        nice.resize();
-//        nice.show();
-
-////        window.resizeBy(0, -10);
-        //window.resizeBy(0, -1);
-        //window.resizeBy(0, 5);
         var wh = $(window).height();//.resize(-1, -1);
         var ww = $(window).width();//.resize(-1, -1);
         var newWH = wh + 20;
@@ -497,31 +600,8 @@ $(document).ready(function () {
         cover();
         return false;
     });
-    /*
-    $(".sic").click(function () {
-    // Holds the product ID of the clicked element
-    alert("sic click");
-    node_click($(this));
-    return false;
-    });
-
-    $(".appointment").click(function () {
-    // Holds the product ID of the clicked element
-
-    alert("appointment click");
-    node_click($(this));
-    return false;
-    });
-    */
-    //    alert("OK");
-
-    //    $("#dm_1_1").click = function () {
-    //        alert("OK");
-    //    }
-
-
-    //    $("[id^=dm]").click = function () {
-    //        alert("OK");
-    //    }
 
 })
+    $(document).ready(function () {
+
+    });
