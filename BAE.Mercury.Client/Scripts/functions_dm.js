@@ -602,9 +602,11 @@ $(document).ready(function () {
 /* end main script */
 /* Javascript function for Distribution Management page */
 $(document).ready(function() {
-	/* Tabs */
+
+/*
+	//
 	$(".tabs").tabs();
-	/* Clone */
+	//
 	$("#select-field li .btn-minus").css("display","none");
 	$(".btn-plus").click(function() {
 		removeScroll();
@@ -622,7 +624,7 @@ $(document).ready(function() {
 			return false;
 			}
 		else {
-	/****** WORK IN PROGESS *****/
+	//WORK IN PROGESS 
 			//$(".btn-minus").css("display","none");
 			//$("#select-field li:first .btn-minus").css("display","none");
 			alert("Last item cannot be removed");
@@ -683,5 +685,5 @@ $(document).ready(function() {
 		$('table.appointment td table.inner-table:last-child tr:last-child td:first-child').addClass("last");
 	}
 	
-	
+*/	
 });

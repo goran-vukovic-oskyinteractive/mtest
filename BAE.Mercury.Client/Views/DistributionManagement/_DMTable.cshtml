@@ -1,16 +1,18 @@
 ﻿@using BAE.Mercury.Client.Models
 
 @{
-    DMAppointment appointment = (DMAppointment)Model;
+    DMAppointment appointment = (DMAppointment)Model.appointment;
+    string setUnitId = Model.setUnitId;
     if (!((appointment.Infos.Count == 0) && (appointment.Infos.Count == 0)))
     {
 
-        string appointmentId = appointment.Id < 0 ? "x" : appointment.Id.ToString(); 
+        string appointmentId = appointment.Id < 0 ? "x" : appointment.Id.ToString();
+        string setUnitAppointmentId = String.Format("{0}_{1}", setUnitId, appointmentId);
 
-        <table id="ti_@Html.Raw(appointmentId)">
+        <table id="ti_@Html.Raw(setUnitAppointmentId)">
         @{ for (int i = 0; i < appointment.Infos.Count; i++)
             {
-                string suffix = String.Format("{0}_{1}", appointmentId, i);
+                string suffix = setUnitAppointmentId + "_" + i.ToString();
             <tr>
                 <td class="cinfo">
                     &nbsp;
@@ -30,10 +32,10 @@
             }
         }
         </table>
-        <table id="ta_@Html.Raw(appointmentId)">
+        <table id="ta_@Html.Raw(setUnitAppointmentId)">
         @{ for (int i = 0; i < appointment.Actions.Count; i++)
             {
-                string suffix = String.Format("{0}_{1}", appointmentId, i);
+                string suffix = setUnitAppointmentId + "_" + i.ToString();
             <tr>
                 <td class="caction">
                     &nbsp;

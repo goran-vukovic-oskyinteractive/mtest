@@ -21,7 +21,6 @@ using BAE.Mercury.Core.MmhsModel;
 using BAE.Mercury.Core.Business;
 using System.Transactions;
 
-using BAE.Mercury.Client.Infrastructure.Logging;
 
 
 namespace BAE.Mercury.Client.Controllers
@@ -37,7 +36,6 @@ namespace BAE.Mercury.Client.Controllers
         private readonly ISpellCheckItemParser spellCheckItemParser;
         const int RECORDS_PER_PAGE = 5;
         // int totalPages;
-        private readonly ILogger _logger;
 
         private long ToJavaScriptMilliseconds(DateTime dt)
         {
@@ -55,12 +53,11 @@ namespace BAE.Mercury.Client.Controllers
         //    int a = 5;
 
         //}
-        public MessageController(ILogger logger)
+        public MessageController()
         {
             this.spellCheckManager = new SpellCheckerManager();
             this.messageService = new MessageService();
             this.spellCheckItemParser = new SpellCheckItemParser();
-            _logger = logger;
         }
         /// <summary>
         /// DI Constructor

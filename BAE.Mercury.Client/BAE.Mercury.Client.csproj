@@ -42,18 +42,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft Unity Application Block 1.2 for Silverlight\Bin\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject">
-      <HintPath>External\Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject.Web.Common">
-      <HintPath>External\Ninject.Web.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject.Web.Mvc">
-      <HintPath>External\Ninject.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -180,11 +168,8 @@
     <Content Include="App_Code\ControllerExtensions.cs" />
     <Content Include="App_Code\HtmlExtensions.cs" />
     <Compile Include="Classes\MessageStore.cs" />
-    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\AddressBookController.cs" />
     <Compile Include="Controllers\DistributionManagementController.cs" />
-    <Compile Include="Infrastructure\Logging\ILogger.cs" />
-    <Compile Include="Infrastructure\Logging\NLogLogger.cs" />
     <Compile Include="AddressBookService.cs" />
     <Compile Include="MessageService.cs" />
     <Compile Include="Models\DistributionManagement.cs" />
@@ -646,6 +631,7 @@
     <Content Include="Views\DistributionManagement\_DMSet.cshtml" />
     <Content Include="Views\DistributionManagement\_DMMessageList.cshtml" />
     <Content Include="Views\DistributionManagement\_DMPopupSic.cshtml" />
+    <Content Include="Views\DistributionManagement\_Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BAE.Mercury.Business\BAE.Mercury.Business.csproj">

@@ -60,7 +60,7 @@ var sortFunc = function (a, b) {
 function getNewSeqNo(parentNode) {
     var m = 0;
 
-    parentNode.find(".sic").each(function () {
+    parentNode.find("span.sic").each(function () {
         var id = this.id;
         //split ids
         var levels = id.split('_');
@@ -70,11 +70,11 @@ function getNewSeqNo(parentNode) {
     return m;
 }
 
-function insertPos(parentNode, node, name) {
+function insertPos(parentNode, name) {
     var pos = -1;
-    parentNode.find("sic").each(function (index, that) {
+    parentNode.find("span").each(function (index, that) {
         if (pos < 0) {
-            var text = that.children[0].innerText; //assumed span is the first child
+            var text = that.innerHTML; //assumed span is the first child
             var r = sortFunc(text, name);
             if (r >= 0) {
                 pos = index;
@@ -84,31 +84,13 @@ function insertPos(parentNode, node, name) {
     return pos;
 }
 function insertNode(parentNode, type, name, seqNo) {
-    var pos = insertPos(parentNode, node, name);
-    var node = $("#ta_x").children("tbody").children("tr").eq(0).clone();
-    node.find("#as_x_0").html("AAAAA");
-    node.find("#ad_x_0").attr("id", "ie_5");
-    node.find("#ae_x_0").attr("id", "ie_6");
-
-    if (pos != -1)
-        parentNode.children("tbody").children("tr").eq(pos).before(node);
-    else {
-        var tbody = parentNode.children("tbody");
-        //alert(tbody[0].innerHTML);
-        //node = parentNode.children("tbody").children("tr").eq(0).clone();
-        //var child = $(node);
-        tbody.append(node);
-        alert(tbody[0].innerHTML);
-    }
 }
 
 
 function addNode(nodeId, type, name) {
-    alert("add node");
-    var listId = nodeId.replace("a", "ti");
-    var list = $("#" + listId);
-    var seqNo = getNewSeqNo(list);
-    var suffix = nodeId.replace("a", "") + "_" + seqNo;
+    //alert("add node");
+    var coreId = nodeId.replace("aa", "");
+    //var suffix = nodeId.replace("a", "") + "_" + seqNo;
 //    var node = //"<td class='sic' style='background-color:red' id='" + listId + "_" + seqNo + "'><span>" + name + "</td>";
 //        "<tr><td class='cinfo'>&nbsp;</td>"
 //     + "<td class='sic info' >&nbsp;</td></td>"
@@ -120,7 +102,36 @@ function addNode(nodeId, type, name) {
     //     + "<td class='edit'><a id='ie" + suffix + "' href='#'><img src='~/images/icon-edit.png' alt='edit' /></a></td></tr>";
     //var n = parentNode.children("tbody").children("tr").eq(0).clone();
 
-    insertNode(list, type, name, seqNo);
+    alert("inserting");
+    if (type == 1) {
+        var tableId = "ti" + coreId;
+        var table = $("#" + tableId);
+        var pos = insertPos(table, name);
+        var seqNo = getNewSeqNo(table);
+        var row= table.find("tr");
+        var node = row.clone(); 
+        var span = node.find("span");
+        span[0].innerHTML = name;
+        span.attr("id", "#is" + coreId);
+        var del = node.find(".delete");
+        del.attr("id", "#id" + coreId);
+        var edit = node.find(".edit");
+        edit.attr("id", "#ie" + coreId);
+        //node.find(
+        if (pos != -1) {
+            alert("here");
+            table.children("tbody").children("tr").eq(pos).before(node);
+        } else {
+            alert("there");
+            var tbody = table.children("tbody");
+            //alert(tbody[0].innerHTML);
+            //node = parentNode.children("tbody").children("tr").eq(0).clone();
+            //var child = $(node);
+            tbody.append(node);
+            alert(tbody[0].innerHTML);
+        }
+
+    }
     return;
 
 }
@@ -217,7 +228,7 @@ function remove(nodeId) {
     return false;
 }
 
-
+/*
 function SICinsertAfterFirst()  {
     $("#popup-content .section .inner .col-wrap.select.first:last").clone(true).insertAfter($("#popup-content .section .inner .col-wrap.select.first:last"));
     $("#popup-content .section .inner .col-wrap.select.first input[type='select']").val('');
@@ -239,9 +250,10 @@ function SICRemoveSecond(event) {
     $(this).closest("#popup-content .section .inner .col-wrap.select.second").remove();
     return false;
 }
-
+*/
 function nodeplus() {
-    selectSic();
+    //alert(this.id);
+    displaySIC($(this)[0].id);
     return;
     alert("add sic");
     //create a sic popup dialog
@@ -352,7 +364,7 @@ function init(data) {
     graph.empty();
     //alert(data);
     graph.append(data);
-    clickRebind(graph, "a[id^='a_']", nodeplus);
+    clickRebind(graph, "a[id^='aa_']", nodeplus);
     clickRebind(graph, "a[id^='ie_']", null);
     clickRebind(graph, "a[id^='id_']", null);
     clickRebind(graph, "a[id^='ae_']", null);
@@ -432,40 +444,213 @@ function loadTree(id) {
     uncover();
     return false;
 }
-
-function saveSic() {
-    alert("save sic");
+function highlightControl(control) {
+    control.css("background-color", "#faa");
+}
+function errorMessage(error) {
+    alert(error);
+    return false;
 }
 
-function selectSic(data) {
-//data = [{'privacy': 'aaaa', 'search': 'bbbbb', 'name' :'cccccc'},{'privacy': 'aaaa', 'search': 'bbbbb', 'name' :'cccccc'}];
-var sicPopup = $("#sic-popup");
-var sicPopupNew = sicPopup.clone(true);
-sicPopupNew.attr("id", "sic-popup-new");
-//clickRebind(sicPopupNew, "#popup-sic-save", saveSic);
-//clickRebind(sicPopupNew, ".btn-plus", SICinsertAfterFirst);
-//clickRebind(sicPopupNew, ".btn-plus", SICinsertAfterSecond);
-//clickRebind(sicPopupNew, ".btn-minus", SICRemoveFirst);
-//clickRebind(sicPopupNew, ".btn-minus", SICRemoveSecond);
-sicPopupNew.css("background-color", "red");
-sicPopupNew.css("width", "2000px");
-sicPopupNew.css("display", "inline");
-$("body").append(sicPopupNew);
-return;
-//populate the list
-var template = $("#sic-entry-template").clone(true);
-var sicList = $("#sic-list");
-sicPopupNew.append("<p>aaaaaa</p>");
-//for(instance in data) {    
-//    sicList.append("<p>aaaaaa</p>");
-//}
-//
-$("body").append(sicPopupNew);
-sicPopupNew.css("display", "inline");
-sicPopupNew.css("background-color", "red");
-sicPopupNew.css("width", "2000px");
+function sicValidate(sicList, data) {
+    var valid = true;
+    var found = false;
+    sicList.find("[id^='entry']").each(function () {
+        found = true;
+        var entry = new Object();
+        var privacyNode =  $(this).find(".privacy");
+        var privacy =  privacyNode.prop("selectedIndex");
+        if (privacy < 1) {
+            highlightControl(privacyNode);
+            valid = false;
+        } else {
+            entry.privacy = privacy;
+        }
+        var searchNode =  $(this).find(".search");
+        var search =  searchNode.prop("selectedIndex");
+        if (search < 1) {
+            highlightControl(searchNode);
+            valid = false;
+        } else {
+            entry.search = search;
+        }
+        var nameNode =  $(this).find(".name")
+        var name =  nameNode.val();
+        if (!name) {
+            highlightControl(nameNode);
+            valid = false;
+        } else {
+            entry.name = name;
+        }
+        data.entries.push(entry);
+        data.name = (data.name)? data.name + " or " + entry.name : entry.name;
+    });
+    
+    if (!found){
+        return errorMessage("there must be at least one entry");
+    }
+    var sicPopupNew = $("#sic-popup-new");
+    var sicPopupTypeNode = sicPopupNew.find($(".type"));
+    var type = sicPopupTypeNode.prop("selectedIndex");
+    if (type < 1) {
+        highlightControl(sicPopupTypeNode);
+        valid = false;
+    }    
+    if (!valid) {
+        return errorMessage("please enter data in the empty fields highlighted red");
+    }
+    data.type = type;
+    return true;
+}
 
+function sicSave(id) {
+
+    alert("save sic");
+    var data;
+    addNode(id, 1, "AAAAA");
+    return;
+    //validate entries
+    var sicList =  $("#sic-list-new");
+    //var id = sicList.attr("origin");
+    var data = {type: null, name: null, entries:[]};
+    if (sicValidate(sicList, data)) {
+        //what is the parent node
+        var split = id.split("_");
+        if (split[0] == "aa") {
+            //new node
+            //assemble data for node name
+            //if (data.type == 1) 
+            addNode(id, data.type, data.name);
+            var aaa= 5;
+        } else if (split[0] == "ie"){
+            addNode(id, "action", "aaaaa");
+            //find the node that clicked
+//            var node = $("#" + id.replace("ie", "is"));        
+//            node.text("aaaaaa");
+        } else if (split[0] == "ae"){
+            addNode(id, "action", "aaaaa");
+//            var node = $("#" + id.replace("ae", "as"));
+//            node.text("aaaaaa");
+        } else {
+            throw new Error("invalid button type");
+        }
+    }
+        return false;
+}
+
+function addEntry() {
+    var sicList =  $("#sic-list-new");
+    var i = sicList.find("[id^='entry']").length; //[id^='msg_']
+    var maxEntries = 15;
+    if (i > maxEntries) {
+        alert("reached the maximum of " + maxEntries + " entries");
+        return false;    
+    }
+    var template = $("#sic-entry-template");
+    var instance = getInstance(template, null, i);
+    clickRebind(instance, ".btn-minus", removeEntry);
+    sicList.append(instance);
+    return false;
+}
+function removeEntry() {
+    var sicList =  $("#sic-list-new");
+    var instance = sicList.find("#" + this.id.substring(2));
+    instance.remove();
+    return false;
+}
+
+function getInstance(template, data, i) {
+    var instance = template.clone(true);
+    var entryId = "entry" + i;
+    instance.attr("id", entryId);
+    if (data) {
+        var privacy = instance.find(".privacy");
+        privacy.prop("selectedIndex", data.privacy);
+        var search = instance.find(".search");
+        search.prop("selectedIndex", data.search);
+        var name = instance.find(".name");
+        name[0].innerText = data.name;
+    }
+//    var seq = instance.find(".sequence");
+//    seq.text(i);
+    var del = instance.find(".btn-minus");
+    del.attr("id", "d_" + entryId);
+    return instance;
+}
+
+function test(id) {
+    alert(id);
+}
+
+function displaySIC(id) {
+    //data = [{'privacy': 1, 'search': 2, 'name' :'cccccc'},{'privacy': 1, 'search': 2, 'name' :'cccccc'}];
+
+    var sicPopup = $("#sic-popup");
+    var sicPopupNew = sicPopup.clone(true);
+    sicPopupNew.attr("id", "sic-popup-new");
+    var sicList =  sicPopupNew.find("#sic-list");
+    sicList.attr("id", "sic-list-new");
+    //clickRebind(sicPopupNew, "#popup-sic-save", saveSic);
+    //clickRebind(sicPopupNew, ".btn-plus", SICinsertAfterFirst);
+    //clickRebind(sicPopupNew, ".btn-plus", SICinsertAfterSecond);
+    //clickRebind(sicPopupNew, ".btn-minus", SICRemoveFirst);
+    //clickRebind(sicPopupNew, ".btn-minus", SICRemoveSecond);
+    sicList.css("background-color", "red");
+    sicList.attr("origin", id);
+    var template = $("#sic-entry-template");
+    //template.attr("id", "sic-popup-new-1");
+    //var template1 = $("#sic-entry-template").clone(true);
+    //template1.attr("id")., "sic-popup-new-2");
+    //sicListNew.append(template1);
+
+    //(Privacy marking = CCCCC or Privacy marking = DDDDD) AND (SIC=BBBBBBB or SIC=FFFFFF)
+    clickRebind(sicPopupNew, ".btn-plus", addEntry);
+    clickRebind(sicPopupNew, "#popup-sic-save", function () { sicSave(id);});
+    sicPopupNew.css("display", "inline");
+    $("body").append(sicPopupNew);
+    //
+    return;
+    //populate the list
+    var template = $("#sic-entry-template").clone(true);var sicList = $("#sic-list");
+    sicPopupNew.append("<p>aaaaaa</p>");
+    $("body").append(sicPopupNew);
+    sicPopupNew.css("display", "inline");
+    sicPopupNew.css("background-color", "red");
+    sicPopupNew.css("width", "2000px");
+
+    return sicList;
 };
+
+function populateSic(data) {
+    var sicPopupNew = $("sic-popup-new");
+    var sicList =  sicPopupNew.find("#sic-list");
+    if (data) {
+        for(var i = 0; i < data.length; i++) {
+            if (i > 25)
+                throw new Error("too many entries");    
+            var instance = getInstance(template, data[i], i);
+            sicList.append(instance);
+
+            /*
+            var instance = template.clone(true);
+            var entryId = "entry" + i;
+            instance.attr("id", entryId);
+            var privacy = instance.find(".privacy");
+            privacy.prop("selectedIndex", data[i].privacy);
+            var search = instance.find(".search");
+            search.prop("selectedIndex", data[i].search);
+            sicListNew.append(instance);
+            var name = instance.find(".name");
+            name[0].innerText = data[i].name;
+            var del = instance.find(".btn-minus");
+            del.attr("id", "d_" + entryId);
+            //var plus = sicListNew.find(".btn-plus");
+            */
+        }
+        clickRebind(sicPopupNew, ".btn-minus", removeEntry);
+    }
+}
+
 
 
 function closePopupSic() {
@@ -513,7 +698,6 @@ $("body").append(emailListNew);
 
 addListContainerScroll();
 };
-
 
 $(document).ready(function () {
 
@@ -579,16 +763,6 @@ $(document).ready(function () {
 
 
 
-    //alert("reday");
-    //$(".rounded").corner('3px');
-    $("[id^=a_]").click(function () {
-        alert("plus");
-        cover();
-        var id = $(this)[0].id;
-        nodeplus(id);
-        return false;
-    });
-
     $(".edit").click(function () {
         alert("edit");
         cover();
@@ -600,8 +774,11 @@ $(document).ready(function () {
         cover();
         return false;
     });
+    $(".name").focus(function () {
+        $(this).css("background-color", "inherit");
+        return false;
+    });
+
+    
 
 })
-    $(document).ready(function () {
-
-    });
