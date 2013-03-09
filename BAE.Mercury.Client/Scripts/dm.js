@@ -1,5 +1,12 @@
 ﻿var IE = navigator.appName == "Microsoft Internet Explorer";
-var JQID =   [{},{"table" : "at", "text" : "as", "edit" : "ae", "del" : "ad"}, {"table" : "it", "text" : "is", "edit" : "ie", "del" : "id"}];
+var JQID =   [{},{"table" : "at", "row" : "ar", "text" : "as", "edit" : "ae", "del" : "ad"}, {"table" : "it", "row" : "ir", "text" : "is", "edit" : "ie", "del" : "id"}];
+
+function $ID(id) {
+    return $("#" + id);
+}
+function $CLASS(class) {
+    return $("." + id);
+}
 
 function Format(p1,p2,p3,p4) {
     return "[" + p1 + "," + p2 + "," + p3 + "," + p4 + "]";
@@ -48,7 +55,8 @@ function DMsic(type) {
 //    }
 //
     this.Data = function() {
-        return this.data + "]";
+        var text = this.data;
+        return text+ "]";
     }
     this.LongName = function() {
         return this.longName + ")";
@@ -84,7 +92,7 @@ function DMsic(type) {
     {
         var i = 6;
     }
-    this.data +=((this.Children.Count > 0) ? "," : "") + Format(rule.Rule, rule.Match, this.longName.length, rule.Name.length);
+    this.data +=((this.Children.length > 0) ? "," : "") + Format(rule.Rule, rule.Match, this.longName.length, rule.Name.length);
     this.longName += name;
     this.Children.push(rule);    
     }
@@ -162,7 +170,7 @@ function getNewSeqNo(parentNode) {
 
 function insertPos(parentNode, name) {
     var pos = -1;
-    parentNode.find("span").each(function (index, that) {
+    parentNode.find("span.sic").each(function (index, that) {
         if (pos < 0) {
             var text = that.innerHTML; //assumed span is the first child
             var r = sortFunc(text, name);
@@ -174,9 +182,6 @@ function insertPos(parentNode, name) {
     return pos;
 }
 
-function jqId(id) {
-    return "#" + id;
-}
 
 function assembleName(data) {
     for (var i =0; i < data.entries.length; i++) {
@@ -185,43 +190,98 @@ function assembleName(data) {
 
 }
 
-function insertNode(nodeId, data) {
+
+function updateNode(id, data) {
+    alert("update node");
+    var jqIds = JQID[data.Type]; // {"table" : "#i", "text" : "#is", "edit" : "#ie", "del" : "#id"} : {"table" : "#ta", "text" : "#as", "edit" : "#ae", "del" : "#ad"};
+    var ids= id.split("_");
+    var coreId = "_" + ids[1] + "_" + ids[2] + "_" + ids[3];
+    var table = $ID(jqIds.table + coreId);
+    //var table = $ID(tid);
+    var test = $("#at_4_5_8").html();
+    var name = data.LongName();
+    var rowId = id.replace("e", "r");
+    var rowOld = $ID(rowId);
+    var row = rowOld.clone(true);
+    var spanName = row.find("span.sic");
+    spanName.html(name);
+    var spanData = row.find("span.sic-data");
+    var sicData = data.Data();
+    spanData.html(sicData);
+    rowOld.remove();
+    var pos = insertPos(table, name);
+
+//    var del = row.find(".delete");
+//    del.attr("id", jqIds.del + coreId);
+//    del.click(nodeMinus);
+//    var edit = row.find(".edit");
+//    edit.attr("id", jqIds.edit + coreId);
+//    edit.click(nodeEdit);
+//    //row.find(
+    if (pos != -1) {
+        alert("other rows");
+        //table.find("tr").eq(pos).before(row);
+        table.children("tbody").children("tr").eq(pos).before(row);
+    } else {
+        alert("no other rows");
+        var tbody = table.find("tbody");
+        //alert(tbody[0].innerHTML);
+        //node = parentNode.children("tbody").children("tr").eq(0).clone();
+        //var child = $(node);
+        tbody.append(row);
+        //alert(tbody[0].innerHTML);
+    }
+
+}
+
+function newNode(id, data, action) {
 
 
     //alert("add node");
     var jqIds = JQID[data.Type]; // == 1) ?  {"table" : "#i", "text" : "#is", "edit" : "#ie", "del" : "#id"} : {"table" : "#ta", "text" : "#as", "edit" : "#ae", "del" : "#ad"};
-    var templateTable = $(jqId(jqIds.table) + "_0_0_0");
+    var templateTable = $($ID(jqIds.table) + "_0_0_0");
     var templateRow= templateTable.find("tr");
-    var node = templateRow.clone(); 
-    var coreId = nodeId.substr(2);
-    var ids= coreId.split("_");
-    var id = jqId(jqIds.table) + "_" + ids[1] + "_" + ids[2] + "_" + ids[3];
-    var table = $(id);
+    var row = templateRow.clone(); 
+    var ids= id.split("_");
+    var coreId = "_" + ids[1] + "_" + ids[2] + "_" + ids[3];
+    var tid = $ID(jqIds.table) + coreId;
+    var table = $(tid);
+    var name = data.LongName();
+    if (action == 0) {
+        //we are inserting, a new id
+        var rid = $ID(jqIds.row) + coreIdExt;
+        row.attr("id", rid);
+    } else {
+        //we keep the old row id
+    }
     var pos = insertPos(table, name);
     var seqNo = getNewSeqNo(table);
-    var span = node.find("span.sic");
+    //row id must be like "#ar_1_2_15_?"
+    var coreIdExt = coreId + "_" + seqNo;
+    var span = row.find("span.sic");
     span.html(data.LongName());
     span.attr("id", jqIds.text + coreId);
-    var sicData = node.find("span.sic-data");
-    sicData.html(data.Data());
-    var del = node.find(".delete");
+    var sicData = row.find("span.sic-data");
+    var xxxx = data.Data();
+    sicData.html(xxxx);
+    var del = row.find(".delete");
     del.attr("id", jqIds.del + coreId);
     del.click(nodeMinus);
-    var edit = node.find(".edit");
+    var edit = row.find(".edit");
     edit.attr("id", jqIds.edit + coreId);
     edit.click(nodeEdit);
-    //node.find(
+    //row.find(
     if (pos != -1) {
-        alert("here");
-        //table.find("tr").eq(pos).before(node);
-        table.children("tbody").children("tr").eq(pos).before(node);
+        alert("no other rows");
+        //table.find("tr").eq(pos).before(row);
+        table.children("tbody").children("tr").eq(pos).before(row);
     } else {
-        alert("there");
-        var tbody = table.children("tbody");
+        alert("other rows");
+        var tbody = table.find("tbody");
         //alert(tbody[0].innerHTML);
         //node = parentNode.children("tbody").children("tr").eq(0).clone();
         //var child = $(node);
-        tbody.append(node);
+        tbody.append(row);
         //alert(tbody[0].innerHTML);
     }
 
@@ -246,7 +306,7 @@ function nodeEdit() {
     var prefix = id.split("_")[0];
     if (!(prefix== "ae" || prefix == "ie"))
         throw new Error("invalid edit type");
-    alert("edit sic");
+    //alert("edit sic");
     var data = getSicData(id);
     var sicDialog = sicDisplay(id, function () { sicSave(id, 0, sicDialog, data)});
     sicPopulate(sicDialog, data);
@@ -326,7 +386,7 @@ function clickRebind(parent, pattern, func) {
 
 
 function init(data) {
-    alert(data);
+    //alert(data);
     //get the graph
     var graph = $("#graph");
     graph.empty();
@@ -368,7 +428,7 @@ function init(data) {
 
 function loadTree(id) {
     //ajax call to load
-    alert("ajax");
+    //alert("ajax");
     //return;
     cover();
     //do an ajax call to get HTML
@@ -388,7 +448,7 @@ function loadTree(id) {
             //alert("before");
         },
         success: function (data) {
-            alert("success");
+            //alert("success");
             //get canvas
             //var canvas =  $(
             //var json1 = data;
@@ -498,12 +558,12 @@ function sicSave(id, action, sicPopup, oldData) {
     //var sicPopup = $("#sic-popup-new");
     //var sicList =  sicPopup.list; //find("#sic-list-new");
     //var id = sicList.attr("origin");
+    var test = $("#at_4_5_8").html();
     var data = sicValidate(sicPopup);
     if (data) {
         if (action == 0) {
             if (!isEqual(data, oldData)) {               
-                deleteNode(id.replace("e", "r"));
-                insertNode(id, data);
+                updateNode(id, data);
             }
         }
         else 
@@ -595,8 +655,10 @@ function getSicData (id) {
     //data.entries = [];
     var rowId = id.replace("e", "r");     
     var row = $("#" + rowId);
-    var longName = row.find("span.sic").text();
+    var name = row.find("span.sic")
+    var longName = name.text();
     var dataElement = row.find("span.sic-data");
+    var text = dataElement.text();
     var data = eval(dataElement.text());
     //var template = $("#sic-entry-template");
     for(var i = 0; i < data.length; i++) {
