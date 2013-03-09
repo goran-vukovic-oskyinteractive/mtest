@@ -35,7 +35,7 @@ ol li { list-style:decimal; padding:0 0 3px 10px; }
 #content { z-index:9; clear:both; }
 .col-right .buttons { float:right }
 .col-right.gradient { background:#f7f7f7 url(../images/bg-gradient.png) top left repeat-x; }
-.col-right.gradient .content-wrap { background:#fff url(../images/bg-content_wrap.png) bottom left repeat-x; border:1px solid #d6d6d6; padding:20px; }
+.col-right.gradient .content-wrap { background:#fff url(../images/bg-content_wrap.png) bottom left repeat-x; border:1px solid #d6d6d6; padding:20px; position:relative;}
 .col-right.gradient .content-wrap.twocol { overflow:hidden; }
 .col-right.gradient #session-content { padding:15px 25px; }
 .col-right.gradient .content-wrap.twocol .col { float:left; width:46%; margin:0 2% 0 0; padding:0; border-right:1px solid #d6d6d6; }

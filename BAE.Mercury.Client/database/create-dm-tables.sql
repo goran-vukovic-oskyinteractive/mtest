@@ -19,7 +19,8 @@ create table DMNode(
 	NodeId int not null identity,
 	ParentId int null,
 	NodeName varchar(255) not null,
-	NodeType bit default null
+	NodeType bit default null,
+	ReadOnly bit default 0
 	constraint PK_Node primary key(NodeId)
 	--constraint UK_NodeName unique(NodeName)
 )
@@ -112,19 +113,19 @@ insert into DMNode(NodeId, ParentId, NodeName) values(6, 4, 'Unit = Set2 2 RAR')
 insert into DMNode(NodeId, ParentId, NodeName) values(7, 4, 'Unit = Set2 3 RAR')
 insert into DMNode(NodeId, ParentId, NodeName) values(8, 5, 'APP = AAAA')
 insert into DMNode(NodeId, ParentId, NodeName) values(9, 5, 'APP = BBBBB')
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(10, 8, 'SIC = CCCCCCCC', 1)
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(11, 8, 'SIC = CCCCCCCC', 0)
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(12, 8, 'SIC = CCCCCCCC', 0)
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(13, 9, 'SIC = CCCCCCCC', 1)
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(14, 9, 'SIC = CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(10, 8, '1&1&CCCCCCCC', 1)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(11, 8, '1&2&CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(12, 8, '2&2&CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(13, 9, '1&1&CCCCCCCC', 1)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(14, 9, '2&2&CCCCCCCC', 0)
 insert into DMNode(NodeId, ParentId, NodeName) values(15, 2, 'APP = AAAA')
 insert into DMNode(NodeId, ParentId, NodeName) values(16, 2, 'APP = BBBBB')
 insert into DMNode(NodeId, ParentId, NodeName) values(17, 5, 'APP = AAAA')
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(18, 15, 'SIC = CCCCCCCC', 1)
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(19, 15, 'SIC = CCCCCCCC', 0)
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(20, 15, 'SIC = CCCCCCCC', 0)
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(21, 17, 'SIC = CCCCCCCC', 1)
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(22, 3, 'SIC = CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(18, 15, '1&1&CCCCCCCC', 1)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(19, 15, '1&1&CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(20, 15, '1&2&CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(21, 17, '1&1&CCCC<&CCCC', 1)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(22, 3, '1&2&CCCCCCCC', 0)
 insert into DMNode(NodeId, ParentId, NodeName) values(23, 0, 'Set 3')
 /*
 insert into DMNode(NodeId, ParentId, NodeName) values(0, null, 'Root')

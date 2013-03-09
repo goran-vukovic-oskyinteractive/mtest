@@ -15,81 +15,155 @@ namespace BAE.Mercury.Client
     public class MessageStore
     {
 
-        public DMSet GetDMSet(string username, int nodeId, int unitId)
+        private class DMNodeWrap : DMnode
+        {
+            private int parentId;
+            private DMnode node;
+            public DMNodeWrap(int id, int parentId, string name, bool readOnly) : base(null, id, name, readOnly)
+            {
+                this.parentId = parentId;
+            }
+            public DMnode Node
+            {
+                get
+                {
+                    return this;
+                }
+
+            }
+            public int ParentId
+            {
+                get
+                {
+                    return parentId;
+                }
+            }
+
+        }
+        private class DMNodeWrapSIC : DMNodeWrap
+        {
+            private DMsic.SicType sicType;
+            public DMNodeWrapSIC(int id, int parentId, DMsic.SicType sicType, string name, bool readOnly) : base(id, parentId, name, readOnly)
+            {
+                this.sicType = sicType;
+            }
+            public DMsic.SicType Type
+            {
+                get
+                {
+                    return sicType;
+                }
+            }
+        }
+        public DMset GetDMSet(string username, int setId, int unitId)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
             SqlConnection con = new SqlConnection(connectionString);
-            SqlCommand com = new SqlCommand(String.Format("getDistributionManagementSet {0}, {1}", nodeId, unitId));
+            SqlCommand com = new SqlCommand(String.Format("getDistributionManagementSet {0}, {1}", setId, unitId));
             com.CommandType = System.Data.CommandType.Text;
             com.Connection = con;
             try
             {
                 con.Open();
                 SqlDataReader reader = com.ExecuteReader();
-                DMSet set = new DMSet(nodeId, 0, String.Empty, false); //set name not a requirement here
                 //the units
-                List<DMUnit> units = new List<DMUnit>();
+                List<DMNodeWrap> unitsWrap = new List<DMNodeWrap>();
                 while (reader.Read())
                 {
-                        string setName = (string)reader["nodename"];
+                        string name = (string)reader["nodename"];
                         int id = (int)reader["nodeid"];
-                        int parent = (int)reader["nodeparentid"];
+                        int parentId = (int)reader["nodeparentid"];
                         bool readOnly = (bool)reader["readOnly"];
-                        DMUnit unit = new DMUnit(id, parent, setName, readOnly);
-                        units.Add(unit);
+                        DMNodeWrap unitWrap = new DMNodeWrap(id, parentId, name, readOnly);
+                        unitsWrap.Add(unitWrap);
                 }
                 //the appoinments
                 reader.NextResult();
-                List<DMAppointment> appointments = new List<DMAppointment>();
+                List<DMNodeWrap> appointmentsWrap = new List<DMNodeWrap>();
                 while (reader.Read())
                 {
-                    string setName = (string)reader["nodename"];
+                    string name = (string)reader["nodename"];
                     int id = (int)reader["nodeid"];
-                    int parent = (int)reader["nodeparentid"];
+                    int parentId = (int)reader["nodeparentid"];
                     bool readOnly = (bool)reader["readOnly"];
-                    DMAppointment appointment = new DMAppointment(id, parent, setName, readOnly);
-                    appointments.Add(appointment);
+                    DMNodeWrap appointmentWrap = new DMNodeWrap(id, parentId, name, readOnly);
+                    appointmentsWrap.Add(appointmentWrap);
                 }
                 //the sics
                 reader.NextResult();
-                List<DMSic> sics = new List<DMSic>();
+                List<DMNodeWrapSIC> sicsWrap = new List<DMNodeWrapSIC>();
                 while (reader.Read())
                 {
-                    string setName = (string)reader["nodename"];
+                    string name = (string)reader["nodename"];
                     int id = (int)reader["nodeid"];
                     int parent = (int)reader["nodeparentid"];
                     bool action = (bool)reader["nodetype"];
                     bool readOnly = (bool)reader["readOnly"];
-                    DMSic sic = new DMSic(id, parent, setName, action ? DMSic.SicType.Action : DMSic.SicType.Info, readOnly);
-                    sics.Add(sic);
+                    DMNodeWrapSIC sicWrap = new DMNodeWrapSIC(id, parent, action ? DMsic.SicType.Action : DMsic.SicType.Info, name, readOnly);
+                    //parse the data in the name
+                    //string[] rules = name.Split(',');
+                    //sic.AddRule
+                    //sics.Add(sic);
+                    sicsWrap.Add(sicWrap);
                 }
 
-                //now loop through the sics and append to the appoinments
-                    foreach (DMAppointment appointment in appointments)
-                    {
-                        foreach (DMSic sic in sics)
-                        {
-                            if (sic.ParentId == appointment.Id)
-                            {
-                                if (sic.Type == DMSic.SicType.Action)
-                                    appointment.AddAction(sic);
-                                else
-                                    appointment.AddInfo(sic);
-                            }
-                        }
-
-                    }
-                foreach (DMUnit unit in units)
+                DMset set = new DMset(null, setId, String.Empty, false); //set name not a requirement here
+                foreach (DMNodeWrap unitWrap in unitsWrap)
                 {
-                    foreach (DMAppointment appointment in appointments)
+                    if (unitWrap.ParentId == set.Id)
                     {
-                        if (appointment.ParentId == unit.Id)
+                        DMunit unit = new DMunit(set, unitWrap.Id, unitWrap.Name, false);
+                        //now loop through the sics and append to the appoinments
+                        foreach (DMNodeWrap appointmentWrap in appointmentsWrap)
                         {
-                            unit.AddNode(appointment);
+                            if (appointmentWrap.ParentId == unitWrap.Id)
+                            {
+                                DMappointment appointment = new DMappointment(unit, appointmentWrap.Id, appointmentWrap.Name, false);
+                                foreach (DMNodeWrapSIC sicWrap in sicsWrap)
+                                {
+                                    if (sicWrap.ParentId == appointmentWrap.Id)
+                                    {
+                                        DMsic sic = new DMsic(appointmentWrap.Node, sicWrap.Id, sicWrap.Type, sicWrap.ReadOnly);
+                                        //we also need to parse the sic data
+                                        string[] rules = sicWrap.Name.Split(';');
+                                        for(int i = 0; i < rules.Length; i++)
+                                        {
+                                            string ruleInstance = rules[i];
+                                            string[] ruleData = rules[i].Split('&');
+                                            DMrule.RuleType type = (DMrule.RuleType) Int32.Parse(ruleData[0]); 
+                                            DMrule.MatchType match = (DMrule.MatchType) Int32.Parse(ruleData[1]);
+                                            string name = ruleData[2];
+                                            DMrule rule = new DMrule(sic, i, name, false, type, match);
+                                            sic.AddChild(rule);
+                                            }
+                                        //if (sic.Type == DMSic.SicType.Action)
+                                        //    appointment.AddAction(sic);
+                                        //else
+                                        //    appointment.AddInfo(sic);
+                                        appointment.AddChild(sic);
+                                    }
+                                }
+                                unit.AddChild(appointment);
+
+                            }
+
                         }
+                        set.AddChild(unit);
                     }
-                    set.AddNode(unit);
                 }
+                /*
+                                foreach (DMUnit unit in units)
+                                {
+                                    foreach (DMAppointment appointment in appointments)
+                                    {
+                                        if (appointment.ParentId == unit.Id)
+                                        {
+                                            unit.AddNode(appointment);
+                                        }
+                                    }
+                                    set.AddNode(unit);
+                                }
+                 */
                 return set;
 
             }
@@ -109,7 +183,6 @@ namespace BAE.Mercury.Client
         public DistributionManagement GetDistributionManagement(string username)
         {
 
-
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
             SqlConnection con = new SqlConnection(connectionString);
             SqlCommand com = new SqlCommand("getDistributionManagementSets");
@@ -119,37 +192,42 @@ namespace BAE.Mercury.Client
             {
                 con.Open();
                 SqlDataReader reader = com.ExecuteReader();
-                DistributionManagement distributionManagement = new DistributionManagement();
+                List<DMNodeWrap> setsWrap = new List<DMNodeWrap>();
                 while (reader.Read())
                 {
                     string setName = (string)reader["nodename"];
                     int id = (int)reader["nodeid"];
                     int parent = (int)reader["nodeparentid"];
                     bool readOnly = (bool)reader["readOnly"];
-                    DMSet set = new DMSet(id, parent, setName, readOnly);
-                    distributionManagement.AddNode(set);
+                    DMNodeWrap set = new DMNodeWrap(id, parent, setName, readOnly);
+                    setsWrap.Add(set);
                 }
                 reader.NextResult();
-                List<DMUnit> units = new List<DMUnit>();
+                List<DMNodeWrap> unitsWrap = new List<DMNodeWrap>();
                 while (reader.Read())
                 {
                     int id = (int)reader["nodeid"];
                     int parentId = (int)reader["nodeparentid"];
                     string setName = (string)reader["nodename"];
                     bool readOnly = (bool)reader["readOnly"];
-                    DMUnit unit = new DMUnit(id, parentId, setName, readOnly);
-                    units.Add(unit);
+                    DMNodeWrap unit = new DMNodeWrap(id, parentId, setName, readOnly);
+                    unitsWrap.Add(unit);
                 }
+
                 //now loop through the node list and append to the sets
-                foreach (DMSet set in distributionManagement.Nodes)
+                DistributionManagement distributionManagement = new DistributionManagement();
+                foreach (DMNodeWrap setWrap in setsWrap)
                 {
-                    foreach (DMUnit unit in units)
+                    DMset set = new DMset(distributionManagement, setWrap.Id, setWrap.Name, setWrap.ReadOnly);
+                    foreach (DMNodeWrap unitWrap in unitsWrap)
                     {
-                        if (unit.ParentId == set.Id)
+                        if (unitWrap.ParentId == setWrap.Id)
                         {
-                            set.AddNode(unit);
+                            DMunit unit = new DMunit(set, unitWrap.Id, unitWrap.Name, unitWrap.ReadOnly);
+                            set.AddChild(unit);
                         }
                     }
+                    distributionManagement.AddChild(set);
                 }
                 return distributionManagement;
             }

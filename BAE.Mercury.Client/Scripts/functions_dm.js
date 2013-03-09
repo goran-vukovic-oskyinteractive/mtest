@@ -1,5 +1,5 @@
 // Resize height of div automatically on viewport change
-function viewportChange() {
+function viewportChangeDM() {
     var viewportHeight = $(window).height();
     //alert(viewportWidth + ' X ' + viewportHeight);
 
@@ -8,10 +8,12 @@ function viewportChange() {
     var h2 = $('#buttons').outerHeight(true);
     var h3 = $('#left-menu-collapse').outerHeight(true);
     var h4 = $('ul#left-menu').outerHeight(true);
-    if ($("ul#left-menu").is(":visible")) {
+    if ($("ul#left-menu").is(":visible"))
+    {
         $("#setbox-scroll").css("height", viewportHeight - h1 - h2 - h3 - h4); /* setbox list */
     }
-    else {
+    else
+    {
         $("#setbox-scroll").css("height", viewportHeight - h1 - h2 - h3); /* setbox list */
     }
     //end added by firdaus
@@ -32,14 +34,14 @@ var has_hidden = false;
 
 
 // Remove scrollbar on resize 
-function removeScroll() {
+function removeScrollDM() {
     $("#setbox-scroll, #eset-list, #eset-content").getNiceScroll().remove();
     $("#setbox-scroll, #eset-list, #eset-content").css("overflow", "hidden");
 }
 // Add scroll bar
 function addDMScroll() {
     $("#setbox-scroll, #eset-list, #eset-content").niceScroll({
-        autohidemode: true,
+        autohidemode: false,
         cursorborder: "none",
         cursorcolor: "#6c6c6c",
         zindex: 99
@@ -49,40 +51,6 @@ function addDMScroll() {
 var ie7 = (document.all && !window.opera && window.XMLHttpRequest && typeof window.external.AddToFavoritesBar == 'undefined') ? true : false;
 
 $(document).ready(function () {
-
-    // Function to create setbox list dropdown
-    /*	if(ie7)	{
-    $("#setbox ul#setbox-list > li > div").click(function(){
-    $(this).toggleClass("open").next("ul").toggle();
-    });
-    }
-
-    jQuery.fn.toggleNext = function()	{
-    if($(this).hasClass('open'))	{
-    $(this).addClass('toBeProcessClose');
-    }
-    else	{
-    $(this).addClass('toBeProcessOpen');
-    }
-    $('#setbox-list > li > div').removeClass('open').next().stop().slideUp('fast');
-    if($(this).hasClass('toBeProcessClose'))	{
-    $(this).removeClass('open').next().stop().slideUp('fast');
-    }
-    else if	($(this).hasClass('toBeProcessOpen'))
-    {
-    $(this).addClass('open').next().stop().slideDown('fast');
-    }
-    $('#setbox-list > li > div').removeClass('toBeProcessOpen').removeClass('toBeProcessClose');
-    };
-    $('#setbox-list > li > div').click(function() {
-    $(this).toggleNext();
-    });	*/
-
-    /*	$('#setbox-list > li > div').click(function() {
-    $('#setbox-list > li > div').removeClass('open');
-    $(this).addClass('open');
-    });*/
-
     if (!ie7) {
         // Function to create resiable column, it does not work with IE7 so IE7 will be excluded.
         // Exclude IE7	
@@ -91,7 +59,7 @@ $(document).ready(function () {
             minWidth: 220,
             handles: 'e',
             start: function (event, ui) {
-                removeScroll();
+                removeScrollDM();
             },
             stop: function (event, ui) {
                 addDMScroll();
@@ -102,27 +70,14 @@ $(document).ready(function () {
             maxWidth: 500,
             minWidth: 350,
             handles: 'e',
-            alsoResize: "#search-inbox,#search-results",
+            //alsoResize: "#search-inbox,#search-results",
             start: function (event, ui) {
-                removeScroll();
+                removeScrollDM();
             },
             stop: function (event, ui) {
                 addDMScroll();
             }
-        });
-        $("#session-list").resizable({
-            maxWidth: 500,
-            minWidth: 400,
-            handles: 'e',
-            alsoResize: "#search-inbox,#search-results",
-            start: function (event, ui) {
-                removeScroll();
-            },
-            stop: function (event, ui) {
-                addDMScroll();
-            }
-        });
-        // alert("test");
+        });        
     }
 
     // Dropdown Menu
@@ -134,19 +89,18 @@ $(document).ready(function () {
 
     // Function to set dynamic height on each column on browser resize
     $(window).resize(function () {
-        viewportChange();
+        viewportChangeDM();
     });
-    viewportChange();
+    viewportChangeDM();
 
 
     // Custom scrollbar
     addDMScroll();
-    //viewportChange();
 
     // Advance Search
     $("a#advance-search-button").click(function (event) {
         event.preventDefault();
-        $("#advance-search").stop().slideToggle("fast"); //.removeScroll();
+        $("#advance-search").stop().slideToggle("fast"); //.removeScrollDM();
     });
 
     // Expand the 'From' field
@@ -182,202 +136,41 @@ $(document).ready(function () {
     // Copyright (c) 2011 Peter Chapman - www.topverses.com
     // Freely distributable for commercial or non-commercial use
     $('#setbox-list ul').hide();
-    $('#setbox-list li a').click(
-		function () {
-		    var thisDiv = '';
+    $('#setbox-list li.set > div > a').click(
+		function (event) {
+			event.preventDefault();
+		    /*var thisDiv = '';
 		    if ($(this).find('a').length > 0) {
 		        thisDiv = $(this);
 		    }
 		    else {
 		        thisDiv = $(this).parent('div');
-		    }
+		    }*/
 		    //console.log(thisDiv);
 
-		    removeScroll();
-		    //var openMe = $(this).next();
+		    removeScrollDM();
 		    var openMe = $(this).parent('div').parent('li').find('ul');
 		    var mySiblings = $(this).parent('div').parent('li').siblings().find('ul');
 		    $(this).parent('div').parent('li').siblings().find('div').removeClass('open');
-		    if (openMe.is(':visible')) {
-		        openMe.slideUp('normal');
+		    if( openMe.hasClass('open') ) 
+		    {
 		        $(this).parent('div').removeClass('open');
-		    } else {
-		        mySiblings.slideUp('normal');
-		        openMe.slideDown('normal', function () {
-		            addDMScroll();
-		        });
+		        openMe.slideUp('normal', function(){
+		        	mySiblings.slideDown('normal');
+		        });	
+		    }
+		    else 
+		    {
 		        $(this).parent('div').addClass('open');
+		        mySiblings.slideUp('normal', function(){
+		        	openMe.slideDown('normal');
+		        	openMe.css('zoom','1');	//ie7 fix	        	
+		        });		        
 		        //To do: IE7 needs a refresh of DIV here
 		    }
+		    addDMScroll();
 		}
-	);
-
-    // Accordion for ABM
-    $('#session ul').hide();
-    $('.openSub').click(
-		function (event) {
-		    event.preventDefault();
-		    removeScroll();
-		    var openMe = $(this).next();
-		    var mySiblings = $(this).parent().siblings().find('ul');
-		    var nextSpan = $(this).find('span');
-		    if (openMe.is(':visible')) {
-		        openMe.slideUp('normal', function () { addDMScroll(); nextSpan.removeClass('open'); });
-		    }
-		    else {
-		        mySiblings.slideUp('normal', function () { addDMScroll(); });
-		        openMe.slideDown('normal', function () { addDMScroll(); nextSpan.addClass('open'); });
-		    }
-		}
-	);
-    $('#session ul li:last').addClass("last");
-    // Tooltip for ABM
-    // Setup a content array for the tooltips
-    // IN PROGRESS
-    if ($('.tip1').length > 0) {
-        var tip1 = "<p><strong>Farnham, Pat</strong></p><p><span>Tel:</span>+61 2 8888 8888</p><p><span>Mobile:</span>+61 2 8888 8888</p><p><span>Email:</span><a href=\"mailto:Farnham.pat@abc.gov\">Farnham.pat@abc.gov</a></p>";
-        $(".tip1").simpletip({ fixed: true, position: ["0", "-100"], persistent: true, content: tip1 });
-    }
-    // Example of how the content will load when clicking on the item
-    $('#session-content .sample-1,#session-content .sample-2,#session-content .sample-3').hide();
-    $('ul#session li.unit.sample-1').click(function (event) {
-        event.preventDefault();
-        removeScroll();
-        $('#session-content .sample-1').slideDown(400, function () { addDMScroll(); }).siblings().hide();
-        $('ul#session li.unit.sample-1').addClass("current");
-        $('ul#session li.unit.sample-2').removeClass("current");
-        $('ul#session li.unit.sample-3').removeClass("current");
-    });
-    $('ul#session li.unit.sample-2').click(function (event) {
-        event.preventDefault();
-        removeScroll();
-        $('#session-content .sample-2').slideDown(400, function () { addDMScroll(); }).siblings().hide();
-        if ($('ul#session li.unit.sample-2').length > 0) {
-            $('ul#session li.unit.sample-2').addClass("current");
-        }
-
-        if ($('ul#session li.unit.sample-1').length > 0) {
-            $('ul#session li.unit.sample-1').removeClass("current");
-        }
-
-        if ($('ul#session li.unit.sample-3').length > 0) {
-            $('ul#session li.unit.sample-3').removeClass("current");
-        }
-
-    });
-    $('ul#session li.unit.sample-3').click(function (event) {
-        event.preventDefault();
-        removeScroll();
-        $('#session-content .sample-3').slideDown(400, function () { addDMScroll(); }).siblings().hide();
-        $('ul#session li.unit.sample-3').addClass("current");
-        $('ul#session li.unit.sample-1').removeClass("current");
-        $('ul#session li.unit.sample-2').removeClass("current");
-    });
-
-    // Date/Time Picker for Add Session	
-    var theTimeZone = $('#eff-timezone,#timezone').val();
-    if (theTimeZone == '') {
-        theTimeZone = ' ';
-    }
-
-    if ($('#eff-date, #exp-date, #reply-by-date, #dtg, #audit-from, #audit-to').length > 0) {
-        try {
-            //ie6 fix
-            document.execCommand("BackgroundImageCache", false, true);
-        } catch (exception) {
-            // other browsers do nothing
-        }
-
-
-        //DO NOT MAKE ANY CHANGES HERE SEE jquery-ui-timepicker-addon.js
-        var datetimepicker_opt = new Object;
-
-        datetimepicker_opt = {
-            showOn: 'button',
-            buttonImage: "images/icon-abm_calendar.png",
-            buttonImageOnly: true,
-            timeFormat: "hhmm",
-            dateFormat: "dd|M yy",
-            //timeSuffix: '',
-            //isRTL: false,
-            separator: theTimeZone + " ",
-            //constrainInput: false,
-            //numberOfMonths: 1,
-            showTime: true
-            //setDefaults: true,
-            //controlType: 'select'			
-            /*onSelect: function(returnText){
-            executeRepair(this, returnText);
-            },
-            onClose: function(returnText){
-            executeRepair(this, returnText);
-            }*/
-        };
-        //IE having issue with drop-down
-        if (!ie7) { datetimepicker_opt.controlType = 'select'; }
-
-        $('#eff-date, #exp-date, #reply-by-date, #dtg, #audit-from, #audit-to').datetimepicker(datetimepicker_opt);
-
-        $('#eff-date, #exp-date, #reply-by-date, #dtg').keyup(function () {
-            executeRepair(this, $(this).val());
-        });
-
-        function executeRepair(element, strValue) {
-            $(element).css('border-color', '#BFBEBE');
-            /*if(!checkDateTimeFormat(strValue))
-            {
-            //console.log('INVALID FORMAT!');
-            $(element).css('border-color', 'red');
-            }*/
-        }
-
-        function checkDateTimeFormat(inputValue) {
-            //version 1
-            //var pattern = "\\b[0-1][0-9]\\s[0-5][0-9]\\s[A-z]\\s[0-3][0-9]\\s[0-1][1-2]\\s[0-3][0-9][0-9][0-9]\\b";	
-            var pattern = "\\b[0-9][0-9][0-9][0-9][0-9][0-9][theTZ]\\s[A-z][A-z][A-z]\\s[0-3][0-9][0-9][0-9]\\b";
-            pattern = pattern.replace('[theTZ]', '[' + theTimeZone + ']');
-            pattern = new RegExp(pattern);
-            return pattern.test(inputValue);
-        }
-    }
-
-    /*if( $('#edit-session-status, #classification').length > 0 )
-    {
-    $('#edit-session-status, #classification').selectbox();
-    }*/
-
-
-    // Countdown script demo
-    if ($('#eset-list .eset.timer').length > 0) {
-        $('#eset-list .eset.timer').each(function (indexer, dom) {
-
-            var totalT = 0;
-            totalT = parseInt($(dom).find('.timer .hour').html()) * (60 * 60);
-            totalT = totalT + parseInt($(dom).find('.timer .minute').html()) * 60;
-            totalT = totalT + parseInt($(dom).find('.timer .second').html());
-
-            var refreshIntervalId = setInterval(function () {
-                //console.log(totalT);
-                totalT = totalT - 1;
-                if (totalT >= 0) {
-                    var temp = 0;
-                    var time = totalT;
-                    var hr = Math.floor(time / (60 * 60));
-                    $(dom).find('.timer .hour').html(("00" + hr).slice(-2));
-                    var min = time - (hr * (60 * 60));
-                    min = Math.floor(min / 60);
-                    $(dom).find('.timer .minute').html(("00" + min).slice(-2));
-                    var sc = time - ((hr * (60 * 60)) + (min * 60));
-                    $(dom).find('.timer .second').html(("00" + sc).slice(-2));
-
-                }
-                else {
-                    clearInterval(refreshIntervalId);
-                }
-            }, 1000);
-
-        });
-    }
+	);   
 
     // Inbox search
     // apply default value on input field
@@ -414,45 +207,23 @@ $(document).ready(function () {
         $("#search-inbox").val('Search Inbox');
     });
 
-    // New Message
-    $("#editor-wrap #advance-button a").click(function () {
-        removeScroll();
-        $("#eset-content .section.advance").slideToggle('fast', function () { addDMScroll(); });
-        $("#editor-wrap #advance-button").stop().toggleClass(function () {
-            if ($(this).hasClass('close')) {
-                $(this).find('a').html('Show Advanced Options');
-                $(this).removeClass('close');
-                return 'open';
-            } else {
-                $(this).find('a').html('Hide Advanced Options');
-                $(this).removeClass('open');
-                return 'close';
-            }
-        });
-    });
+   
     $("#eset-content .hide-control label, #eset-content .hide-control .arrow a").click(function () {
-        removeScroll();
+        removeScrollDM();
         $("#eset-content .section .hide").slideToggle('fast', function () { addDMScroll(); });
         $("#eset-content .hide-control").toggleClass('open');
     });
 
-    // Collapsible left menu - old
-    /*$("#left-menu-collapse a").click(function(event) {
-    event.preventDefault();
-    $("ul#left-menu").slideToggle("fast");
-    });*/
-
-
     // Collapsible left menu - new (Firdaus)
     $('#left-menu-collapse a').click(function (event) {
         event.preventDefault();
-        removeScroll();
+        removeScrollDM();
         var viewportHeight = $(window).height();
         var h1 = $('#header').outerHeight(true);
         var h2 = $('#buttons').outerHeight(true);
         var h3 = $('#left-menu-collapse').outerHeight(true);
         var h4 = $('ul#left-menu').outerHeight(true);
-        var visibleHeight = viewportHeight - h1 - h2 - h3;
+        var visibleHeight = viewportHeight - h1 - h2 - h3 - 11; //unknown? where the 11px
         var hiddenHeight = viewportHeight - h1 - h2 - h3 - h4;
 
         // create the object literal
@@ -462,45 +233,27 @@ $(document).ready(function () {
 
         $('#left-menu-collapse a').hide();
 
-        if ($('ul#left-menu').is(':visible')) {
+        if(!$('ul#left-menu').hasClass('closed'))
+        {
             aniArgs['height'] = visibleHeight;
-            $('#setbox-scroll').animate(aniArgs, (speed));
+            $('#setbox-scroll').animate(aniArgs, (speed), function(){addDMScroll();});        
             $('ul#left-menu').stop().hide('slide', { direction: 'down' }, speed, function () {
                 $('#left-menu-collapse a').show();
+                $('ul#left-menu').addClass('closed');
             });
-            //$('ul#left-menu').stop().hide();
-
-
-            //$('#setbox-scroll').css('height', visibleHeight);
-            /*$('#setbox-scroll').animate(aniArgs, 250, function() {
-            viewportChange();
-            });*/
-
-
-            //$('#setbox-scroll').animate(aniArgs, 250);
-            //$('#setbox-scroll').css('height',viewportHeight - h1 - h2 - h3 - h4);
         }
-        else {
-            aniArgs['height'] = hiddenHeight;
-            $('ul#left-menu').stop().show('slide', { direction: 'down' }, (speed / 3), function () {
-                //viewportChange();
-                $('#setbox-scroll').animate(aniArgs, (speed / 2));
-                $('#left-menu-collapse a').show();
-                //addDMScroll();
-            });
-            //$('ul#left-menu').stop().show();
-            //$('#setbox-scroll').animate(aniArgs, 250, function() {
-            //	viewportChange();				
-            //});
-            //$('#setbox-scroll').css('height', hiddenHeight);
+        else
+        {
+            aniArgs['height'] = hiddenHeight; 
+			$('ul#left-menu').stop().show('slide', {direction: 'down'}, (speed/3), function() {
+				$('#setbox-scroll').animate(aniArgs, (speed/2), function(){addDMScroll();});
+				$('#left-menu-collapse a').show();
+        		$('ul#left-menu').removeClass('closed').css('top', '0px');        		
+			});
         }
-        addDMScroll();
-        /*viewportChange();*/
-
-
+        
     });
     // End Collapsible left menu - new (Firdaus)
-
 
     //ryan collapsible left-menu (#setbox)
     //ryan collapsible mail-listing (#eset-list-wrap)
@@ -535,7 +288,7 @@ $(document).ready(function () {
 
             $('#' + setDom.parent + ' div.collapse a').click(function (event) {
                 event.preventDefault();
-                removeScroll();
+                removeScrollDM();
                 var aThis = $(this);
                 $(setDom.fade).fadeOut(fade_animateDuration);
                 /*if($('#' + setDom.id).css('width').replace('px','') != 0)
@@ -577,39 +330,31 @@ $(document).ready(function () {
             });
         }
     });
-
-    // Check if user agent is iPad
-    $.browser.safari = /safari/.test(navigator.userAgent.toLowerCase());
-    if ($.browser.safari) {
-        $('body').addClass('mac-os');
-    }
-
-    // Window Popup
-    $("a[target='popup']").click(function (event) {
-        var myObject = $(this);
-        var href = myObject.attr("href");
-        var name = myObject.attr("title");
-        var config = "width=1000, height=750, top=50, left=50, scrollbars=1, toolbar=0, status=0, menubar=0";
-        var popup = window.open(href, name, config);
-
-        if (window.focus) {
-            popup.focus();
-        }
-        event.preventDefault();
-    });
-
 });
 /* end main script */
 /* Javascript function for Distribution Management page */
+function resizeDmDiv()
+	{
+	var popupHeight = $(window).height();
+	//alert(resizeDiv + ' X ' + resizeDiv);
+	$("#graph").css("height",popupHeight - 250); /* email list */
+}
+// Resize visualiser div based on graph div
+function resizeRvDiv()
+	{
+	var graphWidth = $("#graph").width();
+	$("#rule-visualiser-wrap-outer").css("width",graphWidth + 1);
+}
+	
+	
 $(document).ready(function() {
 
-/*
 	//
 	$(".tabs").tabs();
 	//
 	$("#select-field li .btn-minus").css("display","none");
 	$(".btn-plus").click(function() {
-		removeScroll();
+		removeScrollDM();
 	  	$("#select-field li:last").clone(true).insertAfter("#select-field li:last");
 		$("#select-field li:last input[type='text']").val('');	  	
 		$(".btn-minus").css("display","block");
@@ -632,25 +377,6 @@ $(document).ready(function() {
 		
 	});
 	
-	// Add scollbar for expandible nodes
-	$("#graph .node.expandible .expand").niceScroll({
-		autohidemode : false,
-		cursorborder : "none",
-		cursorcolor : "#6c6c6c",
-		zindex  : 99
-	});	
-	
-	// Arrow to expand the nodes
-		$("#graph .node.expandible").click(function(){
-			$("#graph .node.expandible .expand").slideToggle("fast");
-			
-		// TODO : Make the arrow to expand only its group unit, Remove scrollbar on hide?? 
-		
-	});
-	
-	// POPUP
-	//$(".popup").colorbox({width:"70%"});
-	
 	// Search SIC
 	$("#search-sic").click(function() {
 		if (this.value == this.defaultValue) {
@@ -664,10 +390,24 @@ $(document).ready(function() {
 	);
 	
 	// Rule visualiser
-	$("#rule-visualiser-wrap-trigger").click(function(event) {
+	/*$("#rule-visualiser-wrap-trigger").click(function(event) {
+		removeScrollDM();
 	    event.preventDefault();
-	    $("#rule-visualiser-wrap").slideToggle("normal");
+	 $("#rule-visualiser-wrap").slideToggle('fast', function () { addDMScroll(); });		
 	});
+	*/
+	// Hide RV
+	$("#rule-visualiser-wrap").hide();
+	// Trigger RV when click
+	$("#rule-visualiser-wrap-trigger").click(function(event) {		
+	    event.preventDefault();		
+		if ($("#rule-visualiser-wrap").is(":hidden")) {
+		  $("#rule-visualiser-wrap").slideDown("fast");
+		} else {
+		  $("#rule-visualiser-wrap").slideUp("fast");
+		}
+	});
+	
 	
 	// Checkbox for Set
 	$(".btn-set .checkbox").click(function(event) {
@@ -676,14 +416,71 @@ $(document).ready(function() {
 	});
 	
 	// Use Jquery to apply class to first and last td 
-	if( $('#session-content').length > 0 )
-	{
-		//$("table.inner-table tr:first-child td:first-child").addClass("first");
-		//$("table.inner-table tr':last-child td:first-child").addClass("last");
-		
+	/*
+	if( $('#session-content').length > 0 )	{
 		$('table.appointment td table.inner-table:first-child tr:first-child td:first-child').addClass("first");
 		$('table.appointment td table.inner-table:last-child tr:last-child td:first-child').addClass("last");
 	}
 	
-*/	
+	$('table.appointment td table.inner-table:first-child tr:first-child td:first-child').live(function(event){
+		event.preventDefault();
+		$(this).addClass('first');
+	});
+	$('table.appointment td table.inner-table:last-child tr:last-child td:first-child').live(function(event){
+		event.preventDefault();
+		$(this).addClass('last');
+	});
+	*/
+	// POPUP
+	$(".popup").colorbox({width:"70%"});
+	$(".popup-inline").colorbox({inline:true,width:"70%"});
+
+	//live add
+	$('.appointment .add .popup-inline').live('click', function(event){
+		event.preventDefault();
+		var hidden_dom = $(this).attr('href');
+		//ie7 fix
+		if(ie7)
+		{
+			hidden_dom = hidden_dom.split('/');
+			hidden_dom = hidden_dom[hidden_dom.length-1];
+		}
+
+		if( $(hidden_dom).length > 0 )
+		{
+			$.colorbox({
+						inline:true,
+						width:"70%",
+						href: hidden_dom
+					});
+		}
+	});
+	
+	// Resize graph height based on browser viewport
+	$(window).resize(function() {
+		resizeDmDiv();
+		resizeRvDiv()
+	});
+	resizeDmDiv();
+	resizeRvDiv();
+
+
+	//wait for dom to visible
+	var graphElement = document.getElementById('graph');		
+	if(window.addEventListener) 
+	{
+	   graphElement.addEventListener('DOMSubtreeModified', graph_contentChanged, false);
+	} 
+	else
+	{
+		if(window.attachEvent) 
+		{
+		  	graphElement.attachEvent('DOMSubtreeModified', graph_contentChanged);
+		}
+	}
+	function graph_contentChanged()
+	{
+		$('table.appointment td table.inner-table:first-child tr:first-child td:first-child').addClass("first");
+		$('table.appointment td table.inner-table:last-child tr:last-child td:first-child').addClass("last");		
+	}
 });

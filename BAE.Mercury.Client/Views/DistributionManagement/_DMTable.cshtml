@@ -1,24 +1,27 @@
 ﻿@using BAE.Mercury.Client.Models
 
 @{
-    DMAppointment appointment = (DMAppointment)Model.appointment;
-    string setUnitId = Model.setUnitId;
+    DMappointment appointment = (DMappointment)Model;
+    //string setUnitId = "aaaa"; //Model.setUnitId;
     if (!((appointment.Infos.Count == 0) && (appointment.Infos.Count == 0)))
     {
 
-        string appointmentId = appointment.Id < 0 ? "x" : appointment.Id.ToString();
-        string setUnitAppointmentId = String.Format("{0}_{1}", setUnitId, appointmentId);
+        //string appointmentId = appointment.Id < 0 ? "x" : appointment.Id.ToString();
+        string coreId = String.Format("{0}_{1}_{2}", appointment.Parent.Parent.Id, appointment.Parent.Id, appointment.Id);
 
-        <table id="ti_@Html.Raw(setUnitAppointmentId)">
+        <table id="it_@Html.Raw(coreId)" class="inner-table">
         @{ for (int i = 0; i < appointment.Infos.Count; i++)
             {
-                string suffix = setUnitAppointmentId + "_" + i.ToString();
-            <tr>
+                string suffix = coreId + "_" + i.ToString();
+                DMsic sic = ((DMsic)(appointment.Infos[i]));
+            <tr id="ir_@Html.Raw(suffix)">
                 <td class="cinfo">
                     &nbsp;
                 </td>
                 <td class="sic info">
-                    <span id="is_@Html.Raw(suffix)" class="sic rounded" >@Html.Raw(appointment.Infos[i].Name)</span>
+                    <span class="sic rounded" >@Html.Raw(sic.LongName)</span>
+@*                    <span class="sic-long" style="display:none">@Html.Raw(sic.LongName)</span>
+*@                    <span class="sic-data" style="display:none">@Html.Raw(sic.Data)</span>
                 </td>
                 <td class="delete">
                     <a id="id_@Html.Raw(suffix)" href="#">
@@ -32,16 +35,19 @@
             }
         }
         </table>
-        <table id="ta_@Html.Raw(setUnitAppointmentId)">
+        <table id="at_@Html.Raw(coreId)" class="inner-table">
         @{ for (int i = 0; i < appointment.Actions.Count; i++)
             {
-                string suffix = setUnitAppointmentId + "_" + i.ToString();
-            <tr>
+                string suffix = coreId + "_" + i.ToString();
+                DMsic sic = ((DMsic)(appointment.Actions[i]));
+            <tr id="ar_@Html.Raw(suffix)">
                 <td class="caction">
                     &nbsp;
                 </td>
                 <td class="sic action">
-                    <span id="as_@Html.Raw(suffix)" class="sic rounded" >@Html.Raw(appointment.Actions[i].Name)</span>
+                    <span class="sic rounded" >@Html.Raw(sic.LongName)</span>
+@*                    <span class="sic-long" style="display:none">@Html.Raw(sic.LongName)</span>
+*@                    <span class="sic-data" style="display:none">@Html.Raw(sic.Data)</span>
                 </td>
                 <td class="delete">
                     <a id="ad_@Html.Raw(suffix)" href="#">
@@ -55,7 +61,8 @@
             }
         }
         </table>
-    } else
+    }
+    else
     {
         <div class="appointment-empty-wrap"><div class="appointment-empty"></div></div>        
     }

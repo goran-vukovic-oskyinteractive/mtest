@@ -1,40 +1,36 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace BAE.Mercury.Client.Models
 {
-    public class DMNode
+    public class DMnode
     {
-        protected List<DMNode> nodes = new List<DMNode>();
-        protected int id, parentId;
-        protected string name;
-        bool readOnly;
-        public DMNode() { }
-        public DMNode(int id, int parentId, string name, bool readOnly)
+        private List<DMnode> children = new List<DMnode>();
+        private DMnode parent;
+        private int id;
+        private string name;
+        private bool readOnly;
+        //public DMnode() { }
+        public DMnode(DMnode parent, int id, string name, bool readOnly)
         {
             this.id = id;
-            this.parentId = parentId;
             this.name = name;
             this.readOnly = readOnly;
+            this.parent = parent;
         }
-        public void AddNode(DMNode node)
+        public virtual void AddChild(DMnode node)
         {
-            nodes.Add(node);
+            children.Add(node);
         }
         public int Id
         {
             get
             {
                 return id;
-            }
-        }
-        public int ParentId
-        {
-            get
-            {
-                return parentId;
             }
         }
         public string Name
@@ -51,174 +47,296 @@ namespace BAE.Mercury.Client.Models
                 return readOnly;
             }
         }
-        public List<DMNode> Nodes
+        public List<DMnode> Children
         {
             get
             {
-                return nodes;
+                return children;
+            }
+        }
+        public DMnode Parent
+        {
+            get
+            {
+                return parent;
             }
         }
     }
-    public class DMSic : DMNode
+    public class DMrule : DMnode
+    {
+        public enum MatchType
+        {
+            Equal = 1, StartsWith = 2
+
+        }
+        public enum RuleType
+        {
+            SIC = 1, PrivacyMarking = 2
+        }
+        private MatchType matchType;
+        private RuleType ruleType;
+        private string name;
+        public DMrule(DMnode parent, int id, string name, bool readOnly, RuleType ruleType, MatchType matchType)
+            : base(parent, id, name, readOnly)
+        {
+            this.ruleType = ruleType;
+            this.matchType = matchType;
+            this.name = name;
+        }
+        public RuleType Rule
+        {
+            get
+            {
+                return ruleType;
+            }
+        }
+        public MatchType Match
+        {
+            get
+            {
+                return matchType;
+            }
+        }
+
+    }
+    public class DMsic : DMnode
     {
         public enum SicType
         {
-            Action = 0, Info =1
+            Action = 1, Info = 2
         }
+        private const string DOTS = "...";
+        private int maxShortName = 80 - DOTS.Length;
         private SicType sicType;
-        public DMSic(int id, int parentId, string name, SicType sicType, bool readOnly)
-            : base(id, parentId, name, readOnly)
+        private StringBuilder longName = new StringBuilder("("), data = new StringBuilder("[");
+        //List<DMrule> rules = new List<DMrule>();
+        public DMsic(DMnode parent, int id, SicType sicType, bool readOnly)
+            : base(parent, id, null, readOnly)
         {
             this.sicType = sicType;
-        } 
+        }
         public SicType Type
         {
             get
             {
-              return sicType;
+                return sicType;
             }
+        }
+        public string ShortName
+        {
+            get
+            {
+                string shortName = LongName;
+                if (shortName.Length > maxShortName)
+                    return shortName.Substring(0, maxShortName) + DOTS;
+                else
+                    return shortName;
+            }
+        }
+        public string LongName
+        {
+            get
+            {
+                 return longName.ToString() + ")";
+            }
+        }
+        public string Data
+        {
+            get
+            {
+                return data.ToString() + "]";
+            }
+        }
+        public override void AddChild(DMnode node)
+        {
+            if (this.Children.Count >= 25)
+                throw new ApplicationException("maximum number of rules exceeded");
+            //(Privacy marking = CCCCC or Privacy marking starts with DDDDD) AND (SIC=BBBBBBB or SIC=FFFFFF)
+            DMrule rule = (DMrule)node;
+            if (this.Children.Count > 0)
+            {
+                if (((DMrule)this.Children[this.Children.Count - 1]).Rule == rule.Rule)
+                    longName.Append(" OR ");
+                else
+                    longName.Append(") AND (");
+            }
+            if (rule.Rule == DMrule.RuleType.PrivacyMarking)
+            {
+                longName.Append("Privacy Marking");
+            }
+            else
+            {
+                longName.Append("SIC");
+            }
+            if (rule.Match == DMrule.MatchType.StartsWith)
+            {
+                longName.Append(" starts with ");
+            }
+            else
+            {
+                longName.Append(" = ");
+            }
+            string name = System.Web.HttpUtility.HtmlEncode(rule.Name);
+            //data for rules [rule type, match, start position, length]
+            if (this.Children.Count > 0)
+            {
+                int i = 6;
+            }
+            data.Append(((this.Children.Count > 0) ? "," : "") + String.Format("[{0},{1},{2},{3}]", (int)rule.Rule, (int)rule.Match, longName.Length, name.Length));
+            longName.Append(name);
+            base.AddChild(node);
         }
     }
 
-    public class DMAppointment : DMNode
+    public class DMappointment : DMnode
     {
-        private List<DMSic> infos = new List<DMSic>(), actions = new List<DMSic>();
-        public DMAppointment(int id, int parentId, string name, bool readOnly)
-            : base(id, parentId, name, readOnly) { }
-        public List<DMSic> Infos
+        private List<DMnode> infos = new List<DMnode>();
+        public DMappointment(DMnode parent, int id, string name, bool readOnly)
+            : base(parent, id, name, readOnly) { }
+        public List<DMnode> Infos
         {
             get
             {
                 return infos;
             }
         }
-        public List<DMSic> Actions
+        public List<DMnode> Actions
         {
             get
             {
-                return actions;
+                return this.Children;
             }
         }
-        public void AddInfo(DMSic sic)
+        public override void AddChild(DMnode node)
         {
-            infos.Add(sic);
+            if (((DMsic) node).Type == DMsic.SicType.Action)
+                base.AddChild(node);
+            else
+                infos.Add(node);
+
         }
-        public void AddAction(DMSic sic)
+        //public void AddInfo(DMsic sic)
+        //{
+        //    infos.Add(sic);
+        //}
+        //public void AddAction(DMsic sic)
+        //{
+        //    actions.Add(sic);
+        //}
+    }
+    public class DMunit : DMnode
+    {
+        public DMunit(DMnode parent, int id, string name, bool readOnly)
+            : base(parent, id, name, readOnly) { }
+    }
+    public class DMset : DMnode
+    {
+        public DMset(DMnode parent, int id, string name, bool readOnly)
+            : base(parent, id, name, readOnly) { }
+    }
+    public class DistributionManagement : DMnode
+    {
+        public DistributionManagement()
+            : base(null, 0, String.Empty, false) { }
+    }
+    /*
+        public class DistributionManagementEx
         {
-            actions.Add(sic);
+            public class Data
+            {
+                int level;
+                public Data(int level)
+                {
+                    // TODO: Complete member initialization
+                    this.level = level;
+                    //if (level == 0 || level >= 4)
+                    //    throw new ApplicationException("invalid node level");
+
+                }
+                //public int l
+                //{
+                //    get
+                //    {
+                //        return level;
+                //    }
+                //}
+                public string color
+                {
+                    get
+                    {
+                        return "red";
+                    }
+                }
+                public int alpha
+                {
+                    get
+                    {
+                        return 1;
+                    }
+                }
+
+            }
+            public class DistributionManagementNode
+            {
+                //Note: the notation is adjusted to AJAX, hence not corresponding to C# standard
+                private int level;
+                protected string tagId;
+                protected int nodeId;
+                protected int parentId;
+                protected string nodeName;
+                private List<DistributionManagementNode> childNodes;
+
+                public DistributionManagementNode(int nodeId, string nodeName, int parentId)
+                {
+                    this.nodeId = nodeId;
+                    this.nodeName = nodeName;
+                    this.parentId = parentId;
+                    this.childNodes = new List<DistributionManagementNode>();
+                }
+                public int GetId()
+                {
+                    return nodeId;
+                }
+                public int GetParentId()
+                {
+                    return parentId;
+                }
+                public void SetLevel(int level)
+                {
+                    this.level = level;
+                }
+                public string id
+                {
+                    get
+                    {
+                        return tagId;
+                    }
+                    set
+                    {
+                        tagId = value;
+                    }
+                }
+                public string name
+                {
+                    get
+                    {
+                        return nodeName;
+                    }
+                }
+
+                public List<DistributionManagementNode> children
+                {
+                    get
+                    {
+                        return childNodes;
+                    }
+                }
+                public Data data
+                {
+                    get { return new Data(this.level); }
+                }
+            }
+
         }
-    }
-    public class DMUnit : DMNode
-    {
-        public DMUnit(int id, int parentId, string name, bool readOnly)
-            : base(id, parentId, name, readOnly) { }
-    }
-    public class DMSet : DMNode
-    {
-        public DMSet(int id, int parentId, string name, bool readOnly)
-            : base(id, parentId, name, readOnly) { }
-    }
-    public class DistributionManagement : DMNode
-    {
-    }
-/*
-    public class DistributionManagementEx
-    {
-        public class Data
-        {
-            int level;
-            public Data(int level)
-            {
-                // TODO: Complete member initialization
-                this.level = level;
-                //if (level == 0 || level >= 4)
-                //    throw new ApplicationException("invalid node level");
-
-            }
-            //public int l
-            //{
-            //    get
-            //    {
-            //        return level;
-            //    }
-            //}
-            public string color
-            {
-                get
-                {
-                    return "red";
-                }
-            }
-            public int alpha
-            {
-                get
-                {
-                    return 1;
-                }
-            }
-
-        }
-        public class DistributionManagementNode
-        {
-            //Note: the notation is adjusted to AJAX, hence not corresponding to C# standard
-            private int level;
-            protected string tagId;
-            protected int nodeId;
-            protected int parentId;
-            protected string nodeName;
-            private List<DistributionManagementNode> childNodes;
-
-            public DistributionManagementNode(int nodeId, string nodeName, int parentId)
-            {
-                this.nodeId = nodeId;
-                this.nodeName = nodeName;
-                this.parentId = parentId;
-                this.childNodes = new List<DistributionManagementNode>();
-            }
-            public int GetId()
-            {
-                return nodeId;
-            }
-            public int GetParentId()
-            {
-                return parentId;
-            }
-            public void SetLevel(int level)
-            {
-                this.level = level;
-            }
-            public string id
-            {
-                get
-                {
-                    return tagId;
-                }
-                set
-                {
-                    tagId = value;
-                }
-            }
-            public string name
-            {
-                get
-                {
-                    return nodeName;
-                }
-            }
-
-            public List<DistributionManagementNode> children
-            {
-                get
-                {
-                    return childNodes;
-                }
-            }
-            public Data data
-            {
-                get { return new Data(this.level); }
-            }
-        }
-
-    }
- */
+     */
 }

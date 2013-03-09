@@ -47,7 +47,7 @@ namespace BAE.Mercury.Client.Controllers
             int id = Int32.Parse(idString[1]);
             int unitId = idString.Length == 3 ? Int32.Parse(idString[2]) : -1;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
-            DMSet set = messageStore.GetDMSet(username, id, unitId);
+            DMset set = messageStore.GetDMSet(username, id, unitId);
             string html = RenderPartialViewToString("/Views/DistributionManagement/_DMSet.cshtml", set);
             //string html = RenderPartialViewToString("/Views/DistributionManagement/_DMReference.cshtml", set);
             return Json(html);

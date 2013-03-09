@@ -1,33 +1,33 @@
 ﻿@using System.Diagnostics;
 @using BAE.Mercury.Client.Models;
-@model BAE.Mercury.Client.Models.DMSet
+@model BAE.Mercury.Client.Models.DMset
 
 <!--set start  -->
 
 <div class="set" >
-@{ if (Model.Nodes.Count > 0) {
-    foreach (DMUnit unit in Model.Nodes){
+@{ if (Model.Children.Count > 0) {
+    foreach (DMunit unit in Model.Children){
     <!--unit start -->
         <div class="unit" style="background-color:Red">
             <div class="unit-title">@Html.Raw(unit.Name)</div>
             <div class="user rounded">Duty Officer = Watchkeeper</div>
             @{ 
-                if (unit.Nodes.Count > 0) {
+                if (unit.Children.Count > 0) {
                 <div class="canvas">
-                    @{foreach (DMAppointment appointment in unit.Nodes)  {
+                    @{foreach (DMappointment appointment in unit.Children)  {
                         <table class="appointment" style="margin-top:20px;">
                             <tbody>
                                 <tr>
                                     <td class="appointment">
                                         <div class="appointment">@Html.Raw(appointment.Name)</div>
                                     </td>
-                                    <td>
+                                    <td class="sic-table">
                                         <div>
                                             @{ 
                                     
                                                 Debug.WriteLine(appointment.Name);
                                                 string setUnitId = String.Format("{0}_{1}", Model.Id, unit.Id);
-                                                Html.RenderPartial("_DMTable", new { appointment = appointment, setUnitId = setUnitId });
+                                                Html.RenderPartial("_DMTable", appointment);
 
                                                 //Html.RenderPartial("_DMTable", appointment);
                                             }

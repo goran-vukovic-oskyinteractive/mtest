@@ -293,6 +293,7 @@
     <Content Include="css\reset.css" />
     <Content Include="css\style.css" />
     <Content Include="css\style_dm.css" />
+    <Content Include="database\create-dm-tables.sql" />
     <Content Include="distribution_management.html" />
     <Content Include="dm_popup_sic.html" />
     <Content Include="favicon.ico" />

@@ -1,5 +1,95 @@
 ﻿var IE = navigator.appName == "Microsoft Internet Explorer";
+var JQID =   [{},{"table" : "at", "text" : "as", "edit" : "ae", "del" : "ad"}, {"table" : "it", "text" : "is", "edit" : "ie", "del" : "id"}];
 
+function Format(p1,p2,p3,p4) {
+    return "[" + p1 + "," + p2 + "," + p3 + "," + p4 + "]";
+}
+
+function htmlEncode(value){ 
+    if (value) {
+        var div = $('<div/>');        
+        return div.text(value).html();
+    } else {
+        return '';
+    }
+}
+function Entry(rule, match, name) {
+    this.Rule = rule;
+    this.Name = name;
+    this.Match = match;
+}
+
+
+function SicData(type) {
+    this.Type = type;
+    this.Children = [];
+//        var entry = {"type":data[i][0], "match":sicData[i][1], "name":longName.substr(sicData[i][2], sicData[i][3])};
+    this.AddChild = function(entry) {
+        this.Children.push(entry);
+    }
+}
+
+//string name, bool readOnly, RuleType ruleType, MatchType matchType)
+function DMrule(name, ruleType, matchType) {
+    this.Name = name;
+    this.RuleType = ruleType;
+    this.MatchType = matchType;
+    this.EnMatchType = {Equal : 1, StartsWith : 2};
+    this.EnRuleType = {SIC : 1, PrivacyMarking : 2};
+}
+function DMsic(type) {
+    this.Type = type;
+    this.Children = [];
+    this.longName = "(";
+    this.data="[";
+
+//    this.AddChild = function (entry) {
+//        this.Children.push(entry);
+//    }
+//
+    this.Data = function() {
+        return this.data + "]";
+    }
+    this.LongName = function() {
+        return this.longName + ")";
+    }
+    this.AddNode = function(rule) {
+    //var rule = DMrule(entry.name, entry.rule, entry.match);
+    if (this.Children.length > 0)
+    {
+        if ((this.Children[this.Children.length - 1]).Rule == rule.Rule)
+            this.longName += " OR ";
+        else
+            this.longName += ") AND (";
+    }
+    if (rule.Rule == (new DMrule()).EnRuleType.PrivacyMarking)
+    {
+        this.longName += "Privacy Marking";
+    }
+    else
+    {
+        this.longName += "SIC";
+    }
+    if (rule.Match == (new DMrule()).EnMatchType.StartsWith)
+    {
+        this.longName += " starts with ";
+    }
+    else
+    {
+        this.longName += " = ";
+    }
+    var name = htmlEncode(rule.Name);
+    //data for rules [rule type, match, start position, length]
+    if (this.Children.length > 0)
+    {
+        var i = 6;
+    }
+    this.data +=((this.Children.Count > 0) ? "," : "") + Format(rule.Rule, rule.Match, this.longName.length, rule.Name.length);
+    this.longName += name;
+    this.Children.push(rule);    
+    }
+
+}
 
 var changes = [];
 
@@ -83,212 +173,84 @@ function insertPos(parentNode, name) {
     });
     return pos;
 }
-function insertNode(parentNode, type, name, seqNo) {
+
+function jqId(id) {
+    return "#" + id;
 }
 
-
-function addNode(nodeId, type, name) {
-    //alert("add node");
-    var coreId = nodeId.replace("aa", "");
-    //var suffix = nodeId.replace("a", "") + "_" + seqNo;
-//    var node = //"<td class='sic' style='background-color:red' id='" + listId + "_" + seqNo + "'><span>" + name + "</td>";
-//        "<tr><td class='cinfo'>&nbsp;</td>"
-//     + "<td class='sic info' >&nbsp;</td></td>"
-//         + "<td class='delete'><a id='id" + suffix + "' href='#'><img src='~/images/icon-minus.png' alt='minus' /></a></td>"
-//         + "<td class='edit'><a id='ie" + suffix + "' href='#'><img src='~/images/icon-edit.png' alt='edit' /></a></td></tr>";
-//    //    "<tr><td class='cinfo'>&nbsp;</td>"
-//     + "<td class='sic info' ><span id='is" + suffix + "' class='sic rounded' >" + name + "</span></td>"
-    //     + "<td class='delete'><a id='id" + suffix + "' href='#'><img src='~/images/icon-minus.png' alt='minus' /></a></td>"
-    //     + "<td class='edit'><a id='ie" + suffix + "' href='#'><img src='~/images/icon-edit.png' alt='edit' /></a></td></tr>";
-    //var n = parentNode.children("tbody").children("tr").eq(0).clone();
-
-    alert("inserting");
-    if (type == 1) {
-        var tableId = "ti" + coreId;
-        var table = $("#" + tableId);
-        var pos = insertPos(table, name);
-        var seqNo = getNewSeqNo(table);
-        var row= table.find("tr");
-        var node = row.clone(); 
-        var span = node.find("span");
-        span[0].innerHTML = name;
-        span.attr("id", "#is" + coreId);
-        var del = node.find(".delete");
-        del.attr("id", "#id" + coreId);
-        var edit = node.find(".edit");
-        edit.attr("id", "#ie" + coreId);
-        //node.find(
-        if (pos != -1) {
-            alert("here");
-            table.children("tbody").children("tr").eq(pos).before(node);
-        } else {
-            alert("there");
-            var tbody = table.children("tbody");
-            //alert(tbody[0].innerHTML);
-            //node = parentNode.children("tbody").children("tr").eq(0).clone();
-            //var child = $(node);
-            tbody.append(node);
-            alert(tbody[0].innerHTML);
-        }
-
+function assembleName(data) {
+    for (var i =0; i < data.entries.length; i++) {
+        addChild(data.entries[i]);
     }
-    return;
+
+}
+
+function insertNode(nodeId, data) {
+
+
+    //alert("add node");
+    var jqIds = JQID[data.Type]; // == 1) ?  {"table" : "#i", "text" : "#is", "edit" : "#ie", "del" : "#id"} : {"table" : "#ta", "text" : "#as", "edit" : "#ae", "del" : "#ad"};
+    var templateTable = $(jqId(jqIds.table) + "_0_0_0");
+    var templateRow= templateTable.find("tr");
+    var node = templateRow.clone(); 
+    var coreId = nodeId.substr(2);
+    var ids= coreId.split("_");
+    var id = jqId(jqIds.table) + "_" + ids[1] + "_" + ids[2] + "_" + ids[3];
+    var table = $(id);
+    var pos = insertPos(table, name);
+    var seqNo = getNewSeqNo(table);
+    var span = node.find("span.sic");
+    span.html(data.LongName());
+    span.attr("id", jqIds.text + coreId);
+    var sicData = node.find("span.sic-data");
+    sicData.html(data.Data());
+    var del = node.find(".delete");
+    del.attr("id", jqIds.del + coreId);
+    del.click(nodeMinus);
+    var edit = node.find(".edit");
+    edit.attr("id", jqIds.edit + coreId);
+    edit.click(nodeEdit);
+    //node.find(
+    if (pos != -1) {
+        alert("here");
+        //table.find("tr").eq(pos).before(node);
+        table.children("tbody").children("tr").eq(pos).before(node);
+    } else {
+        alert("there");
+        var tbody = table.children("tbody");
+        //alert(tbody[0].innerHTML);
+        //node = parentNode.children("tbody").children("tr").eq(0).clone();
+        //var child = $(node);
+        tbody.append(node);
+        //alert(tbody[0].innerHTML);
+    }
+
 
 }
 
 
 
-function clicked(id) {
-    var node = $("#" + id);
-    node_click(node);
-}
 
-function updateNode(nodeId, name) {
-    alert("update node");
-    var liOld = $("#" + nodeId);
-    //get the parent
-
-    var list = liOld.parent();
-    var listId = list.id;
-    //var seqNo = getNewSeqNo(list);
-    //var li = "<li class='sic' style='background-color:red' id='" + listId + "_" + seqNo + "'>" + name + "</li>";
-    //ins.children.sort(sortFunc);
-    //list.append(li);
-    var li = liOld.clone();
-    liOld.remove();
-    li[0].children[0].innerHTML = name;
-    insertNode(list, li, name);
-    //list.children("li").eq(index).before(li);
-    list.find("li").each(function (index, that) {
-        var id = that.id;
-        var elem = $("#" + id);
-        elem.unbind("click");
-        elem.bind("click", function (that) { clicked(id); return false; });
-        //elem.click ( function (that) { clicked(id); return false; };
-        var i = 5;
-
-    });
-    return;
-
-
-
-
-}
-
-
-function deleteNode(nodeId) {
-    alert("delete node");
-    var liOld = $("#" + nodeId);
-    //get the parent
-
-    liOld.remove();
-    return;
-
-}
-
-
-
-function cancel() {
-    $(".xedit").remove();
-    uncover();
-    return false;
-}
-function add(nodeId, type) {
-    //alert(parentNodeId);
-    var nodeEdit = $("#node-edit");
-    var nodeType = $("#node-type").val();
-    addNode(nodeId, nodeType, nodeEdit[0].value);
-    //remove the div
-    $(".xedit").remove();
-
-    uncover();
-    return false;
-}
-
-
-function edit(nodeId) {
-    //alert(parentNodeId);
-    var nodeEdit = $("#node-edit");
-    //alert(nodeEdit[0].value);
-    updateNode(nodeId, nodeEdit[0].value);
-    //remove the div
-    $(".xedit").remove();
-
-    uncover();
-    return false;
-}
-
-function remove(nodeId) {
-    var nodeEdit = $("#node-edit");
-    //alert(nodeEdit[0].value);
-    deleteNode(nodeId);
-    //remove the div
-    $(".xedit").remove();
-    uncover();
-    return false;
-}
-
-/*
-function SICinsertAfterFirst()  {
-    $("#popup-content .section .inner .col-wrap.select.first:last").clone(true).insertAfter($("#popup-content .section .inner .col-wrap.select.first:last"));
-    $("#popup-content .section .inner .col-wrap.select.first input[type='select']").val('');
-    return false;
-}
-function SICinsertAfterSecond()  {
-    $("#popup-content .section .inner .col-wrap.select.second:last").clone(true).insertAfter($("#popup-content .section .inner .col-wrap.second:last"));
-    $("#popup-content .section .inner .col-wrap.select.second input[type='select']").val('');
-    return false;
-}
-
-function SICRemoveFirst(event) {
-    event.preventDefault();
-    $(this).closest("#popup-content .section .inner .col-wrap.select.first").remove();
-    return false;
-}
-function SICRemoveSecond(event) {
-    event.preventDefault();
-    $(this).closest("#popup-content .section .inner .col-wrap.select.second").remove();
-    return false;
-}
-*/
-function nodeplus() {
-    //alert(this.id);
-    displaySIC($(this)[0].id);
-    return;
+function nodePlus() {
+    var id = $(this)[0].id;
+    var prefix = id.split("_")[0];
+    if (!(prefix== "aa"))
+        throw new Error("invalid edit type");
     alert("add sic");
-    //create a sic popup dialog
-    var sicPopup = $("#sic-popup");
-    var sicPopupNew = sicPopup.clone(true);
-    sicPopupNew.attr("id", "sic-popup-new");
-    clickRebind(sicPopupNew, "#popup-sic-save", saveSic);
-    clickRebind(sicPopupNew, ".btn-plus", SICinsertAfterFirst);
-    clickRebind(sicPopupNew, ".btn-plus", SICinsertAfterSecond);
-    clickRebind(sicPopupNew, ".btn-minus", SICRemoveFirst);
-    clickRebind(sicPopupNew, ".btn-minus", SICRemoveSecond);
-
-/*
-        $("#popup-content .section .inner .col-wrap.select.first .btn-plus").click();
-
-        $("#popup-content .section .inner .col-wrap.select.first .btn-minus").click();
-
-        $("#popup-content .section .inner .col-wrap.select.second .btn-minus").click();
-
-        $("#popup-content .section .inner .col-wrap.select.second .btn-plus").click();
-*/
-
-    //clickRebind(sicPopupNew, "[id^='msg_']", messageClick);
-    //sicPopupNew.find$("[id^='msg_']").each(function () {
-    //    $(this).click(function() {messageClick($(this))});
-    //    });
-    sicPopupNew.css("display", "inline");
-    //sicPopup.css("display", "inline");
-    $("body").append(sicPopupNew);
-    return false;
-    var xedit = "<div class='xedit' ><br/><select id='node-type'><option value='1'>1</option><select><br/><input id='node-edit' type='text'/><div style='width:100%;text-align:center;margin:10px'><a href='#' onclick='add(\"" + nodeId + "\")'><img src='images/save.gif' alt='save'/></a>&nbsp;<a href='#' onclick='cancel()'><img src='images/cancel.png' alt='cancel'/></a></div></div>"    //left='" + 400 + "px'
-    var body = $("body");
-    body.append(xedit);
+    var sicData = new SicData(null);
+    var sicDialog = sicDisplay(id, function () { sicSave(id, 1, sicDialog, sicData)});
+    return;
 }
-function nodeedit(nodeId) {
+function nodeEdit() {
+    var id = $(this)[0].id;
+    var prefix = id.split("_")[0];
+    if (!(prefix== "ae" || prefix == "ie"))
+        throw new Error("invalid edit type");
+    alert("edit sic");
+    var data = getSicData(id);
+    var sicDialog = sicDisplay(id, function () { sicSave(id, 0, sicDialog, data)});
+    sicPopulate(sicDialog, data);
+    return;
     removeButtons();
     //add a dialog
     var xedit = "<div class='xedit' ><br/><select id='node-type'><option value='1'>1</option><select><br/><input id='node-edit' type='text'/><div style='width:100%;text-align:center;margin:10px'><a href='#' onclick='edit(\"" + nodeId + "\")'><img src='images/save.gif' alt='save'/></a>&nbsp;<a href='#' onclick='cancel()'><img src='images/cancel.png' alt='cancel'/></a></div></div>"    //left='" + 400 + "px'
@@ -296,8 +258,13 @@ function nodeedit(nodeId) {
     body.append(xedit);
 }
 
-function nodeminus(nodeId) {
-    removeButtons();
+function nodeMinus(nodeId) {
+    var id = $(this)[0].id;
+    var prefix = id.split("_")[0];
+    if (!(prefix== "ad" || prefix == "id"))
+        throw new Error("invalid delete type");
+    alert("remove sic");
+    return;
     //add a dialog
     var xedit = "<div class='xedit' ><div>Delete this node?</div><div style='width:100%;text-align:center;margin:10px'><a href='#' onclick='remove(\"" + nodeId + "\")'><img src='images/save.gif' alt='save'/></a>&nbsp;<a href='#' onclick='cancel()'><img src='images/cancel.png' alt='cancel'/></a></div></div>"    //left='" + 400 + "px'
     var body = $("body");
@@ -359,16 +326,16 @@ function clickRebind(parent, pattern, func) {
 
 
 function init(data) {
+    alert(data);
     //get the graph
     var graph = $("#graph");
     graph.empty();
-    //alert(data);
     graph.append(data);
-    clickRebind(graph, "a[id^='aa_']", nodeplus);
-    clickRebind(graph, "a[id^='ie_']", null);
-    clickRebind(graph, "a[id^='id_']", null);
-    clickRebind(graph, "a[id^='ae_']", null);
-    clickRebind(graph, "a[id^='ad_']", null);
+    clickRebind(graph, "[id^='aa_']", nodePlus);
+    clickRebind(graph, "[id^='ie_']", nodeEdit);
+    clickRebind(graph, "[id^='id_']", nodeMinus);
+    clickRebind(graph, "[id^='ae_']", nodeEdit);
+    clickRebind(graph, "[id^='ad_']", nodeMinus);
     //var trigger = $("#rule-visualiser-wrap-trigger");
 //    graph.find("a[id^='a_']").each(function () {
 //        $(this).click(function() {alert("add");});
@@ -401,7 +368,7 @@ function init(data) {
 
 function loadTree(id) {
     //ajax call to load
-    //alert("ajax");
+    alert("ajax");
     //return;
     cover();
     //do an ajax call to get HTML
@@ -421,7 +388,7 @@ function loadTree(id) {
             //alert("before");
         },
         success: function (data) {
-            //alert("success");
+            alert("success");
             //get canvas
             //var canvas =  $(
             //var json1 = data;
@@ -449,93 +416,101 @@ function highlightControl(control) {
 }
 function errorMessage(error) {
     alert(error);
-    return false;
+    return null;
 }
 
-function sicValidate(sicList, data) {
+function sicValidate(sicPopup) {
+
     var valid = true;
     var found = false;
-    sicList.find("[id^='entry']").each(function () {
-        found = true;
-        var entry = new Object();
-        var privacyNode =  $(this).find(".privacy");
-        var privacy =  privacyNode.prop("selectedIndex");
-        if (privacy < 1) {
-            highlightControl(privacyNode);
-            valid = false;
-        } else {
-            entry.privacy = privacy;
-        }
-        var searchNode =  $(this).find(".search");
-        var search =  searchNode.prop("selectedIndex");
-        if (search < 1) {
-            highlightControl(searchNode);
-            valid = false;
-        } else {
-            entry.search = search;
-        }
-        var nameNode =  $(this).find(".name")
-        var name =  nameNode.val();
-        if (!name) {
-            highlightControl(nameNode);
-            valid = false;
-        } else {
-            entry.name = name;
-        }
-        data.entries.push(entry);
-        data.name = (data.name)? data.name + " or " + entry.name : entry.name;
-    });
-    
-    if (!found){
-        return errorMessage("there must be at least one entry");
-    }
-    var sicPopupNew = $("#sic-popup-new");
-    var sicPopupTypeNode = sicPopupNew.find($(".type"));
-    var type = sicPopupTypeNode.prop("selectedIndex");
+    var sicPopupType = sicPopup.find("#sic-type");
+    var type = sicPopupType.prop("selectedIndex");
+    var data = new DMsic(type);
     if (type < 1) {
         highlightControl(sicPopupTypeNode);
         valid = false;
     }    
+    else    
+        sicPopup.list.find("[id^='entry']").each(function () {
+            found = true;
+            var ruleCtl =  $(this).find(".rule");
+            var rule =  ruleCtl.prop("selectedIndex");
+            if (rule < 1) {
+                highlightControl(ruleCtl);
+                valid = false;
+            } 
+            var matchCtl =  $(this).find(".match");
+            var match =  matchCtl.prop("selectedIndex");
+            if (match < 1) {
+                highlightControl(matchCtl);
+                valid = false;
+            }
+            var nameCtl =  $(this).find(".name");
+            var name =  nameCtl.val();
+            if (!name) {
+                highlightControl(nameCtl);
+                valid = false;
+            }
+            var entry = new Entry(rule, match, name);
+            data.AddNode(entry);
+        });
+    
+    if (!found){
+        return errorMessage("there must be at least one entry");
+    }
     if (!valid) {
         return errorMessage("please enter data in the empty fields highlighted red");
     }
-    data.type = type;
-    return true;
+    return data;
 }
 
-function sicSave(id) {
+
+function sicChanged() {
+    var sicPopup = $("#sic-popup");
+    var typeList =sicPopup.find("#sic-type");
+    typeList.prop("selectedIndex", (prefix == "ae") ? 1 : 2);
+    //get the data
+    var rowId = id.replace("e", "r");     
+    var row = $("#" + rowId);
+    var longName = row.find(".sic").text();
+    var dataElement = row.find(".sic-data");
+    var sicData = eval(dataElement.text());
+    var template = $("#sic-entry-template");
+
+}
+function deleteNode(id) {
+    var node = $("#" + id);
+    node.remove();
+}
+
+function isEqual(data, oldData) {
+    //to do
+    return false;
+}
+function sicSave(id, action, sicPopup, oldData) {
 
     alert("save sic");
-    var data;
-    addNode(id, 1, "AAAAA");
-    return;
+//    var data;
+//    insertNode(id, "ZZZZA");
+//    closePopupSic();
+//    return;
     //validate entries
-    var sicList =  $("#sic-list-new");
+    //var sicPopup = $("#sic-popup-new");
+    //var sicList =  sicPopup.list; //find("#sic-list-new");
     //var id = sicList.attr("origin");
-    var data = {type: null, name: null, entries:[]};
-    if (sicValidate(sicList, data)) {
-        //what is the parent node
-        var split = id.split("_");
-        if (split[0] == "aa") {
-            //new node
-            //assemble data for node name
-            //if (data.type == 1) 
-            addNode(id, data.type, data.name);
-            var aaa= 5;
-        } else if (split[0] == "ie"){
-            addNode(id, "action", "aaaaa");
-            //find the node that clicked
-//            var node = $("#" + id.replace("ie", "is"));        
-//            node.text("aaaaaa");
-        } else if (split[0] == "ae"){
-            addNode(id, "action", "aaaaa");
-//            var node = $("#" + id.replace("ae", "as"));
-//            node.text("aaaaaa");
-        } else {
-            throw new Error("invalid button type");
+    var data = sicValidate(sicPopup);
+    if (data) {
+        if (action == 0) {
+            if (!isEqual(data, oldData)) {               
+                deleteNode(id.replace("e", "r"));
+                insertNode(id, data);
+            }
         }
+        else 
+            insertNode(id, data);
+        closePopupSic();
     }
-        return false;
+    return false;
 }
 
 function addEntry() {
@@ -547,42 +522,110 @@ function addEntry() {
         return false;    
     }
     var template = $("#sic-entry-template");
-    var instance = getInstance(template, null, i);
-    clickRebind(instance, ".btn-minus", removeEntry);
-    sicList.append(instance);
+    var entry = createEntry(template, null, i);
+    //clickRebind(entry, ".btn-minus", removeEntry);
+    sicList.append(entry);
     return false;
 }
 function removeEntry() {
+    alert("remove entry");
     var sicList =  $("#sic-list-new");
-    var instance = sicList.find("#" + this.id.substring(2));
-    instance.remove();
+    var entry = sicList.find("#" + this.id.substr(2));
+    entry.remove();
     return false;
 }
 
-function getInstance(template, data, i) {
-    var instance = template.clone(true);
-    var entryId = "entry" + i;
-    instance.attr("id", entryId);
+function createEntry(template, data, i) {
+    var entry = template.clone(true);
     if (data) {
-        var privacy = instance.find(".privacy");
-        privacy.prop("selectedIndex", data.privacy);
-        var search = instance.find(".search");
-        search.prop("selectedIndex", data.search);
-        var name = instance.find(".name");
-        name[0].innerText = data.name;
+        if (!(data.Rule == 1 || data.Rule == 2))
+            throw new Error("invalid data.type"); 
+        if (!(data.Match == 1 || data.Match == 2))
+            throw new Error("invalid data.match"); 
+        if (!(data.Name.length > 0))
+            throw new Error("invalid data.name"); 
+        var rule = entry.find(".rule");
+        rule.prop("selectedIndex", data.Rule);
+        var match = entry.find(".match");
+        match.prop("selectedIndex", data.Match);
+        var name = entry.find(".name");
+        name.val(data.Name);
     }
-//    var seq = instance.find(".sequence");
-//    seq.text(i);
-    var del = instance.find(".btn-minus");
+    //else we are adding a blank entry
+    var entryId = "entry" + i;
+    entry.attr("id", entryId);
+    var del = entry.find(".btn-minus");
     del.attr("id", "d_" + entryId);
-    return instance;
+    del.click(removeEntry);
+    return entry;
 }
 
-function test(id) {
-    alert(id);
+function populateSic(id, sicPopup, sicList, prefix) {
+    //data = [{'privacy': 1, 'search': 2, 'name' :'cccccc'},{'privacy': 1, 'search': 2, 'name' :'cccccc'}];
+    //set the type
+    if (!(prefix== "ae" || prefix == "ie"))
+        throw new Error("invalid edit type");
+    var typeList =sicPopup.find("#sic-type");
+    typeList.prop("selectedIndex", (prefix == "ae") ? 1 : 2);
+    //get the data
+    var rowId = id.replace("e", "r");     
+    var row = $("#" + rowId);
+    var longName = row.find(".sic").text();
+    var dataElement = row.find(".sic-data");
+    var sicData = eval(dataElement.text());
+    var template = $("#sic-entry-template");
+    for(var i = 0; i < sicData.length; i++) {
+        if (i > 25)
+            throw new Error("too many entries");
+        var data = {"type":sicData[i][0], "match":sicData[i][1], "name":longName.substr(sicData[i][2], sicData[i][3])};
+        var entry = createEntry(template, data, i);
+        sicList.append(entry);
+
+    }
+}
+function getSicData (id) {
+    //data = [{'privacy': 1, 'search': 2, 'name' :'cccccc'},{'privacy': 1, 'search': 2, 'name' :'cccccc'}];
+    //set the type
+    var type = (id.split("_")[0] == "ae") ? 1 : 2;
+    //var typeList =sicPopup.find("#sic-type");
+    //typeList.prop("selectedIndex", (prefix == "ae") ? 1 : 2);
+    //get the data
+    var sicData = new SicData(type);
+    //data.type = type;
+    //data.entries = [];
+    var rowId = id.replace("e", "r");     
+    var row = $("#" + rowId);
+    var longName = row.find("span.sic").text();
+    var dataElement = row.find("span.sic-data");
+    var data = eval(dataElement.text());
+    //var template = $("#sic-entry-template");
+    for(var i = 0; i < data.length; i++) {
+        if (i > 25)
+            throw new Error("too many entries");
+        var entry = new Entry(data[i][0], data[i][1], longName.substr(data[i][2], data[i][3]));
+        sicData.AddChild(entry);
+
+    }
+    return sicData;
 }
 
-function displaySIC(id) {
+        //populateSic(id, sicPopupNew, sicList, ids[0]);
+        
+function sicPopulate(sicPopup, data) {
+    var typeList =sicPopup.find("#sic-type");
+    typeList.prop("selectedIndex", data.Type);
+    //get the data
+    var template = $("#sic-entry-template");
+    for(var i = 0; i < data.Children.length; i++) {
+        var entry = createEntry(template, data.Children[i], i);
+        sicPopup.list.append(entry);
+    }
+}
+
+function sicDisplay(id, onSave) {
+    var ids = id.split('_');
+    if (!(ids[0]== "ae" || ids[0]== "ie" || ids[0]== "aa"))
+         throw new Error("unknown popup action");
     //data = [{'privacy': 1, 'search': 2, 'name' :'cccccc'},{'privacy': 1, 'search': 2, 'name' :'cccccc'}];
 
     var sicPopup = $("#sic-popup");
@@ -590,66 +633,22 @@ function displaySIC(id) {
     sicPopupNew.attr("id", "sic-popup-new");
     var sicList =  sicPopupNew.find("#sic-list");
     sicList.attr("id", "sic-list-new");
-    //clickRebind(sicPopupNew, "#popup-sic-save", saveSic);
-    //clickRebind(sicPopupNew, ".btn-plus", SICinsertAfterFirst);
-    //clickRebind(sicPopupNew, ".btn-plus", SICinsertAfterSecond);
-    //clickRebind(sicPopupNew, ".btn-minus", SICRemoveFirst);
-    //clickRebind(sicPopupNew, ".btn-minus", SICRemoveSecond);
+
     sicList.css("background-color", "red");
     sicList.attr("origin", id);
     var template = $("#sic-entry-template");
-    //template.attr("id", "sic-popup-new-1");
-    //var template1 = $("#sic-entry-template").clone(true);
-    //template1.attr("id")., "sic-popup-new-2");
-    //sicListNew.append(template1);
 
     //(Privacy marking = CCCCC or Privacy marking = DDDDD) AND (SIC=BBBBBBB or SIC=FFFFFF)
     clickRebind(sicPopupNew, ".btn-plus", addEntry);
-    clickRebind(sicPopupNew, "#popup-sic-save", function () { sicSave(id);});
+    clickRebind(sicPopupNew, "#popup-sic-save", onSave);
     sicPopupNew.css("display", "inline");
     $("body").append(sicPopupNew);
     //
-    return;
-    //populate the list
-    var template = $("#sic-entry-template").clone(true);var sicList = $("#sic-list");
-    sicPopupNew.append("<p>aaaaaa</p>");
-    $("body").append(sicPopupNew);
-    sicPopupNew.css("display", "inline");
-    sicPopupNew.css("background-color", "red");
-    sicPopupNew.css("width", "2000px");
+    sicPopupNew.list = sicList;
+    return sicPopupNew;
 
-    return sicList;
 };
 
-function populateSic(data) {
-    var sicPopupNew = $("sic-popup-new");
-    var sicList =  sicPopupNew.find("#sic-list");
-    if (data) {
-        for(var i = 0; i < data.length; i++) {
-            if (i > 25)
-                throw new Error("too many entries");    
-            var instance = getInstance(template, data[i], i);
-            sicList.append(instance);
-
-            /*
-            var instance = template.clone(true);
-            var entryId = "entry" + i;
-            instance.attr("id", entryId);
-            var privacy = instance.find(".privacy");
-            privacy.prop("selectedIndex", data[i].privacy);
-            var search = instance.find(".search");
-            search.prop("selectedIndex", data[i].search);
-            sicListNew.append(instance);
-            var name = instance.find(".name");
-            name[0].innerText = data[i].name;
-            var del = instance.find(".btn-minus");
-            del.attr("id", "d_" + entryId);
-            //var plus = sicListNew.find(".btn-plus");
-            */
-        }
-        clickRebind(sicPopupNew, ".btn-minus", removeEntry);
-    }
-}
 
 
 
@@ -717,7 +716,7 @@ $(document).ready(function () {
     });
 
     $("[id^=s_]").click(function () {
-        //alert("set" + this.id);
+        alert("set" + this.id);
         loadTree(this.id);
         return;
         var graph = $("#graph");
