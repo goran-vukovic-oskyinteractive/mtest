@@ -435,27 +435,6 @@ $(document).ready(function() {
 	// POPUP
 	$(".popup").colorbox({width:"70%"});
 	$(".popup-inline").colorbox({inline:true,width:"700px"});
-
-	//live add
-	$('.appointment .add .popup-inline').live('click', function(event){
-		event.preventDefault();
-		var hidden_dom = $(this).attr('href');
-		//ie7 fix
-		if(ie7)
-		{
-			hidden_dom = hidden_dom.split('/');
-			hidden_dom = hidden_dom[hidden_dom.length-1];
-		}
-
-		if( $(hidden_dom).length > 0 )
-		{
-			$.colorbox({
-						inline:true,
-						width:"700px",
-						href: hidden_dom
-					});
-		}
-	});
 	
 	// Resize graph height based on browser viewport
 	$(window).resize(function() {

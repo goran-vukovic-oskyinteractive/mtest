@@ -1,4 +1,4 @@
-﻿// Javascript for DM - Erfan Sakib
+// Javascript for DM - Erfan Sakib
 
 
 $(document).ready(function() {

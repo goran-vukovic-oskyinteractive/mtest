@@ -453,7 +453,7 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 
 #popup-content .section .inner label {float:left; width:20%; text-align:right; margin:0 1% 0 0;}
 #popup-content .section .inner textarea {width:69%; background:#fff; border:1px solid #cdcdcd; height:140px;}
-#popup-content .section .inner .col-wrap {overflow:hidden; margin:0 0 5px 0;}
+#popup-content .section .inner .col-wrap {overflow:hidden; margin:0 0 10px 0;}
 #popup-content .section .inner .col-wrap .col {float:left; width:15%; margin:0 1% 0 0;}
 #popup-content .section .inner .col-wrap .col.wide {width:40%; background-color:yellow}
 #popup-content .section .inner select {width:100%; height:20px}
@@ -465,7 +465,8 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 
 #popup-content .section .inner .btn-add {float:left;}
 #popup-content .section .inner .btn-add a {display:block; float:left; background:url(../images/btn-plusminus.png) 0 0 no-repeat; width:17px; height:17px; text-indent:-9999px; margin:2px 5px 0 0;}
-#popup-content .section .inner .btn-add a.btn-minus {background-position:0 -17px;}
+#popup-content .section .inner .btn-add a.btn-minus {background-position:0 -17px; margin-left:10px;}
+#popup-content .section .inner .btn-add a.btn-single {margin-top:-8px}
 
 #popup-content .section .inner .form-wrap {margin:0 0 20px 0;}
 #popup-content .section .inner .form-wrap .row {clear:left; margin:0 0 10px 0; position:relative;}
@@ -491,6 +492,10 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 #popup-content .section .inner .btn-wrap ul li.narrow a:hover { background-position:0 -30px; }
 #popup-content .section .inner .btn-wrap ul li.wide a { background:url(../images/bg-btn_wide.png) 0 0 no-repeat; width:200px; }
 #popup-content .section .inner .btn-wrap ul li.wide a:hover { background-position:0 -30px; }
+
+
+
+
 
 
 #xwrapper { min-width:1020px; width:auto!important; width:1020px; }

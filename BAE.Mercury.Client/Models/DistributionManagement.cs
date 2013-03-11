@@ -103,7 +103,7 @@ namespace BAE.Mercury.Client.Models
     {
         public enum SicType
         {
-            Action = 1, Info = 2
+            Action = 2, Info = 1
         }
         private const string DOTS = "...";
         private int maxShortName = 80 - DOTS.Length;

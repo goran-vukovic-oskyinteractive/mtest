@@ -54,8 +54,10 @@
     <script type="text/javascript" src="~/Scripts/functions.js?434563456f"></script>
     <script type="text/javascript" src="~/Scripts/functions_dm.js"></script>
     <script type="text/javascript" src="~/Scripts/dm.js?=123456"></script>
+    <script type="text/javascript" src="~/Scripts/dm1.js?=123456"></script>
 	<script type="text/javascript" src="~/Scripts/dm_erfan.js"></script>
     <script type="text/javascript" src="~/Scripts/Initialise.js"></script>
+    <script src="~/Scripts/ryan_dm.js" type="text/javascript"></script>
 
 <!--additional links for list start -->
 
@@ -221,8 +223,8 @@
     <div id="sic-table-template">
     @{
         DistributionManagement dm1 = (DistributionManagement) Model;
-        DMset set1 = new DMset(dm1, 0, String.Empty, true);
-        DMset unit1 = new DMset(set1, 0, String.Empty, true);
+        DMset set1 = new DMset(dm1, 0, String.Empty, false);
+        DMset unit1 = new DMset(set1, 0, String.Empty, false);
         DMappointment appointment = new DMappointment(unit1, 0, String.Empty, false);
         DMsic sicAction = new DMsic(null, 0, DMsic.SicType.Action, false);
         DMsic sicInfo = new DMsic(null, 0, DMsic.SicType.Info, false);
@@ -235,8 +237,7 @@
     }
     </div>    
 	<div id="email-list">
-		<!-- Commented out since it was causing a mess with the rest of the HTML -->
-		@* @{ Html.RenderPartial("_DMMessageList", null); } *@	
+		@{ Html.RenderPartial("_DMMessageList", null); }
 	</div>
 	<div id="sic-popup">		
 		@{ Html.RenderPartial("_DMPopupSic", null); } 
