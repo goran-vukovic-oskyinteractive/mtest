@@ -445,13 +445,14 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 
 
 /**** STYLE FOR AJAX POPUP CONTENT ****/
-#wrapper.popup {min-width:500px;}
-#popup-content {background:#292929; padding:20px;}
-#popup-content .section {background:#fff; border:1px solid #757575; border-radius:5px; width:100%; margin:0 auto 20px;}
+#wrapper.popup {}
+
+#popup-content {background:#fff; padding:20px 20px 10px 20px;}
+#popup-content .section {background:#eee; border:1px solid #ccc; border-radius:5px; width:100%; margin:10px auto 20px;}
 #popup-content .section .inner {padding:20px;}
 
-#popup-content .section .inner label {float:left; width:10%; text-align:right; margin:0 1% 0 0;}
-#popup-content .section .inner textarea {width:79%; background:#fff; border:1px solid #cdcdcd; height:140px;}
+#popup-content .section .inner label {float:left; width:20%; text-align:right; margin:0 1% 0 0;}
+#popup-content .section .inner textarea {width:69%; background:#fff; border:1px solid #cdcdcd; height:140px;}
 #popup-content .section .inner .col-wrap {overflow:hidden; margin:0 0 5px 0;}
 #popup-content .section .inner .col-wrap .col {float:left; width:15%; margin:0 1% 0 0;}
 #popup-content .section .inner .col-wrap .col.wide {width:40%; background-color:yellow}
@@ -459,7 +460,7 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 #popup-content .section .inner name {width:300px; height:20px}
 #popup-content .section .inner type {width:150px; height:20px}
 
-#popup-content .section .inner input.txt {width:79%; background:#fff; border:1px solid #cdcdcd; height:20px; float:left; margin:0 10px 0 0;}
+#popup-content .section .inner input.txt {width:69%; background:#fff; border:1px solid #cdcdcd; height:20px; float:left; margin:0 10px 0 0;}
 #popup-content .section .inner input.txt.add {width:70%; background:#fff; border:1px solid #cdcdcd; height:20px;}
 
 #popup-content .section .inner .btn-add {float:left;}
@@ -479,7 +480,17 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 #popup-content .section .inner .result ul li a:hover { background:#DFDFDF; }
 #popup-content .section .inner .result ul li a span.highlight { font-weight:bold; color:#119fe9; }
 
-#popup-content .section .inner .btn-wrap {margin-left:11%;}
+#popup-content .section .inner .btn-wrap {margin-left:21%;}
+#popup-content .section .inner .btn-wrap { overflow:hidden; }
+#popup-content .section .inner .btn-wrap ul li { display: inline; float: left; list-style: none; margin: 0; padding: 0; position: relative; text-align: center; }
+#popup-content .section .inner .btn-wrap ul li a { background: url(../images/bg-audit-btn.png) 0 0 no-repeat; width: 92px; height: 30px; display: block; float: left; line-height: 30px; margin: 0 10px 0 0; text-align: center; font-weight: normal; font-size: 12px; color: #3c3c3c; }
+#popup-content .section .inner .btn-wrap ul li a:hover { background-position: 0 -30px; }
+#popup-content .section .inner .btn-wrap.wide ul li a { background:url(../images/btn-grey.png) 0 0 no-repeat; width:132px; }
+#popup-content .section .inner .btn-wrap.wide ul li a:hover { background-position:0 -30px; }
+#popup-content .section .inner.btn-wrap ul li.narrow a { background:url(../images/bg-btn_small.png) 0 0 no-repeat; width:43px; }
+#popup-content .section .inner .btn-wrap ul li.narrow a:hover { background-position:0 -30px; }
+#popup-content .section .inner .btn-wrap ul li.wide a { background:url(../images/bg-btn_wide.png) 0 0 no-repeat; width:200px; }
+#popup-content .section .inner .btn-wrap ul li.wide a:hover { background-position:0 -30px; }
 
 
 #xwrapper { min-width:1020px; width:auto!important; width:1020px; }

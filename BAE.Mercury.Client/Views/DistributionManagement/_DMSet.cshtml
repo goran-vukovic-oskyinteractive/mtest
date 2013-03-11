@@ -22,7 +22,7 @@
                                         <div class="appointment">@Html.Raw(appointment.Name)</div>
                                     </td>
                                     <td class="sic-table">
-                                        <div>
+                                        <div id="dw_@Html.Raw(String.Format("{0}_{1}_{2}", Model.Id, unit.Id, appointment.Id))">
                                             @{ 
                                     
                                                 Debug.WriteLine(appointment.Name);
@@ -35,9 +35,14 @@
 
                                         </div>
                                     </td>
-                                    <td class="add">
-                                        <a id="aa_@Html.Raw(String.Format("{0}_{1}_{2}", Model.Id, unit.Id, appointment.Id))" href="#" >
+                                    <td class="add"> 
+                                    @if (!appointment.ReadOnly) {
+                                                                         
+                                        <a id="aa_@Html.Raw(String.Format("{0}_{1}_{2}", Model.Id, unit.Id, appointment.Id))" href="#">
                                             <img src="~/images/icon-plus.png" alt="plus"/></a>
+                                    } else {
+                                        <span><img src="~/images/icon-plus.png" alt="plus"/></span>
+                                    }
                                     </td>
                                 </tr>
                             </tbody>
@@ -45,13 +50,13 @@
                     <br /> @*break between appointments*@
                       }}
                 </div>
-               }
-               else
-               {
+                }
+                else
+                {
                     <div style="background-color:white; margin:auto; text-align:center; position:relative;width:100%">No Appointments</div>
                     <br />@*break between appointments*@
 
-               }
+                }
                 
             } 
         </div>

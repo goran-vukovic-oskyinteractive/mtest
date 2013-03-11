@@ -1,11 +1,66 @@
-﻿var IE = navigator.appName == "Microsoft Internet Explorer";
+﻿var urlParts = window.location.href.split("/");
+var thisUrl =  //urlParts[0] + "://" + urlParts[2] + "/" +
+      //window.location.pathname + //'Home/GetNavigationTreePV/',
+     "DistributionManagement/GetSet";
+
+
+function loadTree(id) {
+    //ajax call to load
+    //alert("ajax");
+    //return;
+    cover();
+    //do an ajax call to get HTML
+
+
+    //alert(thisUrl);
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        data: {
+            i: id
+        },
+        url: thisUrl,
+        //async: true,
+        beforeSend: function (xhr) {
+            //alert("before");
+        },
+        success: function (data) {
+            //alert("success");
+            //get canvas
+            //var canvas =  $(
+            //var json1 = data;
+            //alert(data);
+            uncover();
+            init(data);
+            //init(json);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            //alert(xhr.status);
+            //alert(thrownError);
+        }
+    }).complete(function () {
+        //alert("done");
+        //init(json);
+        //uncover();
+    });
+
+    //unfreeze
+    uncover();
+    return false;
+}
+
+
+
+
+var IE = navigator.appName == "Microsoft Internet Explorer";
 var JQID =   [{},{"table" : "at", "row" : "ar", "text" : "as", "edit" : "ae", "del" : "ad"}, {"table" : "it", "row" : "ir", "text" : "is", "edit" : "ie", "del" : "id"}];
 
 function $ID(id) {
     return $("#" + id);
 }
-function $CLASS(class) {
-    return $("." + id);
+function $CLASS(cl) {
+    return $("." + cl);
 }
 
 function Format(p1,p2,p3,p4) {
@@ -114,16 +169,17 @@ function addChange(type, id, parentId, name) {
 }
 
 function saveAll() {
-    alert("Ok");
+    //alert("Ok");
     var hidden = $("<div id='cover'><img src='images/ajax-loader.gif' alt='please wait'/><p>please wait</p> </div>"); //style='background-color:green;position:absolute;left:0;top:0;height:100%;width:100%' 
     var body = $("body");
 
     var sjs = "";// JSON.stringify(changes);
     body.append(hidden);
+    throw new Error("fix **** url");
     //do an ajax call to save
     $.ajax({
         type: "POST",
-        url: "/DistributionManagement/Index",
+        url: "~/DistributionManagement/Index",
         dataType: "json",
         success: function (data) {
             //var json1 = data;
@@ -133,8 +189,8 @@ function saveAll() {
             init(data);
             //init(json);
         },
-        fail: function () {
-            alert("fail");
+        error: function () {
+            //alert("fail");
         },
         data: { c: sjs}         //context: document.body
     }).done(function () {
@@ -189,22 +245,118 @@ function assembleName(data) {
     }
 
 }
+function insertNode(id, data) {
+    //alert("insert node");
+    var jqIds = JQID[data.Type]; // {"table" : "#i", "text" : "#is", "edit" : "#ie", "del" : "#id"} : {"table" : "#ta", "text" : "#as", "edit" : "#ae", "del" : "#ad"};
+    var ids= id.split("_");
+    var coreId = "_" + ids[1] + "_" + ids[2] + "_" + ids[3];
+    //the table may not be there
+    var divWrap = $ID("dw" + coreId);
+    var innerTables = divWrap.find("table");
+    if (innerTables.length == 0) {
+        //no tables
+        var templateDiv = $ID("sic-table-template");
+        //remove placeholders
+        divWrap.empty();
+        //insert template table
+        var tables = templateDiv.children().clone();
+        divWrap.append(tables);
+        //var tables = newTemplateTable.find("table");
+        //replace the table ids
+        var tableI = divWrap.children("table").eq(0);
+        var attrI = "it" + coreId;
+        tableI.attr("id", attrI);
+        var tableA = divWrap.children("table").eq(1);
+        var attrA = "at" + coreId;
+        tableA.attr("id", attrA);
+        //replace the row ids
+        var rowI = tableI.find("tr");
+        rowI.attr("id", "ir" + coreId);
+        var rowA = tableA.find("tr");
+        rowA.attr("id", "ar" + coreId);
+        //now populate the real row
+        var table;
+        var spanClass;
+        if (data.Type == 1) {
+            row = rowI;
+            table = tableI;
+            tableA.empty();
+            spanClass = "sic-info";
+        } else {
+            row = rowA;
+            table = tableA;
+            tableI.empty();
+            spanClass = "sic-action";
+        }
+        var spanName = row.find("span.sic");
+        var name = data.LongName();
+        spanName.html(name);
+        var spanData = row.find("span." + spanClass);
+        var sicData = data.Data();
+        spanData.html(sicData);
+        var del = row.find(".delete");
+        del.attr("id", jqIds.del + coreId);
+        del.click(nodeMinus);
+        var edit = row.find(".edit");
+        edit.attr("id", jqIds.edit + coreId);
+        edit.click(nodeEdit);
+        table.children("tbody").append(row);
+        //alert(tbody[0].innerHTML);
+    } else if  (innerTables.length == 2) {
+        var templateTable = $ID(jqIds.table + "_0_0_0");
+        var innerTables = divWrap.find("table");
+        var templateRow = templateTable.find("tr");
+        var row = templateRow.clone(); 
+        var rowId = id.replace("a", "r");
+        row.attr("id", rowId);
+        var table = $ID(jqIds.table + coreId);
+        var seqNo = getNewSeqNo(table);
+        var coreIdExt = coreId + "_" + seqNo;
+        var spanName = row.find("span.sic");
+        var name = data.LongName();
+        spanName.html(name);
+        throw new Error("fix class");
+        var spanData = row.find("span.sic-data");
+        var sicData = data.Data();
+        spanData.html(sicData);
+        var del = row.find(".delete");
+        del.attr("id", jqIds.del + coreId);
+        del.click(nodeMinus);
+        var edit = row.find(".edit");
+        edit.attr("id", jqIds.edit + coreId);
+        edit.click(nodeEdit);
+        var pos = insertPos(table, name);
 
+        if (pos != -1) {
+            //alert("other rows");
+            //table.find("tr").eq(pos).before(row);
+            table.children("tbody").children("tr").eq(pos).before(row);
+        } else {
+            //alert("no other rows");
+            //we need the wrapping div
+            table.children("tbody").append(row);
+
+        }
+    } else {
+       throw new Error("cannot have one table");        
+    } 
+
+
+}
 
 function updateNode(id, data) {
-    alert("update node");
+    //alert("update node");
     var jqIds = JQID[data.Type]; // {"table" : "#i", "text" : "#is", "edit" : "#ie", "del" : "#id"} : {"table" : "#ta", "text" : "#as", "edit" : "#ae", "del" : "#ad"};
     var ids= id.split("_");
     var coreId = "_" + ids[1] + "_" + ids[2] + "_" + ids[3];
     var table = $ID(jqIds.table + coreId);
-    //var table = $ID(tid);
-    var test = $("#at_4_5_8").html();
-    var name = data.LongName();
     var rowId = id.replace("e", "r");
     var rowOld = $ID(rowId);
     var row = rowOld.clone(true);
     var spanName = row.find("span.sic");
+    var name = data.LongName();
     spanName.html(name);
+    throw new Error("fix class");
     var spanData = row.find("span.sic-data");
     var sicData = data.Data();
     spanData.html(sicData);
@@ -219,21 +371,23 @@ function updateNode(id, data) {
 //    edit.click(nodeEdit);
 //    //row.find(
     if (pos != -1) {
-        alert("other rows");
+        //alert("other rows");
         //table.find("tr").eq(pos).before(row);
         table.children("tbody").children("tr").eq(pos).before(row);
     } else {
-        alert("no other rows");
+        //alert("no other rows");
         var tbody = table.find("tbody");
         //alert(tbody[0].innerHTML);
         //node = parentNode.children("tbody").children("tr").eq(0).clone();
         //var child = $(node);
-        tbody.append(row);
+        //tbody.append(row);
         //alert(tbody[0].innerHTML);
     }
 
 }
 
+
+/*
 function newNode(id, data, action) {
 
 
@@ -262,8 +416,7 @@ function newNode(id, data, action) {
     span.html(data.LongName());
     span.attr("id", jqIds.text + coreId);
     var sicData = row.find("span.sic-data");
-    var xxxx = data.Data();
-    sicData.html(xxxx);
+    sicData.html(data.Data());
     var del = row.find(".delete");
     del.attr("id", jqIds.del + coreId);
     del.click(nodeMinus);
@@ -288,34 +441,49 @@ function newNode(id, data, action) {
 
 }
 
-
+*/
 
 
 function nodePlus() {
+    //alert("nodePlus");
+
     var id = $(this)[0].id;
     var prefix = id.split("_")[0];
-    if (!(prefix== "aa"))
+    if (!(prefix == "aa"))
         throw new Error("invalid edit type");
-    alert("add sic");
+
+
+    var sicPopup = $("#sic-popup");
+    var sicList = sicPopup.find("#sic-list");
+    sicPopup.list = sicList;
+    sicPopup.saved = false;
+    var colorbox = $.colorbox({ href: "#sic-popup", inline: true, width: "700px", onCleanup: function () { sicCleanUp(sicList); } });
+
     var sicData = new SicData(null);
-    var sicDialog = sicDisplay(id, function () { sicSave(id, 1, sicDialog, sicData)});
-    return;
+    //(Privacy marking = CCCCC or Privacy marking = DDDDD) AND (SIC=BBBBBBB or SIC=FFFFFF)
+    clickRebind(sicPopup, ".btn-plus", function () { addEntry(sicList) });
+    var saveBtn = $("#popup-sic-save");
+    saveBtn.click(function () { sicSave(id, 1, sicPopup, sicData) });
+    return false;
+
+    
 }
 function nodeEdit() {
+    //alert("node edit");
     var id = $(this)[0].id;
     var prefix = id.split("_")[0];
     if (!(prefix== "ae" || prefix == "ie"))
         throw new Error("invalid edit type");
-    //alert("edit sic");
-    var data = getSicData(id);
-    var sicDialog = sicDisplay(id, function () { sicSave(id, 0, sicDialog, data)});
-    sicPopulate(sicDialog, data);
-    return;
-    removeButtons();
-    //add a dialog
-    var xedit = "<div class='xedit' ><br/><select id='node-type'><option value='1'>1</option><select><br/><input id='node-edit' type='text'/><div style='width:100%;text-align:center;margin:10px'><a href='#' onclick='edit(\"" + nodeId + "\")'><img src='images/save.gif' alt='save'/></a>&nbsp;<a href='#' onclick='cancel()'><img src='images/cancel.png' alt='cancel'/></a></div></div>"    //left='" + 400 + "px'
-    var body = $("body");
-    body.append(xedit);
+    var sicPopup = $("#sic-popup");
+    var sicList = sicPopup.find("#sic-list");
+    sicPopup.list = sicList;
+    var colorbox = $.colorbox({ href: "#sic-popup", inline: true, width: "700px", onCleanup: function () { sicCleanUp(sicList); } });
+
+    var sicData = getSicData(id);
+    //var sicDialog = sicDisplay(id, function () { sicSave(id, 0, sicDialog, data)});
+    clickRebind(sicPopup, "#popup-sic-save", function () { sicSave(id, 0, sicPopup, sicData) });
+    sicPopulate(sicPopup, sicData);
+    return false;
 }
 
 function nodeMinus(nodeId) {
@@ -323,7 +491,7 @@ function nodeMinus(nodeId) {
     var prefix = id.split("_")[0];
     if (!(prefix== "ad" || prefix == "id"))
         throw new Error("invalid delete type");
-    alert("remove sic");
+    //alert("remove sic");
     return;
     //add a dialog
     var xedit = "<div class='xedit' ><div>Delete this node?</div><div style='width:100%;text-align:center;margin:10px'><a href='#' onclick='remove(\"" + nodeId + "\")'><img src='images/save.gif' alt='save'/></a>&nbsp;<a href='#' onclick='cancel()'><img src='images/cancel.png' alt='cancel'/></a></div></div>"    //left='" + 400 + "px'
@@ -426,56 +594,11 @@ function init(data) {
 
 }
 
-function loadTree(id) {
-    //ajax call to load
-    //alert("ajax");
-    //return;
-    cover();
-    //do an ajax call to get HTML
-
-
-
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        data: {
-            i: id
-        },
-        url: "DistributionManagement/GetSet",
-        //async: true,
-        beforeSend: function (xhr) {
-            //alert("before");
-        },
-        success: function (data) {
-            //alert("success");
-            //get canvas
-            //var canvas =  $(
-            //var json1 = data;
-            //alert(data);
-            uncover();
-            init(data);
-            //init(json);
-        },
-        fail: function () {
-            alert("fail");
-        }
-       
-    }).done(function () {
-        //alert("done");
-        //init(json);
-        //uncover();
-    });
-
-    //unfreeze
-    uncover();
-    return false;
-}
 function highlightControl(control) {
     control.css("background-color", "#faa");
 }
 function errorMessage(error) {
-    alert(error);
+    //alert(error);
     return null;
 }
 
@@ -487,39 +610,37 @@ function sicValidate(sicPopup) {
     var type = sicPopupType.prop("selectedIndex");
     var data = new DMsic(type);
     if (type < 1) {
-        highlightControl(sicPopupTypeNode);
+        highlightControl(sicPopupType);
         valid = false;
     }    
-    else    
-        sicPopup.list.find("[id^='entry']").each(function () {
-            found = true;
-            var ruleCtl =  $(this).find(".rule");
-            var rule =  ruleCtl.prop("selectedIndex");
-            if (rule < 1) {
-                highlightControl(ruleCtl);
-                valid = false;
-            } 
-            var matchCtl =  $(this).find(".match");
-            var match =  matchCtl.prop("selectedIndex");
-            if (match < 1) {
-                highlightControl(matchCtl);
-                valid = false;
-            }
-            var nameCtl =  $(this).find(".name");
-            var name =  nameCtl.val();
-            if (!name) {
-                highlightControl(nameCtl);
-                valid = false;
-            }
-            var entry = new Entry(rule, match, name);
-            data.AddNode(entry);
-        });
-    
-    if (!found){
-        return errorMessage("there must be at least one entry");
-    }
+    sicPopup.list.find("[id^='entry']").each(function () {
+        found = true;
+        var ruleCtl =  $(this).find(".rule");
+        var rule =  ruleCtl.prop("selectedIndex");
+        if (rule < 1) {
+            highlightControl(ruleCtl);
+            valid = false;
+        } 
+        var matchCtl =  $(this).find(".match");
+        var match =  matchCtl.prop("selectedIndex");
+        if (match < 1) {
+            highlightControl(matchCtl);
+            valid = false;
+        }
+        var nameCtl =  $(this).find(".name");
+        var name =  nameCtl.val();
+        if (!name) {
+            highlightControl(nameCtl);
+            valid = false;
+        }
+        var entry = new Entry(rule, match, name);
+        data.AddNode(entry);
+    });
     if (!valid) {
         return errorMessage("please enter data in the empty fields highlighted red");
+    }
+    if (!found){
+        return errorMessage("there must be at least one entry");
     }
     return data;
 }
@@ -533,6 +654,8 @@ function sicChanged() {
     var rowId = id.replace("e", "r");     
     var row = $("#" + rowId);
     var longName = row.find(".sic").text();
+    throw new Error("fix class");
+
     var dataElement = row.find(".sic-data");
     var sicData = eval(dataElement.text());
     var template = $("#sic-entry-template");
@@ -549,11 +672,10 @@ function isEqual(data, oldData) {
 }
 function sicSave(id, action, sicPopup, oldData) {
 
-    alert("save sic");
+    //alert("save sic");
 //    var data;
 //    insertNode(id, "ZZZZA");
 //    closePopupSic();
-//    return;
     //validate entries
     //var sicPopup = $("#sic-popup-new");
     //var sicList =  sicPopup.list; //find("#sic-list-new");
@@ -566,36 +688,38 @@ function sicSave(id, action, sicPopup, oldData) {
                 updateNode(id, data);
             }
         }
-        else 
+        else
             insertNode(id, data);
-        closePopupSic();
+        closePopupSic(sicPopup);
     }
     return false;
 }
 
-function addEntry() {
-    var sicList =  $("#sic-list-new");
+function addEntry(sicList) {
+    //alert("add entry");
+    //return;
+    //var sicList =  $("#sic-list-new");
     var i = sicList.find("[id^='entry']").length; //[id^='msg_']
     var maxEntries = 15;
     if (i > maxEntries) {
-        alert("reached the maximum of " + maxEntries + " entries");
+        //alert("reached the maximum of " + maxEntries + " entries");
         return false;    
     }
     var template = $("#sic-entry-template");
-    var entry = createEntry(template, null, i);
+    var entry = createEntry(sicList, template, null, i);
     //clickRebind(entry, ".btn-minus", removeEntry);
     sicList.append(entry);
     return false;
 }
-function removeEntry() {
-    alert("remove entry");
-    var sicList =  $("#sic-list-new");
-    var entry = sicList.find("#" + this.id.substr(2));
+function removeEntry(sicList, entryId) {
+    //alert("remove entry");
+    //var sicList =  $("#sic-list-new");
+    var entry = sicList.find("#" + entryId);
     entry.remove();
     return false;
 }
 
-function createEntry(template, data, i) {
+function createEntry(sicList, template, data, i) {
     var entry = template.clone(true);
     if (data) {
         if (!(data.Rule == 1 || data.Rule == 2))
@@ -616,7 +740,7 @@ function createEntry(template, data, i) {
     entry.attr("id", entryId);
     var del = entry.find(".btn-minus");
     del.attr("id", "d_" + entryId);
-    del.click(removeEntry);
+    del.click(function () { removeEntry(sicList, entryId); });
     return entry;
 }
 
@@ -626,19 +750,28 @@ function populateSic(id, sicPopup, sicList, prefix) {
     if (!(prefix== "ae" || prefix == "ie"))
         throw new Error("invalid edit type");
     var typeList =sicPopup.find("#sic-type");
-    typeList.prop("selectedIndex", (prefix == "ae") ? 1 : 2);
+    var type = ((prefix == "ae") ? 1 : 2);
+    typeList.prop("selectedIndex", type)
     //get the data
     var rowId = id.replace("e", "r");     
     var row = $("#" + rowId);
     var longName = row.find(".sic").text();
-    var dataElement = row.find(".sic-data");
+    throw new Error("fix class");
+    var spanClass;
+    if (type == 1) {
+        spanClass = ".sic-info";
+    } else {
+        spanClass = ".sic-action";
+    }
+
+    var dataElement = row.find(spanClass);
     var sicData = eval(dataElement.text());
     var template = $("#sic-entry-template");
     for(var i = 0; i < sicData.length; i++) {
         if (i > 25)
             throw new Error("too many entries");
         var data = {"type":sicData[i][0], "match":sicData[i][1], "name":longName.substr(sicData[i][2], sicData[i][3])};
-        var entry = createEntry(template, data, i);
+        var entry = createEntry(sicList, template, data, i);
         sicList.append(entry);
 
     }
@@ -657,7 +790,15 @@ function getSicData (id) {
     var row = $("#" + rowId);
     var name = row.find("span.sic")
     var longName = name.text();
-    var dataElement = row.find("span.sic-data");
+    throw new Error("fix class");
+    var spanClass;
+    if (type == 1) {
+        spanClass = ".sic-info";
+    } else {
+        spanClass = ".sic-action";
+    }
+
+    var dataElement = row.find("span." + spanClass);
     var text = dataElement.text();
     var data = eval(dataElement.text());
     //var template = $("#sic-entry-template");
@@ -679,43 +820,29 @@ function sicPopulate(sicPopup, data) {
     //get the data
     var template = $("#sic-entry-template");
     for(var i = 0; i < data.Children.length; i++) {
-        var entry = createEntry(template, data.Children[i], i);
+        var entry = createEntry(sicPopup.list, template, data.Children[i], i);
         sicPopup.list.append(entry);
     }
 }
+function sicCleanUp(sicList) {
+    //sicChanged
+    sicList.empty();
 
-function sicDisplay(id, onSave) {
-    var ids = id.split('_');
-    if (!(ids[0]== "ae" || ids[0]== "ie" || ids[0]== "aa"))
-         throw new Error("unknown popup action");
-    //data = [{'privacy': 1, 'search': 2, 'name' :'cccccc'},{'privacy': 1, 'search': 2, 'name' :'cccccc'}];
-
-    var sicPopup = $("#sic-popup");
-    var sicPopupNew = sicPopup.clone(true);
-    sicPopupNew.attr("id", "sic-popup-new");
-    var sicList =  sicPopupNew.find("#sic-list");
-    sicList.attr("id", "sic-list-new");
-
-    sicList.css("background-color", "red");
-    sicList.attr("origin", id);
-    var template = $("#sic-entry-template");
-
-    //(Privacy marking = CCCCC or Privacy marking = DDDDD) AND (SIC=BBBBBBB or SIC=FFFFFF)
-    clickRebind(sicPopupNew, ".btn-plus", addEntry);
-    clickRebind(sicPopupNew, "#popup-sic-save", onSave);
-    sicPopupNew.css("display", "inline");
-    $("body").append(sicPopupNew);
-    //
-    sicPopupNew.list = sicList;
-    return sicPopupNew;
-
-};
+}
 
 
 
-
-function closePopupSic() {
-    alert("closing sic");
+function closePopupSic(sicPopup) {
+    //alert("closing sic");
+    sicPopup.find("#popup-sic-save").off('click');
+    sicPopup.find(".btn-plus").off('click');
+    //remove all children
+    //sicList.empty();
+//     each(function () {
+//        alert(1)
+//    });
+    $.colorbox.close();
+    return;
     var sicPopupNew = $("#sic-popup-new");
     sicPopupNew.remove();
 }
@@ -725,11 +852,11 @@ function closePopupSic() {
 function messageClick() {
     //we have the jQuery object
     var url = $(this).attr("data-url");
-    alert(url);
+    //alert(url);
 }
 
 function closeList() {
-    alert("closing");
+    //alert("closing");
     var emailListNew = $("#email-list-new");
     emailListNew.remove();
 }
@@ -738,32 +865,29 @@ function noClick(event) {
         return false;
 }
 
-function blah() {
-    alert("blah");
-}
 function selectMessage() {
 
-var emailList = $("#email-list");
-var emailListNew = emailList.clone(true);
-emailListNew.attr("id", "email-list-new");
-clickRebind(emailListNew, "[id^='msg_']", messageClick);
-clickRebind(emailListNew, "#message-list-wrap", noClick);
+    var emailList = $("#email-list");
+    var emailListNew = emailList.clone(true);
+    emailListNew.attr("id", "email-list-new");
+    clickRebind(emailListNew, "[id^='msg_']", messageClick);
+    clickRebind(emailListNew, "#message-list-wrap", noClick);
 
 
-//emailListNew.find$("[id^='msg_']").each(function () {
-//    $(this).click(function() {messageClick($(this))});
-//    });
-emailListNew.css("display", "inline");
-//emailList.css("display", "inline");
-$("body").append(emailListNew);
+    //emailListNew.find$("[id^='msg_']").each(function () {
+    //    $(this).click(function() {messageClick($(this))});
+    //    });
+    emailListNew.css("display", "inline");
+    //emailList.css("display", "inline");
+    $("body").append(emailListNew);
 
-addListContainerScroll();
+    addListContainerScroll();
 };
 
 $(document).ready(function () {
 
-
-//$(".popup").click = function () {alert("OK")};
+    //$.colorbox({html:"<h1>Welcome</h1>"});
+    ////$(".popup").click = function () {alert("OK")};
 
     //    $("#graph").scroll(function () {
     //        $("#graph").getNiceScroll().resize();
@@ -777,61 +901,25 @@ $(document).ready(function () {
         cache: false
     });
 
+
+    //$(".inline").colorbox({inline:true, width:"50%"});
+
     $("[id^=s_]").click(function () {
-        alert("set" + this.id);
+        //alert("set" + this.id);
         loadTree(this.id);
         return;
-        var graph = $("#graph");
-        var height = graph.height();
-        graph.height(2000); // css("height", "2000px");
-        var nice = graph.getNiceScroll();
-        //        //nice.remove();
-        //        nice.resize();
-        //        nice = graph.niceScroll({
-
-        //                    cursorcolor: "#CCC",
-        //                    autohidemode: false,
-        //                    cursorborder: "none",
-        //                    cursorcolor: "#6c6c6c",
-        //                    zindex: 999
-
-
-        //        });
-        //$("graph").getNiceScroll().resize();
-        //nice.resize();
-        var h = graph.height();
-        //$('div[id^="ascrail"]').remove();
-        nice.remove();
-        $("#graph").niceScroll({
-                        cursorcolor : "#6699FF",
-                        cursorwidth : "50px",
-                        grabcursorenabled : "false",
-                        preservenativescrolling : "false",
-                        cursorborder : "0px",
-                        scrollspeed : "20",
-                    });
-        var wh = $(window).height();//.resize(-1, -1);
-        var ww = $(window).width();//.resize(-1, -1);
-        var newWH = wh + 20;
-        window.resizeBy(0, -20);
-        window.resizeBy(0, +21);
-
-        //saveAll();
-        //alert("set" + this.id);
-        //cover();
-        return false;
     });
 
 
 
     $(".edit").click(function () {
-        alert("edit");
+        //alert("edit");
         cover();
         return false;
     });
 
     $(".remove").click(function () {
-        alert("minus");
+        //alert("minus");
         cover();
         return false;
     });
@@ -840,6 +928,6 @@ $(document).ready(function () {
         return false;
     });
 
-    
+
 
 })

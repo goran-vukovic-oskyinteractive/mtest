@@ -30,15 +30,24 @@ namespace BAE.Mercury.Client.Controllers
 
             using (StringWriter sw = new StringWriter())
             {
-                ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
-                //View view = new ViewContext(
-                ViewContext viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
-                viewResult.View.Render(viewContext, sw);
+                try
+                {
+                    //throw new Exception("my test");
+                    ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                    //View view = new ViewContext(
+                    ViewContext viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                    viewResult.View.Render(viewContext, sw);
 
-                return sw.GetStringBuilder().ToString();
+                    return sw.GetStringBuilder().ToString();
+                }
+                catch(Exception ex)
+                {
+                    return ex.Message;
+                }
             }
         }
         [HttpPost]
+
         public JsonResult GetSet(string i)
         {
             string username = User.Identity.Name;
@@ -48,8 +57,7 @@ namespace BAE.Mercury.Client.Controllers
             int unitId = idString.Length == 3 ? Int32.Parse(idString[2]) : -1;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             DMset set = messageStore.GetDMSet(username, id, unitId);
-            string html = RenderPartialViewToString("/Views/DistributionManagement/_DMSet.cshtml", set);
-            //string html = RenderPartialViewToString("/Views/DistributionManagement/_DMReference.cshtml", set);
+            string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSet.cshtml", set);
             return Json(html);
         }
   
