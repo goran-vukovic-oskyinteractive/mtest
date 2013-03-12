@@ -631,6 +631,4 @@ $(document).ready(function() {
 	
 	}
 	
-
-	
 });

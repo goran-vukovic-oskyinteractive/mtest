@@ -1,8 +1,6 @@
 ﻿        <div id="content" class="rv-popup">
             <div class="col-wrap">
-
-                <div class="col-middle ui-resizable" id="message-list-wrap" style="height: 552px;">
-
+                <div class="col-middle ui-resizable" id="message-list-wrap">
                     <div id="message-search">
                         <form action="#" id="search" method="post">
                         <input value="Search Inbox" id="search-inbox" type="text"><a class="remove" href="#"></a>
@@ -99,7 +97,7 @@
                         </div>
                         <br class="clear">
                     </div>
-                    <div style="height: 460px; overflow-y: scroll;" tabindex="5001" id="listContainer">
+                    <div style="height: 100px; overflow-y: scroll;" tabindex="5001" id="listContainer">
                         <input id="msgcount" value="322" type="hidden">
                         <input id="pagecount" value="17" type="hidden">
                         <input id="listheight" value="27048" type="hidden">
@@ -116,6 +114,7 @@
                                         Monday</h2>
                                 </div>
                                 <div onselectstart="return false;" id="msg_4" tabindex="0" class="msg message action routine  selected" data-url="/Message/Details?id=4" data-grp="0">
+                                    <span class="msg_id_ref">[[1,2],[2,1]]</span>
                                     <div class="message-icon">
                                         <span class="icon-status"></span><span class="icon-attachment"></span>
                                     </div>
@@ -137,6 +136,7 @@
                                         Last Week</h2>
                                 </div>
                                 <div onselectstart="return false;" id="msg_9" tabindex="0" class="msg message action flash " data-url="/Message/Details?id=9" data-grp="0">
+                                    <span class="msg_id_ref">[[2,2],[1,1]]</span>
                                     <div class="message-icon">
                                         <span class="icon-status"></span><span class="icon-attachment"></span>
                                     </div>
@@ -154,6 +154,7 @@
                                     </div>
                                 </div>
                                 <div onselectstart="return false;" id="msg_10" tabindex="0" class="msg message action immediate " data-url="/Message/Details?id=10" data-grp="0">
+                                	<span class="msg_id_ref">[[1,2],[2,1]]</span>
                                     <div class="message-icon">
                                         <span class="icon-status"></span><span class="icon-attachment"></span>
                                     </div>
@@ -175,6 +176,7 @@
                                         Two Weeks Ago</h2>
                                 </div>
                                 <div onselectstart="return false;" id="msg_13" tabindex="0" class="msg message action immediate " data-url="/Message/Details?id=13" data-grp="0">
+                                	<span class="msg_id_ref">[[1,2],[2,1]]</span>
                                     <div class="message-icon">
                                         <span class="icon-status"></span><span class="icon-attachment"></span>
                                     </div>
@@ -192,6 +194,7 @@
                                     </div>
                                 </div>
                                 <div onselectstart="return false;" id="msg_70" tabindex="0" class="msg message action flash " data-url="/Message/Details?id=70" data-grp="0">
+                                	<span class="msg_id_ref">[[2,2],[1,1]]</span>
                                     <div class="message-icon">
                                         <span class="icon-status"></span><span class="icon-attachment"></span>
                                     </div>
@@ -209,6 +212,7 @@
                                     </div>
                                 </div>
                                 <div onselectstart="return false;" id="msg_71" tabindex="0" class="msg message action routine " data-url="/Message/Details?id=71" data-grp="0">
+                                	<span class="msg_id_ref">[[2,2],[1,1]]</span>
                                     <div class="message-icon">
                                         <span class="icon-status"></span><span class="icon-attachment"></span>
                                     </div>
@@ -228,6 +232,7 @@
                             </div>
                             <div id="offset3" class="offsetCont" data-off="60">
                                 <div onselectstart="return false;" id="msg_72" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=72" data-grp="0">
+                                	<span class="msg_id_ref">[[2,2],[1,1]]</span>
                                     <div class="message-icon">
                                         <span class="icon-status"></span><span class="icon-attachment"></span>
                                     </div>
@@ -245,6 +250,7 @@
                                     </div>
                                 </div>
                                 <div onselectstart="return false;" id="msg_73" tabindex="0" class="msg message action deferred " data-url="/Message/Details?id=73" data-grp="0">
+                                	<span class="msg_id_ref">[[2,2],[1,1]]</span>
                                     <div class="message-icon">
                                         <span class="icon-status"></span><span class="icon-attachment"></span>
                                     </div>
@@ -261,6 +267,7 @@
                                         <span class="icon-precedence"></span>
                                     </div>
                                 </div>
+                                <!-- HIDDEN FOR NOW :: RYAN
                                 <div onselectstart="return false;" id="msg_74" tabindex="0" class="msg message action priority " data-url="/Message/Details?id=74" data-grp="0">
                                     <div class="message-icon">
                                         <span class="icon-status"></span><span class="icon-attachment"></span>
@@ -567,7 +574,9 @@
                                         <span class="icon-precedence"></span>
                                     </div>
                                 </div>
+                                RYAN -->                                
                             </div>
+                            <!-- HIDDEN FOR NOW :: RYAN
                             <div id="offset4" class="offsetCont" data-off="80">
                                 <div onselectstart="return false;" id="msg_92" tabindex="0" class="msg message action flash " data-url="/Message/Details?id=92" data-grp="0">
                                     <div class="message-icon">
@@ -961,9 +970,13 @@
                                     </div>
                                 </div>
                             </div>
+                            RYAN -->
                         </div>
 
 
+                    </div>
+                    <div style="height: 100px;"  tabindex="5002" id="listContainerSubmit">
+                    	<div class="button"><a href="#">Select Message</a></div>
                     </div>
                 </div>
                 <br class="clear">

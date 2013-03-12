@@ -111,14 +111,16 @@ div.canvas { vertical-align:middle; position:relative; left:-170px; width:110%; 
 div.user { width:400px; height:25px; line-height:25px; font-weight:bold; text-align:center; margin:10px auto 20px; vertical-align:middle; background:url(../images/bg-node_blue_highlight.png) center center repeat-x; border-radius:5px; color:#fff; }
 table.appointment { vertical-align:middle; font:12px Arial, Helvetica, sans-serif; border:0; margin:0 0 20px 0; padding:0; }
 td.appointment { vertical-align:middle; width:200px;;}
-div.appointment { position:relative; padding-left:20px; padding-right:20px; left:200px; font-weight:bold; color:#000; }
-td.cinfo { width:200px; background:#abdceb;}
-td.caction { width:200px; background:#e2ebe1; }
+div.appointment { position:relative; padding-left:20px; padding-right:20px; left:200px; font-weight:bold; color:#000; overflow:hidden; width:170px;}
+td.cinfo { width:200px; background:#e2ebe1;}
+td.caction { width:200px; background:#abdceb; }
 table.action {}
 td.sic { vertical-align:middle; padding:2px 10px;}
 span.sic { display:block; background:#fff; height:23px; line-height:23px; padding:0 5px; border-radius:5px; overflow:hidden;}
-td.info span.sic { background:#abdceb url(../images/bg-node_blue.png) center center repeat-x;}
-td.action span.sic {background:#e2ebe1 url(../images/bg-node_green.png) center center repeat-x; }
+
+td.action span.sic { background:#abdceb url(../images/bg-node_blue.png) center center repeat-x;}
+td.info span.sic {background:#e2ebe1 url(../images/bg-node_green.png) center center repeat-x; }
+
 td.add { vertical-align:bottom; width:26px;}
 td.add a {display:block; margin-bottom:4px;}
 td.delete, td.edit { vertical-align:middle; width:26px;}
@@ -140,8 +142,8 @@ span.set-name
 /* Style on highlight */
 td.cinfo.highlight { background:#01a6db;}
 td.caction.highlight { background:#ebdda6; }
-td.info.highlight span.sic { background:#01a6db url(../images/bg-node_blue_highlight.png) center center repeat-x;}
-td.action.highlight span.sic {background:#ebdda6 url(../images/bg-node_green_highlight.png) center center repeat-x; }
+td.action.highlight span.sic { background:#01a6db url(../images/bg-node_blue_highlight.png) center center repeat-x;}
+td.info.highlight span.sic {background:#ebdda6 url(../images/bg-node_green_highlight.png) center center repeat-x; }
 
 td.first {border-top-left-radius: 5px;border-top-right-radius: 5px;}
 td.last {border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;}
@@ -153,9 +155,9 @@ div.canvas table { border:0; margin:0; padding:0; width:100%; }
 div.templates {display:none}
 
 div.appointment-empty-wrap {padding:0}
-div.appointment-empty {height:26px;background-color:#fff; width:200px; border-radius:5px;}
+div.appointment-empty {height:26px;background-color:#fff; width:200px;}
 
-div.no-app {background-color:#fff;border-radius: 5px;font-weight: bold;height: 25px;line-height: 25px;margin: auto;position: relative;text-align: center;width: 100%;}
+div.no-app {background-color:#fff;font-weight: bold;height: 25px;line-height: 25px;margin: auto;position: relative;text-align: center;width: 100%;}
 
 div#xcover { display:none; z-index:1000; position:absolute; left:0; top:0; width:100%; height:100%; text-align:center; vertical-align:middle; padding-top:25%; background-color:red; }
 
@@ -164,3 +166,6 @@ div#content.rv-popup {}
 div#content.rv-popup .col-middle  {width:93%; margin:20px 15px; border-right:none;}
 div#content.rv-popup .col-middle #search-inbox {width:515px;}
 div#content.rv-popup #listContainer {overflow:auto!important;}
+div#content.rv-popup .msg_id_ref {display:none;}
+
+div#content.rv-popup .message-summary {width:90%;}

@@ -428,6 +428,7 @@
     <Content Include="Scripts\dm1.js" />
     <Content Include="Scripts\countdown.js" />
     <Content Include="Scripts\dm.js" />
+    <Content Include="Scripts\dm_erfan.js" />
     <Content Include="Scripts\functions.js" />
     <Content Include="Scripts\functions_dm.js" />
     <Content Include="Scripts\Initialise.js" />
@@ -634,6 +635,7 @@
     <Content Include="Views\DistributionManagement\_DMSet.cshtml" />
     <Content Include="Views\DistributionManagement\_DMMessageList.cshtml" />
     <Content Include="Views\DistributionManagement\_DMPopupSic.cshtml" />
+    <Content Include="Views\DistributionManagement\_DMSets.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BAE.Mercury.Business\BAE.Mercury.Business.csproj">

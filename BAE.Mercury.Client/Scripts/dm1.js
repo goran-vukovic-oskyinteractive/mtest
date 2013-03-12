@@ -1,5 +1,4 @@
-﻿
-function setSelectionValue(listbox, value) {
+﻿function setSelectionValue(listbox, value) {
     listbox.val(value);
 }
 function getSelectionValue(listbox) {
@@ -147,7 +146,7 @@ function removeNode(id) {
         
     }
 
-    
+
 }
 function getPopup(id, sicData, type) {
 //    var prefix = id.split("_")[0];
@@ -261,4 +260,28 @@ function nodeMinus(nodeId) {
     var id = $(this)[0].id;
 
     removeNode(id);
+}
+
+function setFunctions(action, id, name) {
+
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        data: {
+            i: id,
+            n: name
+        },
+        url: "DistributionManagement/" + action,
+        success: function (data) {
+            init(data);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+        }
+    }).complete(function () {
+    });
+
+    return false;
 }

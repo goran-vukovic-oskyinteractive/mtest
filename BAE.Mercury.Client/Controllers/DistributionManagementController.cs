@@ -10,16 +10,41 @@ namespace BAE.Mercury.Client.Controllers
 {
     public class DistributionManagementController : Controller
     {
-        //
-        // GET: /DistributionManagement/
+        [HttpPost]
+        public void AddSet(string n)
+        {
+            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+            messageStore.AddSet(n);
+        }
+        [HttpPost]
+        public void DeleteSet(int i)
+        {
+            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+            messageStore.DeleteSet(i);
+        }
+        [HttpPost]
+        public void UpdateSet(int i, string n)
+        {
+            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+            messageStore.UpdateSet(i, n);
+        }
+        [HttpPost]
+        public void CloneSet(int i, string n)
+        {
+            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+            messageStore.CloneSet(i, n);
+
+        }
 
         public ActionResult Index()
         {
-            string username = User.Identity.Name;
-            username = "ken.ong";
-            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
-            DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
-            return View("Index", distributionManagement);
+
+            //string username = User.Identity.Name;
+            //username = "ken.ong";
+            //BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+            //DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+            //return View("Index", distributionManagement);
+            return View("Index", null);
         }
         protected string RenderPartialViewToString(string viewName, object model)
         {
@@ -47,7 +72,17 @@ namespace BAE.Mercury.Client.Controllers
             }
         }
         [HttpPost]
+        public JsonResult GetSets()
+        {
+            string username = User.Identity.Name;
+            username = "ken.ong";
+            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+            DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+            string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+            return Json(html);
+        }
 
+        [HttpPost]
         public JsonResult GetSet(string i)
         {
             string username = User.Identity.Name;

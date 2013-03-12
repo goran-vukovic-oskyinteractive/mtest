@@ -1,34 +1,145 @@
-﻿var urlParts = window.location.href.split("/");
-var thisUrl =  "DistributionManagement/GetSet";
+﻿//var urlParts = window.location.href.split("/");
+//var thisUrl =  "DistributionManagement/GetSet";
 
+function loadSets() {
+    ajaxCall("GetSets", null, populateSets);   
+}
 
-function loadTree(id) {
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        data: {
-            i: id
-        },
-        url: thisUrl,
-        //async: true,
-        beforeSend: function (xhr) {
-            ////alert("before");
-        },
-        success: function (data) {
-            init(data);
-            //init(json);
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-        }
-    }).complete(function () {
-        //alert("done");
-    });
-
-    return false;
+function loadSet() {
+    //alert("OK");
+    loadTree(this.id);
+}
+function test() {
+    //alert("test");
 }
 
 
+
+//edit
+//************
+//div: #edit-set"
+//button: .edit-set-submit
+//input #set-name-edit"
+
+function editSetName() {
+    var id = this.id;
+    $(".edit-set-submit").click(function () {
+        var input = $("#set-name-edit");
+        cbox.originalBorder = input.css('border');
+        if (input.val().length == 0) {
+            // error validation 
+            alert('Please ensure the Set Name is not empty');
+            input.css('border', '1px solid red');
+            return false;
+        }
+        // pass validation
+        cbox.close();
+        alert("edit set" + id);
+        //ajaxCall(
+        return false;
+
+    });
+    var colorbox = $.colorbox({ href: "#edit-set", inline: true, width: "700px",
+        onCleanup: function () {
+            $(".edit-set-submit").off('click');
+            var input = $("#set-name-edit");
+            input.css('border', cbox.originalBorder);
+        }
+    });
+}
+
+
+
+//delete
+//********************
+//div:#delete-set
+//button:.delete-yes
+
+
+function deleteSet() {
+    var id = this.id;
+    $(".delete-yes").click(function () {
+        cbox.close();
+        alert("delete" + id);
+        return false;
+
+    });
+
+
+    var colorbox = $.colorbox({ href: "#delete-set", inline: true, width: "700px",
+        onCleanup: function () {
+            $(".delete-yes").off('click');
+        }
+    });
+}
+
+
+//copy set
+//*****************
+//div:copy-set
+//button:.copy-yes
+
+function cloneSet() {
+    var id = this.id;
+    $(".copy-yes").click(function () {
+        cbox.close();
+        alert("clone" + id);
+        return false;
+
+    });
+
+
+    var colorbox = $.colorbox({ href: "#copy-set", inline: true, width: "700px",
+        onCleanup: function () {
+            $(".copy-yes").off('click');
+        }
+    });
+}
+
+function populateSets(data) {
+    var setList = $("#setbox-list");
+    setList.empty();
+    setList.append(data);
+    clickRebind(setList, ".popup-inline-set", loadSet);
+    clickRebind(setList, "[id^='s_']", loadSet);
+    clickRebind(setList, "li.set > div > a", expandLevel);
+    clickRebind(setList, "a.popup-set-edit", editSetName);
+    clickRebind(setList, "a.popup-set-delete", deleteSet);
+    clickRebind(setList, "a.popup-set-copy", cloneSet);
+    
+}
+function loadTree(id) {
+    ajaxCall("GetSet", { i: id }, populateTree);
+}
+
+function ajaxCall(action, data, callBack) {
+    var request = $.ajax({
+        url: "DistributionManagement/" + action,
+        type: "POST",
+        data: data,
+        dataType: "json"
+    });
+    request.done(function(html) {
+        callBack(html);
+    });
+    request.fail(function(jqXHR, textStatus) {
+        alert( "Request failed: " + textStatus );
+    });
+
+//    $.ajax({
+//        type: "POST",
+//        dataType: "json",
+//        data: data,
+//        url: "DistributionManagement/" + action,
+//        //async: true,
+//        success: function () { callBack(data) },
+//        error: function (xhr, ajaxOptions, thrownError) {}, 
+//        complete(function () {}
+//        //alert("done");
+//    });
+
+    return false;
+}
 
 
 var IE = navigator.appName == "Microsoft Internet Explorer";
@@ -204,7 +315,7 @@ function sicCleanUp(sicPopup) {
 }
 
 
-function init(data) {
+function populateTree(data) {
     ////alert(data);
     //get the graph
     var graph = $("#graph");
@@ -366,6 +477,8 @@ $(document).ready(function () {
     });
 
 
+    loadSets();
+
     //$(".inline").colorbox({inline:true, width:"50%"});
 
     $("[id^=s_]").click(function () {
@@ -373,7 +486,6 @@ $(document).ready(function () {
         loadTree(this.id);
         return;
     });
-
 
 
     $(".edit").click(function () {
@@ -392,12 +504,29 @@ $(document).ready(function () {
 
 
     $("[id^=ad_]").click(function () {
-        alert("minus");
+        //alert("minus");
         //loadTree(this.id);
         return;
     });
 
+/*
+    $(".edit-set-submit").click(function (event) {
+        event.preventDefault();
+        var div = $("#add-set");
+        var input = div.find("#set-name-add");
+        if (input.val().length == 0) {
+            // error validation 
+            alert('Please ensure the Set Name is not empty');
+            $('.required').css('border', '1px solid red');
+            return (false);
+        }
+        // pass validation
+        alert("Validation pass, submit form here");
+        cbox.close();
 
+        return false;
+    });
+    */
     $('.appointment .add .popup-inline').live('click', function (event) {
         event.preventDefault();
         var hidden_dom = $(this).attr('href');

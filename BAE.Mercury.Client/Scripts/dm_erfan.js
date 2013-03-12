@@ -20,7 +20,8 @@ $(document).ready(function() {
 			alert("Validation pass, submit form here");			
 			cbox.close();
 	});
-	
+
+/*	
 	$('.edit-set-submit').click(function(event)  {
 		event.preventDefault();
 		if ($('.required').val().length==0){
@@ -33,7 +34,7 @@ $(document).ready(function() {
 			alert("Validation pass, submit form here");			
 			cbox.close();
 	});
-	
+*/	
 	// Delete
 	$('.delete-yes').click(function(event)  {
 		event.preventDefault();

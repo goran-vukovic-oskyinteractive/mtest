@@ -48,6 +48,38 @@ function addDMScroll() {
     });
 }
 
+function expandLevel(event) {
+    event.preventDefault();
+    /*var thisDiv = '';
+    if ($(this).find('a').length > 0) {
+    thisDiv = $(this);
+    }
+    else {
+    thisDiv = $(this).parent('div');
+    }*/
+    //console.log(thisDiv);
+
+    removeScrollDM();
+    var openMe = $(this).parent('div').parent('li').find('ul');
+    var mySiblings = $(this).parent('div').parent('li').siblings().find('ul');
+    $(this).parent('div').parent('li').siblings().find('div').removeClass('open');
+    if (openMe.hasClass('open')) {
+        $(this).parent('div').removeClass('open');
+        openMe.slideUp('normal', function () {
+            mySiblings.slideDown('normal');
+        });
+    }
+    else {
+        $(this).parent('div').addClass('open');
+        mySiblings.slideUp('normal', function () {
+            openMe.slideDown('normal');
+            openMe.css('zoom', '1'); //ie7 fix	        	
+        });
+        //To do: IE7 needs a refresh of DIV here
+    }
+    addDMScroll();
+}
+
 var ie7 = (document.all && !window.opera && window.XMLHttpRequest && typeof window.external.AddToFavoritesBar == 'undefined') ? true : false;
 
 $(document).ready(function () {
@@ -77,7 +109,7 @@ $(document).ready(function () {
             stop: function (event, ui) {
                 addDMScroll();
             }
-        });        
+        });
     }
 
     // Dropdown Menu
@@ -132,45 +164,17 @@ $(document).ready(function () {
     });
 
 
+
     // Multilevel Accordion
     // Copyright (c) 2011 Peter Chapman - www.topverses.com
     // Freely distributable for commercial or non-commercial use
+
     $('#setbox-list ul').hide();
     $('#setbox-list li.set > div > a').click(
 		function (event) {
-			event.preventDefault();
-		    /*var thisDiv = '';
-		    if ($(this).find('a').length > 0) {
-		        thisDiv = $(this);
-		    }
-		    else {
-		        thisDiv = $(this).parent('div');
-		    }*/
-		    //console.log(thisDiv);
-
-		    removeScrollDM();
-		    var openMe = $(this).parent('div').parent('li').find('ul');
-		    var mySiblings = $(this).parent('div').parent('li').siblings().find('ul');
-		    $(this).parent('div').parent('li').siblings().find('div').removeClass('open');
-		    if( openMe.hasClass('open') ) 
-		    {
-		        $(this).parent('div').removeClass('open');
-		        openMe.slideUp('normal', function(){
-		        	mySiblings.slideDown('normal');
-		        });	
-		    }
-		    else 
-		    {
-		        $(this).parent('div').addClass('open');
-		        mySiblings.slideUp('normal', function(){
-		        	openMe.slideDown('normal');
-		        	openMe.css('zoom','1');	//ie7 fix	        	
-		        });		        
-		        //To do: IE7 needs a refresh of DIV here
-		    }
-		    addDMScroll();
+		    expandLevel(event);
 		}
-	);   
+	);
 
     // Inbox search
     // apply default value on input field
@@ -207,7 +211,7 @@ $(document).ready(function () {
         $("#search-inbox").val('Search Inbox');
     });
 
-   
+
     $("#eset-content .hide-control label, #eset-content .hide-control .arrow a").click(function () {
         removeScrollDM();
         $("#eset-content .section .hide").slideToggle('fast', function () { addDMScroll(); });
@@ -236,7 +240,7 @@ $(document).ready(function () {
         if(!$('ul#left-menu').hasClass('closed'))
         {
             aniArgs['height'] = visibleHeight;
-            $('#setbox-scroll').animate(aniArgs, (speed), function(){addDMScroll();});        
+            $('#setbox-scroll').animate(aniArgs, (speed), function () { addDMScroll(); });
             $('ul#left-menu').stop().hide('slide', { direction: 'down' }, speed, function () {
                 $('#left-menu-collapse a').show();
                 $('ul#left-menu').addClass('closed');
@@ -244,14 +248,14 @@ $(document).ready(function () {
         }
         else
         {
-            aniArgs['height'] = hiddenHeight; 
-			$('ul#left-menu').stop().show('slide', {direction: 'down'}, (speed/3), function() {
-				$('#setbox-scroll').animate(aniArgs, (speed/2), function(){addDMScroll();});
-				$('#left-menu-collapse a').show();
-        		$('ul#left-menu').removeClass('closed').css('top', '0px');        		
-			});
+            aniArgs['height'] = hiddenHeight;
+            $('ul#left-menu').stop().show('slide', { direction: 'down' }, (speed / 3), function () {
+                $('#setbox-scroll').animate(aniArgs, (speed / 2), function () { addDMScroll(); });
+                $('#left-menu-collapse a').show();
+                $('ul#left-menu').removeClass('closed').css('top', '0px');
+            });
         }
-        
+
     });
     // End Collapsible left menu - new (Firdaus)
 
@@ -434,7 +438,8 @@ $(document).ready(function() {
 	*/
 	// POPUP
 	$(".popup").colorbox({width:"70%"});
-	$(".popup-inline").colorbox({inline:true,width:"700px"});
+	$(".popup-inline.dm-btn").colorbox({inline:true,width:"700px"});
+	$(".buttons.popup-inline").colorbox({inline:true,width:"700px"});
 	
 	// Resize graph height based on browser viewport
 	$(window).resize(function() {
@@ -445,6 +450,7 @@ $(document).ready(function() {
 	resizeRvDiv();
 
 
+	/* REMOVED 11 MAR - table rounded corder
 	//wait for dom to visible
 	var graphElement = document.getElementById('graph');		
 	if(window.addEventListener) 
@@ -460,7 +466,9 @@ $(document).ready(function() {
 	}
 	function graph_contentChanged()
 	{
-		$('table.appointment td table.inner-table:first-child tr:first-child td:first-child').addClass("first");
-		$('table.appointment td table.inner-table:last-child tr:last-child td:first-child').addClass("last");		
+		//$('table.appointment td table.inner-table:first-child tr:first-child td:first-child').addClass("first");
+		//$('table.appointment td table.inner-table:last-child tr:last-child td:first-child').addClass("last");		
 	}
+	*/
+
 });

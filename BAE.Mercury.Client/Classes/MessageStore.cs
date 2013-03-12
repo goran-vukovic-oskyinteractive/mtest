@@ -14,6 +14,107 @@ namespace BAE.Mercury.Client
 {
     public class MessageStore
     {
+        public void AddSet(string nodeName)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand com = new SqlCommand("addDistributionManagementNode");
+            com.Parameters.Add(new SqlParameter("@parentId", 0));
+            com.Parameters.Add(new SqlParameter("@nodeName", nodeName));
+            com.CommandType = System.Data.CommandType.StoredProcedure;
+            com.Connection = con;
+            try
+            {
+                con.Open();
+                com.ExecuteNonQuery();
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx.Message);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
+        public void DeleteSet(int nodeId)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand com = new SqlCommand("delDistributionManagementNode");
+            com.Parameters.Add(new SqlParameter("@nodeId", nodeId));
+            com.CommandType = System.Data.CommandType.StoredProcedure;
+            com.Connection = con;
+            try
+            {
+                con.Open();
+                com.ExecuteNonQuery();
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx.Message);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
+        public void UpdateSet(int nodeId, string nodeName)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand com = new SqlCommand("editDistributionManagementNode");
+            com.Parameters.Add(new SqlParameter("@nodeId", nodeId));
+            com.Parameters.Add(new SqlParameter("@nodeName", nodeName));
+            com.CommandType = System.Data.CommandType.StoredProcedure;
+
+            com.Connection = con;
+            try
+            {
+                con.Open();
+                com.ExecuteNonQuery();
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx.Message);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
+        public void CloneSet(int nodeId, string nodeName)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand com = new SqlCommand("editDistributionManagementNode");
+            com.Parameters.Add(new SqlParameter("@nodeId", nodeId));
+            com.Parameters.Add(new SqlParameter("@nodeName", nodeName));
+            com.CommandType = System.Data.CommandType.StoredProcedure;
+
+            com.Connection = con;
+            try
+            {
+                con.Open();
+                com.ExecuteNonQuery();
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx.Message);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
 
         private class DMNodeWrap : DMnode
         {
@@ -43,7 +144,8 @@ namespace BAE.Mercury.Client
         private class DMNodeWrapSIC : DMNodeWrap
         {
             private DMsic.SicType sicType;
-            public DMNodeWrapSIC(int id, int parentId, DMsic.SicType sicType, string name, bool readOnly) : base(id, parentId, name, readOnly)
+            public DMNodeWrapSIC(int id, int parentId, DMsic.SicType sicType, string name, bool readOnly)
+                : base(id, parentId, name, readOnly)
             {
                 this.sicType = sicType;
             }
@@ -52,6 +154,22 @@ namespace BAE.Mercury.Client
                 get
                 {
                     return sicType;
+                }
+            }
+        }
+        private class DMNodeWrapSet : DMNodeWrap
+        {
+            private bool active;
+            public DMNodeWrapSet(int id, int parentId, string name, bool readOnly, bool active)
+                : base(id, parentId, name, readOnly)
+            {
+                this.active = active;
+            }
+            public bool Active
+            {
+                get
+                {
+                    return active;
                 }
             }
         }
@@ -73,7 +191,8 @@ namespace BAE.Mercury.Client
                     string name = (string)reader["nodename"];
                     int id = (int)reader["nodeid"];
                     bool readOnly = (bool)reader["readOnly"];
-                    set = new DMset(null, id, name, readOnly); //set name not a requirement here
+                    bool active = (bool)reader["nodetype"];
+                    set = new DMset(null, id, name, readOnly, active); //set name not a requirement here
 
                 }
                 reader.NextResult();
@@ -190,14 +309,15 @@ namespace BAE.Mercury.Client
             {
                 con.Open();
                 SqlDataReader reader = com.ExecuteReader();
-                List<DMNodeWrap> setsWrap = new List<DMNodeWrap>();
+                List<DMNodeWrapSet> setsWrap = new List<DMNodeWrapSet>();
                 while (reader.Read())
                 {
                     string setName = (string)reader["nodename"];
                     int id = (int)reader["nodeid"];
                     int parent = (int)reader["nodeparentid"];
                     bool readOnly = (bool)reader["readOnly"];
-                    DMNodeWrap set = new DMNodeWrap(id, parent, setName, readOnly);
+                    bool action = (bool)reader["nodetype"];
+                    DMNodeWrapSet set = new DMNodeWrapSet(id, parent, setName, readOnly, action);
                     setsWrap.Add(set);
                 }
                 reader.NextResult();
@@ -214,9 +334,9 @@ namespace BAE.Mercury.Client
 
                 //now loop through the node list and append to the sets
                 DistributionManagement distributionManagement = new DistributionManagement();
-                foreach (DMNodeWrap setWrap in setsWrap)
+                foreach (DMNodeWrapSet setWrap in setsWrap)
                 {
-                    DMset set = new DMset(distributionManagement, setWrap.Id, setWrap.Name, setWrap.ReadOnly);
+                    DMset set = new DMset(distributionManagement, setWrap.Id, setWrap.Name, setWrap.ReadOnly, setWrap.Active);
                     foreach (DMNodeWrap unitWrap in unitsWrap)
                     {
                         if (unitWrap.ParentId == setWrap.Id)

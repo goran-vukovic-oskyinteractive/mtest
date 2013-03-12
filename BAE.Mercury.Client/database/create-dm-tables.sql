@@ -104,10 +104,10 @@ go
 
 SET IDENTITY_INSERT DMNode ON
 insert into DMNode(NodeId, ParentId, NodeName) values(0, null, 'Root')
-insert into DMNode(NodeId, ParentId, NodeName) values(1, 0, 'Ian Brumby')
+insert into DMNode(NodeId, ParentId, NodeName) values(1, 0, 'Ian Brumby', 1)
 insert into DMNode(NodeId, ParentId, NodeName) values(2, 1, 'Unit = Set1 1 RAR')
 insert into DMNode(NodeId, ParentId, NodeName) values(3, 1, 'Unit = Set1 2 RAR')
-insert into DMNode(NodeId, ParentId, NodeName) values(4, 0, 'Set 2')
+insert into DMNode(NodeId, ParentId, NodeName) values(4, 0, 'Set 2', 1)
 insert into DMNode(NodeId, ParentId, NodeName) values(5, 4, 'Unit = Set2 1 RAR')
 insert into DMNode(NodeId, ParentId, NodeName) values(6, 4, 'Unit = Set2 2 RAR')
 insert into DMNode(NodeId, ParentId, NodeName) values(7, 4, 'Unit = Set2 3 RAR')
@@ -125,8 +125,8 @@ insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(18, 15, '1&1&CCC
 insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(19, 15, '1&1&CCCCCCCC', 0)
 insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(20, 15, '1&2&CCCCCCCC', 0)
 insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(21, 17, '1&1&CCCC<&CCCC', 1)
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(22, 3, '1&2&CCCCCCCC', 0)
-insert into DMNode(NodeId, ParentId, NodeName) values(23, 0, 'Set 3')
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(22, 17, '1&2&CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName) values(23, 0, 'Set 3', 0)
 
 insert into DMNode(NodeId, ParentId, NodeName) values(24, 23, 'Unit = Set3 1 RAR')
 insert into DMNode(NodeId, ParentId, NodeName) values(25, 23, 'Unit = Set3 2 RAR')

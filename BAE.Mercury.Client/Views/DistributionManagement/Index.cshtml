@@ -77,7 +77,7 @@
 @section MenuButtons
 {
     <ul class="buttons">
-        <li id="btn-save"><a href="#">Save</a><span>Save</span></li>
+        <li id="btn-save" class="popup-inline"><a href="#save-set">Save</a><span>Save</span></li>
         <li id="btn-cancel"><a href="#">Cancel</a><span>Cancel</span></li>
     </ul>
 }
@@ -88,8 +88,8 @@
 
 {
     @{
-        DistributionManagement dm = (DistributionManagement)Model;
-                    //int i = 5;
+        //DistributionManagement dm = (DistributionManagement)Model;
+        //            //int i = 5;
     }
     <div class="col-left" id="setbox">
         <div id="setbox-scroll">
@@ -98,27 +98,7 @@
             <p class="title">
                 <a href="#add-set" class="popup-inline dm-btn">Add Set</a><strong>Add Set</strong></p>
             <ul id="setbox-list">
-                @{ foreach (DMset set in dm.Children)
-                   {
-                    <li class="set">
-                        <div>
-                            <a href="#"><span class="icon"></span><span id="s_@Html.Raw(set.Id)" class="set-name"><strong>@Html.Raw(set.Name)</strong></span></a>
-                            <div class="btn-set">
-                                <a href="#" class="checkbox off">Check</a>
-								<a href="#edit-set" class="popup-inline"><img src="~/images/btn-dm_edit.png" alt="Edit" height="24" width="25"/></a>
-								<a href="#delete-set" class="popup-inline"><img src="~/images/btn-dm_delete.png" alt="Delete" height="24" width="25"/></a>
-								<a href="#copy-set" class="popup-inline"><img src="~/images/btn-dm_copy.png" alt="Copy" height="24" width="25"/></a>
-                            </div>
-                        </div>
-                        <ul style="display: none;">
-                            @{ foreach (DMunit unit in set.Children)
-                               {
-                                <li><a id="s_@Html.Raw(set.Id)_@Html.Raw(unit.Id)" href="#">@Html.Raw(unit.Name)</a></li>
-                               }
-                            }
-                        </ul>
-                    </li> 
-                   } }
+
             </ul>
         </div>
         <div id="left-menu-collapse">
@@ -165,7 +145,7 @@
                             Proin elit arcu, rutrum commodo</p>
                         <div class="btn-wrap wide">
                             <ul>
-                                <li><a href="#email-list" class="popup-inline">Select Message</a></li>
+                                <li><a href="#dm-msg-selc-email-list" class="popup-inline">Select Message</a></li>
                             </ul>
                         </div>
                     </div>
@@ -203,7 +183,7 @@
 						-->
 						<div class="btn-wrap wide">
                             <ul>
-                                <li><a href="#sic-popup" class="popup-inline">Select Field</a></li>
+                                <li><a href="#sic-select-field" class="popup-inline select-field-button">Select Field</a></li>
                             </ul>
                         </div>
                     </div>
@@ -223,8 +203,8 @@
     <div id="sic-table-template">
     @{
         DistributionManagement dm1 = (DistributionManagement) Model;
-        DMset set1 = new DMset(dm1, 0, String.Empty, false);
-        DMset unit1 = new DMset(set1, 0, String.Empty, false);
+        DMset set1 = new DMset(dm1, 0, String.Empty, false, true);
+        DMunit unit1 = new DMunit(set1, 0, String.Empty, false);
         DMappointment appointment = new DMappointment(unit1, 0, String.Empty, false);
         DMsic sicAction = new DMsic(null, 0, DMsic.SicType.Action, false);
         DMsic sicInfo = new DMsic(null, 0, DMsic.SicType.Info, false);
@@ -236,10 +216,13 @@
         Html.RenderPartial("_DMTable", appointment); ;
     }
     </div>    
-	<div id="email-list">
+	<div id="dm-msg-selc-email-list">
 		@{ Html.RenderPartial("_DMMessageList", null); }
 	</div>
 	<div id="sic-popup">		
+		@{ Html.RenderPartial("_DMPopupSic", null); } 
+	</div>
+	<div id="sic-select-field">		
 		@{ Html.RenderPartial("_DMPopupSic", null); } 
 	</div>
 	<!-- ADD SET -->
@@ -251,7 +234,7 @@
 					<div class="form-wrap">
 						<div class="row">
 							<label for="set-name">Set Name</label>
-							<input type="text" class="txt required" id="set-name" name="set-name" />
+							<input type="text" class="txt required" id="set-name-add" value="" />
 							<br class="clear" />
 						</div>					
 					</div>			
@@ -274,7 +257,7 @@
 					<div class="form-wrap">
 						<div class="row">
 							<label for="set-name">Set Name</label>
-							<input type="text" class="txt required" id="set-name" name="set-name" value="Set Name Here" />
+							<input type="text" class="txt required" id="set-name-edit" name="set-name" value="Set Name Here" />
 							<br class="clear" />
 						</div>					
 					</div>			
