@@ -7,6 +7,50 @@ using System.Web;
 
 namespace BAE.Mercury.Client.Models
 {
+    public class DMidParser
+    {
+        private int setId = -1, unitId = -1, appointmentId = -1, sicId = -1;
+        public DMidParser(string id)
+        {
+            string[] idString = id.Split('_');
+            if (idString.Length > 1)
+                this.setId = Int32.Parse(idString[1]);
+            if (idString.Length > 2)
+                this.unitId = Int32.Parse(idString[2]);
+            if (idString.Length > 3)
+                this.appointmentId = Int32.Parse(idString[3]);
+            if (idString.Length > 4)
+                this.sicId = Int32.Parse(idString[4]);
+        }
+        public int SetId
+        {
+            get
+            {
+                return setId;
+            }
+        }
+        public int UnitId
+        {
+            get
+            {
+                return unitId;
+            }
+        }
+        public int AppointmentId
+        {
+            get
+            {
+                return appointmentId;
+            }
+        }
+        public int SicId
+        {
+            get
+            {
+                return sicId;
+            }
+        }
+    }
     public class DMnode
     {
         private List<DMnode> children = new List<DMnode>();
@@ -242,4 +286,186 @@ namespace BAE.Mercury.Client.Models
         public DistributionManagement()
             : base(null, 0, String.Empty, false) { }
     }
+
+    //start return info 
+
+    public class RetRule
+    {
+        private DMrule.MatchType match;
+        private DMrule.RuleType type;
+        private string name;
+        public string RuleType
+        {
+            set
+            {
+                type = (DMrule.RuleType) Int32.Parse(value);
+            }
+        }
+        public string Name
+        {
+            set
+            {
+                name = value;
+            }
+            get
+            {
+                return name.ToUpper();
+            }
+        }
+        public string MatchType
+        {
+            set
+            {
+                match = (DMrule.MatchType) Int32.Parse(value);
+            }
+        }
+
+        public DMrule.MatchType EnMatchType
+        {
+
+            get{
+                return match;
+            }
+
+        }
+        public DMrule.RuleType EnRuleType
+        {
+            get{
+                return type;
+            }
+            
+        }
+   
+    }
+
+
+
+
+    public class RetSic
+    {
+        List<RetRule> rules = new List<RetRule>();
+        //private int setId, unitId, appointmentId, sicId;
+        //private string 
+            //id, type, pointmentId, sicId;
+        private int setId, unitId, appointmentId, sicId;
+        private DMsic.SicType type;
+
+
+        public string Id
+        {
+            set
+            {
+                DMidParser parser = new DMidParser(value);
+                setId = parser.SetId;
+                unitId = parser.UnitId;
+                appointmentId = parser.AppointmentId;
+                sicId = parser.SicId;
+            }
+        }
+        public List<RetRule> Rules
+        {
+            set
+            {
+                rules = value;
+            }
+            get
+            {
+                return rules;
+            }
+        }
+        public string Type
+        {
+            set
+            {
+                type = (DMsic.SicType)Int32.Parse(value);
+            }
+        }
+
+        public int SetId
+        {
+            get
+            {
+                return setId;
+            }
+        }
+        public int UnitId
+        {
+            get
+            {
+                return unitId;
+            }
+        }
+        public int AppointmentId
+        {
+            get
+            {
+                return appointmentId;
+            }
+        }
+        public int SicId
+        {
+            get
+            {
+                return sicId;
+            }
+        }
+    }
+    //{"Set":"1","Changes":[{"Type":0,"Sic":{"Type":1,"Id":"ie_1_2_15_1","Rules":[{"Name":"CCCCCCCC","RuleType":1,"MatchType":2}]}}]}
+    public class RetChange
+    {
+        public enum EnType
+        {
+            Delete = -1, Edit = 0, Add = 1
+        }
+        private RetSic sic;
+        private EnType type;
+        public string Type
+        {
+            set
+            {
+                type = (EnType) Int32.Parse(value);
+            }
+        }
+        public RetSic Sic
+        {
+            set
+            {
+                sic = value;
+            }
+            get
+            {
+                return sic;
+            }
+        }
+        public EnType ChangeType
+        {
+            get
+            {
+                return type;
+            }
+        }
+
+
+    }
+    public class RetChangeList
+    {
+        private string id, unitId;
+        List<RetChange> changes = new List<RetChange>();
+        public string Id
+        {
+            set
+            {
+                id = value;
+            }
+        }
+        public List<RetChange> Changes
+        {
+            get
+            {
+                return changes;
+            }
+        }
+    }
+    //end return info 
+
 }

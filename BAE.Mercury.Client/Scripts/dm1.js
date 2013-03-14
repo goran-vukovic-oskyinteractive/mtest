@@ -1,4 +1,44 @@
-﻿function setSelectionValue(listbox, value) {
+﻿function Change(type, sic) {
+
+    if (!(type == Change.EnType.Delete || type == Change.EnType.Edit || type == Change.EnType.Add))
+        throw new Error("invalid change type");
+    this.Type = type;
+    if (!(sic instanceof Sic))
+        throw new Error("invalid SIC");
+    this.Sic = sic;
+}
+
+Change.EnType = { Delete: -1, Edit: 0, Add: 1 };
+
+function ChangeList(id) {
+    if (!id)
+        throw new Error("invalid set id");    
+    this.Id = id;
+    this.Changes = [];
+    this.AddChange = function (change) {
+        if (!(change instanceof Change))
+            throw new Error("invalid change");
+        if (!change.Sic.Id)
+            throw new Error("sic must have an id");
+        if (change.Type == Change.EnType.Add || change.Type == Change.EnType.Edit) {
+            if (change.Sic.Rules.length <= 0)
+                throw new Error("this sic must have rules");
+        }
+        this.Changes.push(change);
+        //on first update notify the server
+        if (this.Changes.length == 1)
+            this.LockSet();
+    }
+    this.LockSet = function () {
+        if (this.Changes.length > 0)
+            lockSet(this.Id);
+    }
+
+}
+
+var changeList = null;
+
+function setSelectionValue(listbox, value) {
     listbox.val(value);
 }
 function getSelectionValue(listbox) {
@@ -11,47 +51,48 @@ function getTableTemplate() {
 function getTables(tableTemplate, id) {
     var genId = getAppointmentGenId(id);
     var tableTemplates = tableTemplate.find("table").clone();
-    var tableI = tableTemplates.children().eq(0);
-    var attrI = "it" + genId;
-    tableI.attr("id", attrI);
-    tableI.empty();
-    var tableA = tableTemplates.children().eq(1);
+
+    var tableA = tableTemplates.children().eq(0);
     var attrA = "at" + genId;
     tableA.attr("id", attrA);
     tableA.empty();
+
+    var tableI = tableTemplates.children().eq(1);
+    var attrI = "it" + genId;
+    tableI.attr("id", attrI);
+    tableI.empty();
+
+
     return tableTemplates;
 }
-function getRow(tableTemplate, id, data) {
-    //alert('set data type');
-    var jqIds = JQID[data.Type];
+function getRow(tableTemplate, id, sic) {
+    var jqIds = JQID[sic.Type];
     var genId = getAppointmentGenId(id);
-    //var row = rows[data.Type - 1].clone();
     var spanClass;
     var rowPos;
-    if (data.Type == new DMsic().EnType.Info) {
+    if (sic.Type == DMsic.EnType.Info) {
         spanClass = "sic-info";
-        rowPos = 0;
+        rowPos = 1;
     } else {
         spanClass = "sic-action";
-        rowPos = 1;
+        rowPos = 0;
     }
     var row = tableTemplate.find("tr").eq(rowPos).clone();
     var spanName = row.find("span.sic");
-    var name = data.LongName();
+    var name = sic.LongName();
     spanName.html(name.toUpperCase());
     var spanData = row.find("span." + spanClass);
-    var sicData = data.Data();
-    spanData.html(sicData);
-    var table = getTable(id, data.Type);
+    var data = sic.Data();
+    spanData.html(data);
+    var table = getTable(id, sic.Type);
     var seqNo = getNewSeqNo(table);
     var seqId = genId + "_" + seqNo;
-    var del = row.find(".delete");
+    var del = row.find("td.delete > a");
     del.attr("id", jqIds.del + seqId);
     del.click(nodeMinus);
-    var edit = row.find(".edit");
+    var edit = row.find("td.edit > a");
     edit.attr("id", jqIds.edit + seqId);
     edit.click(nodeEdit);
-    //alert(row.attr("id"));
     var rowId = jqIds.row + seqId;
     row.attr("id", rowId);
     alert(row.attr("id"));
@@ -74,8 +115,9 @@ function isEmptyAppointment(id) {
     var tables = innerTables.length;
     if (tables == 0)
         return true;
-    else if (tables == 2)
+    else if (tables == 2) {
         return false;
+    }
     else
         throw new Error("invalid number of tables");
 }
@@ -96,15 +138,16 @@ function appendRow(row, id, type, name) {
     var pos = insertPos(table, name);
 
     if (pos != -1) {
-        ////alert("other rows");
-        //table.find("tr").eq(pos).before(row);
         table.find("tr").eq(pos).before(row);
     } else {
-        ////alert("no other rows");
-        //we need the wrapping div
         table.append(row);
 
     }
+}
+function getTemplateTable(tables, type) {
+    var id = "#[id^=s" + JQID[type] + "]";
+    var table = tables.find(id).clone();
+    return table;
 }
 function addNode(id, data) {
     //called from sicSve
@@ -128,49 +171,26 @@ function updateNode(id, data) {
 }
 function removeNode(id) {
     //we find the type by id
+    alert(id);
     var prefix = id[0];
     var type;
     if (prefix == "i")
-        type = new DMsic().EnType.Info;
+        type = DMsic.EnType.Info;
     else 
-        type = new DMsic().EnType.Action;
-    
+        type = DMsic.EnType.Action;
+
     var table = getTable(id, type);
-    var row = $ID(id.replace("d", "r"));
+    var action = id[1];
+    var rowId = id.replace(id[1], "r");
+    var row = $ID(rowId);
     row.remove();
-    if (isEmptyAppointment(id)) {
+    var wrapDiv = getDivWrap(id);
+    if (wrapDiv.find("table").find("tr").length == 0) {
         //we must replace it with empty div
+        wrapDiv.empty();
         var emptyDiv = $("<div class='appointment-empty-wrap'><div class='appointment-empty'></div></div>");
-        var wrapDiv = getDivWrap(id);
-        wrpaDiv.append(id);
-        
+        wrapDiv.append(emptyDiv);
     }
-
-
-}
-function getPopup(id, sicData, type) {
-//    var prefix = id.split("_")[0];
-//    if (!(prefix == "aa"))
-//        throw new Error("invalid edit type");
-
-
-    var sicPopup = $("#sic-popup");
-    var sicList = sicPopup.find("#sic-list");
-    sicPopup.list = sicList;
-    clickRebind(sicPopup, ".btn-plus", function () { addEntry(sicList) });
-    $("#popup-sic-save").click(function () { sicSave(id, type, sicPopup, sicData) });
-    var colorbox = $.colorbox({ href: "#sic-popup", inline: true, width: "700px", onCleanup: function () { sicCleanUp(sicPopup); } });
-    return sicPopup;
-}
-
-function nodePlus() {
-    var id = $(this)[0].id;
-    ////alert("nodePlus");
-    var sicData = new SicData(null);
-    var sicPopup = getPopup(id, sicData, 0);
-    //(Privacy marking = CCCCC or Privacy marking = DDDDD) AND (SIC=BBBBBBB or SIC=FFFFFF)
-    sicPopulate(sicPopup, sicData);
-    return false;
 
 
 }
@@ -183,24 +203,25 @@ function errorMessage(error) {
     return null;
 }
 
-function sicValidate(sicPopup, data) {
+function sicValidate(sicPopup, id, change) {
 
     var valid = true;
     var found = false;
     var sicPopupType = sicPopup.find("#sic-type");
-    var type = getSelectionValue(sicPopupType);
-    //var data = new DMsic(type);
-    data.Type = type;
-    if (!(type == new DMsic().EnType.Action || type == new DMsic().EnType.Info)) {
+    var sicType = getSelectionValue(sicPopupType);
+    if (!(sicType == DMsic.EnType.Action || sicType == DMsic.EnType.Info)) {
         highlightControl(sicPopupType);
         valid = false;
+        change.sic = new Sic(id, DMsic.EnType.Action); //this will be discarded
     }
+    else
+        change.sic = new Sic(id, sicType);
     sicPopup.list.find("[id^='entry']").each(function () {
         found = true;
-        var ruleCtl = $(this).find(".rule");
-        var rule = getSelectionValue(ruleCtl);
-        if (rule < 1) {
-            highlightControl(ruleCtl);
+        var typeCtl = $(this).find(".rule");
+        var type = getSelectionValue(typeCtl);
+        if (type < 1) {
+            highlightControl(typeCtl);
             valid = false;
         }
         var matchCtl = $(this).find(".match");
@@ -215,8 +236,10 @@ function sicValidate(sicPopup, data) {
             highlightControl(nameCtl);
             valid = false;
         }
-        var entry = new Entry(rule, match, name);
-        data.AddNode(entry);
+        if (name.length <=0)
+            throw new Error("name not found");
+        var entry = new DMrule(name, type, match);
+        change.sic.AddRule(entry);
     });
     if (!valid) {
         errorMessage("please enter data in the empty fields highlighted red");
@@ -228,38 +251,89 @@ function sicValidate(sicPopup, data) {
     }
     return true;
 }
-
+function addDataToChangedList(type, data) {
+}
+function ConvertSic(sic, dmsic) {
+    for (var i = 0; i < sic.Rules.length; i++) {
+        dmsic.AddNode(sic.Rules[i]);
+    }
+}
+function getSicId(actionId) {
+    
+}
 function sicSave(id, action, sicPopup, oldData) {
 
-    var data = new DMsic(null);
-    if (sicValidate(sicPopup, data)) {
-        if (action == 1) {
+    var data = { sic: null };
+    if (sicValidate(sicPopup, id, data)) {
+        if (action == Change.EnType.Edit) {
             if (!isEqual(data, oldData)) {
-                updateNode(id, data);
+                data.sic.Id = id;
+                var dmsic = new DMsic(id, data.sic.Type);
+                ConvertSic(data.sic, dmsic);
+                updateNode(id, dmsic);
+                var change = new Change(Change.EnType.Edit, data.sic)
+                changeList.AddChange(change);
+
             }
+        } else {
+            var dmsic = new DMsic(id, data.sic.Type);
+            ConvertSic(data.sic, dmsic);
+            addNode(id, dmsic);
+            var change = new Change(Change.EnType.Add, data.sic)
+            changeList.AddChange(change);
         }
-        else
-            addNode(id, data);
         closePopupSic(sicPopup);
     }
     return false;
 }
 
 
+function getPopup(id, sic, type) {
+
+
+    var sicPopup = $("#sic-popup");
+    var sicList = sicPopup.find("#sic-list");
+    sicPopup.list = sicList;
+    clickRebind(sicPopup, ".btn-plus", function () { addEntry(sicList) });
+    $("#popup-sic-save").click(function () { sicSave(id, type, sicPopup, sic) });
+    var colorbox = $.colorbox({ href: "#sic-popup", inline: true, width: "700px", onCleanup: function () { sicCleanUp(sicPopup); } });
+    return sicPopup;
+}
+
+function nodePlus() {
+    var id = $(this)[0].id;
+    ////alert("nodePlus");
+    //var sic = new Sic(null);
+    var sicPopup = getPopup(id, null, Change.EnType.Add);
+    //(Privacy marking = CCCCC or Privacy marking = DDDDD) AND (SIC=BBBBBBB or SIC=FFFFFF)
+    //sicPopulate(sicPopup, sic);
+    return false;
+
+
+}
+
+
+
 function nodeEdit() {
     ////alert("node edit");
     var id = $(this)[0].id;
-    var sicData = getSicData(id);
-    var sicPopup = getPopup(id, sicData, 1);
-    sicPopulate(sicPopup, sicData);
+    var sic = getSicData(id);
+    var sicPopup = getPopup(id, sic, Change.EnType.Edit);
+    sicPopulate(sicPopup, sic);
     return false;
 }
 
 
-function nodeMinus(nodeId) {
+function nodeMinus() {
     var id = $(this)[0].id;
 
-    removeNode(id);
+    if (confirm("do you really want to delete this rule set?") == true) {
+        removeNode(id);
+        var sic = new Sic(id, ((id[0] == "i") ? DMsic.EnType.Action : DMsic.EnType.Action));
+        var change = new Change(Change.EnType.Delete, sic);
+        changeList.AddChange(change);
+
+    }
 }
 
 function setFunctions(action, id, name) {
@@ -285,3 +359,5 @@ function setFunctions(action, id, name) {
 
     return false;
 }
+
+$

@@ -1,39 +1,92 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BAE.Mercury.Client.Models;
+using System.Web.Script.Serialization;
 
 namespace BAE.Mercury.Client.Controllers
 {
     public class DistributionManagementController : Controller
     {
         [HttpPost]
-        public void AddSet(string n)
+        public void LockSet(string i)
         {
+            string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
-            messageStore.AddSet(n);
+            DMidParser parser = new DMidParser(i);
+            messageStore.LockSet(User.Identity.Name, parser.SetId);
         }
-        [HttpPost]
-        public void DeleteSet(int i)
-        {
-            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
-            messageStore.DeleteSet(i);
-        }
-        [HttpPost]
-        public void UpdateSet(int i, string n)
-        {
-            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
-            messageStore.UpdateSet(i, n);
-        }
-        [HttpPost]
-        public void CloneSet(int i, string n)
-        {
-            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
-            messageStore.CloneSet(i, n);
 
+
+
+        [HttpPost]
+        public JsonResult SetSet(string i, bool a)
+        {
+            string username = User.Identity.Name;
+            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+            DMidParser parser = new DMidParser(i);
+            messageStore.SetSet(User.Identity.Name, parser.SetId, a);
+            DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+            string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+            return Json(html);
+        }
+        [HttpPost]
+        public void SaveSet(string data)
+        {
+            Debug.WriteLine(data);
+            RetChangeList changeList = (RetChangeList)Newtonsoft.Json.JsonConvert.DeserializeObject(data, typeof(RetChangeList));
+            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+            messageStore.SaveSet(User.Identity.Name, changeList);
+        }
+        [HttpPost]
+        public JsonResult AddSet(string n)
+        {
+            string username = User.Identity.Name;
+            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+            messageStore.AddSet(User.Identity.Name, n);
+            DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+            string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+            return Json(html);
+        }
+        [HttpPost]
+        public JsonResult DeleteSet(string i)
+        {
+            string username = User.Identity.Name;
+            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+            DMidParser parser = new DMidParser(i);
+            messageStore.DeleteSet(User.Identity.Name, parser.SetId);
+            DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+            string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+            return Json(html);
+
+        }
+        [HttpPost]
+        public JsonResult EditSet(string i, string n)
+        {
+            string username = User.Identity.Name;
+            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+            DMidParser parser = new DMidParser(i);
+            messageStore.UpdateSet(User.Identity.Name, parser.SetId, n);
+            DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+            string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+            return Json(html);
+        }
+        [HttpPost]
+        public JsonResult CopySet(string i)
+        {
+            string username = User.Identity.Name;
+            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+            DMidParser parser = new DMidParser(i);
+            messageStore.CloneSet(User.Identity.Name, parser.SetId);
+            DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+            string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+            return Json(html);
+
+            
         }
 
         public ActionResult Index()
@@ -85,13 +138,9 @@ namespace BAE.Mercury.Client.Controllers
         [HttpPost]
         public JsonResult GetSet(string i)
         {
-            string username = User.Identity.Name;
-            //parse the id
-            string[] idString = i.Split('_');
-            int id = Int32.Parse(idString[1]);
-            int unitId = idString.Length == 3 ? Int32.Parse(idString[2]) : -1;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
-            DMset set = messageStore.GetDMSet(username, id, unitId);
+            DMidParser parser = new DMidParser(i);
+            DMset set = messageStore.GetDMSet(User.Identity.Name, parser.SetId, parser.UnitId);
             string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSet.cshtml", set);
             return Json(html);
         }

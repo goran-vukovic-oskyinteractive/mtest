@@ -58,7 +58,7 @@
 	<script type="text/javascript" src="~/Scripts/dm_erfan.js"></script>
     <script type="text/javascript" src="~/Scripts/Initialise.js"></script>
     <script src="~/Scripts/ryan_dm.js" type="text/javascript"></script>
-
+    <script src="~/Scripts/json2.min.js" type="text/javascript"></script>
 <!--additional links for list start -->
 
 @*<script src="~/ScriptsDavid/jquery.js" type="text/javascript"></script>
@@ -96,7 +96,7 @@
             <h2>
                 Distribution Management</h2>
             <p class="title">
-                <a href="#add-set" class="popup-inline dm-btn">Add Set</a><strong>Add Set</strong></p>
+                <a id="btn-add-set"  href="#add-set-ex" class="popup-inline-ex dm-btn">Add Set</a><strong>Add Set</strong></p>
             <ul id="setbox-list">
 
             </ul>
@@ -257,7 +257,7 @@
 					<div class="form-wrap">
 						<div class="row">
 							<label for="set-name">Set Name</label>
-							<input type="text" class="txt required" id="set-name-edit" name="set-name" value="Set Name Here" />
+							<input type="text" class="txt required" id="set-name-edit" value="Set Name Here" />
 							<br class="clear" />
 						</div>					
 					</div>			
@@ -302,6 +302,43 @@
 							<li><a href="#" class="copy-no">No</a></li>
 						</ul>
 					</div>			
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="save-set">    
+        <div id="popup-content">
+            <div class="section">
+                <div class="inner">
+                    <h3>Save Set</h3>               
+                    <div class="form-wrap">
+                        <p>Do you want to save this set?</p>                            
+                    </div>          
+                    <div class="btn-wrap" style="margin:0 auto; width:205px;">
+                        <ul>
+                            <li><a href="#" class="save-yes">Yes</a></li>
+                            <li><a href="#" class="save-no">No</a></li>
+                        </ul>
+                    </div>          
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="activate-set">    
+        <div id="popup-content">
+            <div class="section">
+                <div class="inner">
+                    <h3>Save Set</h3>               
+                    <div class="form-wrap">
+                        <input id="set-activation" value="true" type="hidden"/>
+                        <p>Do you want to <span id="set-activation-status"></span> this set?</p>                            
+                    </div>          
+                    <div class="btn-wrap" style="margin:0 auto; width:205px;">
+                        <ul>
+                            <li><a href="#" class="activate-yes">Yes</a></li>
+                            <li><a href="#" class="activate-no">No</a></li>
+                        </ul>
+                    </div>          
                 </div>
             </div>
         </div>

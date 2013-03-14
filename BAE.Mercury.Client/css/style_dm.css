@@ -130,7 +130,7 @@ ol li { list-style:decimal; padding:0 0 3px 10px; }
 #eset-content .collapse a { margin-left:8px; margin-top:8px; }
 .collapse-box { width:0!important; }
 /**** MAILBOX LIST ****/
-#setbox { background:#3b3d41; overflow-x:hidden; position:relative; }
+#setbox { background:#3b3d41; overflow-x:hidden; position:relative; width:260px;}
 #setbox h2 { font-family:'Conv_HelveticaNeueLTStd-Md', sans-serif; text-transform:uppercase; font-weight:normal; font-size:12px; color:#fff; margin:10px; text-align:left; }
 #setbox #mset-icon { margin:0 0 10px 0; overflow:hidden; border-top:2px solid #343434; padding-top:10px; }
 #setbox #mset-icon li { list-style:none; display:block; margin:0; padding:0; float:left; text-align:center; width:33.33%; }
@@ -492,6 +492,8 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 #popup-content .section .inner .btn-wrap ul li.narrow a:hover { background-position:0 -30px; }
 #popup-content .section .inner .btn-wrap ul li.wide a { background:url(../images/bg-btn_wide.png) 0 0 no-repeat; width:200px; }
 #popup-content .section .inner .btn-wrap ul li.wide a:hover { background-position:0 -30px; }
+
+#popup-content .section.expanding {overflow:auto; height:300px;}
 
 
 

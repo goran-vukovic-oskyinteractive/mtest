@@ -11,50 +11,9 @@
     {
 
         //string appointmentId = appointment.Id < 0 ? "x" : appointment.Id.ToString();
+        //green on top, blue on the bottom
         string coreId = String.Format("{0}_{1}_{2}", appointment.Parent.Parent.Id, appointment.Parent.Id, appointment.Id);
         bool readOnly = appointment.Parent.ReadOnly;
-        <table id="it_@Html.Raw(coreId)" class="inner-table">
-        @{ for (int i = 0; i < appointment.Infos.Count; i++)
-            {
-                string suffix = coreId + "_" + i.ToString();
-                DMsic sic = ((DMsic)(appointment.Infos[i]));
-            <tr id="ir_@Html.Raw(suffix)">
-                <td class="cinfo">
-                    &nbsp;
-                </td>
-                <td class="sic info">
-                    <span class="sic rounded" >@Html.Raw(sic.LongName)</span>
-@*                    <span class="sic-long" style="display:none">@Html.Raw(sic.LongName)</span>
-*@                    <span class="sic-info" style="display:none">@Html.Raw(sic.Data)</span>
-                </td>
-                <td class="delete">
-                @if (!readOnly) {
-                     <a id="id_@Html.Raw(suffix)" href="#">
-                        <img src="~/images/icon-minus.png" alt="minus" />
-                        </a>
-                } else {
-
-                     <span>
-                        <img src="~/images/icon-minus.png" alt="minus" />
-                        </span>
-
-                }
-                </td>
-                <td class="edit">
-                @if (!readOnly) {
-                     <a id="ie_@Html.Raw(suffix)" href="#">
-                        <img src="~/images/icon-edit.png" alt="edit" />
-                        </a>
-                } else {
-                     <span>
-                        <img src="~/images/icon-edit.png" alt="edit" />
-                        </span>
-                }
-                </td>
-            </tr>
-            }
-        }
-        </table>
         <table id="at_@Html.Raw(coreId)" class="inner-table">
         @{ for (int i = 0; i < appointment.Actions.Count; i++)
            {
@@ -70,26 +29,53 @@
 *@                    <span class="sic-action" style="display:none">@Html.Raw(sic.Data)</span>
                 </td>
                 <td class="delete">
-                @if (!readOnly) {
+                @if (!readOnly)
+                {
                      <a id="ad_@Html.Raw(suffix)" href="#">
                         <img src="~/images/icon-minus.png" alt="minus" />
                         </a>
-                } else {
-                     <span>
-                        <img src="~/images/icon-minus.png" alt="minus" />
-                        </span>
-
                 }
                 </td>
                 <td class="edit">
-                @if (!readOnly) {
+                @if (!readOnly)
+                {
                      <a id="ae_@Html.Raw(suffix)" href="#">
                         <img src="~/images/icon-edit.png" alt="edit" />
                         </a>
-                } else {
-                     <span>
+                }
+                </td>
+            </tr>
+           }
+        }
+        </table>
+        <table id="it_@Html.Raw(coreId)" class="inner-table">
+        @{ for (int i = 0; i < appointment.Infos.Count; i++)
+           {
+               string suffix = coreId + "_" + i.ToString();
+               DMsic sic = ((DMsic)(appointment.Infos[i]));
+            <tr id="ir_@Html.Raw(suffix)">
+                <td class="cinfo">
+                    &nbsp;
+                </td>
+                <td class="sic info">
+                    <span class="sic rounded" >@Html.Raw(sic.LongName)</span>
+@*                    <span class="sic-long" style="display:none">@Html.Raw(sic.LongName)</span>
+*@                    <span class="sic-info" style="display:none">@Html.Raw(sic.Data)</span>
+                </td>
+                <td class="delete">
+                @if (!readOnly)
+                {
+                     <a id="id_@Html.Raw(suffix)" href="#">
+                        <img src="~/images/icon-minus.png" alt="minus" />
+                        </a>
+                }
+                </td>
+                <td class="edit">
+                @if (!readOnly)
+                {
+                     <a id="ie_@Html.Raw(suffix)" href="#">
                         <img src="~/images/icon-edit.png" alt="edit" />
-                        </span>
+                        </a>
                 }
                 </td>
             </tr>

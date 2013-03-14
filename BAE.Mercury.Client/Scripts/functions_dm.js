@@ -439,7 +439,7 @@ $(document).ready(function() {
 	// POPUP
 	$(".popup").colorbox({width:"70%"});
 	$(".popup-inline.dm-btn").colorbox({inline:true,width:"700px"});
-	$(".buttons.popup-inline").colorbox({inline:true,width:"700px"});
+	$(".buttons .popup-inline a").colorbox({inline:true,width:"700px"});
 	
 	// Resize graph height based on browser viewport
 	$(window).resize(function() {
@@ -448,27 +448,45 @@ $(document).ready(function() {
 	});
 	resizeDmDiv();
 	resizeRvDiv();
+});
 
+/**
+------------------------------------------------------------------------
 
-	/* REMOVED 11 MAR - table rounded corder
-	//wait for dom to visible
-	var graphElement = document.getElementById('graph');		
-	if(window.addEventListener) 
+	Function - Intervals call
+
+------------------------------------------------------------------------
+**/
+//CONFIG
+var dm_time_intervals_minutes = 10;
+
+//------>>
+var dm_timerX = 0;
+function timer_controller()
+{
+	if(dm_timerX == 0)
 	{
-	   graphElement.addEventListener('DOMSubtreeModified', graph_contentChanged, false);
+		dm_timerX = self.setInterval(function(){
+			dm_intervals_callee();
+		},(dm_time_intervals_minutes*(1000*60)));		
 	} 
 	else
 	{
-		if(window.attachEvent) 
-		{
-		  	graphElement.attachEvent('DOMSubtreeModified', graph_contentChanged);
+		dm_timerX = window.clearInterval(dm_timerX);
+		dm_timerX = 0;
 		}
 	}
-	function graph_contentChanged()
-	{
-		//$('table.appointment td table.inner-table:first-child tr:first-child td:first-child').addClass("first");
-		//$('table.appointment td table.inner-table:last-child tr:last-child td:first-child').addClass("last");		
-	}
-	*/
+$(document).ready(function() {
 
+	//TODO: any dom validation? for controlled start?
+	timer_controller();
 });
+//------>>
+
+function dm_intervals_callee()
+	{
+	//console.log('intervals called');  
+	    //alert('10m intervals called.. find me at functions_dm.js');
+        if (changeList)
+            changeList.LockSet();
+	}

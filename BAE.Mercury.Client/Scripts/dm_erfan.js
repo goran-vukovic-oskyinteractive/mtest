@@ -7,6 +7,7 @@ $(document).ready(function() {
 	// define colorbox so we can close it when needed
 	cbox = jQuery.colorbox;
 	
+/*
 	// check value of input that got the .required class
 	$('.add-set-submit').click(function(event)  {
 		event.preventDefault();
@@ -20,7 +21,7 @@ $(document).ready(function() {
 			alert("Validation pass, submit form here");			
 			cbox.close();
 	});
-
+*/
 /*	
 	$('.edit-set-submit').click(function(event)  {
 		event.preventDefault();
@@ -34,7 +35,6 @@ $(document).ready(function() {
 			alert("Validation pass, submit form here");			
 			cbox.close();
 	});
-*/	
 	// Delete
 	$('.delete-yes').click(function(event)  {
 		event.preventDefault();
@@ -58,5 +58,6 @@ $(document).ready(function() {
 		// do nothing, just close the popup
 		cbox.close();
 	});
+*/	
 	
 });
