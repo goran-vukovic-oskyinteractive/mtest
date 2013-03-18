@@ -48,19 +48,26 @@ function getSelectionValue(listbox) {
 function getTableTemplate() {
     return  $ID("sic-table-template");
 }
+function verifyNodeTag(node, tag) {
+    var tagName = node.prop("tagName").toLowerCase();
+    if (tagName != tag.toLowerCase())
+        throw new Error("invalid element");
+}
 function getTables(tableTemplate, id) {
     var genId = getAppointmentGenId(id);
     var tableTemplates = tableTemplate.find("table").clone();
 
-    var tableA = tableTemplates.children().eq(0);
+    var tableA = tableTemplates.eq(0);
+    verifyNodeTag(tableA, "table");
     var attrA = "at" + genId;
     tableA.attr("id", attrA);
-    tableA.empty();
+    tableA.children("tbody").empty();
 
-    var tableI = tableTemplates.children().eq(1);
+    var tableI = tableTemplates.eq(1);
+    verifyNodeTag(tableI, "table");
     var attrI = "it" + genId;
     tableI.attr("id", attrI);
-    tableI.empty();
+    tableI.children("tbody").empty();
 
 
     return tableTemplates;
@@ -85,8 +92,9 @@ function getRow(tableTemplate, id, sic) {
     var data = sic.Data();
     spanData.html(data);
     var table = getTable(id, sic.Type);
+    verifyNodeTag(table, "table");
     var seqNo = getNewSeqNo(table);
-    var seqId = genId + "_" + seqNo;
+    var seqId = genId + "_0" + seqNo;
     var del = row.find("td.delete > a");
     del.attr("id", jqIds.del + seqId);
     del.click(nodeMinus);
@@ -129,7 +137,10 @@ function removeRow(genId, type) {
 function getTable(id, type) {
     var genId = getAppointmentGenId(id);
     var jqIds = JQID[type];
-    return $ID(jqIds.table + genId);
+    var tid = jqIds.table + genId;
+    var table = $ID(jqIds.table + genId);
+    verifyNodeTag(table, "table");
+    return table;
 }
 function appendRow(row, id, type, name) {
     //append to table
@@ -236,10 +247,15 @@ function sicValidate(sicPopup, id, change) {
             highlightControl(nameCtl);
             valid = false;
         }
-        if (name.length <=0)
-            throw new Error("name not found");
-        var entry = new DMrule(name, type, match);
-        change.sic.AddRule(entry);
+        name = name.trim();
+        if (name.length <= 0) {
+            highlightControl(nameCtl);
+            valid = false;
+        }
+        if (valid) {
+            var entry = new DMrule(name, type, match);
+            change.sic.AddRule(entry);
+        }
     });
     if (!valid) {
         errorMessage("please enter data in the empty fields highlighted red");

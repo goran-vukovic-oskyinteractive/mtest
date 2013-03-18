@@ -16,7 +16,7 @@
     <ul style="display: none;">
         @{ foreach (DMunit unit in set.Children)
             {
-             string locked = (set.ReadOnly || unit.ReadOnly) ? "locked" : "";
+             string locked = (set.Locked || unit.Locked) ? "lock" : "";
             <li class="@Html.Raw(locked)"><a id="s_@Html.Raw(set.Id)_@Html.Raw(unit.Id)" href="#">@Html.Raw(unit.Name)</a></li>
             }
         }

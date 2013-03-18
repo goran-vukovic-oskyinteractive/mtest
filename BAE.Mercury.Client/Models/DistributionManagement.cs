@@ -56,15 +56,13 @@ namespace BAE.Mercury.Client.Models
         private List<DMnode> children = new List<DMnode>();
         private DMnode parent;
         private int id;
-        private string name;
-        private bool readOnly;
+        private string name;        
         //public DMnode() { }
-        public DMnode(DMnode parent, int id, string name, bool readOnly)
+        public DMnode(DMnode parent, int id, string name)
         {
             this.id = id;
-            this.name = name;
-            this.readOnly = readOnly;
             this.parent = parent;
+            this.name = name;
         }
         public virtual void AddChild(DMnode node)
         {
@@ -82,13 +80,6 @@ namespace BAE.Mercury.Client.Models
             get
             {
                 return name;
-            }
-        }
-        public bool ReadOnly
-        {
-            get
-            {
-                return readOnly;
             }
         }
         public List<DMnode> Children
@@ -120,8 +111,8 @@ namespace BAE.Mercury.Client.Models
         private MatchType matchType;
         private RuleType ruleType;
         private string name;
-        public DMrule(DMnode parent, int id, string name, bool readOnly, RuleType ruleType, MatchType matchType)
-            : base(parent, id, name, readOnly)
+        public DMrule(DMnode parent, string name, RuleType ruleType, MatchType matchType)
+            : base(parent, -1, name)
         {
             this.ruleType = ruleType;
             this.matchType = matchType;
@@ -154,8 +145,8 @@ namespace BAE.Mercury.Client.Models
         private SicType sicType;
         private StringBuilder longName = new StringBuilder("("), data = new StringBuilder("[");
         //List<DMrule> rules = new List<DMrule>();
-        public DMsic(DMnode parent, int id, SicType sicType, bool readOnly)
-            : base(parent, id, null, readOnly)
+        public DMsic(DMnode parent, int id, SicType sicType)
+            : base(parent, id, null)
         {
             this.sicType = sicType;
         }
@@ -222,10 +213,6 @@ namespace BAE.Mercury.Client.Models
             }
             string name = System.Web.HttpUtility.HtmlEncode(rule.Name);
             //data for rules [rule type, match, start position, length]
-            if (this.Children.Count > 0)
-            {
-                int i = 6;
-            }
             data.Append(((this.Children.Count > 0) ? "," : "") + String.Format("[{0},{1},{2},{3}]", (int)rule.Rule, (int)rule.Match, longName.Length, name.Length));
             longName.Append(name);
             base.AddChild(node);
@@ -235,8 +222,8 @@ namespace BAE.Mercury.Client.Models
     public class DMappointment : DMnode
     {
         private List<DMnode> infos = new List<DMnode>();
-        public DMappointment(DMnode parent, int id, string name, bool readOnly)
-            : base(parent, id, name, readOnly) { }
+        public DMappointment(DMnode parent, int id, string name)
+            : base(parent, id, name) { }
         public List<DMnode> Infos
         {
             get
@@ -262,16 +249,37 @@ namespace BAE.Mercury.Client.Models
     }
     public class DMunit : DMnode
     {
-        public DMunit(DMnode parent, int id, string name, bool readOnly)
-            : base(parent, id, name, readOnly) { }
+        private bool locked;
+        public DMunit(DMnode parent, int id, string name, bool locked)
+            : base(parent, id, name) 
+        {
+            this.locked = locked;
+        }
+
+        public bool Locked
+        {
+            get
+            {
+                return locked;
+            }
+        }
     }
     public class DMset : DMnode
     {
+        private bool locked;
         private bool active;
-        public DMset(DMnode parent, int id, string name, bool readOnly, bool active)
-            : base(parent, id, name, readOnly)
+        public DMset(DMnode parent, int id, string name, bool locked, bool active)
+            : base(parent, id, name)
         {
+            this.locked = locked;
             this.active = active;
+        }
+        public bool Locked
+        {
+            get
+            {
+                return locked;
+            }
         }
         public bool Active
         {
@@ -284,7 +292,7 @@ namespace BAE.Mercury.Client.Models
     public class DistributionManagement : DMnode
     {
         public DistributionManagement()
-            : base(null, 0, String.Empty, false) { }
+            : base(null, 0, String.Empty) { }
     }
 
     //start return info 

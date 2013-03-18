@@ -632,7 +632,6 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\DistributionManagement\_DMTable.cshtml" />
-    <Content Include="Views\DistributionManagement\_DMReference.cshtml" />
     <Content Include="Views\DistributionManagement\_DMSet.cshtml" />
     <Content Include="Views\DistributionManagement\_DMMessageList.cshtml" />
     <Content Include="Views\DistributionManagement\_DMPopupSic.cshtml" />

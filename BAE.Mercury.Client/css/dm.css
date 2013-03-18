@@ -73,6 +73,8 @@ filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 #graph .node-btn a.delete:hover { background-position:-13px -13px; }
 #graph .node-btn a.edit { background-position:0 -26px; }
 #graph .node-btn a.edit:hover { background-position:-13px -26px; }
+#graph .node-btn a.copy { background-position:0 -26px; }
+#graph .node-btn a.copy:hover { background-position:-13px -26px; }
 #graph .node-btn a.yes, #graph .node-btn a.no { width:14px; height:13px; background:url(../images/btn-dm_yesno.png) 0 0 no-repeat; }
 #graph .node-btn a.no { background-position:bottom left; }
 #graph .node-btn a.stop, #graph .node-btn a.stopdisable { width:28px; height:27px; background:url(../images/btn-dm_stop.png) 0 0 no-repeat; }

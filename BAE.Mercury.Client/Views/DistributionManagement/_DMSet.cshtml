@@ -29,14 +29,13 @@
                                                 string setUnitId = String.Format("{0}_{1}", Model.Id, unit.Id);
                                                 Html.RenderPartial("_DMTable", appointment);
 
-                                                //Html.RenderPartial("_DMTable", appointment);
                                             }
                                     
 
                                         </div>
                                     </td>
                                     <td class="add"> 
-                                    @if (!appointment.ReadOnly) {
+                                    @if (!(((DMset)appointment.Parent.Parent).Locked || ((DMunit)appointment.Parent).Locked)) {
                                                                          
                                         <a id="aa_@Html.Raw(String.Format("{0}_{1}_{2}", Model.Id, unit.Id, appointment.Id))" href="#">
                                             <img src="~/images/icon-plus.png" alt="plus"/></a>

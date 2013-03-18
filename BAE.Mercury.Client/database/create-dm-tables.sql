@@ -19,8 +19,8 @@ create table DMNode(
 	NodeId int not null identity,
 	ParentId int null,
 	NodeName varchar(255) not null,
-	NodeType bit default null,
-	ReadOnly bit default 0
+	NodeType bit default 0, --for sic = info | action), for set = active | inactive
+	Locked bit default 0
 	constraint PK_Node primary key(NodeId)
 	--constraint UK_NodeName unique(NodeName)
 )
@@ -104,7 +104,7 @@ go
 
 SET IDENTITY_INSERT DMNode ON
 insert into DMNode(NodeId, ParentId, NodeName) values(0, null, 'Root')
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(1, 0, 'Ian Brumby', 1)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType, Locked) values(1, 0, 'Ian Brumby', 1, 1) --active, locked
 insert into DMNode(NodeId, ParentId, NodeName) values(2, 1, 'Unit = Set1 1 RAR')
 insert into DMNode(NodeId, ParentId, NodeName) values(3, 1, 'Unit = Set1 2 RAR')
 insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(4, 0, 'Set 2', 1)

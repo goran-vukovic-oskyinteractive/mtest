@@ -1,5 +1,4 @@
 ﻿if (!String.prototype.trim) {
-   //code for trim
    String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g, '');};
 }
 var IE = navigator.appName == "Microsoft Internet Explorer";
@@ -44,7 +43,6 @@ function Sic(id, type) { //simplified version of DMSic
 }
 
 
-//string name, bool readOnly, RuleType ruleType, MatchType matchType)
 function DMrule(name, ruleType, matchType) {
     if (!(ruleType == DMrule.EnRuleType.SIC || ruleType == DMrule.EnRuleType.PrivacyMarking))
         throw new Error("invalid rule type");
@@ -129,7 +127,7 @@ function loadSet() {
 }
 
 function lockSet(id) {
-        ajaxCall("LockSet", { i: id }, populateSets);
+    ajaxCall("LockSet", { i: id }, function () { alert("the set has been locked") });
 
 }
 
@@ -157,6 +155,9 @@ function saveSet() {
 
         });
 
+        $(".save-no").click(function () {
+            cbox.close();
+        });
 
         var colorbox = $.colorbox({ href: "#save-set", inline: true, width: "700px",
             onCleanup: function () {
@@ -237,7 +238,7 @@ function setSet() {
     var flag = (stateOn) ? "truez" : "falsez";
     input.val(flag);
     var span = $("#set-activation-status");
-    var status= (~stateOn)? "ACTIVATE" : "DEACTIVATE";
+    var status= (!stateOn)? "ACTIVATE" : "DEACTIVATE";
     span.html(status);
 //    if (confirm("Do you wish to change the state of this set to " + ((stateOn) ? "OFF" : "ON") + "?")) {
 //        var id = this.id;
@@ -452,6 +453,11 @@ function createEntry(sicList, template, rule, i) {
 }
 
 function getNewSeqNo(parentNode) {
+    var seqNo = parseInt(parentNode.attr("sqn"));
+    if (isNaN(seqNo))
+        throw new Error("invalid sequence number");
+    parentNode.attr("sqn", seqNo + 1);
+    return seqNo;
     var m = 0;
 
     parentNode.find("span.sic").each(function () {
@@ -543,7 +549,6 @@ function sicSave(id, action, sicPopup, oldData) {
 $(document).ready(function () {
 
 
-
     changeList = null;
 
     $.ajaxSetup({
@@ -560,7 +565,7 @@ $(document).ready(function () {
     });
     $("#btn-cancel").click(function () {
         if (changeList && changeList.Changes.length > 0)
-            loadTree(this.id);            
+            loadTree(changeList.Id);            
         return false;
     });
     $("#btn-add-set").click(function () {
