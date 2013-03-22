@@ -20,9 +20,11 @@
                     &nbsp;
                 </td>
                 <td class="sic action">
-                    <span class="sic rounded" >@Html.Raw(sic.LongName)</span>
-@*                    <span class="sic-long" style="display:none">@Html.Raw(sic.LongName)</span>
-*@                    <span class="sic-action" style="display:none">@Html.Raw(sic.Data)</span>
+                    <a href="#" class="tooltip">
+                        <span class="sic rounded" >@Html.Raw(sic.LongName)</span>                  
+                        <span class="tooltip-content" ></span>
+                        <span class="sic-action" style="display:none">@Html.Raw(sic.Data)</span>
+                    </a>
                 </td>
                 <td class="delete">
                 @if (!readOnly)
@@ -37,6 +39,14 @@
                 {
                      <a id="ae_@Html.Raw(suffix)" href="#">
                         <img src="~/images/icon-edit.png" alt="edit" />
+                        </a>
+                }
+                </td>
+                <td class="copy">
+                @if (!readOnly)
+                {
+                     <a id="ac_@Html.Raw(suffix)" href="#">
+                        <img src="~/images/btn-dm_copy.png" alt="copy" />
                         </a>
                 }
                 </td>
@@ -56,9 +66,11 @@
                     &nbsp;
                 </td>
                 <td class="sic info">
-                    <span class="sic rounded" >@Html.Raw(sic.LongName)</span>
-                    <span class="sic-long" style="display:none">@Html.Raw(sic.LongName)</span>
-                    <span class="sic-info" style="display:none">@Html.Raw(sic.Data)</span>
+                    <a href="#" class="tooltip">
+                        <span class="sic rounded" >@Html.Raw(sic.LongName)</span>                  
+                        <span class="tooltip-content" ></span>
+                        <span class="sic-info" style="display:none">@Html.Raw(sic.Data)</span>
+                    </a>
                 </td>
                 <td class="delete">
                 @if (!readOnly)
@@ -73,6 +85,14 @@
                 {
                      <a id="ie_@Html.Raw(suffix)" href="#">
                         <img src="~/images/icon-edit.png" alt="edit" />
+                        </a>
+                }
+                </td>
+                <td class="copy">
+                @if (!readOnly)
+                {
+                     <a id="ic_@Html.Raw(suffix)" href="#">
+                        <img src="~/images/btn-dm_copy.png" alt="copy" />
                         </a>
                 }
                 </td>

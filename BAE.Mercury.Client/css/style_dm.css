@@ -151,7 +151,7 @@ ol li { list-style:decimal; padding:0 0 3px 10px; }
 #setbox ul#setbox-list li span.counter { display:block; padding:0 7px; text-align:center; background:#6c6c6c; float:right; margin:0 10px 0 0; border-radius: 5px; border:1px solid #5f5f5f; font-size:12px; height:20px; line-height:20px; }
 #setbox ul#setbox-list li div:hover span.counter, #setbox ul#setbox-list li a:hover span.counter, #setbox ul#setbox-list li div.open span.counter { background:#992424!important; border:1px solid #872020!important; }
 #setbox ul#setbox-list li span.icon { background:url(../images/bg-mailbox_icon.png) 0 0 no-repeat; display:block; width:16px; height:15px; float:left; margin-top:0px; }
-#setbox ul#setbox-list li strong { font-weight:normal; float:left; margin:0 0 0 10px; }
+#setbox ul#setbox-list li strong { font-weight:normal; float:left; margin:0 0 0 10px; width:190px; overflow: hidden; }
 #setbox ul#setbox-list li#inbox div:hover span.icon { background-position:0 -15px }
 #setbox ul#setbox-list li#draft span.icon { background-position:-18px 0; width:14px; }
 #setbox ul#setbox-list li#draft div:hover span.icon { background-position:-18px -15px; }
@@ -455,7 +455,7 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 #popup-content .section .inner textarea {width:69%; background:#fff; border:1px solid #cdcdcd; height:140px;}
 #popup-content .section .inner .col-wrap {overflow:hidden; margin:0 0 10px 0;}
 #popup-content .section .inner .col-wrap .col {float:left; width:15%; margin:0 1% 0 0;}
-#popup-content .section .inner .col-wrap .col.wide {width:40%; background-color:yellow}
+#popup-content .section .inner .col-wrap .col.wide {width:40%}
 #popup-content .section .inner select {width:100%; height:20px}
 #popup-content .section .inner name {width:300px; height:20px}
 #popup-content .section .inner type {width:150px; height:20px}
@@ -496,12 +496,17 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 #popup-content .section.expanding {overflow:auto; height:300px;}
 
 
+span.tooltip-content {display:none; position:absolute; left:450px; width:200px; background:#606060; padding:5px 10px; z-index:9999; text-transform:none; color:#fff; border-radius:5px;}
 
 
-
-
+/*
 #xwrapper { min-width:1020px; width:auto!important; width:1020px; }
 #xwrapper .col-wrap { }
 #xwrapper .col-left { float:left; width:220px; }
 #xwrapper .col-middle { float:left; width:385px; background:white}
 #xwrapper .col-right { width:auto }
+*/
+
+
+/*
+*/

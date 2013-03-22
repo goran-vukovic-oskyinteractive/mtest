@@ -97,40 +97,60 @@ namespace BAE.Mercury.Client.Models
             }
         }
     }
-    public class DMrule : DMnode
+    public class DMrule : DMnode, IComparable<DMrule>
     {
-        public enum MatchType
+        public enum EnMatchType
         {
-            Equal = 1, StartsWith = 2
+            Equal = 2, StartsWith = 1
 
         }
-        public enum RuleType
+        public enum EnRuleType
         {
-            SIC = 1, PrivacyMarking = 2
+            SIC = 2, PrivacyMarking = 1
         }
-        private MatchType matchType;
-        private RuleType ruleType;
+        private EnMatchType matchType;
+        private EnRuleType ruleType;
         private string name;
-        public DMrule(DMnode parent, string name, RuleType ruleType, MatchType matchType)
+        public DMrule(DMnode parent, string name, EnRuleType ruleType, EnMatchType matchType)
             : base(parent, -1, name)
         {
             this.ruleType = ruleType;
             this.matchType = matchType;
             this.name = name;
         }
-        public RuleType Rule
+        public EnRuleType RuleType
         {
             get
             {
                 return ruleType;
             }
         }
-        public MatchType Match
+        public EnMatchType MatchType
         {
             get
             {
                 return matchType;
             }
+        }
+        public int CompareTo(DMrule rule)
+        {
+            if (this.RuleType < rule.RuleType)
+                return -1;
+            else if (this.RuleType == rule.RuleType)
+            {
+                if (this.MatchType < rule.MatchType)
+                    return -1;
+                else if (this.MatchType == rule.MatchType)
+                {
+                    var str1 = this.Name.ToLower();
+                    var str2 = rule.Name.ToLower();
+                    return (str1.CompareTo(str2));
+                }
+                else
+                    return 1;
+            }
+            else
+                return 1;
         }
 
     }
@@ -140,11 +160,11 @@ namespace BAE.Mercury.Client.Models
         {
             Action = 2, Info = 1
         }
-        private const string DOTS = "...";
-        private int maxShortName = 80 - DOTS.Length;
+        private bool finalized = false;
+        //private const string DOTS = "...";
+        //private int maxShortName = 80 - DOTS.Length;
         private SicType sicType;
-        private StringBuilder longName = new StringBuilder("("), data = new StringBuilder("[");
-        //List<DMrule> rules = new List<DMrule>();
+        private string longName, data;
         public DMsic(DMnode parent, int id, SicType sicType)
             : base(parent, id, null)
         {
@@ -157,68 +177,94 @@ namespace BAE.Mercury.Client.Models
                 return sicType;
             }
         }
-        public string ShortName
+        public void DataFinalize()
         {
-            get
+            //this method exists so that node information is assembled only once
+            if (finalized)
+                throw new ApplicationException("this SIC was aleardy finalized");
+            finalized = true;
+            List<DMrule> children = this.Children.Cast<DMrule>().ToList();
+            children.Sort();
+            StringBuilder longNameSB = new StringBuilder("("), dataSB = new StringBuilder("[");
+            for(int i = 0; i < children.Count; i++)
             {
-                string shortName = LongName;
-                if (shortName.Length > maxShortName)
-                    return shortName.Substring(0, maxShortName) + DOTS;
+                DMrule rule = (DMrule) children[i];
+                if (i > 0)
+                {
+                    if (((DMrule)this.Children[i -1]).RuleType == rule.RuleType)
+                        longNameSB.Append(" OR ");
+                    else
+                        longNameSB.Append(") AND (");
+                }
+                if (rule.RuleType == DMrule.EnRuleType.PrivacyMarking)
+                {
+                    longNameSB.Append("Privacy Marking");
+                }
                 else
-                    return shortName;
+                {
+                    longNameSB.Append("SIC");
+                }
+                if (rule.MatchType == DMrule.EnMatchType.StartsWith)
+                {
+                    longNameSB.Append(" starts with ");
+                }
+                else
+                {
+                    longNameSB.Append(" = ");
+                }
+                string name = System.Web.HttpUtility.HtmlEncode(rule.Name);
+                //data for rules [rule type, match, start position, length]
+                dataSB.Append(((i > 0) ? "," : "") + String.Format("[{0},{1},{2},{3}]", (int)rule.RuleType, (int)rule.MatchType, longNameSB.Length, name.Length));
+                longNameSB.Append(name);
             }
+            longName = longNameSB.ToString() + ")";
+            data = dataSB.ToString() + "]";
+
+
         }
+
+        //public string ShortName
+        //{
+        //    get
+        //    {
+        //        string shortName = LongName;
+        //        if (shortName.Length > maxShortName)
+        //            return shortName.Substring(0, maxShortName) + DOTS;
+        //        else
+        //            return shortName;
+        //    }
+        //}
         public string LongName
         {
             get
             {
-                 return longName.ToString() + ")";
+
+                if (!finalized)
+                    throw new ApplicationException("this SIC was not finalized");
+                return longName;
             }
         }
         public string Data
         {
             get
             {
-                return data.ToString() + "]";
+                if (!finalized)
+                    throw new ApplicationException("this SIC was not finalized");
+                return data;
             }
         }
         public override void AddChild(DMnode node)
         {
+            if (finalized)
+                throw new ApplicationException("this SIC was aleardy finalized");
             if (this.Children.Count >= 25)
                 throw new ApplicationException("maximum number of rules exceeded");
             //(Privacy marking = CCCCC or Privacy marking starts with DDDDD) AND (SIC=BBBBBBB or SIC=FFFFFF)
-            DMrule rule = (DMrule)node;
-            if (this.Children.Count > 0)
-            {
-                if (((DMrule)this.Children[this.Children.Count - 1]).Rule == rule.Rule)
-                    longName.Append(" OR ");
-                else
-                    longName.Append(") AND (");
-            }
-            if (rule.Rule == DMrule.RuleType.PrivacyMarking)
-            {
-                longName.Append("Privacy Marking");
-            }
-            else
-            {
-                longName.Append("SIC");
-            }
-            if (rule.Match == DMrule.MatchType.StartsWith)
-            {
-                longName.Append(" starts with ");
-            }
-            else
-            {
-                longName.Append(" = ");
-            }
-            string name = System.Web.HttpUtility.HtmlEncode(rule.Name);
-            //data for rules [rule type, match, start position, length]
-            data.Append(((this.Children.Count > 0) ? "," : "") + String.Format("[{0},{1},{2},{3}]", (int)rule.Rule, (int)rule.Match, longName.Length, name.Length));
-            longName.Append(name);
             base.AddChild(node);
         }
-    }
 
+
+    }
     public class DMappointment : DMnode
     {
         private List<DMnode> infos = new List<DMnode>();
@@ -299,14 +345,14 @@ namespace BAE.Mercury.Client.Models
 
     public class RetRule
     {
-        private DMrule.MatchType match;
-        private DMrule.RuleType type;
+        private DMrule.EnMatchType match;
+        private DMrule.EnRuleType type;
         private string name;
         public string RuleType
         {
             set
             {
-                type = (DMrule.RuleType) Int32.Parse(value);
+                type = (DMrule.EnRuleType) Int32.Parse(value);
             }
         }
         public string Name
@@ -324,11 +370,11 @@ namespace BAE.Mercury.Client.Models
         {
             set
             {
-                match = (DMrule.MatchType) Int32.Parse(value);
+                match = (DMrule.EnMatchType) Int32.Parse(value);
             }
         }
 
-        public DMrule.MatchType EnMatchType
+        public DMrule.EnMatchType EnumMatchType
         {
 
             get{
@@ -336,7 +382,7 @@ namespace BAE.Mercury.Client.Models
             }
 
         }
-        public DMrule.RuleType EnRuleType
+        public DMrule.EnRuleType EnumRuleType
         {
             get{
                 return type;
@@ -352,9 +398,6 @@ namespace BAE.Mercury.Client.Models
     public class RetSic
     {
         List<RetRule> rules = new List<RetRule>();
-        //private int setId, unitId, appointmentId, sicId;
-        //private string 
-            //id, type, pointmentId, sicId;
         private int setId, unitId, appointmentId, sicId;
         private DMsic.SicType type;
 
@@ -418,7 +461,6 @@ namespace BAE.Mercury.Client.Models
             }
         }
     }
-    //{"Set":"1","Changes":[{"Type":0,"Sic":{"Type":1,"Id":"ie_1_2_15_1","Rules":[{"Name":"CCCCCCCC","RuleType":1,"MatchType":2}]}}]}
     public class RetChange
     {
         public enum EnType

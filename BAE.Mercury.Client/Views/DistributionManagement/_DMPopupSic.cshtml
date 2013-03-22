@@ -1,8 +1,9 @@
-﻿        <div id="popup-content">
+﻿@using BAE.Mercury.Client.Models
+        <div id="popup-content">
 			<div class="section">
                 <div class="inner">
                     <div class="col" >
-                        <select id="sic-type" class="sic-type" style="width:200px">
+                        <select id="sic-type" class="sic-type" @*style="width:200px"*@>
                             <option selected="selected" value="0">Please select</option>
                             <option value="2">Action</option>
                             <option value="1">Info</option>
@@ -14,25 +15,26 @@
             <div class="section" style="display:none">
                 <div class="inner">
                     <div id="sic-entry-template" class="col-wrap select" >
-                        <div class="col" style="width:10%">
+
+@*                        <div class="col" style="width:10%;display:none;">
                             <span class="sequence" style="margin-left:5px"></span>
                         </div>
-                        <div class="col" style="width:20%">
+*@                        <div class="col" style="width:20%">
                             <select class="rule">
                                 <option selected="selected" value="0">Please select</option>
-                                <option value="2">Privacy marking</option>
-                                <option value="1">SIC</option>
+                                <option value="@Html.Raw((int)DMrule.EnRuleType.PrivacyMarking)">Privacy marking</option>
+                                <option value="@Html.Raw((int)DMrule.EnRuleType.SIC)">SIC</option>
                             </select>
                         </div>
                         <div class="col">
                             <select class="match">
                                 <option selected="selected" value="0">Please select</option>
-                                <option value="1">is equal</option>
-                                <option value="2">starts with</option>
+                                <option value="@Html.Raw((int)DMrule.EnMatchType.Equal)">is equal</option>
+                                <option value="@Html.Raw((int)DMrule.EnMatchType.StartsWith)">starts with</option>
                             </select>
                         </div>
-                        <div class="col wide" style="width:300px">
-                            <input class="name"  type="text" maxlength="8" style="width:300px;text-transform:uppercase;" />
+                        <div class="col wide sic-input" @*style="width:300px"*@>
+                            <input class="name"  type="text" maxlength="8" @*style="width:300px;text-transform:uppercase;"*@ />
                         </div>
                         <div class="btn-add">
                             <a class="btn-minus" href="#">Minus</a>

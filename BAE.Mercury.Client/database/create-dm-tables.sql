@@ -19,7 +19,7 @@ create table DMNode(
 	NodeId int not null identity,
 	ParentId int null,
 	NodeName varchar(255) not null,
-	NodeType bit default 0, --for sic = info | action), for set = active | inactive
+	NodeType bit default 0, --for sic = info | action, for set = active | inactive
 	Locked bit default 0
 	constraint PK_Node primary key(NodeId)
 	--constraint UK_NodeName unique(NodeName)

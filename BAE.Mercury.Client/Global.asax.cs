@@ -28,6 +28,7 @@ namespace BAE.Mercury.Client
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
         }
         //protected void Application_Error(object sender, EventArgs e)
         //{

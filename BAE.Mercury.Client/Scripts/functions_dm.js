@@ -88,7 +88,7 @@ $(document).ready(function () {
         // Exclude IE7	
         $("#setbox").resizable({
             maxWidth: 350,
-            minWidth: 220,
+            minWidth: 260,
             handles: 'e',
             start: function (event, ui) {
                 removeScrollDM();
@@ -468,7 +468,7 @@ function timer_controller()
 	{
 		dm_timerX = self.setInterval(function(){
 			dm_intervals_callee();
-		},(dm_time_intervals_minutes*(1000*60)));		
+		},(dm_time_intervals_minutes*(15* 100*60)));		
 	} 
 	else
 	{
@@ -483,10 +483,11 @@ $(document).ready(function() {
 });
 //------>>
 
-function dm_intervals_callee()
-	{
+function dm_intervals_callee()	{
 	//console.log('intervals called');  
 	    //alert('10m intervals called.. find me at functions_dm.js');
         if (changeList)
             changeList.LockSet();
-	}
+}
+
+

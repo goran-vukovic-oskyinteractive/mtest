@@ -46,7 +46,7 @@ namespace BAE.Mercury.Client
             foreach (RetRule rule in sic.Rules)
             {
                 if (sb.Length > 0) sb.Append(";");
-                sb.Append(String.Format("{0}&{1}&{2}", (int) rule.EnRuleType, (int) rule.EnMatchType, rule.Name));
+                sb.Append(String.Format("{0}&{1}&{2}", (int) rule.EnumRuleType, (int) rule.EnumMatchType, rule.Name));
             }
             return sb.ToString();
         }
@@ -381,54 +381,6 @@ namespace BAE.Mercury.Client
                 }
             }
         }
-        /*
-                private class DMappointmentWrap : DMnodeWrap
-                {
-                    public DMappointmentWrap(int id, int parentId, string name)
-                        : base(id, parentId, name) { }
-                }
-
-                private class DMunitWrap : DMnodeWrap
-                {
-                    private bool locked;
-                    public DMunitWrap(int id, int parentId, string name, bool locked)
-                        : base(id, parentId, name)
-                    {
-                        this.locked = locked;
-                    }
-                    public bool Locked
-                    {
-                        get
-                        {
-                            return locked;
-                        }
-                    }
-                }
-                private class DMsetWrap : DMnodeWrap
-                {
-                    private bool active, locked;
-                    public DMsetWrap(int id, int parentId, string name, bool locked, bool active)
-                        : base(id, parentId, name)
-                    {
-                        this.locked = locked;
-                        this.active = active;
-                    }
-                    public bool Locked
-                    {
-                        get
-                        {
-                            return locked;
-                        }
-                    }
-                    public bool Active
-                    {
-                        get
-                        {
-                            return active;
-                        }
-                    }
-                }
-         */
         public DMset GetDMSet(string username, int setId, int unitId)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
@@ -436,7 +388,7 @@ namespace BAE.Mercury.Client
             SqlCommand com = new SqlCommand(String.Format("getDistributionManagementSet {0}, {1}", setId, unitId));
             com.CommandType = System.Data.CommandType.Text;
             com.Connection = con;
-            try
+            //try
             {
 
 
@@ -478,8 +430,10 @@ namespace BAE.Mercury.Client
                     DMappointment appointment = new DMappointment(null, id, name);
                     DMnodeWrap appointmentWrap = new DMnodeWrap(appointment, parentId);
                     appointmentWraps.Add(appointmentWrap);
+                    Debug.WriteLine(id, name);
                 }
                 //the sics
+                Debug.WriteLine("***********");
                 reader.NextResult();
                 List<DMnodeWrap> sicWraps = new List<DMnodeWrap>();
                 while (reader.Read())
@@ -492,6 +446,7 @@ namespace BAE.Mercury.Client
                     //parse the data in the name
                     DMsicWrap sicWrap = new DMsicWrap(sic, parentId, name);
                     sicWraps.Add(sicWrap);
+                    Debug.WriteLine(id, name);
                 }
                 reader.Close();
 
@@ -517,8 +472,8 @@ namespace BAE.Mercury.Client
                                         foreach (string rule in rules)
                                         {
                                                 string[] ruleData = rule.Split('&');
-                                                DMrule.RuleType type = (DMrule.RuleType)Int32.Parse(ruleData[0]);
-                                                DMrule.MatchType match = (DMrule.MatchType)Int32.Parse(ruleData[1]);
+                                                DMrule.EnRuleType type = (DMrule.EnRuleType)Int32.Parse(ruleData[0]);
+                                                DMrule.EnMatchType match = (DMrule.EnMatchType)Int32.Parse(ruleData[1]);
                                                 string name = ruleData[2];
                                                 DMrule ruleInstance = new DMrule(sic, name, type, match);
                                                 sic.AddChild(ruleInstance);
@@ -528,6 +483,7 @@ namespace BAE.Mercury.Client
                                         //else
                                         //    appointment.AddInfo(sic);
                                         appointment.AddChild(sic);
+                                        sic.DataFinalize();
                                     }
                                 }
                                 unit.AddChild(appointment);
@@ -541,6 +497,7 @@ namespace BAE.Mercury.Client
                 return set;
 
             }
+            /*
             catch (SqlException sqlEx)
             {
                 Debug.WriteLine(sqlEx.Message);
@@ -551,8 +508,8 @@ namespace BAE.Mercury.Client
                 Debug.WriteLine(ex.Message);
                 throw new ApplicationException(ex.Message);
             }
-
             finally
+            */
             {
                 if (con != null)
                     con.Close();

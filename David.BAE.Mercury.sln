@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAE.Mercury.Core", "BAE.Mercury.Core\BAE.Mercury.Core.csproj", "{33A55735-3012-4BD6-8C6F-7B309A5CBF86}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Properties", "Properties.cs\Properties.csproj", "{11E16343-3A5B-4A50-8A55-86DB61FBB6D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAE.Mercury.Business", "BAE.Mercury.Business\BAE.Mercury.Business.csproj", "{E0C22C23-07DA-4225-B07D-CA37362FA724}"
@@ -12,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAE.Mercury.Common", "BAE.Mercury.Common\BAE.Mercury.Common.csproj", "{48A3938F-0309-4578-B65C-C25955D836C0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAE.Mercury.Client", "BAE.Mercury.Client\BAE.Mercury.Client.csproj", "{E24B22AF-CFF8-4F7D-B272-026F8C7E4807}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAE.Mercury.Core", "BAE.Mercury.Core\BAE.Mercury.Core.csproj", "{33A55735-3012-4BD6-8C6F-7B309A5CBF86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,16 +23,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Release|x86.ActiveCfg = Release|Any CPU
 		{11E16343-3A5B-4A50-8A55-86DB61FBB6D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{11E16343-3A5B-4A50-8A55-86DB61FBB6D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11E16343-3A5B-4A50-8A55-86DB61FBB6D2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -83,6 +73,16 @@ Global
 		{E24B22AF-CFF8-4F7D-B272-026F8C7E4807}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E24B22AF-CFF8-4F7D-B272-026F8C7E4807}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E24B22AF-CFF8-4F7D-B272-026F8C7E4807}.Release|x86.ActiveCfg = Release|Any CPU
+		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{33A55735-3012-4BD6-8C6F-7B309A5CBF86}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

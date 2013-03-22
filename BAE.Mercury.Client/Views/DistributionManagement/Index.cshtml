@@ -49,8 +49,8 @@
     <script type="text/javascript" src="~/Scripts/functions_dm.js"></script>
     <script type="text/javascript" src="~/Scripts/dm.js?=123456"></script>
     <script type="text/javascript" src="~/Scripts/dm1.js?=123456"></script>
-	<script type="text/javascript" src="~/Scripts/dm_erfan.js"></script>
-    <script type="text/javascript" src="~/Scripts/Initialise.js"></script>
+@*	<script type="text/javascript" src="~/Scripts/dm_erfan.js"></script>
+*@    <script type="text/javascript" src="~/Scripts/Initialise.js"></script>
     <script type="text/javascript" src="~/Scripts/ryan_dm.js"></script>
     <script type="text/javascript" src="~/Scripts/json2.min.js"></script>
 <!--additional links for list start -->
@@ -120,7 +120,6 @@
             </div>
             <div id="graph" style="height: 300px">
                 <!--sets go in here-->
-                @*{ Html.RenderPartial("_DMReference", Model); }*@
             </div>
             <div id="rule-visualiser-wrap-outer">
                     <a id="rule-visualiser-wrap-trigger">
@@ -145,36 +144,6 @@
                     </div>
                     <div id="tabs-2">
                         <p>Morbi tincidunt, dui sit amet facilisis feugiat.</p>
-                        <!-- NOT USED -->
-						<!--
-                        <ul id="select-field">
-                            <li class="field">
-                                <select>
-                                    <option value="Please select" selected="">Please select</option>
-                                    <option value="Precedence">Precedence</option>
-                                    <option value="SIC">SIC</option>
-                                    <option value="Unit 1">Unit 1</option>
-                                    <option value="Dolor sit amet">Dolor sit amet</option>
-                                    <option value="Consectetur ">Consectetur </option>
-                                    <option value="Adipiscing">Adipiscing</option>
-                                    <option value="Integer ">Integer </option>
-                                    <option value="Sed eros ">Sed eros </option>
-                                    <option value="Leo">Leo</option>
-                                    <option value="Id">Id</option>
-                                </select>
-                                <input type="text" class="txt" />
-                                <div class="btn-add">
-                                    <a href="#" class="btn-plus">Plus</a> <a href="#" class="btn-minus">Minus</a>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="btn-wrap">
-                            <ul>
-                                <li><a href="#">Submit</a></li>
-                                <li><a href="#">Clear</a></li>
-                            </ul>
-                        </div>
-						-->
 						<div class="btn-wrap wide">
                             <ul>
                                 <li><a href="#sic-select-field" class="popup-inline select-field-button">Select Field</a></li>
@@ -201,7 +170,9 @@
         DMunit unit1 = new DMunit(set1, 0, String.Empty, false);
         DMappointment appointment = new DMappointment(unit1, 0, String.Empty);
         DMsic sicAction = new DMsic(null, 0, DMsic.SicType.Action);
+        sicAction.DataFinalize();
         DMsic sicInfo = new DMsic(null, 0, DMsic.SicType.Info);
+        sicInfo.DataFinalize();
         appointment.AddChild(sicAction);
         appointment.AddChild(sicInfo);
         Html.RenderPartial("_DMTable", appointment); ;
@@ -224,8 +195,8 @@
 					<h3>Add Set</h3>
 					<div class="form-wrap">
 						<div class="row">
-							<label for="set-name">Set Name</label>
-							<input type="text" class="txt required" id="set-name-add" value="" />
+							<label for="set-name-add">Set Name</label>
+							<input type="text" class="txt required" id="set-name-add" name="set-name-add" value="" />
 							<br class="clear" />
 						</div>					
 					</div>			
@@ -271,7 +242,7 @@
 					</div>			
 					<div class="btn-wrap" style="margin:0 auto; width:205px;">
 						<ul>
-							<li><a href="#" class="delete-yes">Delete</a></li>
+							<li><a href="#" class="delete-yes">Yes</a></li>
 						</ul>
 					</div>			
 				</div>	
@@ -288,7 +259,7 @@
 					</div>			
 					<div class="btn-wrap" style="margin:0 auto; width:205px;">
 						<ul>
-							<li><a href="#" class="copy-yes">Copy</a></li>
+							<li><a href="#" class="copy-yes">Yes</a></li>
 						</ul>
 					</div>			
                 </div>
@@ -305,7 +276,7 @@
                     </div>          
                     <div class="btn-wrap" style="margin:0 auto; width:205px;">
                         <ul>
-                            <li><a href="#" class="save-yes">Save</a></li>
+                            <li><a href="#" class="save-yes">Yes</a></li>
                         </ul>
                     </div>          
                 </div>
@@ -323,7 +294,26 @@
                     </div>          
                     <div class="btn-wrap" style="margin:0 auto; width:205px;">
                         <ul>
-                            <li><a href="#" class="activate-yes">Activate</a></li>
+                            <li><a href="#" class="activate-yes">Yes</a></li>
+                        </ul>
+                    </div>          
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="copy-sic">    
+        <div id="popup-content">
+            <div class="section">
+                <div class="inner">
+                    <h3>Copy Sic</h3>               
+                    <div class="form-wrap">
+                        <select id="sic-appointment" class="sic-appointment" style="width:200px">
+                            <option selected="selected" value="0">Please select</option>
+                        </select>
+                    </div>          
+                    <div class="btn-wrap" style="margin:0 auto; width:205px;">
+                        <ul>
+                            <li><a href="#" class="copy-sic-yes">Yes</a></li>
                         </ul>
                     </div>          
                 </div>
