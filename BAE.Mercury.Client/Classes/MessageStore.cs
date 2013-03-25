@@ -17,12 +17,12 @@ namespace BAE.Mercury.Client
     public class MessageStore
     {
 
-        public void LockSet(string user, int nodeId)
+        public void LockSet(string user, int nodeId, bool locked)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
             SqlConnection con = new SqlConnection(connectionString);
             int userId = 255;
-            SqlCommand com = new SqlCommand(String.Format("lockDistributionManagementNode {0}, {1}", nodeId, userId));
+            SqlCommand com = new SqlCommand(String.Format("lockDistributionManagementNode {0}, {1}", userId, nodeId, locked));
             com.Connection = con;
             try
             {
@@ -43,7 +43,7 @@ namespace BAE.Mercury.Client
         private string PackSic(RetSic sic)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (RetRule rule in sic.Rules)
+            foreach (RetRule rule in sic.Children)
             {
                 if (sb.Length > 0) sb.Append(";");
                 sb.Append(String.Format("{0}&{1}&{2}", (int) rule.EnumRuleType, (int) rule.EnumMatchType, rule.Name));
@@ -101,6 +101,8 @@ namespace BAE.Mercury.Client
                             {
                                 RetSic sic = change.Sic;
                                 string name = PackSic(sic);
+                                if (sic.SicId == 0)
+                                    throw new ApplicationException("cannot change this node");
                                 string command = String.Format("editDistributionManagementNode {0}, '{1}'", sic.SicId, name);
                                 SqlCommand com = new SqlCommand(command);
                                 com.Connection = con;
@@ -111,6 +113,8 @@ namespace BAE.Mercury.Client
                             {
                                 RetSic sic = change.Sic;
                                 string name = PackSic(sic);
+                                if (sic.SicId == 0)
+                                    throw new ApplicationException("cannot delete this node");
                                 SqlCommand com = new SqlCommand(String.Format("delDistributionManagementNode {0}", sic.SicId));
                                 com.Connection = con;
                                 com.ExecuteNonQuery();

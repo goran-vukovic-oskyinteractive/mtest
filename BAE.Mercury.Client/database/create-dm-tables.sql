@@ -104,10 +104,10 @@ go
 
 SET IDENTITY_INSERT DMNode ON
 insert into DMNode(NodeId, ParentId, NodeName) values(0, null, 'Root')
-insert into DMNode(NodeId, ParentId, NodeName, NodeType, Locked) values(1, 0, 'Ian Brumby', 1, 1) --active, locked
+insert into DMNode(NodeId, ParentId, NodeName, NodeType, Locked) values(1, 0, 'Ian Brumby', 0, 0) --active, locked
 insert into DMNode(NodeId, ParentId, NodeName) values(2, 1, 'Unit = Set1 1 RAR')
 insert into DMNode(NodeId, ParentId, NodeName) values(3, 1, 'Unit = Set1 2 RAR')
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(4, 0, 'Set 2', 1)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(4, 0, 'Set 2', 0)
 insert into DMNode(NodeId, ParentId, NodeName) values(5, 4, 'Unit = Set2 1 RAR')
 insert into DMNode(NodeId, ParentId, NodeName) values(6, 4, 'Unit = Set2 2 RAR')
 insert into DMNode(NodeId, ParentId, NodeName) values(7, 4, 'Unit = Set2 3 RAR')

@@ -31,7 +31,7 @@ function ChangeList(id) {
     }
     this.LockSet = function () {
         if (this.Changes.length > 0)
-            lockSet(this.Id);
+            setLock(this.Id, true);
     }
 
 }
@@ -90,7 +90,7 @@ function getRow(tableTemplate, id, sic) {
     var row = tableTemplate.find("tr").eq(rowPos).clone();
     var spanName = row.find("span.sic");
     var name = sic.LongName;
-    spanName.html(name.toUpperCase());
+    spanName.html(name);
     var spanData = row.find("span." + spanClass);
     var data = sic.Data;
     spanData.html(data);
@@ -141,10 +141,13 @@ function isEmptyAppointment(id) {
         throw new Error("invalid number of tables");
 }
 
+/*
+
 function removeRow(genId, type) {
     var rowId = id.replace("", "");
     var rowOld = $ID(rowId);
 }
+*/
 function getTable(id, type) {
     var genId = getAppointmentGenId(id);
     var jqIds = JQID[type];
@@ -261,7 +264,7 @@ function sicValidate(sicPopup, id, change) {
             highlightControl(nameCtl);
             valid = false;
         }
-        name = name.trim();
+        name = name.trim().toUpperCase();
         if (name.length <= 0) {
             highlightControl(nameCtl);
             valid = false;
@@ -322,6 +325,33 @@ function sicSave(id, action, sicPopup, oldData) {
     return false;
 }
 
+function sicCopy(id, sic) {
+    //var appointmentList = sicPopup.find("#sic-appointment");
+    $CL("copy-sic-yes").click(function () {
+        var appCtl = $ID("sic-appointment");
+        var appointmentId = getSelectionValue(appCtl);
+        cbox.close();
+        alert(appointmentId);
+        var addId = appointmentId.replace("dw", "aa");
+        sic.Id = addId;
+        addNode(sic);
+        var change = new Change(Change.EnType.Add, sic)
+        changeList.AddChange(change);
+        return false;
+
+    });
+
+
+    var colorbox = $.colorbox({ href: "#copy-sic", inline: true, width: "700px",
+        onCleanup: function () {
+            $CL("copy-sic-yes").off('click');
+        }
+    });
+    $("#cboxLoadingOverlay").remove();
+    $("#cboxLoadingGraphic").remove();
+
+}
+
 
 function getPopup(id, sic, type) {
 
@@ -335,6 +365,7 @@ function getPopup(id, sic, type) {
     return sicPopup;
 }
 
+/*
 function getPopup(id, sic, type) {
 
 
@@ -346,7 +377,7 @@ function getPopup(id, sic, type) {
     var colorbox = $.colorbox({ href: "#sic-popup", inline: true, width: "700px", onCleanup: function () { sicCleanUp(sicPopup); } });
     return sicPopup;
 }
-
+*/
 function nodePlus() {
     var id = $(this)[0].id;
     ////alert("nodePlus");
@@ -389,7 +420,7 @@ function nodeCopy() {
     alert("node copy");
     var id = $(this)[0].id;
     var sic = getSicData(id);
-    copySic(id, sic);
+    sicCopy(id, sic);
 }
 
 function setFunctions(action, id, name) {

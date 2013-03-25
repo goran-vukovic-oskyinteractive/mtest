@@ -8,9 +8,6 @@
         <div class="btn-set">
             @{string active = set.Active ? "on" : "off"; }
             <a id="sa_@Html.Raw(set.Id)" href="#" class="checkbox @Html.Raw(active)">Check</a>
-			<a id="sd_@Html.Raw(set.Id)" href="#" class="popup-set-edit"><img src="~/images/btn-dm_edit.png" alt="Edit" height="24" width="25"/></a>
-			<a id="se_@Html.Raw(set.Id)" href="#" class="popup-set-delete"><img src="~/images/btn-dm_delete.png" alt="Delete" height="24" width="25"/></a>
-			<a id="sc_@Html.Raw(set.Id)" href="#" class="popup-set-copy"><img src="~/images/btn-dm_copy.png" alt="Copy" height="24" width="25"/></a>
         </div>
     </div>
     <ul style="display: none;">

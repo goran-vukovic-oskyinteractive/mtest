@@ -44,7 +44,8 @@ function addDMScroll() {
         autohidemode: false,
         cursorborder: "none",
         cursorcolor: "#6c6c6c",
-        zindex: 99
+        zindex: 99,
+		cursorwidth: 10
     });
 }
 
@@ -175,6 +176,7 @@ $(document).ready(function () {
 		    expandLevel(event);
 		}
 	);
+	
 
     // Inbox search
     // apply default value on input field
@@ -341,7 +343,7 @@ function resizeDmDiv()
 	{
 	var popupHeight = $(window).height();
 	//alert(resizeDiv + ' X ' + resizeDiv);
-	$("#graph").css("height",popupHeight - 250); /* email list */
+	$("#graph").css("height",popupHeight - 220); /* calculate height for graph, 250 is with the rule visualiser visible */
 }
 // Resize visualiser div based on graph div
 function resizeRvDiv()
@@ -439,8 +441,9 @@ $(document).ready(function() {
 	// POPUP
 	$(".popup").colorbox({width:"70%"});
 	$(".popup-inline.dm-btn").colorbox({inline:true,width:"700px"});
-	$(".buttons .popup-inline a").colorbox({inline:true,width:"700px"});
+	$(".buttons .popup-inline a").colorbox({inline:true,width:"700px"});	
 	
+
 	// Resize graph height based on browser viewport
 	$(window).resize(function() {
 		resizeDmDiv();
@@ -448,6 +451,13 @@ $(document).ready(function() {
 	});
 	resizeDmDiv();
 	resizeRvDiv();
+	
+	// Resize SIC
+	$(window).on('load resize', function(){
+		var winWidth = $('#graph').width();
+		//console.log(winWidth);
+		$('span.sic').width(winWidth - 520);
+	});
 });
 
 /**

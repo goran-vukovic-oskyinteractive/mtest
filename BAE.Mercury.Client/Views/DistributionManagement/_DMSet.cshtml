@@ -15,7 +15,7 @@
                 if (unit.Children.Count > 0) {
                 <div class="canvas">
                     @{foreach (DMappointment appointment in unit.Children)  {
-                        <table class="appointment" style="margin-top:20px;">
+                        <table class="appointment">
                             <tbody>
                                 <tr>
                                     <td class="appointment">
@@ -45,7 +45,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                    <br /> @*break between appointments*@
+                   @*break between appointments*@
                       }}
                 </div>
                 }
@@ -58,7 +58,7 @@
                 
             } 
         </div>
-        <p style="line-height:1px;"/> @*break between appointments*@
+        @*break between appointments*@
     <!--unit end -->
     }
    }

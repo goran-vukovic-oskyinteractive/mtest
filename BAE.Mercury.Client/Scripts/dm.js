@@ -45,60 +45,6 @@ function htmlEncode(value) {
     }
 }
 
-/*
-function Sic(id, type) { //simplified version of DMSic
-    //var finalized 
-    if (!(type == DMsic.EnType.Action || type == DMsic.EnType.Info))
-        throw new Error("invalid sic type");
-    if (!id)
-        throw new Error("invalid sic id");
-    var ids = id.split("_");
-    if (ids.length < 4)
-        throw new Error("invalid sic id");
-    this.Type = type;
-    this.Id = id;
-    this.Children = [];
-    this.AddRule = function (rule) {
-        if (!(rule instanceof DMrule))
-            throw new Error("invalid SIC rule");
-        var index = insertIndex(this.Children, rule);
-        //we also need to sort this
-        this.Children.splice(index, 0, rule);
-    }
-    var insertIndex = function (rules, rule) {
-        for (var i = 0; i < rules.length; i++) {
-            if (compare(rules[i], rule) < 0) {
-                return i;
-            }
-        }
-        return -1;
-    }
-    var compare = function (rule1, rule2) {
-        if (rule1.RuleType < rule2.RuleType)
-            return -1;
-        else if (rule1.RuleType == rule2.RuleType) {
-            if (rule1.MatchType < rule2.MatchType)
-                return -1;
-            else if (rule1.MatchType == rule2.MatchType) {
-                var str1 = rule1.Name.toLowerCase();
-                var str2 = rule2.Name.toLowerCase();
-                if (str1 < str2)
-                    return -1;
-                else if (str1 < str2) {
-                    return 0;
-                }
-                else
-                    return 1;
-            }
-            else
-                return 1;
-        }
-        else
-            return 1;
-    }
-}
-
-*/
 
 function DMrule(name, ruleType, matchType) {
     if (!(ruleType == DMrule.EnRuleType.SIC || ruleType == DMrule.EnRuleType.PrivacyMarking))
@@ -213,64 +159,153 @@ function DMsic(id, type) {
 DMsic.EnType = { Action: 2, Info: 1 };
 
 
-/*
-var test = new DMsic("aaaa", DMsic.EnType.Action);
 
 
-//alert(test.Id); alert(test.Type);
-var data = test.Data;
-//alert(data);
-var rule = new DMrule("zzzz", DMrule.EnRuleType.SIC, DMrule.EnMatchType.Equal);
-test.AddNode(rule);
-var rule1 = new DMrule("zzzz", DMrule.EnRuleType.PrivacyMarking, DMrule.EnMatchType.Equal);
-test.AddNode(rule1);
-var rule2 = new DMrule("zzzz", DMrule.EnRuleType.SIC, DMrule.EnMatchType.Equal);
-test.AddNode(rule2);
-var data = test.Data;
-//test.FinalizeData();
-//alert(data);
-*/
-
-
-function loadSets() {
-    ajaxCall("GetSets", null, populateSets);
+function setsLoad() {
+    ajaxCall("SetsGet", null, setsPopulate);
 }
 
 function isSetChanged() {
     return (changeList && changeList.Changes.length > 0)
 }
 
-function loadSet() {
+function setLoad() {
     if (isSetChanged()) {
         alert("you have changes! please press cancel button to clear the changes");
     }
     else
-        loadTree(this.id);
+        treeLoad(this.id);
     return false;
 }
 
-function lockSet(id) {
-    ajaxCall("LockSet", { i: id }, function () { alert("the set has been locked") });
+function setLock(id, lock) {
+    ajaxCall("SetLock", { i: id, l:lock }, function () { alert("the set has been " + ((lock) ? "" : "un") + "locked") });
 
 }
 
+function highlightedSetGetId() {
+    //what set is highlighted
+    var highlighted = $(".open");
+    if (!highlighted[0]) {
+        dmAlert("Please select a set before clicking this button");
+        return null;
+    }
+    var span = highlighted.find(".set-name");
+    return span[0].id;
+
+}
+
+function setAlertMessage(box, message) {
+    var title = box.find("h3");
+    title.html(message);
+    return title;
+}
+function dmAlert(message) {
+
+    var boxId = "dm-alert";
+    var box = $ID(boxId);
+    var title = setAlertMessage(box, message);
+    var okBtn = box.find(".answer-ok");
+    okBtn.click(function () {
+        cbox.close();
+        return false;
+
+    });
+    var colorbox = $.colorbox({ href: "#" + boxId, inline: true, width: "700px",
+        onCleanup: function () {
+            title.html("");
+        }
+    });
+    
+}
+
+function dmConfirm(message, action) {
+    var boxId = "dm-confirm";
+    var box = $ID(boxId);
+    var title = setAlertMessage(box, message);
+    var okBtn = box.find(".answer-ok");
+    okBtn.click(function () {
+        cbox.close();
+        action();
+        return false;
+
+    });
+    var colorbox = $.colorbox({ href: "#" + boxId, inline: true, width: "700px",
+        onCleanup: function () {
+            title.html("");
+            okBtn.off('click');
+        }
+    });
+    $("#cboxLoadingOverlay").remove();
+    $("#cboxLoadingGraphic").remove();
+
+}
+
+function dmPrompt(message, action) {
+
+    var boxId = "dm-prompt";
+    var box = $ID(boxId);
+    var title = setAlertMessage(box, message);
+    var okBtn = box.find(".answer-ok");
+    var input = $ID("dm-input-box");
+    okBtn.click(function () {
+        var val = input.attr("value").trim();
+        if (val.length <= 0) {
+            // error validation 
+            alert('Please ensure the Set Name is not empty');
+            $CL('required').css('border', '1px solid red');
+            return false;
+        }
+        //var data = new Object()
+        //data.n = val;
+        action(val);
+        cbox.close();
+        return false;
+
+    });
+    var colorbox = $.colorbox({ href: "#" + boxId, inline: true, width: "700px",
+        onCleanup: function () {
+            title.html("");
+        }
+    });
+    $("#cboxLoadingOverlay").remove();
+    $("#cboxLoadingGraphic").remove();
+}
+
+//save cancel
+function setSave() {
+    if (!isSetChanged()) {
+        dmAlert("There is nothing to save");
+        return;
+    } else {
+        alert("save");
+        //    var id = highlightedSetGetId();
+        //    setAction(id, $CL("copy-yes"), null, "SetCopy", "#copy-set", $CL("copy-no"));
+        //var id = highlightedSetGetId();
+        var myJsonString = JSON.stringify(changeList);
+        var action = function () {
+            ajaxCall("SetSave", { data: myJsonString }, function () {
+                dmAlert("your changes have been successfully applied");
+                changeList.Changes.length = 0;
+            });
+        }
 
 
-
-
-
-function saveSet() {
+        dmConfirm("Do you wish to save the changes?", action)
+    }
+}
+/*
+function setSave1() {
     if (!isSetChanged()) {
         alert("nothing to save");
         return;
     } else {
-        var myJsonString = JSON.stringify(changeList);
 
 
         $CL("save-yes").click(function () {
+            var myJsonString = JSON.stringify(changeList);
             cbox.close();
-            //alert("save");
-            ajaxCall("SaveSet", { data: myJsonString }, function () {
+            ajaxCall("SetSave", { data: myJsonString }, function () {
                 //alert("your changes have been successfully applied");
                 changeList.Changes.length = 0;
             });
@@ -289,35 +324,32 @@ function saveSet() {
         });
     }
 }
-
-function copySic(id, sic) {
-    //var appointmentList = sicPopup.find("#sic-appointment");
-    $CL("copy-sic-yes").click(function () {
-        var appCtl = $ID("sic-appointment");
-        var appointmentId = getSelectionValue(appCtl);
-        cbox.close();
-        alert(appointmentId);
-        var addId = appointmentId.replace("dw", "aa");
-        sic.Id = addId;
-        var dmsic = ConvertSic(sic);
-        addNode(dmsic);
-        return false;
-
-    });
-
-
-    var colorbox = $.colorbox({ href: "#copy-sic", inline: true, width: "700px",
-        onCleanup: function () {
-            $CL("copy-sic-yes").off('click');
+*/
+function setCancel() {
+    if (!isSetChanged()) {
+        dmAlert("nothing to cancel");
+        return;
+    } else {
+        //var id = highlightedSetGetId();
+        var action = function () {
+                if (changeList && changeList.Changes.length > 0) {
+                    setLock(changeList.Id, false);
+                    treeLoad(changeList.Id);
+                }
         }
-    });
-    $("#cboxLoadingOverlay").remove();
-    $("#cboxLoadingGraphic").remove(); 
 
+        dmConfirm("Do you wish to save the changes?", action)
+
+    }
 }
 
-function actionSet(id, clickBtn, input, action, href, activate) {
-    clickBtn.click(function () {
+/*
+function setAction1(id, actionBtn, input, action, href, cancelBtn, activate) {
+    if (cancelBtn) cancelBtn.click(function () {
+        cbox.close();
+        return false;
+    });
+    actionBtn.click(function () {
         var data = new Object;
         if (id) data.i = id;
         if (input) {
@@ -333,20 +365,25 @@ function actionSet(id, clickBtn, input, action, href, activate) {
         if (typeof activate == "boolean")
             data.a = activate;
         cbox.close();
-        ajaxCall(action, data, populateSets);
+        ajaxCall(action, data, setsPopulate);
         return false;
 
     });
 
     $CL('required').css('border', 0);
-    if (input) {
-        input.val("");
-    }
 
     var colorbox = $.colorbox({ href: href, inline: true, width: "700px",
         onCleanup: function () {
-            clickBtn.off('click');
-        }
+            actionBtn.off('click');
+        }, onComplete: function () {
+
+            if (input) {
+                input.val("");
+                input.focus();
+            }
+       }
+
+
     });
 
     $("#cboxLoadingOverlay").remove();
@@ -354,64 +391,109 @@ function actionSet(id, clickBtn, input, action, href, activate) {
     return false;
     
 }
+*/
 
 
 
-
-
-
-function addSet() {
-    actionSet(this.id, $CL("add-set-submit"), $ID("set-name-add"), "AddSet", "#add-set");
+function setAdd() {
+    alert("add");
+    var action = function (data) { ajaxCall("SetAdd", data, setsPopulate); }
+    dmPrompt("Please enter the set name", action)
+    //setAction(null, $CL("add-set-submit"), $ID("set-name-add"), "SetAdd", "#add-set");
 }
-function editSet() {
-    actionSet(this.id, $CL("edit-set-submit"), $("#set-name-edit"), "EditSet", "#edit-set");
+/*
+function setAdd1() {
+    alert("add");
+    setAction(null, $CL("add-set-submit"), $ID("set-name-add"), "SetAdd", "#add-set");
+}
+*/
+function setEdit() {
+    alert("edit");
+    var id = highlightedSetGetId();
+    if (!id)
+        return;
+    var action = function (text) {
+        var data = new Object();
+        data.i = id;
+        data.n = text;
+        ajaxCall("SetEdit", data, setsPopulate);
+    }
+    dmPrompt("Please enter the set name", action)
+}
+/*
+function setEdit1() {
+    alert("edit");
+    var id = highlightedSetGetId();
+    setAction(id, $CL("edit-set-submit"), $("#set-name-edit"), "SetEdit", "#edit-set");
+}
+*/
+
+function setDelete() {
+    alert("delete");
+    var id = highlightedSetGetId();
+    if (!id)
+        return;
+    var action = function () { ajaxCall("SetDelete", { i: id }, setsPopulate); }
+    dmConfirm("Do you wish to delete this set?", action)
+}
+
+function setCopy() {
+    alert("copy");
+    var id = highlightedSetGetId();
+    if (!id)
+        return;
+    var action = function () { ajaxCall("SetCopy", { i: id }, setsPopulate); }
+    dmConfirm("Do you wish to make a copy of this set?", action)
+
 }
 
 
+function setSet() {
+    alert("activate");
+    var $that = $(this);
+    var cl = $that.attr("class");
+    var off = cl.indexOf("off");
+    var stateOn = (off < 0);
+    var span = $ID("set-activation-status");
+    var status = (!stateOn) ? "ACTIVATE" : "DEACTIVATE";
 
-function copySet() {
-    actionSet(this.id, $CL("copy-yes"), null, "CopySet", "#copy-set");
+    var id = this.id; //highlightedSetGetId();
+    var action = function () { ajaxCall("SetSet", { i: id, a: stateOn}, setsPopulate); }
+    dmConfirm("Do you wish to " + status + " this set?", action);
+
+
+
 }
 
-function deleteSet() {
-    actionSet(this.id, $CL("delete-yes"), null, "DeleteSet", "#delete-set");
-}
-
+/*
 function setSet() {
     var $that = $(this);
     var cl = $that.attr("class");
     var off = cl.indexOf("off");
     var stateOn = (off < 0);
-    var input = $ID("set-activation");
-    var flag = (stateOn) ? "truez" : "falsez";
-    input.val(flag);
     var span = $ID("set-activation-status");
-    var status= (!stateOn)? "ACTIVATE" : "DEACTIVATE";
-    span.html(status);
-    actionSet(this.id, $CL("activate-yes"), null, "SetSet", "#activate-set", stateOn);
-    
+    var status = (!stateOn) ? "ACTIVATE" : "DEACTIVATE";
 
+    span.html(status);
+    setAction(this.id, $CL("activate-yes"), null, "SetSet", "#activate-set", $CL("activate-no"), stateOn);
+    
 }
 
+*/
 
 
-
-function populateSets(data) {
+function setsPopulate(data) {
     var setList = $("#setbox-list");
     setList.empty();
     setList.append(data);
     clickRebind(setList, "li.set > div > a", expandLevel);
-    clickRebind(setList, ".popup-inline-set", loadSet);
-    clickRebind(setList, "[id^='s_']", loadSet);
+    clickRebind(setList, "[id^='s_']", setLoad);
     clickRebind(setList, ".checkbox", setSet);
-    clickRebind(setList, "a.popup-set-edit", editSet);
-    clickRebind(setList, "a.popup-set-delete", deleteSet);
-    clickRebind(setList, "a.popup-set-copy", copySet);    
 }
-function loadTree(id) {
+function treeLoad(id) {
     var ids = id.split("_");
     changeList = new ChangeList(id);
-    ajaxCall("GetSet", { i: id }, populateTree);
+    ajaxCall("SetGet", { i: id }, populateTree);
 }
 
 function ajaxCall(action, data, callBack) {
@@ -433,33 +515,6 @@ function ajaxCall(action, data, callBack) {
 }
 
 
-/*
-function saveAll() {
-    var hidden = $("<div id='cover'><img src='images/ajax-loader.gif' alt='please wait'/><p>please wait</p> </div>"); //style='background-color:green;position:absolute;left:0;top:0;height:100%;width:100%' 
-    var body = $("body");
-
-    var sjs = ""; // JSON.stringify(changes);
-    body.append(hidden);
-    throw new Error("fix **** url");
-    //do an ajax call to save
-    $.ajax({
-        type: "POST",
-        url: "~/DistributionManagement/Index",
-        dataType: "json",
-        success: function (data) {
-            clear.length = 0;
-            init(data);
-        },
-        error: function () {
-            ////alert("fail");
-        },
-        data: { c: sjs}         //context: document.body
-    }).done(function () {
-    });
-
-    return false;
-}
-*/
 
 var sortFunc = function (a, b) {
     if (a.toLowerCase() < b.toLowerCase()) return -1;
@@ -670,8 +725,6 @@ function getSicData(id) {
 function closePopupSic(sicPopup) {
     $.colorbox.close();
     return;
-    var sicPopupNew = $("#sic-popup-new");
-    sicPopupNew.remove();
 }
 
 function isEqual(data, oldData) {
@@ -683,8 +736,8 @@ function isEqual(data, oldData) {
 $(document).ready(function () {
 
     // Tooltip
-//    $('.tooltip').hover(function (event) {
-//        event.preventDefault();
+    //    $('.tooltip').hover(function (event) {
+    //        event.preventDefault();
     //        $(this).children('span.tooltip-content').fadeToggle();
     //    });
 
@@ -696,32 +749,60 @@ $(document).ready(function () {
     });
 
 
-    loadSets();
+    setsLoad();
 
-
+    //save/cancel
     $("#btn-save").click(function () {
-        saveSet();
+        setSave();
         return false;
     });
     $("#btn-cancel").click(function () {
-        if (changeList && changeList.Changes.length > 0)
-            loadTree(changeList.Id);
+        setCancel();
         return false;
     });
+
+    //set operations
     $("#btn-add-set").click(function () {
-        addSet();
+        setAdd();
+        return false;
+    });
+
+    $("a.popup-set-edit").click(function () {
+        setEdit();
+        return false;
+    });
+    $("a.popup-set-delete").click(function () {
+        setDelete();
+        return false;
+    });
+
+    $("a.popup-set-copy").click(function () {
+        setCopy();
+        return false;
+    });
+    $("a.popup-set-activate").click(function () {
+        setActivate();
         return false;
     });
 
 
 
+
+    //set select
     $("[id^=s_]").click(function () {
 
-        loadTree(this.id);
+        treeLoad(this.id);
         return;
     });
 
 
+    //miscellaneous
+    $CL("answer-cancel").click(function () {
+        cbox.close();
+    });
+
+
+/*
     $(".edit").click(function () {
         //alert("edit");
         return false;
@@ -735,11 +816,11 @@ $(document).ready(function () {
         $(this).css("background-color", "inherit");
         return false;
     });
-
+*/
 
     $("[id^=ad_]").click(function () {
         //alert("minus");
-        //loadTree(this.id);
+        //treeLoad(this.id);
         return;
     });
 

@@ -397,7 +397,7 @@ namespace BAE.Mercury.Client.Models
 
     public class RetSic
     {
-        List<RetRule> rules = new List<RetRule>();
+        List<RetRule> children = new List<RetRule>();
         private int setId, unitId, appointmentId, sicId;
         private DMsic.SicType type;
 
@@ -413,15 +413,15 @@ namespace BAE.Mercury.Client.Models
                 sicId = parser.SicId;
             }
         }
-        public List<RetRule> Rules
+        public List<RetRule> Children
         {
             set
             {
-                rules = value;
+                children = value;
             }
             get
             {
-                return rules;
+                return children;
             }
         }
         public string Type

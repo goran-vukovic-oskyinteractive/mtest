@@ -358,6 +358,7 @@
     <Content Include="Images\bg-verified.png" />
     <Content Include="Images\BlackArrowDown.gif" />
     <Content Include="Images\BlackArrowRight.gif" />
+    <Content Include="Images\btn-dm_add.PNG" />
     <Content Include="Images\btn-dm_copy.png" />
     <Content Include="Images\btn-dm_delete.png" />
     <Content Include="Images\btn-dm_edit.png" />
@@ -376,6 +377,7 @@
     <Content Include="Images\icon-admin_menu.png" />
     <Content Include="Images\icon-advance_search.png" />
     <Content Include="Images\icon-back.png" />
+    <Content Include="Images\icon-copy.png" />
     <Content Include="Images\icon-delete.png" />
     <Content Include="Images\icon-edit.png" />
     <Content Include="Images\icon-forward.png" />

@@ -13,12 +13,12 @@ namespace BAE.Mercury.Client.Controllers
     public class DistributionManagementController : Controller
     {
         [HttpPost]
-        public void LockSet(string i)
+        public void SetLock(string i, bool l)
         {
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             DMidParser parser = new DMidParser(i);
-            messageStore.LockSet(User.Identity.Name, parser.SetId);
+            messageStore.LockSet(User.Identity.Name, parser.SetId, l);
         }
 
 
@@ -35,7 +35,7 @@ namespace BAE.Mercury.Client.Controllers
             return Json(html);
         }
         [HttpPost]
-        public void SaveSet(string data)
+        public void SetSave(string data)
         {
             Debug.WriteLine(data);
             RetChangeList changeList = (RetChangeList)Newtonsoft.Json.JsonConvert.DeserializeObject(data, typeof(RetChangeList));
@@ -43,7 +43,7 @@ namespace BAE.Mercury.Client.Controllers
             messageStore.SaveSet(User.Identity.Name, changeList);
         }
         [HttpPost]
-        public JsonResult AddSet(string n)
+        public JsonResult SetAdd(string n)
         {
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
@@ -53,7 +53,7 @@ namespace BAE.Mercury.Client.Controllers
             return Json(html);
         }
         [HttpPost]
-        public JsonResult DeleteSet(string i)
+        public JsonResult SetDelete(string i)
         {
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
@@ -65,7 +65,7 @@ namespace BAE.Mercury.Client.Controllers
 
         }
         [HttpPost]
-        public JsonResult EditSet(string i, string n)
+        public JsonResult SetEdit(string i, string n)
         {
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
@@ -76,7 +76,7 @@ namespace BAE.Mercury.Client.Controllers
             return Json(html);
         }
         [HttpPost]
-        public JsonResult CopySet(string i)
+        public JsonResult SetCopy(string i)
         {
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
@@ -125,7 +125,7 @@ namespace BAE.Mercury.Client.Controllers
             }
         }
         [HttpPost]
-        public JsonResult GetSets()
+        public JsonResult SetsGet()
         {
             string username = User.Identity.Name;
             username = "ken.ong";
@@ -136,7 +136,7 @@ namespace BAE.Mercury.Client.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetSet(string i)
+        public JsonResult SetGet(string i)
         {
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             DMidParser parser = new DMidParser(i);
