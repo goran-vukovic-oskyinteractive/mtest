@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using BAE.Mercury.Client.Models;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace BAE.Mercury.Client.Controllers
 {
@@ -134,16 +136,115 @@ namespace BAE.Mercury.Client.Controllers
             string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
             return Json(html);
         }
+        private class UnitAppointments
+        {
+            private string unitId, appointmentListHtml;
+            public UnitAppointments(DMunit unit)
+            {
+                unitId = String.Format("un_{0}_{1}", unit.Parent.Id, unit.Id);
+                StringBuilder sb = new StringBuilder(ListOption("Please select", String.Empty));
+                foreach (DMappointment appointment in unit.Children)
+                {
+                    string appointmentId = String.Format("dw_{0}_{1}_{2}", unit.Parent.Id, unit.Id, appointment.Id);
+                    //sb.Append(String.Format("<option value='{0}'>{1}</option>", appointmentId, appointment.Name));
+                    sb.Append(ListOption(appointment.Name, appointmentId));
+                }
+                appointmentListHtml = sb.ToString();
+            }
+            public string UnitId
+            {
+                get
+                {
+                    return unitId;
+                }
+            }
+            public string AppointmentListHtml
+            {
+                get
+                {
+                    return appointmentListHtml;
+                }
+            }
 
+        }
+        private class SetAndLists
+        {
+            private string id, setHtml, unitListHtml;
+            private bool locked;
+            private List<UnitAppointments> listUnitAppointments;
+            public SetAndLists(string id, bool locked, string setHtml, string unitListHtml, List<UnitAppointments> listUnitAppointments) //, string appointmentListHtml)
+            {
+                this.id = id;
+                this.locked = locked;
+                this.setHtml = setHtml;
+                this.unitListHtml = unitListHtml;
+                this.listUnitAppointments = listUnitAppointments;
+            }
+            public string Id
+            {
+                get
+                {
+                    return id;
+                }
+            }
+            public bool Locked
+            {
+                get
+                {
+                    return locked;
+                }
+
+            }
+            public string SetHtml
+            {
+                get
+                {
+                    return setHtml;
+                }
+            }
+            public string UnitListHtml
+            {
+                get
+                {
+                    return unitListHtml;
+                }
+            }
+            public List<UnitAppointments> ListUnitAppointments
+            {
+                get
+                {
+                    return listUnitAppointments;
+                }
+            }
+        }
+        private static string ListOption(string option, string value)
+        {
+            return String.Format("<option value='{1}'>{0}</option>", option, value);
+        }
         [HttpPost]
         public JsonResult SetGet(string i)
         {
+            string userName = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             DMidParser parser = new DMidParser(i);
-            DMset set = messageStore.GetDMSet(User.Identity.Name, parser.SetId, parser.UnitId);
-            string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSet.cshtml", set);
-            return Json(html);
+            DMset set = messageStore.GetDMSet(userName, parser.SetId, parser.UnitId);
+            string setHtml = RenderPartialViewToString("~/Views/DistributionManagement/_DMSet.cshtml", set);
+            StringBuilder sb = new StringBuilder(ListOption("Please select", String.Empty));
+            List<UnitAppointments> listUnitAppointments = new List<UnitAppointments>();
+            foreach (DMunit unit in set.Children)
+            {
+                string unitId = String.Format("un_{0}_{1}", set.Id, unit.Id);
+                UnitAppointments unitAppointments = new UnitAppointments(unit);
+                listUnitAppointments.Add(unitAppointments);
+                sb.Append(ListOption(unit.Name, unitId));
+            }
+            string unitListHtml = sb.ToString();
+            //string unitListHtml = RenderPartialViewToString("~/Views/DistributionManagement/_DMunitList.cshtml", set);
+            //string appointmentListHtml = RenderPartialViewToString("~/Views/DistributionManagement/_DMappointmentList.cshtml", set);
+            SetAndLists setAndList = new SetAndLists(i, set.Locked, setHtml, unitListHtml, listUnitAppointments);
+            return Json(setAndList);
         }
+
   
     }
 }

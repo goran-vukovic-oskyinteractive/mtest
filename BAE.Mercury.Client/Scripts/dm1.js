@@ -10,11 +10,21 @@
 
 Change.EnType = { Delete: -1, Edit: 0, Add: 1 };
 
+
+
+
+/*
 function ChangeList(id) {
     if (!id)
         throw new Error("invalid set id");    
     this.Id = id;
     this.Changes = [];
+    this.ClearChanges = function () {
+        this.Changes.length = 0;
+    }
+    this.HasChanges = function () {
+        return (this.Changes.length > 0);
+    }
     this.AddChange = function (change) {
         if (!(change instanceof Change))
             throw new Error("invalid change");
@@ -35,8 +45,56 @@ function ChangeList(id) {
     }
 
 }
+*/
 
-var changeList = null;
+function Set(id, lock, appointments) {
+    if (!id)
+        throw new Error("invalid set id");
+    if (!(typeof lock == "boolean"))
+        throw new Error("invalid lock flag");
+    this.Id = id;
+    var locked = lock;
+    this.Changes = [];
+    this.ClearChanges = function () {
+        this.Changes.length = 0;
+    }
+    this.HasChanges = function () {
+        return (this.Changes.length > 0);
+    }
+    this.AddChange = function (change) {
+        if (!(change instanceof Change))
+            throw new Error("invalid change");
+        if (!change.Sic.Id)
+            throw new Error("sic must have an id");
+        if (change.Type == Change.EnType.Add || change.Type == Change.EnType.Edit) {
+            if (change.Sic.Children.length <= 0)
+                throw new Error("this sic must have rules");
+        }
+        this.Changes.push(change);
+        //on first update notify the server
+        if (this.Changes.length == 1)
+            this.LockSet(true, true);
+    }
+    this.LockSet = function (refresh, reload) {
+        if (this.Changes.length > 0) {
+            setLock(this.Id, true, false, alert);
+            locked = true;
+        }
+    }
+    this.IsLocked = function () {
+        return locked;
+    }
+    var listAppointments = appointments;
+    this.GetAppointmentList = function(unitId) {
+        for (var i = 0; i < listAppointments.length; i++) {
+            if (listAppointments[i].UnitId == unitId)
+                return listAppointments[i].AppointmentListHtml;
+        }
+        throw new Error("unit not found");
+        return null;
+    }
+
+}
 
 function setSelectionValue(listbox, value) {
     listbox.val(value);
@@ -198,7 +256,6 @@ function updateNode(sic) {
 }
 function removeNode(id) {
     //we find the type by id
-    alert(id);
     var prefix = id[0];
     var type;
     if (prefix == "i")
@@ -224,6 +281,10 @@ function removeNode(id) {
 
 function highlightControl(control) {
     control.css("background-color", "#faa");
+}
+
+function deHighlightControl(control) {
+    control.css("background-color", "#fff");
 }
 
 function errorMessage(error) {
@@ -310,7 +371,7 @@ function sicSave(id, action, sicPopup, oldData) {
                 //var dmsic = ConvertSic(data.sic);
                 updateNode(data.sic);
                 var change = new Change(Change.EnType.Edit, data.sic)
-                changeList.AddChange(change);
+                currentSet.AddChange(change);
 
             }
         } else {
@@ -318,25 +379,50 @@ function sicSave(id, action, sicPopup, oldData) {
             //var dmsic = ConvertSic(data.sic);
             addNode(data.sic);
             var change = new Change(Change.EnType.Add, data.sic)
-            changeList.AddChange(change);
+            currentSet.AddChange(change);
         }
         closePopupSic(sicPopup);
     }
     return false;
 }
 
+function isValidSelect(data) {
+    var valid = true;
+    var unitCtl = $ID("sic-unit");
+    var unitId = getSelectionValue(unitCtl);
+    if (unitId == "") {
+        highlightControl(unitCtl);
+        valid = false;
+
+    } else
+        data.unitId = unitId;
+    var appCtl = $ID("sic-appointment");
+    var appointmentId = getSelectionValue(appCtl);
+    if (appointmentId == "") {
+        highlightControl(appCtl);
+        valid = false;
+    } else
+        data.appointmentId = appointmentId;
+
+    if (!valid) {
+        errorMessage("please enter data in the empty fields highlighted red");
+        return false;
+    }
+    return true;
+}
 function sicCopy(id, sic) {
-    //var appointmentList = sicPopup.find("#sic-appointment");
-    $CL("copy-sic-yes").click(function () {
-        var appCtl = $ID("sic-appointment");
-        var appointmentId = getSelectionValue(appCtl);
-        cbox.close();
-        alert(appointmentId);
-        var addId = appointmentId.replace("dw", "aa");
+    var submit = $CL("copy-sic-yes");
+    submit.click(function () {
+        var data = new Object();
+        if (!isValidSelect(data))
+            return; 
+        //alert(appointmentId);
+        var addId = data.appointmentId.replace("dw", "aa");
         sic.Id = addId;
         addNode(sic);
         var change = new Change(Change.EnType.Add, sic)
-        changeList.AddChange(change);
+        currentSet.AddChange(change);
+        cbox.close();
         return false;
 
     });
@@ -344,7 +430,12 @@ function sicCopy(id, sic) {
 
     var colorbox = $.colorbox({ href: "#copy-sic", inline: true, width: "700px",
         onCleanup: function () {
-            $CL("copy-sic-yes").off('click');
+            submit.off('click');
+            var unitCtl = $ID("sic-unit");
+            deHighlightControl(unitCtl);
+            var appCtl = $ID("sic-appointment");
+            deHighlightControl(appCtl);
+
         }
     });
     $("#cboxLoadingOverlay").remove();
@@ -354,8 +445,10 @@ function sicCopy(id, sic) {
 
 
 function getPopup(id, sic, type) {
-
-
+    
+    var divId = "dw" + getAppointmentGenId(id);
+    var $div = $ID(divId);
+    var $tdappName = $div.parent().prev();
     var sicPopup = $("#sic-popup");
     var sicList = sicPopup.find("#sic-list");
     sicPopup.list = sicList;
@@ -410,14 +503,14 @@ function nodeMinus() {
         removeNode(id);
         var sic = new DMsic(id, ((id[0] == "i") ? DMsic.EnType.Action : DMsic.EnType.Action));
         var change = new Change(Change.EnType.Delete, sic);
-        changeList.AddChange(change);
+        currentSet.AddChange(change);
 
     }
 }
 
 
 function nodeCopy() {
-    alert("node copy");
+    //alert("node copy");
     var id = $(this)[0].id;
     var sic = getSicData(id);
     sicCopy(id, sic);

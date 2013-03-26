@@ -4,11 +4,11 @@
 
 <!--set start  -->
 
-<div class="set" >
+<div id="st_@Html.Raw(String.Format("{0}", Model.Id))" class="set" locked="@Html.Raw(Model.Locked)">
 @{ if (Model.Children.Count > 0) {
     foreach (DMunit unit in Model.Children){
     <!--unit start -->
-        <div class="unit">
+        <div class="unit" id="un_@Html.Raw(String.Format("{0}_{1}", Model.Id, unit.Id))">
             <div class="unit-title">@Html.Raw(unit.Name)</div>
             <div class="user rounded">Duty Officer = Watchkeeper</div>
             @{ 
@@ -22,12 +22,12 @@
                                         <div class="appointment">@Html.Raw(appointment.Name)</div>
                                     </td>
                                     <td class="sic-table">
-
+                                        
                                         <div id="dw_@Html.Raw(String.Format("{0}_{1}_{2}", Model.Id, unit.Id, appointment.Id))">
                                             @{ 
                                     
-                                                Debug.WriteLine(appointment.Name);
-                                                string setUnitId = String.Format("{0}_{1}", Model.Id, unit.Id);
+                                                Debug.WriteLine(appointment.Name);                                                
+                                                //Html.RenderPartial("_DMTable", new {a : appointment, i : appointmentId});
                                                 Html.RenderPartial("_DMTable", appointment);
 
                                             }

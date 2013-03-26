@@ -124,6 +124,10 @@ ol li { list-style:decimal; padding:0 0 3px 10px; }
 #buttons ul li#btn-cancel a { background-position:-843px 0; }
 #buttons ul li#btn-cancel a:hover { background-position:-843px -30px; }
 
+#buttons ul li#btn-unlock {}
+#buttons ul li#btn-unlock a { background-position:-931px 0; }
+#buttons ul li#btn-unlock a:hover { background-position:-931px -30px; }
+
 /*** COLLAPSE ***/
 .collapse a { background:url(../images/btn-collapse.png) no-repeat; width:15px; height:15px; display:block; text-indent:-9999px; float:left; margin:0 8px 0 0; }
 .collapse a.active { background-position:bottom; }
@@ -143,15 +147,19 @@ ol li { list-style:decimal; padding:0 0 3px 10px; }
 #setbox ul#setbox-list ul li a { background:#303030; border-top:1px solid #262626; }
 #setbox ul#setbox-list li { margin:0; padding:0; font-size:13px; font-weight:normal; display:block; }
 #setbox ul#setbox-list li div { background:url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat; }
-#setbox ul#setbox-list li div.open { background:#cd3d3d url(../images/bg-mailbox_arrow_down.png) 15px 15px no-repeat; }
+#setbox ul#setbox-list li div.open { background:#7a0101 url(../images/bg-mailbox_arrow_down.png) 15px 15px no-repeat; }
+#setbox ul#setbox-list li div.active { background:url(../images/bg-mailbox_arrow_down.png) 15px 15px no-repeat; }
+
 #setbox ul#setbox-list li div:hover { background:#cd3d3d url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat; }
-#setbox ul#setbox-list li div.open:hover { background:#cd3d3d url(../images/bg-mailbox_arrow_down.png) 15px 15px no-repeat; }
+#setbox ul#setbox-list li div.open:hover { background:#ad1313 url(../images/bg-mailbox_arrow_down.png) 15px 15px no-repeat; }
 #setbox ul#setbox-list li a { display:block; border-top:1px solid #343434; padding:9px 0 9px 30px; color:#fff; overflow:hidden; }
-#setbox ul#setbox-list li ul li a:hover,
-#setbox ul#setbox-list li ul li.active a { background:#cd3d3d; }
+#setbox ul#setbox-list li ul li a:hover { background:#cd3d3d; }
+#setbox ul#setbox-list li ul li.active a { background:#7a0101; }
+#setbox ul#setbox-list li ul li.active:hover a { background:#ad1313; }
+
 #setbox ul#setbox-list li span.counter { display:block; padding:0 7px; text-align:center; background:#6c6c6c; float:right; margin:0 10px 0 0; border-radius: 5px; border:1px solid #5f5f5f; font-size:12px; height:20px; line-height:20px; }
 #setbox ul#setbox-list li div:hover span.counter, #setbox ul#setbox-list li a:hover span.counter, #setbox ul#setbox-list li div.open span.counter { background:#992424!important; border:1px solid #872020!important; }
-#setbox ul#setbox-list li span.icon { background:url(../images/bg-mailbox_icon.png) 0 0 no-repeat; display:block; width:16px; height:15px; float:left; margin-top:0px; }
+#setbox ul#setbox-list li span.icon { background:url(../images/icon-dm_lock.png) 0 0 no-repeat; display:block; width:16px; height:15px; float:left; margin-top:1px; }
 #setbox ul#setbox-list li strong { font-weight:normal; float:left; margin:0 0 0 10px; width:190px; overflow: hidden; }
 #setbox ul#setbox-list li#inbox div:hover span.icon { background-position:0 -15px }
 #setbox ul#setbox-list li#draft span.icon { background-position:-18px 0; width:14px; }
@@ -455,9 +463,9 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 .popup-content .section .inner label {float:left; width:20%; text-align:right; margin:0 1% 0 0;}
 .popup-content .section .inner textarea {width:69%; background:#fff; border:1px solid #cdcdcd; height:140px;}
 .popup-content .section .inner .col-wrap {overflow:hidden; margin:0 0 10px 0;}
-.popup-content .section .inner .col-wrap .col {float:left; width:15%; margin:0 1% 0 0;}
+.popup-content .section .inner .col-wrap .col {float:left; width:25%; margin:0 1% 0 0;}
 .popup-content .section .inner .col-wrap .col.wide {width:40%}
-.popup-content .section .inner select {width:100%; height:20px}
+.popup-content .section .inner select {width:100%; height:25px;border:1px solid #cdcdcd;} 
 .popup-content .section .inner name {width:300px; height:20px}
 .popup-content .section .inner type {width:150px; height:20px}
 
@@ -497,8 +505,17 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 .popup-content .section.expanding {overflow:auto; height:300px;}
 
 
-span.tooltip-content {display:none; position:absolute; left:450px; width:200px; background:#606060; padding:5px 10px; z-index:9999; text-transform:none; color:#fff; border-radius:5px;}
+.popup-content .section .inner .col.single {width:25%;}
 
+.popup-content .section.expanding {overflow:auto; height:300px;}
+
+span.tooltip-content {display:none; position:absolute; left:400px; width:250px; background:#606060; padding:8px 10px; z-index:9999; text-transform:none; color:#fff; border-radius:5px; line-height:20px;width:500px}
+
+#setbox ul#setbox-list li span.icon {display:none;}
+#setbox ul#setbox-list li strong {margin:0;}
+
+#setbox ul#setbox-list li.locked span.icon {display:block;}
+#setbox ul#setbox-list li.locked strong {margin:0 0 0 5px;}
 
 /*
 #xwrapper { min-width:1020px; width:auto!important; width:1020px; }

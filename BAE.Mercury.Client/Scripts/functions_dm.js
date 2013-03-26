@@ -49,34 +49,55 @@ function addDMScroll() {
     });
 }
 
-function expandLevel(event) {
-    event.preventDefault();
-    /*var thisDiv = '';
-    if ($(this).find('a').length > 0) {
-    thisDiv = $(this);
-    }
-    else {
-    thisDiv = $(this).parent('div');
-    }*/
-    //console.log(thisDiv);
+function init_ajax_complete()
+{
+	removeScrollDM();
+	init_expandLevel();
+	addDMScroll();
+}
 
+function dm_ajax_completed()
+{
+	resizeSic();
+}
+
+function init_expandLevel()
+{
+	if( ($('#setbox-list li.set ul.child-set').length < 1) && ($('#setbox-list li.set > div > a').length > 0) )
+	{
+		$('#setbox-list li.set').find('ul').addClass('child-set').find('li').addClass('child').find('a').live('click', (function(event){ext_child_click(event, $(this));}));
+	}
+}
+
+function ext_child_click(event, dom)
+{
+    event.preventDefault();
+	$('#setbox-list div').removeClass('open');
+	$('#setbox-list li.child').removeClass('active');
+	$(dom).parent('li').addClass('active').parent('ul').siblings('div').addClass('active');
+    }
+
+function expandLevel(event) {
+	if(event != undefined){ event.preventDefault(); }
+	init_expandLevel();
     removeScrollDM();
     var openMe = $(this).parent('div').parent('li').find('ul');
-    var mySiblings = $(this).parent('div').parent('li').siblings().find('ul');
-    $(this).parent('div').parent('li').siblings().find('div').removeClass('open');
-    if (openMe.hasClass('open')) {
-        $(this).parent('div').removeClass('open');
-        openMe.slideUp('normal', function () {
-            mySiblings.slideDown('normal');
-        });
+    var openMe_siblings = $(this).parent('div').parent('li').siblings().find('ul');
+
+    $(this).parent('div').parent('li').siblings().find('div').removeClass('open').removeClass('active');
+    $('#setbox-list li.child').removeClass('active');
+    if(($(this).parent('div').hasClass('open')) || ($(this).parent('div').hasClass('active')))
+    {
+        $(this).parent('div').removeClass('open').removeClass('active');
+        openMe.slideUp('normal');
     }
-    else {
+    else
+    {
         $(this).parent('div').addClass('open');
-        mySiblings.slideUp('normal', function () {
+        openMe_siblings.slideUp('normal', function () {
             openMe.slideDown('normal');
             openMe.css('zoom', '1'); //ie7 fix	        	
         });
-        //To do: IE7 needs a refresh of DIV here
     }
     addDMScroll();
 }
@@ -171,12 +192,15 @@ $(document).ready(function () {
     // Freely distributable for commercial or non-commercial use
 
     $('#setbox-list ul').hide();
+    /*LOADED BY AJAX > dm.js
     $('#setbox-list li.set > div > a').click(
 		function (event) {
 		    expandLevel(event);
 		}
 	);
-	
+	*/
+	//only for doc ready
+	init_expandLevel();
 
     // Inbox search
     // apply default value on input field
@@ -352,10 +376,15 @@ function resizeRvDiv()
 	$("#rule-visualiser-wrap-outer").css("width",graphWidth + 1);
 }
 	
+function resizeSic() 
+{
+        var winWidth = $('#graph').width();
+	$('span.sic').width(winWidth - 460);
+}
 	
 $(document).ready(function() {
+	$(window).on('load resize', function(){ resizeSic(); });
 
-	//
 	$(".tabs").tabs();
 	//
 	$("#select-field li .btn-minus").css("display", "none");
@@ -453,11 +482,12 @@ $(document).ready(function() {
 	resizeRvDiv();
 	
 	// Resize SIC
-	$(window).on('load resize', function(){
-		var winWidth = $('#graph').width();
-		//console.log(winWidth);
-		$('span.sic').width(winWidth - 520);
-	});
+	resizeSic();
+
+    // Force focus on input field after cbox complete.
+
+
+
 });
 
 /**
@@ -496,8 +526,8 @@ $(document).ready(function() {
 function dm_intervals_callee()	{
 	//console.log('intervals called');  
 	    //alert('10m intervals called.. find me at functions_dm.js');
-        if (changeList)
-            changeList.LockSet();
+    if (currentSet)
+        currentSet.LockSet();
 }
 
 

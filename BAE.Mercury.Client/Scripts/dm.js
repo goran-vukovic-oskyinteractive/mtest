@@ -1,4 +1,5 @@
-﻿if (!String.prototype.trim) {
+﻿//utility functions
+if (!String.prototype.trim) {
     String.prototype.trim = function () { return this.replace(/^\s+|\s+$/g, ''); };
 }
 String.Format = function () {
@@ -15,8 +16,18 @@ String.Format = function () {
 }
 
 
+function StringBuilder(init) {
 
-var JQID = [{}, { "table": "it", "row": "ir", "text": "is", "edit": "ie", "del": "id", "copy": "ic" }, { "table": "at", "row": "ar", "text": "as", "edit": "ae", "del": "ad", "copy": "ac"}];
+    var mem = "" + init;
+    this.Append = function (s) {
+        mem += s;
+        this.Length = mem.length;
+    };
+    this.ToString = function () {
+        return mem;
+    };
+    this.Length = mem.length;
+}
 
 
 function Log(entry) {
@@ -46,6 +57,7 @@ function htmlEncode(value) {
 }
 
 
+//classes
 function DMrule(name, ruleType, matchType) {
     if (!(ruleType == DMrule.EnRuleType.SIC || ruleType == DMrule.EnRuleType.PrivacyMarking))
         throw new Error("invalid rule type");
@@ -79,18 +91,6 @@ DMrule.compareTo = function (rule1, rule2) {
                         return rule1.compareTo(rule2);
                     }
 
-function StringBuilder(init) {
-
-    var mem = "" + init;
-    this.Append = function(s) {
-        mem += s;
-        this.Length = mem.length;
-    };
-    this.ToString = function() {
-        return mem;
-    };
-    this.Length = mem.length;
-}
 
 
 function DMsic(id, type) {
@@ -106,11 +106,9 @@ function DMsic(id, type) {
     this.Id = id;
     this.Type = type;
 
-    //this.Data = null;
-    //this.LongName = null;
     this.Children = children;
     this.FinalizeData = function () {
-        //this method exists so that node information is assembled only once
+        //this method is there so that node information is assembled only once
         if (finalized)
             throw new Error("this SIC was aleardy finalized");
         finalized = true;
@@ -158,28 +156,42 @@ function DMsic(id, type) {
 }
 DMsic.EnType = { Action: 2, Info: 1 };
 
+//global variables
+var JQID = [{}, { "table": "it", "row": "ir", "text": "is", "edit": "ie", "del": "id", "copy": "ic" }, { "table": "at", "row": "ar", "text": "as", "edit": "ae", "del": "ad", "copy": "ac"}];
 
+var currentSet = null;
 
+//operations
 
 function setsLoad() {
     ajaxCall("SetsGet", null, setsPopulate);
 }
 
 function isSetChanged() {
-    return (changeList && changeList.Changes.length > 0)
+    return (currentSet && currentSet.HasChanges())
 }
+function isSetLocked() {
+    return (currentSet && currentSet.IsLocked())
+}
+
+
 
 function setLoad() {
     if (isSetChanged()) {
-        alert("you have changes! please press cancel button to clear the changes");
+        dmAlert("Unsaved Changes", "There are unsaved changes for the currently viewed set. The changes need to be saved or cancelled before another set can be viewed.");
     }
     else
         treeLoad(this.id);
-    return false;
+	
 }
 
-function setLock(id, lock) {
-    ajaxCall("SetLock", { i: id, l:lock }, function () { alert("the set has been " + ((lock) ? "" : "un") + "locked") });
+function setLock(id, lock, refresh, alert) {
+    ajaxCall("SetLock", { i: id, l: lock }, function () {
+        if (refresh)
+            treeLoad(id);
+        if (alert)
+            dmAlert("Lock Set", "The set has been " + ((lock) ? "" : "un") + "locked.")
+    });
 
 }
 
@@ -187,24 +199,31 @@ function highlightedSetGetId() {
     //what set is highlighted
     var highlighted = $(".open");
     if (!highlighted[0]) {
-        dmAlert("Please select a set before clicking this button");
+        dmAlert("Select Set", "Please select a set before clicking that button.");
         return null;
+    } else {
+        //only the set can be edited
     }
     var span = highlighted.find(".set-name");
     return span[0].id;
 
 }
 
-function setAlertMessage(box, message) {
-    var title = box.find("h3");
-    title.html(message);
-    return title;
-}
-function dmAlert(message) {
 
+
+function setDialogText(box, title, message) {
+}
+function dmAlert(title, message) {
+    if (!title)
+        throw new Error("title must be provided");
+    if (!message)
+        throw new Error("message must be provided");
     var boxId = "dm-alert";
     var box = $ID(boxId);
-    var title = setAlertMessage(box, message);
+    var $title = box.find("h3");
+    $title.html(title);
+    var $message = box.find("p");
+    $message.html(message);
     var okBtn = box.find(".answer-ok");
     okBtn.click(function () {
         cbox.close();
@@ -213,16 +232,26 @@ function dmAlert(message) {
     });
     var colorbox = $.colorbox({ href: "#" + boxId, inline: true, width: "700px",
         onCleanup: function () {
-            title.html("");
+            $title.html("");
+            $message.html("");
         }
     });
     
 }
 
-function dmConfirm(message, action) {
+function dmConfirm(title, message, action) {
+    if (!title)
+        throw new Error("title must be provided");
+    if (!message)
+        throw new Error("message must be provided");
+    if (!action)
+        throw new Error("action must be provided");
     var boxId = "dm-confirm";
     var box = $ID(boxId);
-    var title = setAlertMessage(box, message);
+    var $title = box.find("h3");
+    $title.html(title);
+    var $message = box.find("p");
+    $message.html(message);
     var okBtn = box.find(".answer-ok");
     okBtn.click(function () {
         cbox.close();
@@ -232,7 +261,8 @@ function dmConfirm(message, action) {
     });
     var colorbox = $.colorbox({ href: "#" + boxId, inline: true, width: "700px",
         onCleanup: function () {
-            title.html("");
+            $title.html("");
+            $message.html("");
             okBtn.off('click');
         }
     });
@@ -241,18 +271,26 @@ function dmConfirm(message, action) {
 
 }
 
-function dmPrompt(message, action) {
-
+function dmPrompt(title, message, action, text) {
+    if (!title)
+        throw new Error("title must be provided");
+    if (!message)
+        throw new Error("message must be provided");
+    if (!action)
+        throw new Error("action must be provided");
     var boxId = "dm-prompt";
     var box = $ID(boxId);
-    var title = setAlertMessage(box, message);
+    var $title = box.find("h3");
+    $title.html(title);
+    var $message = box.find("p");
+    $message.html(message);
     var okBtn = box.find(".answer-ok");
     var input = $ID("dm-input-box");
     okBtn.click(function () {
         var val = input.attr("value").trim();
         if (val.length <= 0) {
             // error validation 
-            alert('Please ensure the Set Name is not empty');
+            alert('Please ensure the text box is not empty');
             $CL('required').css('border', '1px solid red');
             return false;
         }
@@ -260,13 +298,24 @@ function dmPrompt(message, action) {
         //data.n = val;
         action(val);
         cbox.close();
+        okBtn.off('click');
         return false;
 
     });
     var colorbox = $.colorbox({ href: "#" + boxId, inline: true, width: "700px",
         onCleanup: function () {
-            title.html("");
-        }
+            $title.html("");
+            $message.html("");
+            input.val(text);
+
+        },
+         onComplete: function () {
+             if (input) {
+                input.val("" + text);
+                input.focus();
+            }
+       }
+
     });
     $("#cboxLoadingOverlay").remove();
     $("#cboxLoadingGraphic").remove();
@@ -275,23 +324,22 @@ function dmPrompt(message, action) {
 //save cancel
 function setSave() {
     if (!isSetChanged()) {
-        dmAlert("There is nothing to save");
+        dmAlert("Save Set", "There are not any changes.");
         return;
     } else {
-        alert("save");
         //    var id = highlightedSetGetId();
         //    setAction(id, $CL("copy-yes"), null, "SetCopy", "#copy-set", $CL("copy-no"));
         //var id = highlightedSetGetId();
-        var myJsonString = JSON.stringify(changeList);
+        var myJsonString = JSON.stringify(currentSet);
         var action = function () {
             ajaxCall("SetSave", { data: myJsonString }, function () {
-                dmAlert("your changes have been successfully applied");
-                changeList.Changes.length = 0;
+                dmAlert("Save Set", "Your changes have been successfully applied.");
+                currentSet.ClearChanges();
             });
         }
 
 
-        dmConfirm("Do you wish to save the changes?", action)
+        dmConfirm("Save Set", "Do you wish to save the changes?", action)
     }
 }
 /*
@@ -327,22 +375,39 @@ function setSave1() {
 */
 function setCancel() {
     if (!isSetChanged()) {
-        dmAlert("nothing to cancel");
+        dmAlert("Cancel Changes", "There are not any changes");
         return;
     } else {
         //var id = highlightedSetGetId();
         var action = function () {
-                if (changeList && changeList.Changes.length > 0) {
-                    setLock(changeList.Id, false);
-                    treeLoad(changeList.Id);
-                }
+            if (currentSet && currentSet.HasChanges()) {
+                setLock(currentSet.Id, false);
+                treeLoad(currentSet.Id);
+            }
         }
 
-        dmConfirm("Do you wish to save the changes?", action)
+        dmConfirm("Cancel Changes", "Do you wish to cancel the changes?", action)
 
     }
 }
 
+
+function setUnlock() {
+    if (!isSetLocked()) {
+        dmAlert("Unlock Set", "The set is not locked.");
+        return;
+    } else {
+        //var id = highlightedSetGetId();
+        var action = function () {
+            if (currentSet) {
+                setLock(currentSet.Id, false, true, true);
+                treeLoad(currentSet.Id);
+            }
+        }
+        dmConfirm("Unlock Set", "Do you wish to unlock the set? You will lose all the changes.", action)
+
+    }
+}
 /*
 function setAction1(id, actionBtn, input, action, href, cancelBtn, activate) {
     if (cancelBtn) cancelBtn.click(function () {
@@ -396,9 +461,8 @@ function setAction1(id, actionBtn, input, action, href, cancelBtn, activate) {
 
 
 function setAdd() {
-    alert("add");
     var action = function (data) { ajaxCall("SetAdd", data, setsPopulate); }
-    dmPrompt("Please enter the set name", action)
+    dmPrompt("Add Set", "Please enter the name of the set.", action)
     //setAction(null, $CL("add-set-submit"), $ID("set-name-add"), "SetAdd", "#add-set");
 }
 /*
@@ -408,17 +472,20 @@ function setAdd1() {
 }
 */
 function setEdit() {
-    alert("edit");
     var id = highlightedSetGetId();
     if (!id)
         return;
+    var $setboxList = $ID("setbox-list");
+    var $set = $setboxList.find(".open");
+    var $strong = $set.find(".set-name > strong");
+    var text = $strong.html();
     var action = function (text) {
         var data = new Object();
         data.i = id;
         data.n = text;
         ajaxCall("SetEdit", data, setsPopulate);
     }
-    dmPrompt("Please enter the set name", action)
+    dmPrompt("Edit Set Name", "Please enter the name of the set.", action, text);
 }
 /*
 function setEdit1() {
@@ -429,27 +496,24 @@ function setEdit1() {
 */
 
 function setDelete() {
-    alert("delete");
     var id = highlightedSetGetId();
     if (!id)
         return;
     var action = function () { ajaxCall("SetDelete", { i: id }, setsPopulate); }
-    dmConfirm("Do you wish to delete this set?", action)
+    dmConfirm("Delete Set", "Are you sure you want to delete this set?", action)
 }
 
 function setCopy() {
-    alert("copy");
     var id = highlightedSetGetId();
     if (!id)
         return;
     var action = function () { ajaxCall("SetCopy", { i: id }, setsPopulate); }
-    dmConfirm("Do you wish to make a copy of this set?", action)
+    dmConfirm("Copy Set", "Do you wish to make a copy of this set?", action)
 
 }
 
 
 function setSet() {
-    alert("activate");
     var $that = $(this);
     var cl = $that.attr("class");
     var off = cl.indexOf("off");
@@ -459,7 +523,7 @@ function setSet() {
 
     var id = this.id; //highlightedSetGetId();
     var action = function () { ajaxCall("SetSet", { i: id, a: stateOn}, setsPopulate); }
-    dmConfirm("Do you wish to " + status + " this set?", action);
+    dmConfirm("Activate Set", "Do you wish to " + status + " this set?", action);
 
 
 
@@ -489,10 +553,10 @@ function setsPopulate(data) {
     clickRebind(setList, "li.set > div > a", expandLevel);
     clickRebind(setList, "[id^='s_']", setLoad);
     clickRebind(setList, ".checkbox", setSet);
+	init_ajax_complete();
+	dm_ajax_completed();
 }
 function treeLoad(id) {
-    var ids = id.split("_");
-    changeList = new ChangeList(id);
     ajaxCall("SetGet", { i: id }, populateTree);
 }
 
@@ -503,8 +567,9 @@ function ajaxCall(action, data, callBack) {
         data: data,
         dataType: "json"
     });
-    request.done(function(html) {
-        callBack(html);
+    request.done(function(response) {
+        callBack(response);
+		dm_ajax_completed();
     });
     request.fail(function(jqXHR, textStatus) {
         alert( "Request failed: " + textStatus );
@@ -551,7 +616,7 @@ function sicCleanUp(sicPopup) {
     sicPopup.find(".btn-plus").off('click');
     var typeList = sicPopup.find("#sic-type");
     setSelectionValue(typeList, 0);
-    sicPopup.find("*").css("background-color", "inherit");
+    sicPopup.find("input, select").css("background-color", "#ffffff");
     sicPopup.list.empty();
 }
 
@@ -572,9 +637,21 @@ function populateTree(data) {
     ////alert(data);
     //get the graph
     //removeScroll();
+    var id = data.Id;
+    var locked = data.Locked;
+    var listUnitAppointments = data.ListUnitAppointments;
+    currentSet = new Set(id, locked, listUnitAppointments);
+    var unitListHtml = data.UnitListHtml;
+
+    $sicUnit = $ID("sic-unit");
+    $sicUnit.empty();
+    $sicUnit.append(unitListHtml);
+
     var graph = $("#graph");
     graph.empty();
-    graph.append(data);
+    graph.append(data.SetHtml);
+    //var divSet = graph.children(".set");
+
 
     clickRebind(graph, "[id^='aa_']", nodePlus);
     clickRebind(graph, "[id^='ie_']", nodeEdit);
@@ -586,9 +663,14 @@ function populateTree(data) {
     $('.tooltip').hover(doToolTip);
 
     //populate the appointment list
+
+/*
     var appointmentList = $ID("sic-appointment");
     appointmentList.find("option:gt(0)").remove();
+
+
     var appointments = $("td.appointment");
+
     appointments.each(function () {
         var divName = $(this).children("div.appointment");
         var name = divName.html();
@@ -605,7 +687,7 @@ function populateTree(data) {
 
 
     //addScroll();
-
+*/
 }
 
 
@@ -741,7 +823,7 @@ $(document).ready(function () {
     //        $(this).children('span.tooltip-content').fadeToggle();
     //    });
 
-    changeList = null;
+    //    changeList = null;
     cbox = jQuery.colorbox;
 
     $.ajaxSetup({
@@ -758,6 +840,10 @@ $(document).ready(function () {
     });
     $("#btn-cancel").click(function () {
         setCancel();
+        return false;
+    });
+    $("#btn-unlock").click(function () {
+        setUnlock();
         return false;
     });
 
@@ -802,27 +888,38 @@ $(document).ready(function () {
     });
 
 
-/*
+    /*
     $(".edit").click(function () {
-        //alert("edit");
-        return false;
+    //alert("edit");
+    return false;
     });
 
     $(".remove").click(function () {
-        //alert("minus");
-        return false;
+    //alert("minus");
+    return false;
     });
     $(".name").focus(function () {
-        $(this).css("background-color", "inherit");
-        return false;
+    $(this).css("background-color", "inherit");
+    return false;
     });
-*/
+    */
 
     $("[id^=ad_]").click(function () {
         //alert("minus");
         //treeLoad(this.id);
         return;
     });
+
+
+    $("#sic-unit").change(function () {
+        var unitId = $('option:selected', $(this)).val()
+        //reload the appointment list
+        var list = currentSet.GetAppointmentList(unitId);
+        var appointmens = $ID("sic-appointment");
+        appointmens.empty();
+        appointmens.append(list);
+    });
+
 
     $('.appointment .add .popup-inline').live('click', function (event) {
         event.preventDefault();
@@ -841,6 +938,8 @@ $(document).ready(function () {
             });
         }
     });
+
+
 
 
 })

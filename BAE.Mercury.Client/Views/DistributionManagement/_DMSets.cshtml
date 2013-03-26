@@ -2,7 +2,8 @@
 @{DistributionManagement dm = (DistributionManagement)Model; }
 @{ foreach (DMset set in dm.Children)
    {
-<li class="set">
+      
+<li class="set @Html.Raw(set.Locked ? "locked" : "") ">
     <div>
         <a href="#"><span class="icon"></span><span id="s_@Html.Raw(set.Id)" class="set-name"><strong>@Html.Raw(set.Name)</strong></span></a>
         <div class="btn-set">

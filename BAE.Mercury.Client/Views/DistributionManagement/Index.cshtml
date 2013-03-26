@@ -60,6 +60,7 @@
     <ul class="buttons">
         <li id="btn-save" class="popup-inline"><a href="#save-set">Save</a><span>Save</span></li>
         <li id="btn-cancel"><a href="#">Cancel</a><span>Cancel</span></li>
+        <li id="btn-unlock"><a href="#">Unlock</a><span>Unlock</span></li>
     </ul>
 }
 @section LeftMenuButtons
@@ -88,8 +89,7 @@
         </div>
         <div id="left-menu-collapse">
             <a href="#">
-                <img src="~/images/bg-left_menu_collapse.png" width="30" height="11" align="Close Menu"
-                    alt="manu collapse" /></a></div>
+                <img src="~/images/bg-left_menu_collapse.png" width="30" height="11" align="Close Menu" alt="manu collapse" /></a></div>
         <ul id="left-menu">
             <li><a href="index.html">Mailboxes</a><span class="badges"><span>999</span></span></li>
             <li><a href="message_monitor.html">Message Monitor</a> <span class="badges"><span>9</span></span></li>
@@ -116,6 +116,7 @@
             <div id="rule-visualiser-wrap-outer">
                 <a id="rule-visualiser-wrap-trigger">
                     <img src="~/images/btn-rule_visualiser.png" width="30" height="11" alt="Rule Visualiser" /></a>
+           
                 <div id="rule-visualiser-wrap">
                     <h3>
                         Rule Visualiser</h3>
@@ -164,7 +165,7 @@
             sicInfo.DataFinalize();
             appointment.AddChild(sicAction);
             appointment.AddChild(sicInfo);
-            Html.RenderPartial("_DMTable", appointment); ;
+            Html.RenderPartial("_DMTable", appointment);
         }
     </div>
     <div id="dm-msg-selc-email-list">
@@ -177,7 +178,8 @@
         @{ Html.RenderPartial("_DMPopupSic", null); }
     </div>
     <!-- ADD SET -->
-    <div id="add-set">
+
+@*    <div id="add-set">
         <div class="popup-content">
             <div class="section">
                 <div class="inner">
@@ -324,15 +326,22 @@
             </div>
         </div>
     </div>
-    <div id="copy-sic">
+*@    <div id="copy-sic">
         <div class="popup-content">
             <div class="section">
                 <div class="inner">
-                    <h3>
-                        Copy Sic</h3>
+                    <h3>Copy Sic</h3>
                     <div class="form-wrap">
-                        <select id="sic-appointment" class="sic-appointment" style="width: 200px">
-                            <option selected="selected" value="0">Please select</option>
+                        <p>Do you want to copy this rule?</p>
+                    </div>
+                    <div class="form-wrap">
+                        <select id="sic-unit" style="width: 200px">
+                            <option selected="selected" value="">Please select</option>
+                        </select>
+                    </div>
+                    <div class="form-wrap">
+                        <select id="sic-appointment" style="width: 200px">
+                            <option selected="selected" value="">Please select</option>
                         </select>
                     </div>
                     <div class="btn-wrap" style="margin: 0 auto; width: 205px;">
@@ -347,10 +356,12 @@
     </div>
     <div id="dm-alert">
         <div class="popup-content">
+              <h3 style="position:relative; top:-18px">Title</h3>
             <div class="section">
                 <div class="inner">
-                    <h3>
-                        Title</h3>
+                    <div class="form-wrap">
+                        <p>Message</p>
+                    </div>
                     <div class="btn-wrap" style="margin: 0 auto; width: 205px;">
                         <ul>
                             <li><a href="#" class="answer-ok">Ok</a></li>
@@ -366,6 +377,9 @@
                 <div class="inner">
                     <h3>
                         Title</h3>
+                    <div class="form-wrap">
+                        <p>Message</p>
+                    </div>
                     <div class="btn-wrap" style="margin: 0 auto; width: 205px;">
                         <ul>
                             <li><a href="#" class="answer-ok">Ok</a></li>
@@ -382,6 +396,9 @@
                 <div class="inner">
                     <h3>
                         Title</h3>
+                    <div class="form-wrap">
+                        <p>Message</p>
+                    </div>
                     <div class="form-wrap">
                         <div class="row">
                             <input type="text" class="txt required" id="dm-input-box" name="dm-input-box" value="" />

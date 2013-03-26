@@ -359,7 +359,7 @@
     <Content Include="Images\BlackArrowDown.gif" />
     <Content Include="Images\BlackArrowRight.gif" />
     <Content Include="Images\btn-dm_add.PNG" />
-    <Content Include="Images\btn-dm_copy.png" />
+    <Content Include="Images\icon-copy.png" />
     <Content Include="Images\btn-dm_delete.png" />
     <Content Include="Images\btn-dm_edit.png" />
     <Content Include="Images\btn-grey.png" />
@@ -377,7 +377,7 @@
     <Content Include="Images\icon-admin_menu.png" />
     <Content Include="Images\icon-advance_search.png" />
     <Content Include="Images\icon-back.png" />
-    <Content Include="Images\icon-copy.png" />
+    <Content Include="Images\btn-dm_copy.png" />
     <Content Include="Images\icon-delete.png" />
     <Content Include="Images\icon-edit.png" />
     <Content Include="Images\icon-forward.png" />
@@ -639,6 +639,7 @@
     <Content Include="Views\DistributionManagement\_DMMessageList.cshtml" />
     <Content Include="Views\DistributionManagement\_DMPopupSic.cshtml" />
     <Content Include="Views\DistributionManagement\_DMSets.cshtml" />
+    <Content Include="Views\DistributionManagement\_DMunitAppointmentList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BAE.Mercury.Business\BAE.Mercury.Business.csproj">

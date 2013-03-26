@@ -22,7 +22,7 @@ namespace BAE.Mercury.Client
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
             SqlConnection con = new SqlConnection(connectionString);
             int userId = 255;
-            SqlCommand com = new SqlCommand(String.Format("lockDistributionManagementNode {0}, {1}", userId, nodeId, locked));
+            SqlCommand com = new SqlCommand(String.Format("lockDistributionManagementNode {0}, {1}, {2}", userId, nodeId, (locked)? 1 : 0));
             com.Connection = con;
             try
             {
@@ -437,7 +437,6 @@ namespace BAE.Mercury.Client
                     Debug.WriteLine(id, name);
                 }
                 //the sics
-                Debug.WriteLine("***********");
                 reader.NextResult();
                 List<DMnodeWrap> sicWraps = new List<DMnodeWrap>();
                 while (reader.Read())
@@ -541,6 +540,9 @@ namespace BAE.Mercury.Client
                     int parentId = (int)reader["nodeparentid"];
                     bool locked = (bool)reader["locked"];
                     bool action = (bool)reader["active"];
+                    //if (username == "ken.ong")
+                    //    locked = false;
+
                     DMset set = new DMset(null, id, name, locked, action);
                     DMnodeWrap setWrap = new DMnodeWrap(set, parentId);
                     setWraps.Add(setWrap);
