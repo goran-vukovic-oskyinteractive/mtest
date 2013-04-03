@@ -12,7 +12,7 @@
     <!--[if IE 8]>
 <link href="css/ie8.css" rel="stylesheet" type="text/css" media="all" />
 <![endif]-->
-    <link rel="stylesheet" href="~/css/jquery-ui.css" />
+    <link rel="stylesheet" href="~/cssDavid/jquery-ui.css" type="text/css" />
     <!--additional links for list start -->
     @*  <link href="~/cssDavid/Site.css" rel="stylesheet" />
     <link href="~/cssDavid/jquery_004.css" rel="stylesheet" />
@@ -39,6 +39,7 @@
     <script type="text/javascript" src="~/Scripts/functions_dm.js"></script>
     <script type="text/javascript" src="~/Scripts/dm.js?=123456"></script>
     <script type="text/javascript" src="~/Scripts/dm1.js?=123456"></script>
+    <script type="text/javascript" src="~/Scripts/popups.js?=123456"></script>
     @*	<script type="text/javascript" src="~/Scripts/dm_erfan.js"></script>
 *@
     <script type="text/javascript" src="~/Scripts/Initialise.js"></script>
@@ -171,20 +172,16 @@
     <div id="dm-msg-selc-email-list">
         @{ Html.RenderPartial("_DMMessageList", null); }
     </div>
-    <div id="sic-popup">
-        @{ Html.RenderPartial("_DMPopupSic", null); }
-    </div>
-    <div id="sic-select-field">
-        @{ Html.RenderPartial("_DMPopupSic", null); }
-    </div>
+        @{ Html.RenderPartial("_DMPopupSic", new { Id = "sic-popup" }); }
+        @{ Html.RenderPartial("_DMPopupSic", new { Id = "sic-select-field" }); }
     <!-- ADD SET -->
 
 @*    <div id="add-set">
-        <div class="popup-content">
+        <div class="popup-content"> <h3>
+                        Add Set</h3>
             <div class="section">
                 <div class="inner">
-                    <h3>
-                        Add Set</h3>
+                   
                     <div class="form-wrap">
                         <div class="row">
                             <label for="set-name-add">
@@ -204,11 +201,11 @@
     </div>
     <!-- END ADD SET -->
     <div id="edit-set">
-        <div class="popup-content">
+        <div class="popup-content"> <h3>
+                        Edit Set Name</h3>
             <div class="section">
                 <div class="inner">
-                    <h3>
-                        Edit Set Name</h3>
+                   
                     <div class="form-wrap">
                         <div class="row">
                             <label for="set-name">
@@ -227,16 +224,16 @@
         </div>
     </div>
     <div id="delete-set">
-        <div class="popup-content">
+        <div class="popup-content"><h3>
+                        Delete Set</h3>
             <div class="section">
                 <div class="inner">
-                    <h3>
-                        Delete Set</h3>
+                    
                     <div class="form-wrap">
                         <p>
                             Do you want to delete this set?</p>
                     </div>
-                    <div class="btn-wrap" style="margin: 0 auto; width: 205px;">
+                    <div class="btn-wrap">
                         <ul>
                             <li><a href="#" class="delete-yes">Yes</a></li>
                             <li><a href="#" class="delete-no">No</a></li>
@@ -247,16 +244,15 @@
         </div>
     </div>
     <div id="copy-set">
-        <div class="popup-content">
+        <div class="popup-content"> <h3>Copy Set</h3>
             <div class="section">
                 <div class="inner">
-                    <h3>
-                        Copy Set</h3>
+
                     <div class="form-wrap">
                         <p>
                             Do you want to copy this set?</p>
                     </div>
-                    <div class="btn-wrap" style="margin: 0 auto; width: 205px;">
+                    <div class="btn-wrap">
                         <ul>
                             <li><a href="#" class="copy-yes">Yes</a></li>
                             <li><a href="#" class="copy-no">No</a></li>
@@ -267,16 +263,16 @@
         </div>
     </div>
     <div id="save-set">
-        <div class="popup-content">
+        <div class="popup-content"><h3>
+                        Save Set</h3>
             <div class="section">
                 <div class="inner">
-                    <h3>
-                        Save Set</h3>
+                    
                     <div class="form-wrap">
                         <p>
                             Do you want to save this set?</p>
                     </div>
-                    <div class="btn-wrap" style="margin: 0 auto; width: 205px;">
+                    <div class="btn-wrap">
                         <ul>
                             <li><a href="#" class="save-yes">Yes</a></li>
                             <li><a href="#" class="save-no">No</a></li>
@@ -287,16 +283,16 @@
         </div>
     </div>
     <div id="cancel-save-set">
-        <div class="popup-content">
+        <div class="popup-content"><h3>
+                        Cancel Changes to Set</h3>
             <div class="section">
                 <div class="inner">
-                    <h3>
-                        Cancel Changes to Set</h3>
+                    
                     <div class="form-wrap">
                         <p>
                             Do you want to cancel changes to this set?</p>
                     </div>
-                    <div class="btn-wrap" style="margin: 0 auto; width: 205px;">
+                    <div class="btn-wrap">
                         <ul>
                             <li><a href="#" class="cancel-yes">Yes</a></li>
                             <li><a href="#" class="cancel-no">No</a></li>
@@ -307,16 +303,16 @@
         </div>
     </div>
     <div id="activate-set">
-        <div class="popup-content">
+        <div class="popup-content"><h3>
+                        Activate Set</h3>
             <div class="section">
                 <div class="inner">
-                    <h3>
-                        Activate Set</h3>
+                    
                     <div class="form-wrap">
                         <p>
                             Do you want to <span id="set-activation-status"></span>this set?</p>
                     </div>
-                    <div class="btn-wrap" style="margin: 0 auto; width: 205px;">
+                    <div class="btn-wrap">
                         <ul>
                             <li><a href="#" class="activate-yes">Yes</a></li>
                             <li><a href="#" class="activate-no">No</a></li>
@@ -326,43 +322,21 @@
             </div>
         </div>
     </div>
-*@    <div id="copy-sic">
-        <div class="popup-content">
-            <div class="section">
-                <div class="inner">
-                    <h3>Copy Sic</h3>
-                    <div class="form-wrap">
-                        <p>Do you want to copy this rule?</p>
-                    </div>
-                    <div class="form-wrap">
-                        <select id="sic-unit" style="width: 200px">
-                            <option selected="selected" value="">Please select</option>
-                        </select>
-                    </div>
-                    <div class="form-wrap">
-                        <select id="sic-appointment" style="width: 200px">
-                            <option selected="selected" value="">Please select</option>
-                        </select>
-                    </div>
-                    <div class="btn-wrap" style="margin: 0 auto; width: 205px;">
-                        <ul>
-                            <li><a href="#" class="copy-sic-yes">Yes</a></li>
-                            <li><a href="#" class="copy-sic-no">No</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="dm-alert">
-        <div class="popup-content">
-              <h3 style="position:relative; top:-18px">Title</h3>
+*@
+    @{ Html.RenderPartial("_DMSicCopy", null); }
+@*    @{ Html.RenderPartial("_DMPopups", new {Id = "dm-alert", Cancel = false, Prompt = false}); }
+    @{ Html.RenderPartial("_DMPopups", new {Id = "dm-confirm", Cancel = true, Prompt = false}); }
+    @{ Html.RenderPartial("_DMPopups", new {Id= "dm-prompt", Cancel = true, Prompt = true}); }
+*@
+    @*    <div id="dm-alert">
+            <div class="popup-content">
+              <h3>Title</h3>
             <div class="section">
                 <div class="inner">
                     <div class="form-wrap">
                         <p>Message</p>
                     </div>
-                    <div class="btn-wrap" style="margin: 0 auto; width: 205px;">
+                    <div class="btn-wrap">
                         <ul>
                             <li><a href="#" class="answer-ok">Ok</a></li>
                         </ul>
@@ -372,15 +346,14 @@
         </div>
     </div>
     <div id="dm-confirm">
-        <div class="popup-content">
+        <div class="popup-content"> <h3>Title</h3>
             <div class="section">
                 <div class="inner">
-                    <h3>
-                        Title</h3>
+                   
                     <div class="form-wrap">
                         <p>Message</p>
                     </div>
-                    <div class="btn-wrap" style="margin: 0 auto; width: 205px;">
+                    <div class="btn-wrap">
                         <ul>
                             <li><a href="#" class="answer-ok">Ok</a></li>
                             <li><a href="#" class="answer-cancel">Cancel</a></li>
@@ -391,21 +364,21 @@
         </div>
     </div>
     <div id="dm-prompt">
-        <div class="popup-content">
+        <div class="popup-content"> <h3>
+                        Title</h3>
             <div class="section">
                 <div class="inner">
-                    <h3>
-                        Title</h3>
+                   
                     <div class="form-wrap">
                         <p>Message</p>
                     </div>
                     <div class="form-wrap">
-                        <div class="row">
+                        <div class="row fullwidth">
                             <input type="text" class="txt required" id="dm-input-box" name="dm-input-box" value="" />
                             <br class="clear" />
                         </div>
                     </div>
-                    <div class="btn-wrap" style="margin: 0 auto; width: 205px;">
+                    <div class="btn-wrap">
                         <ul>
                             <li><a href="#" class="answer-ok">Ok</a></li>
                             <li><a href="#" class="answer-cancel">Cancel</a></li>
@@ -415,5 +388,70 @@
             </div>
         </div>
     </div>
+
+*@
+
+ <!-- Dialog for jQUERY UI Modal -->
+    
+    <div id="dm-alert" class="dialog-normal">
+        <div class="popup-content">
+            <div class="section">
+                <div class="inner">                  
+                    <div class="form-wrap">
+                        <p class="popup-msg">Message</p>
+                    </div>
+                    <div class="btn-wrap">
+                        <ul>
+                            <li><a href="#" class="answer-ok">Ok</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dm-confirm" class="dialog-normal">
+        <div class="popup-content">
+            <div class="section">
+                <div class="inner">                  
+                    <div class="form-wrap">
+                        <p class="popup-msg">Message</p>
+                    </div>
+                    <div class="btn-wrap">
+                        <ul>
+                            <li><a href="#" class="answer-ok">Ok</a></li>
+                            <li><a href="#" class="answer-cancel">Cancel</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dm-prompt" class="dialog-normal">
+        <div class="popup-content">
+            <div class="section">
+                <div class="inner">
+                   
+                    <div class="form-wrap">
+                        <p class="popup-msg">Message</p>
+                    </div>
+                    <div class="form-wrap">
+                        <div class="row fullwidth">
+                            <input type="text" class="txt dm-input-box" name="dm-input-box" value="" />
+                            <br class="clear" />
+                        </div>
+                    </div>
+                    <div class="btn-wrap">
+                        <ul>
+                            <li><a href="#" class="answer-ok">Ok</a></li>
+                            <li><a href="#" class="answer-cancel">Cancel</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- hidden div end -->
 </div>

@@ -14,24 +14,44 @@ namespace BAE.Mercury.Client.Controllers
 {
     public class DistributionManagementController : Controller
     {
+        private class Test
+        {
+            public string ZZZ
+            {
+                get
+                {
+                    return "aaaaa";
+                }
+            }
+        }
         [HttpPost]
         public void SetLock(string i, bool l)
         {
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             DMidParser parser = new DMidParser(i);
-            messageStore.LockSet(User.Identity.Name, parser.SetId, l);
+            if (messageStore.IsSetLocked(parser.SetId))
+            {
+                Response.StatusCode = 1001;
+                //Response.ContentType = "application/json";
+                //System.Web.Script.Serialization.JavaScriptSerializer serializer = new JavaScriptSerializer();
+                //string ser = serializer.Serialize(new Test());
+                Response.Write("The set is already locked.");
+            }
+            else
+            {
+                messageStore.LockSet(User.Identity.Name, parser.SetId, l);
+            }
         }
 
 
-
         [HttpPost]
-        public JsonResult SetSet(string i, bool a)
+        public JsonResult SetActivate(string i, bool a)
         {
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             DMidParser parser = new DMidParser(i);
-            messageStore.SetSet(User.Identity.Name, parser.SetId, a);
+            messageStore.SetActivate(User.Identity.Name, parser.SetId, a);
             DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
             string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
             return Json(html);
@@ -39,7 +59,6 @@ namespace BAE.Mercury.Client.Controllers
         [HttpPost]
         public void SetSave(string data)
         {
-            Debug.WriteLine(data);
             RetChangeList changeList = (RetChangeList)Newtonsoft.Json.JsonConvert.DeserializeObject(data, typeof(RetChangeList));
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             messageStore.SaveSet(User.Identity.Name, changeList);

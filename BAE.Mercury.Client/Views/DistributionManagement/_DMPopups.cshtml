@@ -1,0 +1,32 @@
+﻿<div id="@Html.Raw(Model.Id)">
+    <div class="popup-content">
+        <h3>
+            Title</h3>
+        <div class="section">
+            <div class="inner">
+                <div class="form-wrap">
+                    <p>
+                        Message</p>
+                </div>
+                @if (Model.Prompt)
+                {
+                    <div class="form-wrap">
+                        <div class="row fullwidth">
+                            <input type="text" class="txt required" id="dm-input-box" name="dm-input-box" value="" />
+                            <br class="clear" />
+                        </div>
+                    </div>
+                }
+                <div class="btn-wrap">
+                    <ul>
+                        <li><a href="#" class="answer-ok">Ok</a></li>
+                        @if (Model.Cancel)
+                        {
+                            <li><a href="#" class="answer-cancel">Cancel</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

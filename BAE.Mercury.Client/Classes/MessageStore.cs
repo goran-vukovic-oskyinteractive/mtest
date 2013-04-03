@@ -16,6 +16,11 @@ namespace BAE.Mercury.Client
 {
     public class MessageStore
     {
+        public bool IsSetLocked(int id)
+        {
+            return true;
+        }
+
 
         public void LockSet(string user, int nodeId, bool locked)
         {
@@ -52,7 +57,7 @@ namespace BAE.Mercury.Client
         }
 
 
-        public void SetSet(string user, int nodeId, bool state)
+        public void SetActivate(string user, int nodeId, bool state)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
             SqlConnection con = new SqlConnection(connectionString);

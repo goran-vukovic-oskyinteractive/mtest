@@ -59,6 +59,7 @@ function init_ajax_complete()
 function dm_ajax_completed()
 {
 	resizeSic();
+	resizeApp();
 }
 
 function init_expandLevel()
@@ -381,9 +382,15 @@ function resizeSic()
         var winWidth = $('#graph').width();
 	$('span.sic').width(winWidth - 460);
 }
+function resizeApp() 
+{
+	var sicWidth = $('td.caction').width();
+	$('div.appointment-empty').width(sicWidth);
+}
 	
 $(document).ready(function() {
-	$(window).on('load resize', function(){ resizeSic(); });
+	$(window).on('load resize', function(){ resizeSic(); resizeApp(); });
+	
 
 	$(".tabs").tabs();
 	//
@@ -483,10 +490,34 @@ $(document).ready(function() {
 	
 	// Resize SIC
 	resizeSic();
+	resizeApp();
 
     // Force focus on input field after cbox complete.
 
+/* MODAL DIALOG BOX USING JQUERY UI */
 
+// Basic
+$('.dialog-normal').dialog({
+	height		:	'auto',
+	modal		:	true,
+	resizable	:	false,
+	autoOpen	:	false
+});
+
+// Confirmation
+$('.dialog-confirm').dialog({
+	height		:	'auto',
+	modal		:	true,
+	resizable	:	false,
+	autoOpen	:	false,
+	buttons		:	{Cancel: function() {$(this).dialog('close');}}
+});
+
+// The trigger
+$('.dialog-open-normal').click(function() {
+	$('.dialog-normal').dialog({title:$(this).attr('title')});
+	$('.dialog-normal').dialog('open');
+});
 
 });
 

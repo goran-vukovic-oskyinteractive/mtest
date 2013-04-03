@@ -455,10 +455,10 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 
 /**** STYLE FOR AJAX POPUP CONTENT ****/
 #wrapper.popup {}
-
-.popup-content {background:#fff; padding:20px 20px 10px 20px;}
-.popup-content .section {background:#eee; border:1px solid #ccc; border-radius:5px; width:100%; margin:10px auto 20px;}
-.popup-content .section .inner {padding:20px;}
+.popup-content {background:#fff; padding:10px 20px 0 20px;}
+.popup-content h3 {margin:-7px 0 5px 0;}
+.popup-content .section {background:#eee; border:1px solid #ccc; border-radius:5px; width:100%; margin:0 auto 20px; overflow: hidden;}
+.popup-content .section .inner {padding:10px;}
 
 .popup-content .section .inner label {float:left; width:20%; text-align:right; margin:0 1% 0 0;}
 .popup-content .section .inner textarea {width:69%; background:#fff; border:1px solid #cdcdcd; height:140px;}
@@ -471,14 +471,16 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 
 .popup-content .section .inner input.txt {width:69%; background:#fff; border:1px solid #cdcdcd; height:20px; float:left; margin:0 10px 0 0;}
 .popup-content .section .inner input.txt.add {width:70%; background:#fff; border:1px solid #cdcdcd; height:20px;}
+.popup-content .section .inner .form-wrap .row.fullwidth input.txt {width:99.5%;}
 
 .popup-content .section .inner .btn-add {float:left;}
 .popup-content .section .inner .btn-add a {display:block; float:left; background:url(../images/btn-plusminus.png) 0 0 no-repeat; width:17px; height:17px; text-indent:-9999px; margin:2px 5px 0 0;}
 .popup-content .section .inner .btn-add a.btn-minus {background-position:0 -17px; margin-left:10px;}
 .popup-content .section .inner .btn-add a.btn-single {margin-top:-8px}
 
-.popup-content .section .inner .form-wrap {margin:0 0 20px 0;}
+.popup-content .section .inner .form-wrap {margin:0;}
 .popup-content .section .inner .form-wrap .row {clear:left; margin:0 0 10px 0; position:relative;}
+.popup-content .section .inner .form-wrap p {margin-bottom:10px;}
 
 .popup-content .section .inner .result { border:1px solid #ccc; background:#f2f2f2 url(../images/bg-search_results.png) top left repeat-x; position:absolute; top:25px; left:11%; width:70%; padding:0; z-index:9999; -webkit-box-shadow: 0px 0px 3px 1px #c9c9c9; box-shadow: 0px 0px 3px 1px #c9c9c9; display:none; }
 .popup-content .section .inner .result .group { border-bottom:1px solid #ccc; padding:10px 0; }
@@ -490,7 +492,7 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 .popup-content .section .inner .result ul li a:hover { background:#DFDFDF; }
 .popup-content .section .inner .result ul li a span.highlight { font-weight:bold; color:#119fe9; }
 
-.popup-content .section .inner .btn-wrap {margin-left:21%;}
+.popup-content .section .inner .btn-wrap {overflow: hidden; margin:0;}
 .popup-content .section .inner .btn-wrap { overflow:hidden; }
 .popup-content .section .inner .btn-wrap ul li { display: inline; float: left; list-style: none; margin: 0; padding: 0; position: relative; text-align: center; }
 .popup-content .section .inner .btn-wrap ul li a { background: url(../images/bg-audit-btn.png) 0 0 no-repeat; width: 92px; height: 30px; display: block; float: left; line-height: 30px; margin: 0 10px 0 0; text-align: center; font-weight: normal; font-size: 12px; color: #3c3c3c; }
@@ -509,7 +511,7 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 
 .popup-content .section.expanding {overflow:auto; height:300px;}
 
-span.tooltip-content {display:none; position:absolute; left:400px; width:250px; background:#606060; padding:8px 10px; z-index:9999; text-transform:none; color:#fff; border-radius:5px; line-height:20px;width:500px}
+span.tooltip-content {display:none; position:absolute; left:10px; top:-65px; background:#606060; padding:8px 10px; z-index:9999; text-transform:none; color:#fff; border-radius:5px; line-height:20px;width:500px}
 
 #setbox ul#setbox-list li span.icon {display:none;}
 #setbox ul#setbox-list li strong {margin:0;}

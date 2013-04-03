@@ -91,8 +91,6 @@ DMrule.compareTo = function (rule1, rule2) {
                         return rule1.compareTo(rule2);
                     }
 
-
-
 function DMsic(id, type) {
 
     var id = id, type = type,
@@ -157,7 +155,7 @@ function DMsic(id, type) {
 DMsic.EnType = { Action: 2, Info: 1 };
 
 //global variables
-var JQID = [{}, { "table": "it", "row": "ir", "text": "is", "edit": "ie", "del": "id", "copy": "ic" }, { "table": "at", "row": "ar", "text": "as", "edit": "ae", "del": "ad", "copy": "ac"}];
+var JQID = [{}, { "table": "it", "row": "ir", "text": "is", "edit": "ie", "del": "id", "copy": "ic", "add": "ia" }, { "table": "at", "row": "ar", "text": "as", "edit": "ae", "del": "ad", "copy": "ac", "add": "aa"}];
 
 var currentSet = null;
 
@@ -191,7 +189,11 @@ function setLock(id, lock, refresh, alert) {
             treeLoad(id);
         if (alert)
             dmAlert("Lock Set", "The set has been " + ((lock) ? "" : "un") + "locked.")
-    });
+    }
+//    , function (message) {
+//        dmAlert("Lock Set", message);
+//    }
+);
 
 }
 
@@ -210,117 +212,6 @@ function highlightedSetGetId() {
 }
 
 
-
-function setDialogText(box, title, message) {
-}
-function dmAlert(title, message) {
-    if (!title)
-        throw new Error("title must be provided");
-    if (!message)
-        throw new Error("message must be provided");
-    var boxId = "dm-alert";
-    var box = $ID(boxId);
-    var $title = box.find("h3");
-    $title.html(title);
-    var $message = box.find("p");
-    $message.html(message);
-    var okBtn = box.find(".answer-ok");
-    okBtn.click(function () {
-        cbox.close();
-        return false;
-
-    });
-    var colorbox = $.colorbox({ href: "#" + boxId, inline: true, width: "700px",
-        onCleanup: function () {
-            $title.html("");
-            $message.html("");
-        }
-    });
-    
-}
-
-function dmConfirm(title, message, action) {
-    if (!title)
-        throw new Error("title must be provided");
-    if (!message)
-        throw new Error("message must be provided");
-    if (!action)
-        throw new Error("action must be provided");
-    var boxId = "dm-confirm";
-    var box = $ID(boxId);
-    var $title = box.find("h3");
-    $title.html(title);
-    var $message = box.find("p");
-    $message.html(message);
-    var okBtn = box.find(".answer-ok");
-    okBtn.click(function () {
-        cbox.close();
-        action();
-        return false;
-
-    });
-    var colorbox = $.colorbox({ href: "#" + boxId, inline: true, width: "700px",
-        onCleanup: function () {
-            $title.html("");
-            $message.html("");
-            okBtn.off('click');
-        }
-    });
-    $("#cboxLoadingOverlay").remove();
-    $("#cboxLoadingGraphic").remove();
-
-}
-
-function dmPrompt(title, message, action, text) {
-    if (!title)
-        throw new Error("title must be provided");
-    if (!message)
-        throw new Error("message must be provided");
-    if (!action)
-        throw new Error("action must be provided");
-    var boxId = "dm-prompt";
-    var box = $ID(boxId);
-    var $title = box.find("h3");
-    $title.html(title);
-    var $message = box.find("p");
-    $message.html(message);
-    var okBtn = box.find(".answer-ok");
-    var input = $ID("dm-input-box");
-    okBtn.click(function () {
-        var val = input.attr("value").trim();
-        if (val.length <= 0) {
-            // error validation 
-            alert('Please ensure the text box is not empty');
-            $CL('required').css('border', '1px solid red');
-            return false;
-        }
-        //var data = new Object()
-        //data.n = val;
-        action(val);
-        cbox.close();
-        okBtn.off('click');
-        return false;
-
-    });
-    var colorbox = $.colorbox({ href: "#" + boxId, inline: true, width: "700px",
-        onCleanup: function () {
-            $title.html("");
-            $message.html("");
-            input.val(text);
-
-        },
-         onComplete: function () {
-             if (input) {
-                input.val("" + text);
-                input.focus();
-            }
-       }
-
-    });
-    $("#cboxLoadingOverlay").remove();
-    $("#cboxLoadingGraphic").remove();
-}
-
 //save cancel
 function setSave() {
     if (!isSetChanged()) {
@@ -333,46 +224,20 @@ function setSave() {
         var myJsonString = JSON.stringify(currentSet);
         var action = function () {
             ajaxCall("SetSave", { data: myJsonString }, function () {
-                dmAlert("Save Set", "Your changes have been successfully applied.");
-                currentSet.ClearChanges();
-            });
+                setLock(currentSet.Id, false, true, true);
+            }
+            //var zzz = JSON.parse(jqXHR.responseText);
+            
+            
+            );
+
         }
 
 
         dmConfirm("Save Set", "Do you wish to save the changes?", action)
     }
 }
-/*
-function setSave1() {
-    if (!isSetChanged()) {
-        alert("nothing to save");
-        return;
-    } else {
 
-
-        $CL("save-yes").click(function () {
-            var myJsonString = JSON.stringify(changeList);
-            cbox.close();
-            ajaxCall("SetSave", { data: myJsonString }, function () {
-                //alert("your changes have been successfully applied");
-                changeList.Changes.length = 0;
-            });
-            return false;
-
-        });
-
-        $CL("save-no").click(function () {
-            cbox.close();
-        });
-
-        var colorbox = $.colorbox({ href: "#save-set", inline: true, width: "700px",
-            onCleanup: function () {
-                $CL("save-yes").off('click');
-            }
-        });
-    }
-}
-*/
 function setCancel() {
     if (!isSetChanged()) {
         dmAlert("Cancel Changes", "There are not any changes");
@@ -381,8 +246,8 @@ function setCancel() {
         //var id = highlightedSetGetId();
         var action = function () {
             if (currentSet && currentSet.HasChanges()) {
-                setLock(currentSet.Id, false);
-                treeLoad(currentSet.Id);
+                setLock(currentSet.Id, false, true, true);
+                //treeLoad(currentSet.Id);
             }
         }
 
@@ -392,7 +257,27 @@ function setCancel() {
 }
 
 
+//function showDialog() {
+//    $("#dialog-modal").dialog({
+
+//        width: 600,
+//        height: 400
+//    });
+//}
+
 function setUnlock() {
+    //    var popUp = $("#dm-alert").popUpBox();
+    //    popUp.showAlert("aaaa", "bbbbzzz");
+    //    var popUp = $("#dm-confirm").popUpBox();
+//    popUp.showConfirm("aaaa", "bbbbzzz", function (val) { alert("here") });
+    var popUp = $("#dm-prompt").popUpBox();
+    popUp.showPrompt("aaaa", "bbbbzzz", function (val) { alert(val) });
+//        alert("OK");
+    //    $("#dm-alert").dialog("open");
+
+//    //showDialog();
+//    //$("#jqdialog").dialog("open");
+    return;
     if (!isSetLocked()) {
         dmAlert("Unlock Set", "The set is not locked.");
         return;
@@ -401,76 +286,22 @@ function setUnlock() {
         var action = function () {
             if (currentSet) {
                 setLock(currentSet.Id, false, true, true);
-                treeLoad(currentSet.Id);
+                //treeLoad(currentSet.Id);
             }
         }
         dmConfirm("Unlock Set", "Do you wish to unlock the set? You will lose all the changes.", action)
 
     }
 }
-/*
-function setAction1(id, actionBtn, input, action, href, cancelBtn, activate) {
-    if (cancelBtn) cancelBtn.click(function () {
-        cbox.close();
-        return false;
-    });
-    actionBtn.click(function () {
-        var data = new Object;
-        if (id) data.i = id;
-        if (input) {
-            var val = input.attr("value").trim();
-            if (val.length <= 0) {
-                // error validation 
-                alert('Please ensure the Set Name is not empty');
-                $CL('required').css('border', '1px solid red');
-                return false;
-            }
-            data.n = val;
-        }
-        if (typeof activate == "boolean")
-            data.a = activate;
-        cbox.close();
-        ajaxCall(action, data, setsPopulate);
-        return false;
-
-    });
-
-    $CL('required').css('border', 0);
-
-    var colorbox = $.colorbox({ href: href, inline: true, width: "700px",
-        onCleanup: function () {
-            actionBtn.off('click');
-        }, onComplete: function () {
-
-            if (input) {
-                input.val("");
-                input.focus();
-            }
-       }
-
-
-    });
-
-    $("#cboxLoadingOverlay").remove();
-    $("#cboxLoadingGraphic").remove();
-    return false;
-    
-}
-*/
 
 
 
 function setAdd() {
-    var action = function (data) { ajaxCall("SetAdd", data, setsPopulate); }
+    var action = function (name) { ajaxCall("SetAdd", { n: name }, setsPopulate); }
     dmPrompt("Add Set", "Please enter the name of the set.", action)
     //setAction(null, $CL("add-set-submit"), $ID("set-name-add"), "SetAdd", "#add-set");
 }
-/*
-function setAdd1() {
-    alert("add");
-    setAction(null, $CL("add-set-submit"), $ID("set-name-add"), "SetAdd", "#add-set");
-}
-*/
+
 function setEdit() {
     var id = highlightedSetGetId();
     if (!id)
@@ -487,13 +318,6 @@ function setEdit() {
     }
     dmPrompt("Edit Set Name", "Please enter the name of the set.", action, text);
 }
-/*
-function setEdit1() {
-    alert("edit");
-    var id = highlightedSetGetId();
-    setAction(id, $CL("edit-set-submit"), $("#set-name-edit"), "SetEdit", "#edit-set");
-}
-*/
 
 function setDelete() {
     var id = highlightedSetGetId();
@@ -513,7 +337,7 @@ function setCopy() {
 }
 
 
-function setSet() {
+function setActivate() {
     var $that = $(this);
     var cl = $that.attr("class");
     var off = cl.indexOf("off");
@@ -522,28 +346,13 @@ function setSet() {
     var status = (!stateOn) ? "ACTIVATE" : "DEACTIVATE";
 
     var id = this.id; //highlightedSetGetId();
-    var action = function () { ajaxCall("SetSet", { i: id, a: stateOn}, setsPopulate); }
+    var action = function () { ajaxCall("SetActivate", { i: id, a: stateOn}, setsPopulate); }
     dmConfirm("Activate Set", "Do you wish to " + status + " this set?", action);
 
 
 
 }
 
-/*
-function setSet() {
-    var $that = $(this);
-    var cl = $that.attr("class");
-    var off = cl.indexOf("off");
-    var stateOn = (off < 0);
-    var span = $ID("set-activation-status");
-    var status = (!stateOn) ? "ACTIVATE" : "DEACTIVATE";
-
-    span.html(status);
-    setAction(this.id, $CL("activate-yes"), null, "SetSet", "#activate-set", $CL("activate-no"), stateOn);
-    
-}
-
-*/
 
 
 function setsPopulate(data) {
@@ -552,7 +361,7 @@ function setsPopulate(data) {
     setList.append(data);
     clickRebind(setList, "li.set > div > a", expandLevel);
     clickRebind(setList, "[id^='s_']", setLoad);
-    clickRebind(setList, ".checkbox", setSet);
+    clickRebind(setList, ".checkbox", setActivate);
 	init_ajax_complete();
 	dm_ajax_completed();
 }
@@ -560,7 +369,7 @@ function treeLoad(id) {
     ajaxCall("SetGet", { i: id }, populateTree);
 }
 
-function ajaxCall(action, data, callBack) {
+function ajaxCall(action, data, onDone, onFail) {
     var request = $.ajax({
         url: "DistributionManagement/" + action,
         type: "POST",
@@ -568,11 +377,14 @@ function ajaxCall(action, data, callBack) {
         dataType: "json"
     });
     request.done(function(response) {
-        callBack(response);
+        onDone(response);
 		dm_ajax_completed();
     });
-    request.fail(function(jqXHR, textStatus) {
-        alert( "Request failed: " + textStatus );
+    request.fail(function (jqXHR, error) {
+        if (jqXHR.status == 1001 && onFail)
+            onFail(jqXHR.responseText);
+        else
+            alert("Request failed: " + jqXHR.responseText);
     });
 
 
@@ -616,7 +428,7 @@ function sicCleanUp(sicPopup) {
     sicPopup.find(".btn-plus").off('click');
     var typeList = sicPopup.find("#sic-type");
     setSelectionValue(typeList, 0);
-    sicPopup.find("input, select").css("background-color", "#ffffff");
+    sicPopup.find("input, select").css("background-color", "#fff");
     sicPopup.list.empty();
 }
 
@@ -630,9 +442,9 @@ function doToolTip(event) {
     ch.stop(true, true).fadeToggle("slow");
 }
 
-function populateAppointments() {
-    
-}
+//function populateAppointments() {
+//    
+//}
 function populateTree(data) {
     ////alert(data);
     //get the graph
@@ -711,6 +523,17 @@ function removeEntry(sicList, entryId) {
     return false;
 }
 
+function changeEntry(name, ruleType) {
+    switch (ruleType) {
+        case DMrule.EnRuleType.PrivacyMarking:
+            name.attr("maxlength", 128);
+            break;
+        case DMrule.EnRuleType.SIC:
+            name.attr("maxlength", 8);
+            break;
+    }
+}
+
 function createEntry(sicList, template, rule, i) {
     var entry = template.clone(true);
     if (rule) {
@@ -725,6 +548,8 @@ function createEntry(sicList, template, rule, i) {
         var match = entry.find(".match");
         setSelectionValue(match, rule.MatchType);
         var name = entry.find(".name");
+        var name = entry.find(".name");
+        changeEntry(name, rule.RuleType);
         name.val(rule.Name);
     }
     //else we are adding a blank entry
@@ -814,6 +639,9 @@ function isEqual(data, oldData) {
     return false;
 }
 
+function colorboxClose() {
+    cbox.close();
+}
 
 $(document).ready(function () {
 
@@ -884,7 +712,7 @@ $(document).ready(function () {
 
     //miscellaneous
     $CL("answer-cancel").click(function () {
-        cbox.close();
+        colorboxClose();
     });
 
 
@@ -920,6 +748,13 @@ $(document).ready(function () {
         appointmens.append(list);
     });
 
+    $(".col > .rule").change(function () {
+        var that = $(this);
+        var rule = getIntSelectionValue(that);
+        var name = //$(this).parent("div").next().children("input");
+        that.parent("div").next().next().children("input");
+        changeEntry(name, rule)
+    });
 
     $('.appointment .add .popup-inline').live('click', function (event) {
         event.preventDefault();
@@ -939,8 +774,32 @@ $(document).ready(function () {
         }
     });
 
+//    function showDialog() {
+//        $("#dialog-modal").dialog({
+
+//            width: 600,
+//            height: 400,
+//            open: function (event, ui) {
+//                var textarea = $('<textarea style="height: 276px;">');
+//                $(this).html(textarea);
+//                $(textarea).redactor({ autoresize: false });
+//                $(textarea).setCode('<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>');
+//            }
+//        });
+//    }
+
+//    $("#btn-unlock").click(function () {
+//        $("#jqdialog").dialog({ modal: false });
+//        return false;
+//    });
 
 
+    $(function () {
+        // this initializes the dialog (and uses some common options that I do)
+        $("#jqdialog").dialog({ modal: false });
+
+        // next add the onclick handler
+    });
 
 })
 

@@ -270,6 +270,19 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="cssDavid\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="cssDavid\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="cssDavid\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="cssDavid\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="cssDavid\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="cssDavid\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="cssDavid\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="cssDavid\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="cssDavid\images\ui-icons_222222_256x240.png" />
+    <Content Include="cssDavid\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="cssDavid\images\ui-icons_454545_256x240.png" />
+    <Content Include="cssDavid\images\ui-icons_888888_256x240.png" />
+    <Content Include="cssDavid\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="cssDavid\jquery-ui.css" />
     <Content Include="cssDavid\jquery.css" />
     <Content Include="cssDavid\jquery_002.css" />
@@ -407,6 +420,7 @@
     <Content Include="Images\message-c.png" />
     <Content Include="Images\Save.gif" />
     <Content Include="Images\Send.gif" />
+    <Content Include="Images\ui-icons_222222_256x240.png" />
     <Content Include="MessageList.htm" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -482,6 +496,7 @@
     <Content Include="Scripts\message.list.js" />
     <Content Include="Scripts\messageDetails.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="Scripts\popups.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\ryan_dm.js" />
     <Content Include="Scripts\sicBook.js" />
@@ -640,6 +655,8 @@
     <Content Include="Views\DistributionManagement\_DMPopupSic.cshtml" />
     <Content Include="Views\DistributionManagement\_DMSets.cshtml" />
     <Content Include="Views\DistributionManagement\_DMunitAppointmentList.cshtml" />
+    <Content Include="Views\DistributionManagement\_DMSicCopy.cshtml" />
+    <Content Include="Views\DistributionManagement\_DMPopups.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BAE.Mercury.Business\BAE.Mercury.Business.csproj">

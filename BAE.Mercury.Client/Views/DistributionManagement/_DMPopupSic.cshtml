@@ -1,71 +1,72 @@
 ﻿@using BAE.Mercury.Client.Models
-        <div class="popup-content">
-            <h3>Title</h3>
-@*			<div class="section">
-*@                    <p>Message</p>
-@*            </div>
-*@			<div class="section">
-                <div class="inner">
-                    <div class="col single" >
-                        <select id="sic-type" class="sic-type" @*style="width:200px"*@>
-                            <option selected="selected" value="0">Please select</option>
-                            <option value="@Html.Raw((int)DMsic.SicType.Action)">Action</option>
-                            <option value="@Html.Raw((int)DMsic.SicType.Info)">Info</option>
-                        </select>
-                    </div>
+<div id="@Html.Raw(Model.Id)">
+    <div class="popup-content">
+        <h3 class="sic-title">
+            Title</h3>
+        @*			<div class="section">
+*@
+        <p class="sic-desc">
+            Message</p>
+        @*            </div>
+*@
+        <div class="section">
+            <div class="inner">
+                <div class="col single">
+                    <select id="sic-type" class="sic-type" @*style="width:200px"*@>
+                        <option selected="selected" value="0">Please select</option>
+                        <option value="@Html.Raw((int)DMsic.SicType.Action)">Action</option>
+                        <option value="@Html.Raw((int)DMsic.SicType.Info)">Info</option>
+                    </select>
                 </div>
             </div>
-			
-            <div class="section" style="display:none">
-                <div class="inner">
-                    <div id="sic-entry-template" class="col-wrap select" >
-
-@*                        <div class="col" style="width:10%;display:none;">
+        </div>
+        <div class="section" style="display: none">
+            <div class="inner">
+                <div id="sic-entry-template" class="col-wrap select">
+                    @*                        <div class="col" style="width:10%;display:none;">
                             <span class="sequence" style="margin-left:5px"></span>
                         </div>
-*@                        <div class="col">
-                            <select class="rule">
-                                <option selected="selected" value="0">Please select</option>
-                                <option value="@Html.Raw((int)DMrule.EnRuleType.PrivacyMarking)">Privacy marking</option>
-                                <option value="@Html.Raw((int)DMrule.EnRuleType.SIC)">SIC</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select class="match">
-                                <option selected="selected" value="0">Please select</option>
-                                <option value="@Html.Raw((int)DMrule.EnMatchType.Equal)">is equal</option>
-                                <option value="@Html.Raw((int)DMrule.EnMatchType.StartsWith)">starts with</option>
-                            </select>
-                        </div>
-                        <div class="col wide sic-input" @*style="width:300px"*@>
-                            <input class="name"  type="text" maxlength="8" @*style="width:300px;text-transform:uppercase;"*@ />
-                        </div>
-                        <div class="btn-add">
-                            <a class="btn-minus" href="#">Minus</a>
-                        </div>
+*@
+                    <div class="col">
+                        <select class="rule" style="width:80%">
+                            <option selected="selected" value="0">Please select</option>
+                            <option value="@Html.Raw((int)DMrule.EnRuleType.PrivacyMarking)">Privacy marking</option>
+                            <option value="@Html.Raw((int)DMrule.EnRuleType.SIC)">SIC</option>
+                        </select>
                     </div>
-                </div>
-            </div>
-
-            
-            <div class="section expanding">
-                <div class="inner">
-                    <div id="sic-list"></div>
+                    <div class="col">
+                        <select class="match" style="width:80%">
+                            <option selected="selected" value="0">Please select</option>
+                            <option value="@Html.Raw((int)DMrule.EnMatchType.Equal)">is equal</option>
+                            <option value="@Html.Raw((int)DMrule.EnMatchType.StartsWith)">starts with</option>
+                        </select>
+                    </div>
+                    <div class="col wide sic-input" >
+                        <input class="name"  type="text" maxlength="0"/>
+                    </div>
                     <div class="btn-add">
-                        <a class="btn-plus btn-single" href="#">Plus</a>
-                    </div>
-                </div>
-            </div>
-			
-			
-			
-            <div class="section">
-                <div class="inner">
-                    <div class="btn-wrap" style="margin-left:0;">
-                        <ul>
-                            <li><a id="popup-sic-save" href="#">Submit</a></li>
-                        </ul>
+                        <a class="btn-minus" href="#">Minus</a>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="section expanding">
+            <div class="inner">
+                <div id="sic-list">
+                </div>
+                <div class="btn-add">
+                    <a class="btn-plus btn-single" href="#">Plus</a>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="inner">
+                <div class="btn-wrap" style="margin-left: 0;">
+                    <ul>
+                        <li><a id="popup-sic-save" href="#">Submit</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
