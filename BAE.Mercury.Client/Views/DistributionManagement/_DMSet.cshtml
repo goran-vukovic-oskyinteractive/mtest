@@ -4,7 +4,7 @@
 
 <!--set start  -->
 
-<div id="st_@Html.Raw(String.Format("{0}", Model.Id))" class="set" locked="@Html.Raw(Model.Locked)">
+<div id="st_@Html.Raw(String.Format("{0}", Model.Id))" class="set" ticks="@Html.Raw(Model.Ticks)" locked="true">
 @{ if (Model.Children.Count > 0) {
     foreach (DMunit unit in Model.Children){
     <!--unit start -->
@@ -36,7 +36,7 @@
                                         </div>
                                     </td>
                                     <td class="add"> 
-                                    @if (!(((DMset)appointment.Parent.Parent).Locked || ((DMunit)appointment.Parent).Locked)) {
+                                    @if (!((DMset)appointment.Parent.Parent).ReadOnly) {
                                                                          
                                         <a id="aa_@Html.Raw(String.Format("{0}_{1}_{2}", Model.Id, unit.Id, appointment.Id))" href="#">
                                             <img src="~/images/icon-plus.png" alt="plus"/></a>

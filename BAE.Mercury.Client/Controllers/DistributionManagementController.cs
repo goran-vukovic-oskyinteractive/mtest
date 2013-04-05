@@ -14,15 +14,10 @@ namespace BAE.Mercury.Client.Controllers
 {
     public class DistributionManagementController : Controller
     {
-        private class Test
+        private void ErrorResponse(string response)
         {
-            public string ZZZ
-            {
-                get
-                {
-                    return "aaaaa";
-                }
-            }
+            Response.StatusCode = 1001;
+            Response.Write(response);
         }
         [HttpPost]
         public void SetLock(string i, bool l)
@@ -30,17 +25,41 @@ namespace BAE.Mercury.Client.Controllers
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             DMidParser parser = new DMidParser(i);
-            if (messageStore.IsSetLocked(parser.SetId))
+            DMset.EnLockType lockType = messageStore.LockType(username, parser.SetId);
+            if (l & lockType == DMset.EnLockType.LockedByCurrent)
             {
-                Response.StatusCode = 1001;
-                //Response.ContentType = "application/json";
-                //System.Web.Script.Serialization.JavaScriptSerializer serializer = new JavaScriptSerializer();
-                //string ser = serializer.Serialize(new Test());
-                Response.Write("The set is already locked.");
+                //trying to lock a set locked by himself
+                ErrorResponse("The set is already locked by you");
+            }
+            else if (l & lockType == DMset.EnLockType.LockedByOthers)
+            {
+                //trying to lock a set locked by others
+                ErrorResponse("The set is locked by somebody else");
+            }
+            else if (l & lockType == DMset.EnLockType.Unlocked)
+            {
+                //trying to lock an un-locked set, OK
+                messageStore.LockSet(User.Identity.Name, parser.SetId, l);
+            }
+
+            else if (!l & lockType == DMset.EnLockType.LockedByCurrent)
+            {
+                //trying to unlock a set locked by himself, OK
+                messageStore.LockSet(User.Identity.Name, parser.SetId, l);
+            }
+            else if (!l & lockType == DMset.EnLockType.LockedByOthers)
+            {
+                //trying to unlock a set locked by others, OK
+                messageStore.LockSet(User.Identity.Name, parser.SetId, l);
+            }
+            else if (!l & lockType == DMset.EnLockType.Unlocked)
+            {
+                //trying to unlock an unlocked set
+                ErrorResponse("The set is already unlocked.");
             }
             else
             {
-                messageStore.LockSet(User.Identity.Name, parser.SetId, l);
+                throw new ApplicationException("invalid lock state");
             }
         }
 
@@ -59,9 +78,27 @@ namespace BAE.Mercury.Client.Controllers
         [HttpPost]
         public void SetSave(string data)
         {
+            string username = User.Identity.Name;
             RetChangeList changeList = (RetChangeList)Newtonsoft.Json.JsonConvert.DeserializeObject(data, typeof(RetChangeList));
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
-            messageStore.SaveSet(User.Identity.Name, changeList);
+            DMidParser idParser = new DMidParser(changeList.Id);
+            DMset.EnLockType lockType = messageStore.LockType(username, idParser.SetId);
+            switch (lockType)
+            {
+                case DMset.EnLockType.LockedByOthers:
+                    ErrorResponse("The set is locked by sombody else and cannot be saved.");
+                    break;
+                case DMset.EnLockType.LockedByCurrent:
+                    if (messageStore.IsSetChanged(idParser.SetId, changeList.Ticks))
+                        ErrorResponse("The set was changed and cannot be saved.");
+                    else
+                        //update the set
+                        messageStore.SaveSet(username, changeList);
+                    break;
+                default://if (lockType == DMset.LockType.Unlocked)
+                    //a bug
+                    throw new ApplicationException("invalid state for saving a set");
+            }
         }
         [HttpPost]
         public JsonResult SetAdd(string n)
@@ -79,10 +116,24 @@ namespace BAE.Mercury.Client.Controllers
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             DMidParser parser = new DMidParser(i);
-            messageStore.DeleteSet(User.Identity.Name, parser.SetId);
-            DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
-            string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
-            return Json(html);
+            DMset.EnLockType lockType = messageStore.LockType(username, parser.SetId);
+            switch (lockType)
+            {
+                case DMset.EnLockType.LockedByOthers:
+                    ErrorResponse("The set is locked by sombody else and cannot be deleted.");
+                    return Json("");
+                case DMset.EnLockType.LockedByCurrent:
+                    ErrorResponse("The set is locked by you and cannot be deleted.");
+                    return Json("");
+                case DMset.EnLockType.Unlocked:
+                    messageStore.DeleteSet(User.Identity.Name, parser.SetId);
+                    DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+                    string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+                    return Json(html);
+                default:
+                    //a bug
+                    throw new ApplicationException("invalid state for deleting a set");
+            }
 
         }
         [HttpPost]
@@ -91,10 +142,24 @@ namespace BAE.Mercury.Client.Controllers
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             DMidParser parser = new DMidParser(i);
-            messageStore.UpdateSet(User.Identity.Name, parser.SetId, n);
-            DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
-            string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
-            return Json(html);
+            DMset.EnLockType lockType = messageStore.LockType(username, parser.SetId);
+            switch (lockType)
+            {
+                case DMset.EnLockType.LockedByOthers:
+                    ErrorResponse("The set is locked by sombody else and cannot be deleted.");
+                    return Json("");
+                case DMset.EnLockType.LockedByCurrent:
+                    ErrorResponse("The set is locked by you and cannot be deleted.");
+                    return Json("");
+                case DMset.EnLockType.Unlocked:
+                    messageStore.UpdateSet(User.Identity.Name, parser.SetId, n);
+                    DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+                    string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+                    return Json(html);
+                default:
+                    //a bug
+                    throw new ApplicationException("invalid state for deleting a set");
+            }
         }
         [HttpPost]
         public JsonResult SetCopy(string i)
@@ -105,9 +170,7 @@ namespace BAE.Mercury.Client.Controllers
             messageStore.CloneSet(User.Identity.Name, parser.SetId);
             DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
             string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
-            return Json(html);
-
-            
+            return Json(html);            
         }
 
         public ActionResult Index()
@@ -189,12 +252,16 @@ namespace BAE.Mercury.Client.Controllers
         private class SetAndLists
         {
             private string id, setHtml, unitListHtml;
-            private bool locked;
+            private DMset.EnLockType lockType;
+            private long ticks;
+            private bool isUnit;
             private List<UnitAppointments> listUnitAppointments;
-            public SetAndLists(string id, bool locked, string setHtml, string unitListHtml, List<UnitAppointments> listUnitAppointments) //, string appointmentListHtml)
+            public SetAndLists(string id, DMset.EnLockType lockType, long ticks, bool isUnit, string setHtml, string unitListHtml, List<UnitAppointments> listUnitAppointments) //, string appointmentListHtml)
             {
                 this.id = id;
-                this.locked = locked;
+                this.lockType = lockType;
+                this.ticks = ticks;
+                this.isUnit = isUnit;
                 this.setHtml = setHtml;
                 this.unitListHtml = unitListHtml;
                 this.listUnitAppointments = listUnitAppointments;
@@ -206,13 +273,27 @@ namespace BAE.Mercury.Client.Controllers
                     return id;
                 }
             }
-            public bool Locked
+            public DMset.EnLockType LockType
             {
                 get
                 {
-                    return locked;
+                    return lockType;
                 }
 
+            }
+            public long Ticks
+            {
+                get
+                {
+                    return ticks;
+                }
+            }
+            public bool IsUnit
+            {
+                get
+                {
+                    return isUnit;
+                }
             }
             public string SetHtml
             {
@@ -246,6 +327,9 @@ namespace BAE.Mercury.Client.Controllers
             string userName = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             DMidParser parser = new DMidParser(i);
+            DMset.EnLockType lockType = messageStore.LockType(userName, parser.SetId);
+            if (lockType == DMset.EnLockType.LockedByCurrent)
+                messageStore.LockSet(userName, parser.SetId, false);
             DMset set = messageStore.GetDMSet(userName, parser.SetId, parser.UnitId);
             string setHtml = RenderPartialViewToString("~/Views/DistributionManagement/_DMSet.cshtml", set);
             StringBuilder sb = new StringBuilder(ListOption("Please select", String.Empty));
@@ -260,7 +344,7 @@ namespace BAE.Mercury.Client.Controllers
             string unitListHtml = sb.ToString();
             //string unitListHtml = RenderPartialViewToString("~/Views/DistributionManagement/_DMunitList.cshtml", set);
             //string appointmentListHtml = RenderPartialViewToString("~/Views/DistributionManagement/_DMappointmentList.cshtml", set);
-            SetAndLists setAndList = new SetAndLists(i, set.Locked, setHtml, unitListHtml, listUnitAppointments);
+            SetAndLists setAndList = new SetAndLists(i, set.LockType, set.Ticks, parser.UnitId != -1, setHtml, unitListHtml, listUnitAppointments);
             return Json(setAndList);
         }
 

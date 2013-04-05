@@ -93,13 +93,14 @@ DMrule.compareTo = function (rule1, rule2) {
 
 function DMsic(id, type) {
 
-    var id = id, type = type,
-            finalized = false,
-            children = []
     if (!id)
         throw new Error("invalid id");
     if (!(type == DMsic.EnType.Action || type == DMsic.EnType.Info))
         throw new Error("invalid type");
+
+    var type = type,
+            finalized = false,
+            children = [];
 
     this.Id = id;
     this.Type = type;
@@ -168,31 +169,77 @@ function setsLoad() {
 function isSetChanged() {
     return (currentSet && currentSet.HasChanges())
 }
+function setLockType() {
+    return (currentSet && currentSet.LockType())
+}
+
+
+//function noFunc(id) {
+//   // alert("no func");
+//}
+
+function setLoad(id) {
+
+//    var setList = $("#setbox-list");
+//    clickRebind(setList, "li.set > div > a", noFunc);
+//    clickRebind(setList, "[id^='s_']", noFunc);
+//    clickRebind(setList, ".checkbox", noFunc);
+//    return;
+
+    if (isSetChanged())
+        alertUnsaved();
+        //dmAlert("Unsaved Changes", "There are unsaved changes for the currently viewed set. The changes need to be saved or cancelled before another set can be viewed.");
+    
+    else 
+
+        treeLoad(id);
+
+
+}
+
 function isSetLocked() {
-    return (currentSet && currentSet.IsLocked())
+}
+
+function toggleSetLockIcon(id, lock) {
+    var setItem = $ID(id).parent("a").parent("div").parent("li");
+    setItem.toggleClass("locked", lock);
+    //propagate change to items below
+    var units = setItem.find("li.child");
+    units.toggleClass("lock", lock);
+}
+
+function setLockOn() {
+    setLock(currentSet.Id, true, false, true);
+    currentSet.SetLock(Set.EnLockType.LockedByCurrent);
 }
 
 
-
-function setLoad() {
-    if (isSetChanged()) {
-        dmAlert("Unsaved Changes", "There are unsaved changes for the currently viewed set. The changes need to be saved or cancelled before another set can be viewed.");
-    }
-    else
-        treeLoad(this.id);
-	
+function setLockOff() {
+    //we just reload
+    setLock(currentSet.Id, false, true, true);
 }
+
 
 function setLock(id, lock, refresh, alert) {
     ajaxCall("SetLock", { i: id, l: lock }, function () {
         if (refresh)
             treeLoad(id);
+
+        //toggle set lock
+        toggleLockBtn(currentSet.LockType());
+
+        var parser = new DMidParser(id);
+        var setId = "s_" + parser.setId;
+        toggleSetLockIcon(setId, lock);
+        //toggle the set buttons
+        toggleSetBtns(currentSet.LockType());
+
         if (alert)
             dmAlert("Lock Set", "The set has been " + ((lock) ? "" : "un") + "locked.")
     }
-//    , function (message) {
-//        dmAlert("Lock Set", message);
-//    }
+    //    , function (message) {
+    //        dmAlert("Lock Set", message);
+    //    }
 );
 
 }
@@ -224,11 +271,11 @@ function setSave() {
         var myJsonString = JSON.stringify(currentSet);
         var action = function () {
             ajaxCall("SetSave", { data: myJsonString }, function () {
-                setLock(currentSet.Id, false, true, true);
+                setLockOff(); // (currentSet.Id, false, true, true);
             }
             //var zzz = JSON.parse(jqXHR.responseText);
-            
-            
+
+
             );
 
         }
@@ -244,12 +291,12 @@ function setCancel() {
         return;
     } else {
         //var id = highlightedSetGetId();
-        var action = function () {
-            if (currentSet && currentSet.HasChanges()) {
-                setLock(currentSet.Id, false, true, true);
-                //treeLoad(currentSet.Id);
-            }
+    var action = function () {
+        if (currentSet && currentSet.HasChanges()) {
+            setLockOff(); // (currentSet.Id, false, true, true);
+            //treeLoad(currentSet.Id);
         }
+    }
 
         dmConfirm("Cancel Changes", "Do you wish to cancel the changes?", action)
 
@@ -265,41 +312,47 @@ function setCancel() {
 //    });
 //}
 
-function setUnlock() {
-    //    var popUp = $("#dm-alert").popUpBox();
-    //    popUp.showAlert("aaaa", "bbbbzzz");
-    //    var popUp = $("#dm-confirm").popUpBox();
-//    popUp.showConfirm("aaaa", "bbbbzzz", function (val) { alert("here") });
+function dmAlert(title, message) {
+    var popUp = $("#dm-alert").popUpBox();
+    popUp.showAlert(title, message);
+}
+
+function dmConfirm(title, message, action) {
+    var popUp = $("#dm-confirm").popUpBox();
+    popUp.showConfirm(title, message, action);
+}
+function dmPrompt(title, message, action, text) {
     var popUp = $("#dm-prompt").popUpBox();
-    popUp.showPrompt("aaaa", "bbbbzzz", function (val) { alert(val) });
-//        alert("OK");
-    //    $("#dm-alert").dialog("open");
-
-//    //showDialog();
-//    //$("#jqdialog").dialog("open");
-    return;
-    if (!isSetLocked()) {
-        dmAlert("Unlock Set", "The set is not locked.");
-        return;
-    } else {
-        //var id = highlightedSetGetId();
-        var action = function () {
-            if (currentSet) {
-                setLock(currentSet.Id, false, true, true);
-                //treeLoad(currentSet.Id);
-            }
-        }
-        dmConfirm("Unlock Set", "Do you wish to unlock the set? You will lose all the changes.", action)
-
-    }
+    popUp.showPrompt(title, message, action, text);
 }
 
 
+function setUnlock() {
+    var lockType = setLockType();
+    if (lockType == Set.EnLockType.Unlocked)
+        throw new Error("The set is not locked.");
+    if (lockType == Set.EnLockType.LockedByCurrent)
+        throw new Error("The set is already locked by you.");
+    var action = function () {
+        if (currentSet) {
+            setLockOff();// (currentSet.Id, false, true, true);
+            //treeLoad(currentSet.Id);
+        }
+    }
+    dmConfirm("Unlock Set", "Do you wish to unlock the set? You will lose all the changes.", action);
+
+}
+
+//style = "visibility:hidden"
 
 function setAdd() {
-    var action = function (name) { ajaxCall("SetAdd", { n: name }, setsPopulate); }
-    dmPrompt("Add Set", "Please enter the name of the set.", action)
-    //setAction(null, $CL("add-set-submit"), $ID("set-name-add"), "SetAdd", "#add-set");
+    if (isSetChanged())
+            alertUnsaved();
+    else {
+        var action = function (name) { ajaxCall("SetAdd", { n: name }, setsPopulate); }
+        dmPrompt("Add Set", "Please enter the name of the set.", action);
+        //setAction(null, $CL("add-set-submit"), $ID("set-name-add"), "SetAdd", "#add-set");
+    }
 }
 
 function setEdit() {
@@ -353,16 +406,44 @@ function setActivate() {
 
 }
 
+function alertUnsaved() {
+    dmAlert("Unsaved Changes", "There are unsaved changes for the currently viewed set. The changes need to be saved or cancelled before another set can be selected.");
+}
 
+function nodeExpand(event) {
+    if (isSetChanged())
+        alertUnsaved();
+    else
+        expandLevel($(this), event);
+}
+
+function isNodeLocked() {
+    
+}
+function nodeSelect() {
+    if (isSetChanged()) {
+        //is this the same set
+        if (this.id != currentSet.Id) {
+            alertUnsaved();
+            return false;
+        }
+        //else do nothing
+    }
+    else
+        treeLoad(this.id);
+    return true;
+    //return false;
+}
 
 function setsPopulate(data) {
     var setList = $("#setbox-list");
     setList.empty();
+    toggleSetBtns(Set.EnLockType.LockedByOthers);
     setList.append(data);
-    clickRebind(setList, "li.set > div > a", expandLevel);
-    clickRebind(setList, "[id^='s_']", setLoad);
+    clickRebind(setList, "li.set > div > a", nodeExpand);
+    clickRebind(setList, "[id^='s_']", nodeSelect);
     clickRebind(setList, ".checkbox", setActivate);
-	init_ajax_complete();
+    init_ajax_complete();
 	dm_ajax_completed();
 }
 function treeLoad(id) {
@@ -402,6 +483,7 @@ var sortFunc = function (a, b) {
 
 function clickRebind(parent, pattern, func) {
     parent.find(pattern).each(function () {
+        $(this).off('click');
         $(this).click(func);
     });
 }
@@ -419,11 +501,6 @@ function sicPopulate(sicPopup, sic) {
 }
 
 function sicCleanUp(sicPopup) {
-    //sicChanged
-
-
-    //    sicList.empty();
-    //    
     sicPopup.find("#popup-sic-save").off('click');
     sicPopup.find(".btn-plus").off('click');
     var typeList = sicPopup.find("#sic-type");
@@ -442,17 +519,44 @@ function doToolTip(event) {
     ch.stop(true, true).fadeToggle("slow");
 }
 
-//function populateAppointments() {
-//    
-//}
+function showLockBtn(show) {
+    var lockBtn = $ID("btn-unlock");
+    lockBtn.css("visibility", show ? "visible" : "hidden");
+}
+function toggleLockBtn(lockType) {
+    switch (lockType) {
+        case Set.EnLockType.Unlocked:
+            showLockBtn(false);
+            break;
+        case Set.EnLockType.LockedByOthers:
+            showLockBtn(true);
+            break;
+        case Set.EnLockType.LockedByCurrent:
+            showLockBtn(false);
+            break;
+        
+    }
+}
+function toggleSetBtns(lockType) {
+    //display add (always)
+    //if set selected display copy
+    var editSet = $ID("edit-set");
+    editSet.css("visibility", (lockType == Set.EnLockType.Unlocked) ? "visible" : "hidden");
+    //else if unit selected hide copy
+    //if unlocked display edit and delete    
+}
 function populateTree(data) {
     ////alert(data);
     //get the graph
     //removeScroll();
     var id = data.Id;
-    var locked = data.Locked;
+    var lockType = data.LockType;
     var listUnitAppointments = data.ListUnitAppointments;
-    currentSet = new Set(id, locked, listUnitAppointments);
+    var ticks = data.Ticks;
+    currentSet = new Set(id, lockType, ticks, listUnitAppointments);
+    toggleLockBtn(lockType);
+    toggleSetBtns(lockType);
+
     var unitListHtml = data.UnitListHtml;
 
     $sicUnit = $ID("sic-unit");
@@ -774,32 +878,43 @@ $(document).ready(function () {
         }
     });
 
-//    function showDialog() {
-//        $("#dialog-modal").dialog({
+    //    function showDialog() {
+    //        $("#dialog-modal").dialog({
 
-//            width: 600,
-//            height: 400,
-//            open: function (event, ui) {
-//                var textarea = $('<textarea style="height: 276px;">');
-//                $(this).html(textarea);
-//                $(textarea).redactor({ autoresize: false });
-//                $(textarea).setCode('<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>');
-//            }
-//        });
-//    }
+    //            width: 600,
+    //            height: 400,
+    //            open: function (event, ui) {
+    //                var textarea = $('<textarea style="height: 276px;">');
+    //                $(this).html(textarea);
+    //                $(textarea).redactor({ autoresize: false });
+    //                $(textarea).setCode('<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>');
+    //            }
+    //        });
+    //    }
 
-//    $("#btn-unlock").click(function () {
-//        $("#jqdialog").dialog({ modal: false });
-//        return false;
-//    });
+    //    $("#btn-unlock").click(function () {
+    //        $("#jqdialog").dialog({ modal: false });
+    //        return false;
+    //    });
 
-
+    window.onbeforeunload = function () {
+        if (isSetChanged()) {
+            return "You have unsaved changes! Please save or cancel the changes.";
+        }
+    }
     $(function () {
         // this initializes the dialog (and uses some common options that I do)
         $("#jqdialog").dialog({ modal: false });
 
         // next add the onclick handler
     });
+
+    //$("#setbox-list").find("a").on('click', function () { return false; })
+    //    $("#setbox-list").click(function (e) {
+    //        e.stopPropagation();
+    //    })
+
+
 
 })
 

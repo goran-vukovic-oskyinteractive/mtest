@@ -61,7 +61,7 @@
     <ul class="buttons">
         <li id="btn-save" class="popup-inline"><a href="#save-set">Save</a><span>Save</span></li>
         <li id="btn-cancel"><a href="#">Cancel</a><span>Cancel</span></li>
-        <li id="btn-unlock"><a href="#">Unlock</a><span>Unlock</span></li>
+        <li id="btn-unlock" style="visibility:hidden"><a href="#">Unlock</a><span>Unlock</span></li>
     </ul>
 }
 @section LeftMenuButtons
@@ -75,17 +75,20 @@
             <h2>
                 Distribution Management</h2>
             <p class="title">
-                <strong><a id="btn-edit-set" href="#" class="popup-set-edit">
-                    <img src="~/images/btn-dm_edit.png" alt="Edit" height="24" width="25" /></a> <a id="btn-delete-set"
-                        href="#" class="popup-set-delete">
+                <strong id="edit-set" style="visibility:hidden">
+                    <a id="btn-edit-set" href="#" class="popup-set-edit">
+                        <img src="~/images/btn-dm_edit.png" alt="Edit" height="24" width="25" /></a>
+                     <a id="btn-delete-set" href="#" class="popup-set-delete">
                         <img src="~/images/btn-dm_delete.png" alt="Delete" height="24" width="25" /></a>
                     <a id="btn-copy-set" href="#" class="popup-set-copy">
                         <img src="~/images/btn-dm_copy.png" alt="Copy" height="24" width="25" /></a>
+                </strong>
+                <strong>
                     <a id="btn-add-set" href="#" class="popup-set-add">
                         <img src="~/images/btn-dm_add.png" alt="Add" height="24" width="25" /></a>
                 </strong>
             </p>
-            <ul id="setbox-list">
+            <ul id="setbox-list" >
             </ul>
         </div>
         <div id="left-menu-collapse">
@@ -157,8 +160,8 @@
     <div id="sic-table-template">
         @{
             DistributionManagement dm1 = (DistributionManagement)Model;
-            DMset set1 = new DMset(dm1, 0, String.Empty, false, true);
-            DMunit unit1 = new DMunit(set1, 0, String.Empty, false);
+            DMset set1 = new DMset(dm1, 0, String.Empty, DMset.EnLockType.Unlocked, true, DateTime.Now);
+            DMunit unit1 = new DMunit(set1, 0, String.Empty);
             DMappointment appointment = new DMappointment(unit1, 0, String.Empty);
             DMsic sicAction = new DMsic(null, 0, DMsic.SicType.Action);
             sicAction.DataFinalize();
@@ -167,13 +170,25 @@
             appointment.AddChild(sicAction);
             appointment.AddChild(sicInfo);
             Html.RenderPartial("_DMTable", appointment);
+            
         }
     </div>
     <div id="dm-msg-selc-email-list">
-        @{ Html.RenderPartial("_DMMessageList", null); }
+        @{ Html.RenderPartial("_DMMessageList", null);}
     </div>
-        @{ Html.RenderPartial("_DMPopupSic", new { Id = "sic-popup" }); }
-        @{ Html.RenderPartial("_DMPopupSic", new { Id = "sic-select-field" }); }
+        @{
+            
+            
+             //DMPopupSic dmPopupSic = new DMPopupSic("sic-popup");
+            _DMPopupSic sicPopup = new _DMPopupSic("sic-popup"), sicSelectField = new _DMPopupSic("sicSelectField");
+            Html.RenderPartial("_DMPopupSic", sicPopup);
+            Html.RenderPartial("_DMPopupSic", sicSelectField);
+             
+         }
+
+
+         
+         }
     <!-- ADD SET -->
 
 @*    <div id="add-set">

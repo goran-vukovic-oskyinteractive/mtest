@@ -20,7 +20,8 @@ create table DMNode(
 	ParentId int null,
 	NodeName varchar(255) not null,
 	NodeType bit default 0, --for sic = info | action, for set = active | inactive
-	Locked bit default 0
+	Locked bit default 0 not null,
+	tstamp datetime default getdate() not null 
 	constraint PK_Node primary key(NodeId)
 	--constraint UK_NodeName unique(NodeName)
 )
@@ -157,7 +158,7 @@ insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(49, 32, '2&2&CCC
 insert into DMNode(NodeId, ParentId, NodeName) values(50, 7, 'APP = AAAA')
 insert into DMNode(NodeId, ParentId, NodeName) values(51, 7, 'APP = BBBBB')
 insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(52, 50, '1&2&CCCCCCCC', 0)
-insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(43, 51, '2&2&CCCCCCCC', 0)
+insert into DMNode(NodeId, ParentId, NodeName, NodeType) values(53, 51, '2&2&CCCCCCCC', 0)
 /*
 insert into DMNode(NodeId, ParentId, NodeName) values(0, null, 'Root')
 insert into DMNode(NodeId, ParentId, NodeName) values(1, null, 'Unit = 2 RAR')

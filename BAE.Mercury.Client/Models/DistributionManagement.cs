@@ -295,36 +295,36 @@ namespace BAE.Mercury.Client.Models
     }
     public class DMunit : DMnode
     {
-        private bool locked;
-        public DMunit(DMnode parent, int id, string name, bool locked)
-            : base(parent, id, name) 
-        {
-            this.locked = locked;
-        }
+        //private bool locked;
+        public DMunit(DMnode parent, int id, string name)
+            : base(parent, id, name) {}
 
-        public bool Locked
-        {
-            get
-            {
-                return locked;
-            }
-        }
+        //public bool Locked
+        //{
+        //    get
+        //    {
+        //        return locked;
+        //    }
+        //}
     }
     public class DMset : DMnode
     {
-        private bool locked;
+        public enum EnLockType { Unlocked = 0, LockedByOthers = 1, LockedByCurrent = 2 };
         private bool active;
-        public DMset(DMnode parent, int id, string name, bool locked, bool active)
+        private EnLockType lockType;
+        private DateTime timestamp;
+        public DMset(DMnode parent, int id, string name, EnLockType lockType, bool active, DateTime timestamp)
             : base(parent, id, name)
         {
-            this.locked = locked;
+            this.lockType = lockType;
             this.active = active;
+            this.timestamp = timestamp;
         }
-        public bool Locked
+        public EnLockType LockType
         {
             get
             {
-                return locked;
+                return lockType;
             }
         }
         public bool Active
@@ -332,6 +332,20 @@ namespace BAE.Mercury.Client.Models
             get
             {
                 return active;
+            }
+        }
+        public long Ticks
+        {
+            get
+            {
+                return timestamp.Ticks;
+            }
+        }
+        public bool ReadOnly
+        {
+            get
+            {
+                return lockType == EnLockType.LockedByOthers;
             }
         }
     }
@@ -499,13 +513,18 @@ namespace BAE.Mercury.Client.Models
     }
     public class RetChangeList
     {
-        private string id, unitId;
+        private string id; /*, unitId;*/
+        private long ticks;
         List<RetChange> changes = new List<RetChange>();
         public string Id
         {
             set
             {
                 id = value;
+            }
+            get
+            {
+                return id;
             }
         }
         public List<RetChange> Changes
@@ -515,7 +534,44 @@ namespace BAE.Mercury.Client.Models
                 return changes;
             }
         }
+        public long Ticks
+        {
+            set
+            {
+                ticks = value;
+            }
+            get
+            {
+                return ticks;
+            }
+
+
+        }
+        //public DateTime Timestamp
+        //{
+        //    get
+        //    {
+        //        return new DateTime(ticks);
+        //    }
+        //}
     }
-    //end return info 
+    //end return info
+
+    //fix a very annoying Razor compiler problem
+    public class _DMPopupSic
+    {
+        private string id = null;
+        public _DMPopupSic(string id)
+        {
+            this.id = id;
+        }
+        public string Id
+        {
+            get
+            {
+                return id;
+            }
+        }
+    }
 
 }

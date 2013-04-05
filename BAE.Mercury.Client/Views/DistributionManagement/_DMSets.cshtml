@@ -2,9 +2,9 @@
 @{DistributionManagement dm = (DistributionManagement)Model; }
 @{ foreach (DMset set in dm.Children)
    {
-      
-<li class="set @Html.Raw(set.Locked ? "locked" : "") ">
-    <div>
+       bool setLocked = set.LockType == DMset.EnLockType.LockedByOthers || set.LockType == DMset.EnLockType.LockedByCurrent;
+<li class="set @Html.Raw(setLocked ? "locked" : "") " ticks="@Html.Raw(set.Ticks)">
+    <div >
         <a href="#"><span class="icon"></span><span id="s_@Html.Raw(set.Id)" class="set-name"><strong>@Html.Raw(set.Name)</strong></span></a>
         <div class="btn-set">
             @{string active = set.Active ? "on" : "off"; }
@@ -14,8 +14,8 @@
     <ul style="display: none;">
         @{ foreach (DMunit unit in set.Children)
             {
-             string locked = (set.Locked || unit.Locked) ? "lock" : "";
-            <li class="@Html.Raw(locked)"><a id="s_@Html.Raw(set.Id)_@Html.Raw(unit.Id)" href="#">@Html.Raw(unit.Name)</a></li>
+             string unitLocked = setLocked ? "lock" : "";
+            <li class="@Html.Raw(unitLocked)"><a id="s_@Html.Raw(set.Id)_@Html.Raw(unit.Id)" href="#">@Html.Raw(unit.Name)</a></li>
             }
         }
     </ul>

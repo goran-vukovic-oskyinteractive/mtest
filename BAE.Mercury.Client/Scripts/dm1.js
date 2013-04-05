@@ -1,4 +1,19 @@
-﻿function Change(type, sic) {
+﻿function DMidParser(id) {
+    if (!id)
+        throw new Error("invalid id passed to parser");
+    //var setId = -1, unitId = -1, appointmentId = -1, sicId = -1;
+    var idString = id.split('_');
+    if (idString.length > 1)
+        this.setId = parseInt(idString[1]);
+    if (idString.length > 2)
+        this.unitId = parseInt(idString[2]);
+    if (idString.length > 3)
+        this.appointmentId = parseInt(idString[3]);
+    if (idString.length > 4)
+        this.sicId = parseInt(idString[4]);
+}
+
+function Change(type, sic) {
 
     if (!(type == Change.EnType.Delete || type == Change.EnType.Edit || type == Change.EnType.Add))
         throw new Error("invalid change type");
@@ -47,13 +62,17 @@ function ChangeList(id) {
 }
 */
 
-function Set(id, lock, appointments) {
-    if (!id)
+function Set(setId, lock, ticks, appointments) {
+    if (!setId)
         throw new Error("invalid set id");
-    if (!(typeof lock == "boolean"))
-        throw new Error("invalid lock flag");
-    this.Id = id;
-    var locked = lock;
+    if (!(lock == Set.EnLockType.Unlocked || lock == Set.EnLockType.LockedByOthers || lock == Set.EnLockType.LockedByCurrent))
+        throw new Error("invalid lock type");
+    if (!ticks)
+        throw new Error("invalid number of ticks");
+    var sId = setId;
+    this.Id = sId;
+    var lockType = lock;
+    this.Ticks = ticks;
     this.Changes = [];
     this.ClearChanges = function () {
         this.Changes.length = 0;
@@ -61,7 +80,15 @@ function Set(id, lock, appointments) {
     this.HasChanges = function () {
         return (this.Changes.length > 0);
     }
+    this.ReadOnly = function () {
+        return lockType == Set.EnLockType.LockedByOthers;
+    }
+    this.SetLock = function (lock) {
+        lockType = lock;
+    }
     this.AddChange = function (change) {
+        if (this.ReadOnly())
+            throw new Error("this set is read-only");
         if (!(change instanceof Change))
             throw new Error("invalid change");
         if (!(change.Sic.Id) || change.Sic.Id == 0)
@@ -71,18 +98,16 @@ function Set(id, lock, appointments) {
                 throw new Error("this sic must have rules");
         }
         this.Changes.push(change);
-        //on first update notify the server
-        if (this.Changes.length == 1)
-            this.LockSet(true, true);
-    }
-    this.LockSet = function (refresh, inform) {
-        if (this.Changes.length > 0) {
-            setLock(this.Id, true, false, inform);
-            locked = true;
+        //on first update lock the set
+        if (this.Changes.length == 1) {
+            if (lockType == Set.EnLockType.Unlocked) {
+                setLockOn();//this.Id, true, false, true);
+                //lockType = Set.EnLockType.LockedByCurrent;
+            }
         }
     }
-    this.IsLocked = function () {
-        return locked;
+    this.LockType = function () {
+        return lockType;
     }
     var listAppointments = appointments;
     this.GetAppointmentList = function(unitId) {
@@ -95,6 +120,8 @@ function Set(id, lock, appointments) {
     }
 
 }
+
+Set.EnLockType = { Unlocked : 0, LockedByOthers : 1, LockedByCurrent : 2 };
 
 function resetListbox(control) {
     deHighlightControl(control);
@@ -438,9 +465,9 @@ function isValidSelect(data) {
 function sicCopy(id, sic) {
     var sicPopup = $ID("copy-sic");
     var sicTitle = sicPopup.find(".sic-title");
-    sicTitle.html("Create Rule");
+    sicTitle.html("Copy Rule");
     var sicDesc = sicPopup.find(".sic-desc");
-    sicDesc.html("Create rule for " + getUnitAndAppointment(id));
+    sicDesc.html("Copy rule from " + getUnitAndAppointment(id));
     var submit = $CL("copy-sic-submit");
     submit.click(function () {
         var data = new Object();

@@ -78,23 +78,43 @@ function ext_child_click(event, dom)
 	$(dom).parent('li').addClass('active').parent('ul').siblings('div').addClass('active');
     }
 
-function expandLevel(event) {
-	if(event != undefined){ event.preventDefault(); }
-	init_expandLevel();
-    removeScrollDM();
-    var openMe = $(this).parent('div').parent('li').find('ul');
-    var openMe_siblings = $(this).parent('div').parent('li').siblings().find('ul');
+//    function expandLevel(event) {
+//        if (event != undefined) { event.preventDefault(); }
+//        init_expandLevel();
+//        removeScrollDM();
+//        var openMe = $(this).parent('div').parent('li').find('ul');
+//        var openMe_siblings = $(this).parent('div').parent('li').siblings().find('ul');
 
-    $(this).parent('div').parent('li').siblings().find('div').removeClass('open').removeClass('active');
+//        $(this).parent('div').parent('li').siblings().find('div').removeClass('open').removeClass('active');
+//        $('#setbox-list li.child').removeClass('active');
+//        if (($(this).parent('div').hasClass('open')) || ($(this).parent('div').hasClass('active'))) {
+//            $(this).parent('div').removeClass('open').removeClass('active');
+//            openMe.slideUp('normal');
+//        }
+//        else {
+//            $(this).parent('div').addClass('open');
+//            openMe_siblings.slideUp('normal', function () {
+//                openMe.slideDown('normal');
+//                openMe.css('zoom', '1'); //ie7 fix	        	
+//            });
+//        }
+//        addDMScroll();
+//    }
+function expandLevel(that, event) {
+    if (event != undefined) { event.preventDefault(); }
+    init_expandLevel();
+    removeScrollDM();
+    var openMe = that.parent('div').parent('li').find('ul');
+    var openMe_siblings = that.parent('div').parent('li').siblings().find('ul');
+
+    that.parent('div').parent('li').siblings().find('div').removeClass('open').removeClass('active');
     $('#setbox-list li.child').removeClass('active');
-    if(($(this).parent('div').hasClass('open')) || ($(this).parent('div').hasClass('active')))
-    {
-        $(this).parent('div').removeClass('open').removeClass('active');
+    if ((that.parent('div').hasClass('open')) || (that.parent('div').hasClass('active'))) {
+        that.parent('div').removeClass('open').removeClass('active');
         openMe.slideUp('normal');
     }
-    else
-    {
-        $(this).parent('div').addClass('open');
+    else {
+        that.parent('div').addClass('open');
         openMe_siblings.slideUp('normal', function () {
             openMe.slideDown('normal');
             openMe.css('zoom', '1'); //ie7 fix	        	
@@ -528,6 +548,8 @@ $('.dialog-open-normal').click(function() {
 
 ------------------------------------------------------------------------
 **/
+
+/*
 //CONFIG
 var dm_time_intervals_minutes = 10;
 
@@ -560,5 +582,5 @@ function dm_intervals_callee()	{
     if (currentSet)
         currentSet.LockSet();
 }
-
+*/
 
