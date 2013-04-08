@@ -61,9 +61,9 @@ function htmlEncode(value) {
 function DMrule(name, ruleType, matchType) {
     if (!(ruleType == DMrule.EnRuleType.SIC || ruleType == DMrule.EnRuleType.PrivacyMarking))
         throw new Error("invalid rule type");
-    if (!(matchType == DMrule.EnMatchType.Equal || matchType == DMrule.EnMatchType.StartsWith))
+    if (!(matchType == DMrule.EnMatchType.Equal || matchType == DMrule.EnMatchType.StartsWith || matchType == DMrule.EnMatchType.IsAnything))
         throw new Error("invalid match type");
-    if (!name)
+    if (name == null)
         throw new Error("invalid name");
     this.Name = name;
     this.RuleType = ruleType;
@@ -85,8 +85,8 @@ function DMrule(name, ruleType, matchType) {
     };
 }
 
-DMrule.EnMatchType = { Equal: 2, StartsWith: 1 };
 DMrule.EnRuleType = { SIC: 2, PrivacyMarking: 1 };
+DMrule.EnMatchType = { Equal: 2, StartsWith: 1, IsAnything: 3 };
 DMrule.compareTo = function (rule1, rule2) {
                         return rule1.compareTo(rule2);
                     }
@@ -197,10 +197,18 @@ function setLoad(id) {
 
 }
 
-function isSetLocked() {
-}
 
-function toggleSetLockIcon(id, lock) {
+//function isSetLocked() {
+//    var setItem = $ID(id).parent("a").parent("div").parent("li");
+//    return setItem.hasClass("locked");
+//}
+
+function toggleSetLockIcon(id, lockType) {
+    var lock = (lockType != Set.EnLockType.Unlocked); //lock icon for locked by others and by current
+//    if (lock)
+//        alert("lock ON");
+//    else
+//        alert("lock OFF");
     var setItem = $ID(id).parent("a").parent("div").parent("li");
     setItem.toggleClass("locked", lock);
     //propagate change to items below
@@ -230,7 +238,8 @@ function setLock(id, lock, refresh, alert) {
 
         var parser = new DMidParser(id);
         var setId = "s_" + parser.setId;
-        toggleSetLockIcon(setId, lock);
+        if (lock)
+            toggleSetLockIcon(setId, lock); //on unlock we refresh the entire graph
         //toggle the set buttons
         toggleSetBtns(currentSet.LockType());
 
@@ -271,7 +280,9 @@ function setSave() {
         var myJsonString = JSON.stringify(currentSet);
         var action = function () {
             ajaxCall("SetSave", { data: myJsonString }, function () {
-                setLockOff(); // (currentSet.Id, false, true, true);
+
+                //toggleSetLockIcon(currentSet.Id, Set.EnLockType.Unlocked); //the set will be unlocked on the server
+                setLockOff(); // (currentSet.Id, false, true, true); 
             }
             //var zzz = JSON.parse(jqXHR.responseText);
 
@@ -349,7 +360,10 @@ function setAdd() {
     if (isSetChanged())
             alertUnsaved();
     else {
-        var action = function (name) { ajaxCall("SetAdd", { n: name }, setsPopulate); }
+        var action = function (name) {
+            ajaxCall("SetAdd", { n: name }, setsPopulate);
+
+        }
         dmPrompt("Add Set", "Please enter the name of the set.", action);
         //setAction(null, $CL("add-set-submit"), $ID("set-name-add"), "SetAdd", "#add-set");
     }
@@ -358,7 +372,7 @@ function setAdd() {
 function setEdit() {
     var id = highlightedSetGetId();
     if (!id)
-        return;
+        throw new Error("set id is not defined");
     var $setboxList = $ID("setbox-list");
     var $set = $setboxList.find(".open");
     var $strong = $set.find(".set-name > strong");
@@ -375,15 +389,21 @@ function setEdit() {
 function setDelete() {
     var id = highlightedSetGetId();
     if (!id)
-        return;
-    var action = function () { ajaxCall("SetDelete", { i: id }, setsPopulate); }
-    dmConfirm("Delete Set", "Are you sure you want to delete this set?", action)
+        throw new Error("set id is not defined");    
+    var that = $ID(id);
+    var stateOn = !that.hasClass("off");
+    if (stateOn)
+        dmAlert("Delete Set", "You cannot delete an active set");
+    else {
+        var action = function () { ajaxCall("SetDelete", { i: id }, setsPopulate); }
+        dmConfirm("Delete Set", "Are you sure you want to delete this set?", action)
+    }
 }
 
 function setCopy() {
     var id = highlightedSetGetId();
     if (!id)
-        return;
+        throw new Error("set id is not defined");
     var action = function () { ajaxCall("SetCopy", { i: id }, setsPopulate); }
     dmConfirm("Copy Set", "Do you wish to make a copy of this set?", action)
 
@@ -435,16 +455,21 @@ function nodeSelect() {
     //return false;
 }
 
+
 function setsPopulate(data) {
     var setList = $("#setbox-list");
     setList.empty();
     toggleSetBtns(Set.EnLockType.LockedByOthers);
     setList.append(data);
+    //clear the list
     clickRebind(setList, "li.set > div > a", nodeExpand);
     clickRebind(setList, "[id^='s_']", nodeSelect);
     clickRebind(setList, ".checkbox", setActivate);
     init_ajax_complete();
-	dm_ajax_completed();
+    dm_ajax_completed();
+    var graph = $ID("graph");
+    graph.empty();
+    currentSet = null;
 }
 function treeLoad(id) {
     ajaxCall("SetGet", { i: id }, populateTree);
@@ -465,7 +490,7 @@ function ajaxCall(action, data, onDone, onFail) {
         if (jqXHR.status == 1001 && onFail)
             onFail(jqXHR.responseText);
         else
-            alert("Request failed: " + jqXHR.responseText);
+            dmAlert("Request failed", jqXHR.responseText);
     });
 
 
@@ -556,6 +581,8 @@ function populateTree(data) {
     currentSet = new Set(id, lockType, ticks, listUnitAppointments);
     toggleLockBtn(lockType);
     toggleSetBtns(lockType);
+    //throw new Error("here");
+    toggleSetLockIcon(id, lockType);
 
     var unitListHtml = data.UnitListHtml;
 
@@ -643,9 +670,9 @@ function createEntry(sicList, template, rule, i) {
     if (rule) {
         if (!(rule.RuleType == DMrule.EnRuleType.SIC || rule.RuleType == DMrule.EnRuleType.PrivacyMarking))
             throw new Error("invalid sic");
-        if (!(rule.MatchType == DMrule.EnMatchType.StartsWith || rule.MatchType == DMrule.EnMatchType.Equal))
+        if (!(rule.MatchType == DMrule.EnMatchType.StartsWith || rule.MatchType == DMrule.EnMatchType.Equal || rule.MatchType == DMrule.EnMatchType.IsAnything))
             throw new Error("invalid sic match");
-        if (rule.Name.length <= 0)
+        if (rule.Name == null)
             throw new Error("invalid data.name");
         var type = entry.find(".rule");
         setSelectionValue(type, rule.RuleType);
@@ -851,6 +878,36 @@ $(document).ready(function () {
         appointmens.empty();
         appointmens.append(list);
     });
+
+    $(".rule").change(function () {
+
+        var sicType = $('option:selected', $(this)).val();
+        //var anything = $ID("match-anything");
+        if (sicType == DMrule.EnRuleType.SIC)
+            toggleIsAnything(true);
+        else
+            toggleIsAnything(false);
+    });
+
+    $('option[disabled]').css({ 'color': '#cccccc' });
+    /*
+    $('select').change(function () {
+    if (this.options[this.selectedIndex].disabled) {
+    if (this.options.length == 0) {
+    this.selectedIndex = -1;
+    } else {
+    this.selectedIndex--;
+    }
+    $(this).trigger('change');
+    }
+    });
+
+    */
+    $('select').each(function (it) {
+        if (this.options[this.selectedIndex].disabled)
+            this.onchange();
+    });
+
 
     $(".col > .rule").change(function () {
         var that = $(this);

@@ -378,6 +378,16 @@ function sicValidate(sicPopup, id, change) {
             valid = false;
         }
         name = name.trim().toUpperCase();
+        switch (type) {
+            case DMrule.EnRuleType.SIC:
+//                if (match == DMrule.EnRuleType.IsAnything)
+//                    if (name.length
+                break;
+            case DMrule.EnRuleType.PrivacyMarking:
+                break;
+            default:
+                throw new Error("invalid rule type");
+        }
         if (name.length <= 0) {
             highlightControl(nameCtl);
             valid = false;
@@ -437,6 +447,15 @@ function sicSave(id, action, sicPopup, oldData) {
     }
     return false;
 }
+
+function toggleIsAnything(on) {
+    var opt = $(".match").children("option[value='" + DMrule.EnMatchType.IsAnything + "']");
+    if (on)
+        opt.attr('disabled', 'disabled');
+    else
+        opt.removeAttr("disabled");
+}
+
 
 function isValidSelect(data) {
     var valid = true;
@@ -597,6 +616,7 @@ function nodeCopy() {
     sicCopy(id, sic);
 }
 
+/*
 function setFunctions(action, id, name) {
 
 
@@ -620,4 +640,4 @@ function setFunctions(action, id, name) {
 
     return false;
 }
-
+*/

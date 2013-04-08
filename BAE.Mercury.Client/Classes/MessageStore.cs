@@ -15,7 +15,16 @@ namespace BAE.Mercury.Client
 {
     public class MessageStore
     {
-
+        public string GetDutyOfficer(int option)
+        {
+            //this is a totally silly method to simulate the duty officer field from the databse
+            if (option == 0)
+                return "King Cobra";
+            else if (option == 1)
+                return "Tasmanian Devil";
+            else
+                return "Achilles";
+        }
         public bool IsSetChanged(int id, long ticks)
         {
 
@@ -132,7 +141,7 @@ namespace BAE.Mercury.Client
         }
         
         
-        public void SaveSet(string user, RetChangeList changeList)
+        public void SetSave(string user, RetChangeList changeList)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
             SqlConnection con = new SqlConnection(connectionString);
@@ -265,6 +274,30 @@ namespace BAE.Mercury.Client
             }
         }
 
+        public void SetTimestamp(string user, int setId)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand com = new SqlCommand(String.Format("setDistributionManagementSetTimeStamp {0}", setId));
+
+            com.Connection = con;
+            try
+            {
+                con.Open();
+                com.ExecuteNonQuery();
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx.Message);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
+
         private DMsic.SicType GetSicType(bool type)
         {
             return type ? DMsic.SicType.Action : DMsic.SicType.Info;
@@ -306,8 +339,9 @@ namespace BAE.Mercury.Client
                     string name = (string)reader["nodename"];
                     int id = (int)reader["nodeid"];
                     int parentId = (int)reader["nodeparentid"];
-                    DMset.EnLockType lockType = LockTypeConvert(username, (int)reader["locked"]);
-                    DMunit unit = new DMunit(null, id, name);
+                    //DMset.EnLockType lockType = LockTypeConvert(username, (int)reader["locked"]);
+                    string dutyOfficer = GetDutyOfficer((int)reader["locked"]);
+                    DMunit unit = new DMunit(null, id, name, dutyOfficer);
                     DMnodeWrap unitWrap = new DMnodeWrap(unit, parentId);
                     unitWraps.Add(unitWrap);
                 }
@@ -347,7 +381,7 @@ namespace BAE.Mercury.Client
                 {
                     if (unitWrap.ParentId == set.Id)
                     {
-                        DMunit unit = new DMunit(set, unitWrap.Node.Id, unitWrap.Node.Name);
+                        DMunit unit = new DMunit(set, unitWrap.Node.Id, unitWrap.Node.Name, ((DMunit) unitWrap.Node).DutyOfficer);
                         int unitNo = InsertNode(com, setNo, unit.Name, false, 0);
                         //now loop through the sics and append to the appoinments
                         foreach (DMnodeWrap appointmentWrap in appointmentWraps)
@@ -478,8 +512,10 @@ namespace BAE.Mercury.Client
                     string name = (string)reader["nodename"];
                     int id = (int)reader["nodeid"];
                     int parentId = (int)reader["nodeparentid"];
+
                     //DMset.LockType locked = LockType(username, (int)reader["locked"]);
-                    DMunit unit = new DMunit(null, id, name);
+                    string dutyOfficer = GetDutyOfficer((int)reader["locked"]);
+                    DMunit unit = new DMunit(null, id, name, dutyOfficer);
                     DMnodeWrap unitWrap = new DMnodeWrap(unit, parentId);
                     unitWraps.Add(unitWrap);
                 }
@@ -517,7 +553,7 @@ namespace BAE.Mercury.Client
                 {
                     if (unitWrap.ParentId == set.Id)
                     {
-                        DMunit unit = new DMunit(set, unitWrap.Node.Id, unitWrap.Node.Name);
+                        DMunit unit = new DMunit(set, unitWrap.Node.Id, unitWrap.Node.Name, ((DMunit)unitWrap.Node).DutyOfficer);
                         //now loop through the sics and append to the appoinments
                         foreach (DMnodeWrap appointmentWrap in appointmentWraps)
                         {
@@ -531,13 +567,13 @@ namespace BAE.Mercury.Client
                                         DMsic sic = new DMsic(appointmentWrap.Node, sicWrap.Node.Id, ((DMsic)sicWrap.Node).Type);
                                         //we also need to parse the sic data
                                         string[] rules = sicWrap.Name.Split(';');
-
                                         foreach (string rule in rules)
                                         {
                                                 string[] ruleData = rule.Split('&');
+                                                Debug.WriteLine(rule);
                                                 DMrule.EnRuleType type = (DMrule.EnRuleType)Int32.Parse(ruleData[0]);
                                                 DMrule.EnMatchType match = (DMrule.EnMatchType)Int32.Parse(ruleData[1]);
-                                                string name = ruleData[2];
+                                                string name = (ruleData.Length >= 3) ? ruleData[2] : String.Empty; //there can be "is anything" rule with 0 characters
                                                 DMrule ruleInstance = new DMrule(sic, name, type, match);
                                                 sic.AddChild(ruleInstance);
                                         }
@@ -560,6 +596,7 @@ namespace BAE.Mercury.Client
                 return set;
 
             }
+                /*
             catch (SqlException sqlEx)
             {
                 Debug.WriteLine(sqlEx.Message);
@@ -570,6 +607,7 @@ namespace BAE.Mercury.Client
                 Debug.WriteLine(ex.Message);
                 throw new ApplicationException(ex.Message);
             }
+                 * */
             finally
             {
                 if (con != null)
@@ -624,7 +662,8 @@ namespace BAE.Mercury.Client
                     int parentId = (int)reader["nodeparentid"];
                     string name = (string)reader["nodename"];
                     //bool locked = ((int)reader["locked"]) != 0;
-                    DMunit unit = new DMunit(null, id, name);
+                    string dutyOfficer = GetDutyOfficer((int)reader["locked"]);
+                    DMunit unit = new DMunit(null, id, name, dutyOfficer);
                     DMnodeWrap unitWrap = new DMnodeWrap(unit, parentId);
                     unitWraps.Add(unitWrap);
                 }
@@ -640,7 +679,7 @@ namespace BAE.Mercury.Client
                     {
                         if (unitWrap.ParentId == setWrap.Node.Id)
                         {
-                            DMunit unit = new DMunit(set, unitWrap.Node.Id, unitWrap.Node.Name);
+                            DMunit unit = new DMunit(set, unitWrap.Node.Id, unitWrap.Node.Name, ((DMunit) unitWrap.Node).DutyOfficer);
                             set.AddChild(unit);
                         }
                     }

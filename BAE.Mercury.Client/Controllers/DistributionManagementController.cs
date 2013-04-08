@@ -81,19 +81,23 @@ namespace BAE.Mercury.Client.Controllers
             string username = User.Identity.Name;
             RetChangeList changeList = (RetChangeList)Newtonsoft.Json.JsonConvert.DeserializeObject(data, typeof(RetChangeList));
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
-            DMidParser idParser = new DMidParser(changeList.Id);
-            DMset.EnLockType lockType = messageStore.LockType(username, idParser.SetId);
+            DMidParser parser = new DMidParser(changeList.Id);
+            DMset.EnLockType lockType = messageStore.LockType(username, parser.SetId);
             switch (lockType)
             {
                 case DMset.EnLockType.LockedByOthers:
                     ErrorResponse("The set is locked by sombody else and cannot be saved.");
                     break;
                 case DMset.EnLockType.LockedByCurrent:
-                    if (messageStore.IsSetChanged(idParser.SetId, changeList.Ticks))
-                        ErrorResponse("The set was changed and cannot be saved.");
+                    if (messageStore.IsSetChanged(parser.SetId, changeList.Ticks))
+                        ErrorResponse("The set was changed in the mean time by somebody else and cannot be saved.");
                     else
+                    {
                         //update the set
-                        messageStore.SaveSet(username, changeList);
+                        messageStore.SetSave(username, changeList);
+                        messageStore.SetTimestamp(username, parser.SetId);
+                        //messageStore.LockSet(username, parser.SetId, false);
+                    }
                     break;
                 default://if (lockType == DMset.LockType.Unlocked)
                     //a bug

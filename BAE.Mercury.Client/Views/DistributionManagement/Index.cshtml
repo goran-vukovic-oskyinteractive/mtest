@@ -161,7 +161,7 @@
         @{
             DistributionManagement dm1 = (DistributionManagement)Model;
             DMset set1 = new DMset(dm1, 0, String.Empty, DMset.EnLockType.Unlocked, true, DateTime.Now);
-            DMunit unit1 = new DMunit(set1, 0, String.Empty);
+            DMunit unit1 = new DMunit(set1, 0, String.Empty, String.Empty);
             DMappointment appointment = new DMappointment(unit1, 0, String.Empty);
             DMsic sicAction = new DMsic(null, 0, DMsic.SicType.Action);
             sicAction.DataFinalize();

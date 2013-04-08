@@ -38,6 +38,7 @@
                         <select class="match" style="width:80%">
                             <option selected="selected" value="0">Please select</option>
                             <option value="@Html.Raw((int)DMrule.EnMatchType.Equal)">is equal</option>
+                            <option value="@Html.Raw((int)DMrule.EnMatchType.IsAnything)">is anything</option>
                             <option value="@Html.Raw((int)DMrule.EnMatchType.StartsWith)">starts with</option>
                         </select>
                     </div>
