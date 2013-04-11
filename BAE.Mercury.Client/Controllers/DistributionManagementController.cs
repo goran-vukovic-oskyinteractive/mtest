@@ -14,10 +14,11 @@ namespace BAE.Mercury.Client.Controllers
 {
     public class DistributionManagementController : Controller
     {
-        private void ErrorResponse(string response)
+        private JsonResult ErrorResponse(string response)
         {
             Response.StatusCode = 1001;
             Response.Write(response);
+            return null;
         }
         [HttpPost]
         public void SetLock(string i, bool l)
@@ -65,12 +66,12 @@ namespace BAE.Mercury.Client.Controllers
 
 
         [HttpPost]
-        public JsonResult SetActivate(string i, bool a)
+        public JsonResult SetActivate(string i)
         {
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             DMidParser parser = new DMidParser(i);
-            messageStore.SetActivate(User.Identity.Name, parser.SetId, a);
+            messageStore.SetActivate(User.Identity.Name, parser.SetId);
             DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
             string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
             return Json(html);
@@ -124,11 +125,9 @@ namespace BAE.Mercury.Client.Controllers
             switch (lockType)
             {
                 case DMset.EnLockType.LockedByOthers:
-                    ErrorResponse("The set is locked by sombody else and cannot be deleted.");
-                    return Json("");
+                    return ErrorResponse("The set is locked by sombody else and cannot be deleted.");
                 case DMset.EnLockType.LockedByCurrent:
-                    ErrorResponse("The set is locked by you and cannot be deleted.");
-                    return Json("");
+                    return ErrorResponse("The set is locked by you and cannot be deleted.");
                 case DMset.EnLockType.Unlocked:
                     messageStore.DeleteSet(User.Identity.Name, parser.SetId);
                     DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
@@ -150,16 +149,28 @@ namespace BAE.Mercury.Client.Controllers
             switch (lockType)
             {
                 case DMset.EnLockType.LockedByOthers:
-                    ErrorResponse("The set is locked by sombody else and cannot be deleted.");
-                    return Json("");
+                    return ErrorResponse("The set is locked by sombody else and cannot be changed.");
                 case DMset.EnLockType.LockedByCurrent:
-                    ErrorResponse("The set is locked by you and cannot be deleted.");
-                    return Json("");
+                    return ErrorResponse("The set is locked by you and cannot be changed.");
                 case DMset.EnLockType.Unlocked:
-                    messageStore.UpdateSet(User.Identity.Name, parser.SetId, n);
-                    DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
-                    string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
-                    return Json(html);
+                    int update = messageStore.UpdateSet(User.Identity.Name, parser.SetId, n);
+                    if (update == 0)
+                    {
+                        DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+                        string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+                        return Json(html);
+                    }
+                    else
+                    {
+                        if (update == 1)
+                        {
+                            ErrorResponse("There is already a set with that name.");
+                            return null; // Json(String.Empty);
+                        }
+                        else
+                            throw new ApplicationException("unknown result saving a set name"); 
+
+                    }
                 default:
                     //a bug
                     throw new ApplicationException("invalid state for deleting a set");

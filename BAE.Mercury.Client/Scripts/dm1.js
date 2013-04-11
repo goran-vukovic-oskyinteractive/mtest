@@ -4,13 +4,13 @@
     //var setId = -1, unitId = -1, appointmentId = -1, sicId = -1;
     var idString = id.split('_');
     if (idString.length > 1)
-        this.setId = parseInt(idString[1]);
+        this.SetId = parseInt(idString[1]);
     if (idString.length > 2)
-        this.unitId = parseInt(idString[2]);
+        this.UnitId = parseInt(idString[2]);
     if (idString.length > 3)
-        this.appointmentId = parseInt(idString[3]);
+        this.AppointmentId = parseInt(idString[3]);
     if (idString.length > 4)
-        this.sicId = parseInt(idString[4]);
+        this.SicId = parseInt(idString[4]);
 }
 
 function Change(type, sic) {
@@ -338,12 +338,12 @@ function removeNode(id) {
 }
 
 
-
+/*
 function errorMessage(error) {
     alert(error);
     return null;
 }
-
+*/
 function sicValidate(sicPopup, id, change) {
 
     var valid = true;
@@ -359,50 +359,56 @@ function sicValidate(sicPopup, id, change) {
         change.sic = new DMsic(id, sicType);
     sicPopup.list.find("[id^='entry']").each(function () {
         found = true;
-        var typeCtl = $(this).find(".rule");
-        var type = getIntSelectionValue(typeCtl);
-        if (type < 1) {
-            highlightControl(typeCtl);
+        var ruleCtl = $(this).find(".rule");
+        var ruleType = getIntSelectionValue(ruleCtl);
+        if (ruleType < 1) {
+            highlightControl(ruleCtl);
             valid = false;
         }
+
+
         var matchCtl = $(this).find(".match");
-        var match = getIntSelectionValue(matchCtl);
-        if (match < 1) {
+        var matchType = getIntSelectionValue(matchCtl);
+        if (matchType < 1) {
             highlightControl(matchCtl);
             valid = false;
         }
         var nameCtl = $(this).find(".name");
         var name = nameCtl.val();
-        if (!name) {
-            highlightControl(nameCtl);
-            valid = false;
+        if (name.length <= 0) {
+            if (matchType != DMrule.EnMatchType.IsAnything) {
+                highlightControl(nameCtl);
+                valid = false;
+            }
         }
         name = name.trim().toUpperCase();
+        /*
         switch (type) {
-            case DMrule.EnRuleType.SIC:
-//                if (match == DMrule.EnRuleType.IsAnything)
-//                    if (name.length
-                break;
-            case DMrule.EnRuleType.PrivacyMarking:
-                break;
-            default:
-                throw new Error("invalid rule type");
+        case DMrule.EnRuleType.SIC:
+        //                if (match == DMrule.EnRuleType.IsAnything)
+        //                    if (name.length
+        break;
+        case DMrule.EnRuleType.PrivacyMarking:
+        break;
+        default:
+        throw new Error("invalid rule type");
         }
         if (name.length <= 0) {
             highlightControl(nameCtl);
             valid = false;
         }
+        */
         if (valid) {
-            var entry = new DMrule(name, type, match);
+            var entry = new DMrule(name, ruleType, matchType);
             change.sic.AddNode(entry);
         }
     });
     if (!valid) {
-        errorMessage("please enter data in the empty fields highlighted red");
+        dmAlert("Save Rule", "Please enter data in the empty fields highlighted red");
         return false;
     }
     if (!found) {
-        errorMessage("there must be at least one entry");
+        dmAlert("Save Rule", "There must be at least one entry");
         return false;
     }
     return true;
@@ -448,9 +454,9 @@ function sicSave(id, action, sicPopup, oldData) {
     return false;
 }
 
-function toggleIsAnything(on) {
-    var opt = $(".match").children("option[value='" + DMrule.EnMatchType.IsAnything + "']");
-    if (on)
+function toggleIsAnything(matchCtl, disable) {
+    var opt = matchCtl.children("option[value='" + DMrule.EnMatchType.IsAnything + "']");
+    if (disable)
         opt.attr('disabled', 'disabled');
     else
         opt.removeAttr("disabled");
@@ -476,16 +482,16 @@ function isValidSelect(data) {
         data.appointmentId = appointmentId;
 
     if (!valid) {
-        errorMessage("please enter data in the empty fields highlighted red");
+        dmAlert("Rule Validate", "please enter data in the empty fields highlighted red");
         return false;
     }
     return true;
 }
 function sicCopy(id, sic) {
-    var sicPopup = $ID("copy-sic");
-    var sicTitle = sicPopup.find(".sic-title");
+    var box = $ID("copy-sic");
+    var sicTitle = box.find(".sic-title");
     sicTitle.html("Copy Rule");
-    var sicDesc = sicPopup.find(".sic-desc");
+    var sicDesc = box.find(".sic-desc");
     sicDesc.html("Copy rule from " + getUnitAndAppointment(id));
     var submit = $CL("copy-sic-submit");
     submit.click(function () {
@@ -498,16 +504,31 @@ function sicCopy(id, sic) {
         addNode(sic);
         var change = new Change(Change.EnType.Add, sic)
         currentSet.AddChange(change);
-        cbox.close();
+        box.dialog("close");
         return false;
 
     });
     var cancel = $CL("copy-sic-cancel");
     cancel.click(function () {
-        colorboxClose();
+        box.dialog("close");
     });
+    box.dialog({
+        modal: true,
+        //width: 800,
+        autoResize: true,
+        //            close: function (event, ui) {
+        //                //alert("default close");
+        //                box.okBtn.off('click');
+        //                popupMsg.html("");
+        //            }
+        close: function () {
+            submit.off("click");
+            sicDesc.html("");
+        }
+    });
+    box.dialog("open");
 
-
+/*
     var colorbox = $.colorbox({ href: "#copy-sic", inline: true, width: "700px",
         onCleanup: function () {
             submit.off('click');
@@ -526,7 +547,7 @@ function sicCopy(id, sic) {
     });
     $("#cboxLoadingOverlay").remove();
     $("#cboxLoadingGraphic").remove();
-
+*/
 }
 
 function getUnitAndAppointment(id) {
@@ -544,15 +565,42 @@ function getUnitAndAppointment(id) {
 function getPopup(id, sic, type) {
     
     var sicPopup = $ID("sic-popup");
-    var sicTitle = sicPopup.find(".sic-title");
-    sicTitle.html("Create Rule");
+    //var sicTitle = sicPopup.find(".sic-title");
+    var sicTitle = (type == Change.EnType.Edit)? "Edit Rule" : "Create Rule";
     var sicDesc = sicPopup.find(".sic-desc");
     sicDesc.html("Create rule for " + getUnitAndAppointment(id));
     var sicList = sicPopup.find("#sic-list");
     sicPopup.list = sicList;
     clickRebind(sicPopup, ".btn-plus", function () { addEntry(sicList) });
-    $("#popup-sic-save").click(function () { sicSave(id, type, sicPopup, sic) });
-    var colorbox = $.colorbox({ href: "#sic-popup", inline: true, width: "700px", onCleanup: function () { sicCleanUp(sicPopup); } });
+    clickRebind(sicPopup, "#popup-sic-submit", function () {
+        sicSave(id, type, sicPopup, sic)
+    });
+    clickRebind(sicPopup, "#popup-sic-cancel", function () {
+        sicPopup.dialog("close");
+    });
+
+//    $("#popup-sic-submit").click(function () {
+//        sicSave(id, type, sicPopup, sic)
+//          });
+    //var box = $ID("sic-popup");
+    var width = sicPopup.width();
+    sicPopup.dialog({
+            title: sicTitle,
+            modal: true,
+            width: 800,
+            autoResize:true,
+            close: function () {
+                sicCleanUp(sicPopup);
+            }
+            
+//            function (event, ui) {
+////                //alert("default close");
+//                box.okBtn.off('click');
+//                popupMsg.html("");
+//            }
+        });
+        sicPopup.dialog("open");
+    //var colorbox = $.colorbox({ href: "#sic-popup", inline: true, width: "700px", onCleanup: function () { sicCleanUp(sicPopup); } });
     return sicPopup;
 }
 
@@ -573,7 +621,7 @@ function getPopup(id, sic, type) {
     var sicList = sicPopup.find("#sic-list");
     sicPopup.list = sicList;
     clickRebind(sicPopup, ".btn-plus", function () { addEntry(sicList) });
-    $("#popup-sic-save").click(function () { sicSave(id, type, sicPopup, sic) });
+    $("#popup-sic-submit").click(function () { sicSave(id, type, sicPopup, sic) });
     var colorbox = $.colorbox({ href: "#sic-popup", inline: true, width: "700px", onCleanup: function () { sicCleanUp(sicPopup); } });
     return sicPopup;
 }

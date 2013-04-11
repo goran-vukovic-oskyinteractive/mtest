@@ -153,9 +153,9 @@ ol li { list-style:decimal; padding:0 0 3px 10px; }
 #setbox ul#setbox-list li div:hover { background:#cd3d3d url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat; }
 #setbox ul#setbox-list li div.open:hover { background:#ad1313 url(../images/bg-mailbox_arrow_down.png) 15px 15px no-repeat; }
 #setbox ul#setbox-list li a { display:block; border-top:1px solid #343434; padding:9px 0 9px 30px; color:#fff; overflow:hidden; }
-#setbox ul#setbox-list li ul li a:hover { background:#cd3d3d; }
-#setbox ul#setbox-list li ul li.active a { background:#7a0101; }
-#setbox ul#setbox-list li ul li.active:hover a { background:#ad1313; }
+#setbox ul#setbox-list li ul li a:hover { background-color:#cd3d3d; }
+#setbox ul#setbox-list li ul li.active a {  background-color:#7a0101; }
+#setbox ul#setbox-list li ul li.active:hover a {  background-color:#ad1313; }
 
 #setbox ul#setbox-list li span.counter { display:block; padding:0 7px; text-align:center; background:#6c6c6c; float:right; margin:0 10px 0 0; border-radius: 5px; border:1px solid #5f5f5f; font-size:12px; height:20px; line-height:20px; }
 #setbox ul#setbox-list li div:hover span.counter, #setbox ul#setbox-list li a:hover span.counter, #setbox ul#setbox-list li div.open span.counter { background:#992424!important; border:1px solid #872020!important; }
@@ -475,7 +475,7 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 
 .popup-content .section .inner .btn-add {float:left;}
 .popup-content .section .inner .btn-add a {display:block; float:left; background:url(../images/btn-plusminus.png) 0 0 no-repeat; width:17px; height:17px; text-indent:-9999px; margin:2px 5px 0 0;}
-.popup-content .section .inner .btn-add a.btn-minus {background-position:0 -17px; margin-left:10px;}
+.popup-content .section .inner .btn-add a.btn-minus {background-position:0 -17px; margin-left:0px;}
 .popup-content .section .inner .btn-add a.btn-single {margin-top:-8px}
 
 .popup-content .section .inner .form-wrap {margin:0;}

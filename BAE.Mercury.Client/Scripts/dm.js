@@ -129,9 +129,10 @@ function DMsic(id, type) {
             }
             if (rule.MatchType == DMrule.EnMatchType.StartsWith) {
                 longNameSB.Append(" starts with ");
-            }
-            else {
+            } else if (rule.MatchType == DMrule.EnMatchType.Equal) {
                 longNameSB.Append(" = ");
+            } else {
+                longNameSB.Append(" is anything ");
             }
             var name = htmlEncode(rule.Name);
             //data for rules [rule type, match, start position, length]
@@ -186,11 +187,11 @@ function setLoad(id) {
 //    clickRebind(setList, ".checkbox", noFunc);
 //    return;
 
-    if (isSetChanged())
-        alertUnsaved();
-        //dmAlert("Unsaved Changes", "There are unsaved changes for the currently viewed set. The changes need to be saved or cancelled before another set can be viewed.");
-    
-    else 
+//    if (isSetChanged())
+//        alertUnsaved();
+//        //dmAlert("Unsaved Changes", "There are unsaved changes for the currently viewed set. The changes need to be saved or cancelled before another set can be viewed.");
+//    
+//    else 
 
         treeLoad(id);
 
@@ -234,14 +235,15 @@ function setLock(id, lock, refresh, alert) {
             treeLoad(id);
 
         //toggle set lock
-        toggleLockBtn(currentSet.LockType());
+        showLockBtn(lockBtnVisible(currentSet.LockType()));
+        //lockBtnVisible(currentSet.LockType());
 
         var parser = new DMidParser(id);
-        var setId = "s_" + parser.setId;
+        var setId = "ss_" + parser.SetId;
         if (lock)
             toggleSetLockIcon(setId, lock); //on unlock we refresh the entire graph
         //toggle the set buttons
-        toggleSetBtns(currentSet.LockType());
+        showSetBtns(currentSet.LockType() == Set.EnLockType.Unlocked);
 
         if (alert)
             dmAlert("Lock Set", "The set has been " + ((lock) ? "" : "un") + "locked.")
@@ -357,22 +359,22 @@ function setUnlock() {
 //style = "visibility:hidden"
 
 function setAdd() {
-    if (isSetChanged())
-            alertUnsaved();
-    else {
+//    if (isSetChanged())
+//            alertUnsaved();
+//    else {
         var action = function (name) {
             ajaxCall("SetAdd", { n: name }, setsPopulate);
 
         }
         dmPrompt("Add Set", "Please enter the name of the set.", action);
         //setAction(null, $CL("add-set-submit"), $ID("set-name-add"), "SetAdd", "#add-set");
-    }
+//    }
 }
 
 function setEdit() {
     var id = highlightedSetGetId();
     if (!id)
-        throw new Error("set id is not defined");
+        return;
     var $setboxList = $ID("setbox-list");
     var $set = $setboxList.find(".open");
     var $strong = $set.find(".set-name > strong");
@@ -389,9 +391,10 @@ function setEdit() {
 function setDelete() {
     var id = highlightedSetGetId();
     if (!id)
-        throw new Error("set id is not defined");    
-    var that = $ID(id);
-    var stateOn = !that.hasClass("off");
+        return;
+    var parser = new DMidParser(id);
+    var active = $ID("sa_" + parser.SetId);
+    var stateOn = active.hasClass("on");
     if (stateOn)
         dmAlert("Delete Set", "You cannot delete an active set");
     else {
@@ -403,25 +406,28 @@ function setDelete() {
 function setCopy() {
     var id = highlightedSetGetId();
     if (!id)
-        throw new Error("set id is not defined");
+        return;
     var action = function () { ajaxCall("SetCopy", { i: id }, setsPopulate); }
     dmConfirm("Copy Set", "Do you wish to make a copy of this set?", action)
 
 }
-
+function setMarkActive(id) {
+    $("[id^='sa_']").removeClass("on");
+    $ID(id).addClass("on");
+//    alert(id);
+}
 
 function setActivate() {
-    var $that = $(this);
-    var cl = $that.attr("class");
-    var off = cl.indexOf("off");
-    var stateOn = (off < 0);
-    var span = $ID("set-activation-status");
-    var status = (!stateOn) ? "ACTIVATE" : "DEACTIVATE";
+    var that = $(this);
+    var stateOn = that.hasClass("on");
+    if (!stateOn) {
+        //var span = $ID("set-activation-status");
 
-    var id = this.id; //highlightedSetGetId();
-    var action = function () { ajaxCall("SetActivate", { i: id, a: stateOn}, setsPopulate); }
-    dmConfirm("Activate Set", "Do you wish to " + status + " this set?", action);
-
+        var id = this.id; //highlightedSetGetId();
+        var action = function () { ajaxCall("SetActivate", { i: id}, function () { setMarkActive(id) }); }
+        dmConfirm("Activate Set", "Do you wish to activate this set?", action);
+    }
+    return false;
 
 
 }
@@ -431,15 +437,25 @@ function alertUnsaved() {
 }
 
 function nodeExpand(event) {
-    if (isSetChanged())
-        alertUnsaved();
-    else
+    var id = $(this).children("span")[1].id;
+    if (isSetChanged()) {
+        if (id != currentSet.Id)
+            alertUnsaved();
+    }
+    else {
         expandLevel($(this), event);
+        var parser = new DMidParser(id);
+        var select = $ID("ss_" + parser.SetId);
+        //select.click();
+    }
+    return false;
 }
 
+/*
 function isNodeLocked() {
     
 }
+*/
 function nodeSelect() {
     if (isSetChanged()) {
         //is this the same set
@@ -459,12 +475,13 @@ function nodeSelect() {
 function setsPopulate(data) {
     var setList = $("#setbox-list");
     setList.empty();
-    toggleSetBtns(Set.EnLockType.LockedByOthers);
+    showLockBtn(false);
+    showSetBtns(false);
     setList.append(data);
     //clear the list
     clickRebind(setList, "li.set > div > a", nodeExpand);
-    clickRebind(setList, "[id^='s_']", nodeSelect);
-    clickRebind(setList, ".checkbox", setActivate);
+    clickRebind(setList, "[id^='ss_']", nodeSelect);
+    clickRebind(setList, "[id^='sa_']", setActivate);
     init_ajax_complete();
     dm_ajax_completed();
     var graph = $ID("graph");
@@ -476,8 +493,13 @@ function treeLoad(id) {
 }
 
 function ajaxCall(action, data, onDone, onFail) {
+    //alert(rootDir);
+    var baseUrl = document.URL;
+    var split = baseUrl.split("/");
+    var newUrl = ""//((split.length > 4) ? "/" + split[3] + "/" : "") 
+        + "DistributionManagement/" + action;
     var request = $.ajax({
-        url: "DistributionManagement/" + action,
+        url: newUrl,
         type: "POST",
         data: data,
         dataType: "json"
@@ -490,6 +512,8 @@ function ajaxCall(action, data, onDone, onFail) {
         if (jqXHR.status == 1001 && onFail)
             onFail(jqXHR.responseText);
         else
+        //NOTE: this is for debug only
+
             dmAlert("Request failed", jqXHR.responseText);
     });
 
@@ -526,11 +550,12 @@ function sicPopulate(sicPopup, sic) {
 }
 
 function sicCleanUp(sicPopup) {
-    sicPopup.find("#popup-sic-save").off('click');
-    sicPopup.find(".btn-plus").off('click');
-    var typeList = sicPopup.find("#sic-type");
-    setSelectionValue(typeList, 0);
-    sicPopup.find("input, select").css("background-color", "#fff");
+    sicPopup.find("#popup-sic-submit").off('click');
+    sicPopup.find("#popup-sic-cancel").off('click');
+    //sicPopup.find(".btn-plus").off('click');
+    var typeCtl = sicPopup.find("#sic-type");
+    setSelectionValue(typeCtl, 0);
+    typeCtl.css("background-color", "#fff");
     sicPopup.list.empty();
 }
 
@@ -548,25 +573,24 @@ function showLockBtn(show) {
     var lockBtn = $ID("btn-unlock");
     lockBtn.css("visibility", show ? "visible" : "hidden");
 }
-function toggleLockBtn(lockType) {
+
+function lockBtnVisible(lockType) {
     switch (lockType) {
         case Set.EnLockType.Unlocked:
-            showLockBtn(false);
-            break;
+            return false;
         case Set.EnLockType.LockedByOthers:
-            showLockBtn(true);
-            break;
+            return true;
         case Set.EnLockType.LockedByCurrent:
-            showLockBtn(false);
-            break;
-        
+            return false;
+        default:
+            throw new Error("invalid lock type");                    
     }
 }
-function toggleSetBtns(lockType) {
+function showSetBtns(show) {
     //display add (always)
     //if set selected display copy
     var editSet = $ID("edit-set");
-    editSet.css("visibility", (lockType == Set.EnLockType.Unlocked) ? "visible" : "hidden");
+    editSet.css("visibility", (show) ? "visible" : "hidden");
     //else if unit selected hide copy
     //if unlocked display edit and delete    
 }
@@ -579,8 +603,17 @@ function populateTree(data) {
     var listUnitAppointments = data.ListUnitAppointments;
     var ticks = data.Ticks;
     currentSet = new Set(id, lockType, ticks, listUnitAppointments);
-    toggleLockBtn(lockType);
-    toggleSetBtns(lockType);
+    var parser = new DMidParser(id);
+    if (!parser.UnitId) {
+        //set
+        showLockBtn(lockBtnVisible(lockType));
+        showSetBtns(lockType == Set.EnLockType.Unlocked);
+    }
+    else {
+        showLockBtn(false);
+        showSetBtns(false);
+    }
+
     //throw new Error("here");
     toggleSetLockIcon(id, lockType);
 
@@ -654,19 +687,67 @@ function removeEntry(sicList, entryId) {
     return false;
 }
 
-function changeEntry(name, ruleType) {
+function changeRuleType(ruleType, matchCtl, nameCtl) {
+    setSelectionValue(matchCtl, 0);
     switch (ruleType) {
+        case 0:
+            matchCtl.attr('disabled', 'disabled');
+            nameCtl.attr("readonly", true);
+            break;
         case DMrule.EnRuleType.PrivacyMarking:
-            name.attr("maxlength", 128);
-            break;
         case DMrule.EnRuleType.SIC:
-            name.attr("maxlength", 8);
+            matchCtl.removeAttr("disabled");
+            if (ruleType == DMrule.EnRuleType.PrivacyMarking)
+                toggleIsAnything(matchCtl, true);
+            else
+                toggleIsAnything(matchCtl, false);
             break;
+        default:
+            throw new Exception("invalid rule type");
     }
 }
 
+function changeMatchType(ruleType, matchType, nameCtl) {
+    nameCtl.val("");
+    switch (matchType) {
+        case 0:
+            nameCtl.attr("readonly", true);
+            break;
+        case DMrule.EnMatchType.IsAnything:
+            if (ruleType == DMrule.EnRuleType.SIC) {
+                nameCtl.attr("maxlength", 0);
+                nameCtl.attr("readonly", true);
+            }
+            else {
+                throw new Error("invalid rule type");
+            }
+            break;
+        case DMrule.EnMatchType.StartsWith:
+        case DMrule.EnMatchType.Equal:
+            switch (ruleType) {
+                case DMrule.EnRuleType.PrivacyMarking:
+                    nameCtl.attr("maxlength", 128);
+                    nameCtl.removeAttr("readonly");
+                    break;
+                case DMrule.EnRuleType.SIC:
+                    nameCtl.attr("maxlength", 8);
+                    nameCtl.removeAttr("readonly");
+                    break;
+                default:
+                    throw new Error("invalid rule type");
+            }
+            break;
+        default:
+            throw new Error("invalid match type");
+    }
+}
+
+
 function createEntry(sicList, template, rule, i) {
     var entry = template.clone(true);
+    var ruleCtl = entry.find(".rule");
+    var matchCtl = entry.find(".match");
+    var nameCtl = entry.find(".name");
     if (rule) {
         if (!(rule.RuleType == DMrule.EnRuleType.SIC || rule.RuleType == DMrule.EnRuleType.PrivacyMarking))
             throw new Error("invalid sic");
@@ -674,16 +755,21 @@ function createEntry(sicList, template, rule, i) {
             throw new Error("invalid sic match");
         if (rule.Name == null)
             throw new Error("invalid data.name");
-        var type = entry.find(".rule");
-        setSelectionValue(type, rule.RuleType);
-        var match = entry.find(".match");
-        setSelectionValue(match, rule.MatchType);
-        var name = entry.find(".name");
-        var name = entry.find(".name");
-        changeEntry(name, rule.RuleType);
-        name.val(rule.Name);
+        setSelectionValue(ruleCtl, rule.RuleType);
+        changeRuleType(rule.RuleType, matchCtl, nameCtl);
+        setSelectionValue(matchCtl, rule.MatchType);
+        changeMatchType(rule.RuleType, rule.MatchType, nameCtl);
+        //        if (rule.RuleType == DMrule.EnRuleType.PrivacyMarking)
+//            toggleIsAnything(matchCtl, true);
+//        else
+//            toggleIsAnything(matchCtl, false);
+        nameCtl.val(rule.Name);
+    } else { //we are adding a blank entry
+        setSelectionValue(ruleCtl, 0);
+        changeRuleType(0, matchCtl, nameCtl);
+        setSelectionValue(matchCtl, 0);
+        changeMatchType(0, 0, nameCtl);
     }
-    //else we are adding a blank entry
     var entryId = "entry" + i;
     entry.attr("id", entryId);
     var del = entry.find(".btn-minus");
@@ -761,7 +847,8 @@ function getSicData(id) {
 
 
 function closePopupSic(sicPopup) {
-    $.colorbox.close();
+    //$.colorbox.close();
+    sicPopup.dialog("close");
     return;
 }
 
@@ -770,10 +857,11 @@ function isEqual(data, oldData) {
     return false;
 }
 
+/*
 function colorboxClose() {
     cbox.close();
 }
-
+*/
 $(document).ready(function () {
 
     // Tooltip
@@ -783,7 +871,7 @@ $(document).ready(function () {
     //    });
 
     //    changeList = null;
-    cbox = jQuery.colorbox;
+    //cbox = jQuery.colorbox;
 
     $.ajaxSetup({
         cache: false
@@ -832,20 +920,20 @@ $(document).ready(function () {
 
 
 
-
+/*
     //set select
-    $("[id^=s_]").click(function () {
+    $("[id^=sa_]").click(function () {
 
         treeLoad(this.id);
         return;
     });
-
-
+*/
+/*
     //miscellaneous
     $CL("answer-cancel").click(function () {
         colorboxClose();
     });
-
+*/
 
     /*
     $(".edit").click(function () {
@@ -879,15 +967,7 @@ $(document).ready(function () {
         appointmens.append(list);
     });
 
-    $(".rule").change(function () {
 
-        var sicType = $('option:selected', $(this)).val();
-        //var anything = $ID("match-anything");
-        if (sicType == DMrule.EnRuleType.SIC)
-            toggleIsAnything(true);
-        else
-            toggleIsAnything(false);
-    });
 
     $('option[disabled]').css({ 'color': '#cccccc' });
     /*
@@ -908,33 +988,99 @@ $(document).ready(function () {
             this.onchange();
     });
 
+    /*
+    $(".rule").change(function () {
+
+    var sicType = $('option:selected', $(this)).val();
+    if (sicType == DMrule.EnRuleType.SIC)
+    toggleIsAnything(true);
+    else
+    toggleIsAnything(false);
+    return false;
+    });
+    $(".match").change(function () {
+    alert("change");
+    return false;
+    var sicType = $('option:selected', $(this)).val();
+    //var anything = $ID("match-anything");
+    if (sicType == DMrule.EnRuleType.SIC)
+    toggleIsAnything(true);
+    else
+    toggleIsAnything(false);
+    });
+    */
+
+
 
     $(".col > .rule").change(function () {
+        //setSelectionValue($(this), 0);
+        //return false;
         var that = $(this);
-        var rule = getIntSelectionValue(that);
-        var name = //$(this).parent("div").next().children("input");
-        that.parent("div").next().next().children("input");
-        changeEntry(name, rule)
+        //var rule = getIntSelectionValue(that);
+        var ruleType = getIntSelectionValue(that); // $('option:selected', that).val();
+        var matchCtl = that.parent("div").next().children(".match"); //.html()//that.parent("div").next().next().children(".rule");
+        setSelectionValue(matchCtl, 0);
+        /*
+        if (ruleType == 0) {
+        matchCtl.attr('disabled', 'disabled');
+        } else {
+        matchCtl.removeAttr('disabled');
+        if (ruleType == DMrule.EnRuleType.PrivacyMarking)
+        toggleIsAnything(matchCtl, true);
+        else
+        toggleIsAnything(matchCtl, false);
+
+        }
+        */
+        var nameCtl = that.parent("div").next().next().children("input");
+        nameCtl.val("");
+        nameCtl.attr("readonly", true);
+        changeRuleType(ruleType, matchCtl, nameCtl);
+        return false;
+        /*
+        changeRuleType(nameCtl, rule)
+        var sicType = $('option:selected', that.val());
+        if (sicType == DMrule.EnRuleType.SIC)
+        toggleIsAnything(true);
+        else
+        toggleIsAnything(false);
+        return false;
+        */
     });
 
+
+
+    $(".col > .match").change(function () {
+        var that = $(this);
+        var ruleCtl = that.parent("div").prev().children(".rule");
+        var ruleType = getIntSelectionValue(ruleCtl);
+        var matchType = getIntSelectionValue(that);
+        var nameCtl = that.parent("div").next().children("input");
+        nameCtl.removeAttr("readonly");
+        //nameCtl.removeAttr("readonly");
+        //changeRuleType(ruleType, that, nameCtl );
+        changeMatchType(ruleType, matchType, nameCtl);
+    });
+
+    /*
     $('.appointment .add .popup-inline').live('click', function (event) {
-        event.preventDefault();
-        var hidden_dom = $(this).attr('href');
-        //ie7 fix
-        if (ie7) {
-            hidden_dom = hidden_dom.split('/');
-            hidden_dom = hidden_dom[hidden_dom.length - 1];
-        }
+    event.preventDefault();
+    var hidden_dom = $(this).attr('href');
+    //ie7 fixchange
+    if (ie7) {
+    hidden_dom = hidden_dom.split('/');
+    hidden_dom = hidden_dom[hidden_dom.length - 1];
+    }
 
-        if ($(hidden_dom).length > 0) {
-            $.colorbox({
-                inline: true,
-                width: "700px",
-                href: hidden_dom
-            });
-        }
+    if ($(hidden_dom).length > 0) {
+    $.colorbox({
+    inline: true,
+    width: "700px",
+    href: hidden_dom
     });
-
+    }
+    });
+    */
     //    function showDialog() {
     //        $("#dialog-modal").dialog({
 

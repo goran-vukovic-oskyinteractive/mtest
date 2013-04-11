@@ -152,8 +152,8 @@ $(document).ready(function(){
 		$(this).parent('.btn-add').parent('.col-wrap').remove();
 	});
 
-	$('#sic-select-field #popup-sic-save').unbind('click');
-	$('#sic-select-field #popup-sic-save').live('click', function(event){
+	$('#sic-select-field #popup-sic-submit').unbind('click');
+	$('#sic-select-field #popup-sic-submit').live('click', function(event){
 		var continuety = true;
 		var rules = new Array();
 		var matches = new Array();

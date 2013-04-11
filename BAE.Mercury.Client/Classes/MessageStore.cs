@@ -23,7 +23,7 @@ namespace BAE.Mercury.Client
             else if (option == 1)
                 return "Tasmanian Devil";
             else
-                return "Achilles";
+                return "Fido";
         }
         public bool IsSetChanged(int id, long ticks)
         {
@@ -118,11 +118,11 @@ namespace BAE.Mercury.Client
         }
 
 
-        public void SetActivate(string user, int nodeId, bool state)
+        public void SetActivate(string user, int nodeId)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
             SqlConnection con = new SqlConnection(connectionString);
-            SqlCommand com = new SqlCommand(String.Format("setDistributionManagementSetSate {0}, {1}", nodeId, state));
+            SqlCommand com = new SqlCommand(String.Format("setDistributionManagementSetSate {0}", nodeId)); 
             com.Connection = con;
             try
             {
@@ -159,7 +159,7 @@ namespace BAE.Mercury.Client
                                 string name = PackSic(sic);
                                 if (sic.AppointmentId == 0)
                                     throw new ApplicationException("invalid set id");
-                                SqlCommand com = new SqlCommand(String.Format("addDistributionManagementNode {0}, '{1}'", sic.AppointmentId, name));
+                                SqlCommand com = new SqlCommand(String.Format("addDistributionManagementNode {0}, '{1}', {2}, {3}", sic.AppointmentId, name, SetSicBool(sic.SicType), 0));
                                 com.Connection = con;
                                 com.ExecuteNonQuery();
                             }
@@ -170,7 +170,7 @@ namespace BAE.Mercury.Client
                                 string name = PackSic(sic);
                                 if (sic.SicId == 0)
                                     throw new ApplicationException("cannot change this node");
-                                string command = String.Format("editDistributionManagementNode {0}, '{1}'", sic.SicId, name);
+                                string command = String.Format("editDistributionManagementNode {0}, '{1}', {2}, {3}", sic.SicId, name, SetSicBool(sic.SicType), 0);
                                 SqlCommand com = new SqlCommand(command);
                                 com.Connection = con;
                                 com.ExecuteNonQuery();
@@ -248,20 +248,24 @@ namespace BAE.Mercury.Client
             }
         }
 
-        public void UpdateSet(string user, int nodeId, string nodeName)
+        public int UpdateSet(string user, int nodeId, string nodeName)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
             SqlConnection con = new SqlConnection(connectionString);
-            SqlCommand com = new SqlCommand("editDistributionManagementNode");
-            com.Parameters.Add(new SqlParameter("@nodeId", nodeId));
-            com.Parameters.Add(new SqlParameter("@nodeName", nodeName));
-            com.CommandType = System.Data.CommandType.StoredProcedure;
+            SqlCommand com = new SqlCommand(String.Format("editDistributionManagementNode {0}, '{1}'", nodeId, nodeName));
+            //com.Parameters.Add(new SqlParameter("@nodeId", nodeId));
+            //com.Parameters.Add(new SqlParameter("@nodeName", nodeName));
+            //com.CommandType = System.Data.CommandType.StoredProcedure;
 
             com.Connection = con;
             try
             {
                 con.Open();
-                com.ExecuteNonQuery();
+                SqlDataReader reader = com.ExecuteReader();
+                reader.Read();
+                int result = (int) reader["result"]; 
+                //int result = (int) scalar;
+                return result;
             }
             catch (SqlException sqlEx)
             {
@@ -272,6 +276,7 @@ namespace BAE.Mercury.Client
                 if (con != null)
                     con.Close();
             }
+            return -1;
         }
 
         public void SetTimestamp(string user, int setId)

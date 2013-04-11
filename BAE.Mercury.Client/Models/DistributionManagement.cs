@@ -213,7 +213,7 @@ namespace BAE.Mercury.Client.Models
                 }
                 else
                 {
-                    longNameSB.Append("  is anything ");
+                    longNameSB.Append(" is anything ");
                 }
 
 
@@ -271,7 +271,7 @@ namespace BAE.Mercury.Client.Models
                 throw new ApplicationException("invalid sic rule type");
             if (!Enum.IsDefined(typeof(DMrule.EnMatchType), rule.MatchType))
                 throw new ApplicationException("invalid sic match type");
-            if (rule.RuleType == DMrule.EnRuleType.SIC && rule.MatchType == DMrule.EnMatchType.IsAnything)
+            if (rule.RuleType == DMrule.EnRuleType.PrivacyMarking && rule.MatchType == DMrule.EnMatchType.IsAnything)
                 throw new ApplicationException("invalid sic match type for rule type SIC");
             if (rule.RuleType == DMrule.EnRuleType.SIC && rule.Name.Length > 8)
                 throw new ApplicationException("invalid sic match type for rule type SIC");
@@ -386,14 +386,14 @@ namespace BAE.Mercury.Client.Models
 
     public class RetRule
     {
-        private DMrule.EnMatchType match;
-        private DMrule.EnRuleType type;
+        private DMrule.EnMatchType matchType;
+        private DMrule.EnRuleType ruleType;
         private string name;
         public string RuleType
         {
             set
             {
-                type = (DMrule.EnRuleType) Int32.Parse(value);
+                ruleType = (DMrule.EnRuleType)Int32.Parse(value);
             }
         }
         public string Name
@@ -401,6 +401,23 @@ namespace BAE.Mercury.Client.Models
             set
             {
                 name = value;
+                if (matchType == DMrule.EnMatchType.IsAnything)
+                {
+                    if (ruleType != DMrule.EnRuleType.SIC)
+                        throw new ApplicationException("invalid isAnything rule type");
+                    else if (name.Length > 0)
+                        throw new ApplicationException("invalid isAnything name length");
+                }
+                else if (ruleType == DMrule.EnRuleType.PrivacyMarking)
+                {
+                    if (name.Length <= 0 || name.Length > 128)
+                        throw new ApplicationException("invalid privacy marking name length");
+                }
+                else if (ruleType == DMrule.EnRuleType.SIC)
+                {
+                    if (name.Length <= 0 || name.Length > 8)
+                        throw new ApplicationException("invalid privacy marking name length");
+                }
             }
             get
             {
@@ -411,7 +428,7 @@ namespace BAE.Mercury.Client.Models
         {
             set
             {
-                match = (DMrule.EnMatchType) Int32.Parse(value);
+                matchType = (DMrule.EnMatchType)Int32.Parse(value);
             }
         }
 
@@ -419,14 +436,14 @@ namespace BAE.Mercury.Client.Models
         {
 
             get{
-                return match;
+                return matchType;
             }
 
         }
         public DMrule.EnRuleType EnumRuleType
         {
             get{
-                return type;
+                return ruleType;
             }
             
         }
@@ -439,7 +456,9 @@ namespace BAE.Mercury.Client.Models
     public class RetSic
     {
         List<RetRule> children = new List<RetRule>();
-        private int setId, unitId, appointmentId, sicId;
+        private int 
+            //setId, unitId,
+            appointmentId, sicId;
         private DMsic.SicType type;
 
 
@@ -448,8 +467,8 @@ namespace BAE.Mercury.Client.Models
             set
             {
                 DMidParser parser = new DMidParser(value);
-                setId = parser.SetId;
-                unitId = parser.UnitId;
+                //setId = parser.SetId;
+                //unitId = parser.UnitId;
                 appointmentId = parser.AppointmentId;
                 sicId = parser.SicId;
             }
@@ -472,7 +491,7 @@ namespace BAE.Mercury.Client.Models
                 type = (DMsic.SicType)Int32.Parse(value);
             }
         }
-
+        /*
         public int SetId
         {
             get
@@ -487,6 +506,7 @@ namespace BAE.Mercury.Client.Models
                 return unitId;
             }
         }
+         * */
         public int AppointmentId
         {
             get
@@ -499,6 +519,13 @@ namespace BAE.Mercury.Client.Models
             get
             {
                 return sicId;
+            }
+        }
+        public DMsic.SicType SicType
+        {
+            get
+            {
+                return type;
             }
         }
     }

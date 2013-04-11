@@ -110,7 +110,7 @@ function expandLevel(that, event) {
     that.parent('div').parent('li').siblings().find('div').removeClass('open').removeClass('active');
     $('#setbox-list li.child').removeClass('active');
     if ((that.parent('div').hasClass('open')) || (that.parent('div').hasClass('active'))) {
-        that.parent('div').removeClass('open').removeClass('active');
+        //that.parent('div').removeClass('open').removeClass('active');
         openMe.slideUp('normal');
     }
     else {
@@ -495,10 +495,10 @@ $(document).ready(function() {
 	});
 	*/
 	// POPUP
-	$(".popup").colorbox({width:"70%"});
-	$(".popup-inline.dm-btn").colorbox({inline:true,width:"700px"});
-	$(".buttons .popup-inline a").colorbox({inline:true,width:"700px"});	
-	
+//	$(".popup").colorbox({width:"70%"});
+//	$(".popup-inline.dm-btn").colorbox({inline:true,width:"700px"});
+//	$(".buttons .popup-inline a").colorbox({inline:true,width:"700px"});	
+//	
 
 	// Resize graph height based on browser viewport
 	$(window).resize(function() {

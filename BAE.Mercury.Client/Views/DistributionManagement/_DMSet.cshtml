@@ -10,7 +10,7 @@
     <!--unit start -->
         <div class="unit" id="un_@Html.Raw(String.Format("{0}_{1}", Model.Id, unit.Id))">
             <div class="unit-title">@Html.Raw(unit.Name)</div>
-            <div class="user rounded">@Html.Raw(unit.DutyOfficer)</div>
+            <div class="user rounded">Duty Operator: @Html.Raw(unit.DutyOfficer)</div>
             @{ 
                 if (unit.Children.Count > 0) {
                 <div class="canvas">

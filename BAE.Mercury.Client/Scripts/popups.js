@@ -23,6 +23,8 @@
                 popupMsg.html("");
             }
         });
+        //set focus on Ok
+        box.okBtn.focus();
         this.each(function () {
             // for compatibility
         });
@@ -44,7 +46,6 @@
             if (!box.cancelBtn.length)
                 throw new Error("popup cancel button not found");
             box.cancelBtn.click(closeDialog);
-
         }
 
         this.showConfirm = function (title, message, action) {
@@ -70,8 +71,9 @@
                 throw new Error("popup input control not found");
             if (text)
                 box.input.val(text);
-            box.input.focus();
-            box.input.select();
+            //box.input.focus();
+            //box.input.select();
+            //box.input.select();
             box.okBtn.off("click");
             box.okBtn.click(function () {
                 var val = box.input.attr("value").trim();
@@ -98,6 +100,10 @@
             }
             });
             openDialog();
+            box.input.focus();
+            box.input.select();
+
+
         }
         return this;
     };

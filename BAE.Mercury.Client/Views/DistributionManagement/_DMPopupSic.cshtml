@@ -1,9 +1,9 @@
 ﻿@using BAE.Mercury.Client.Models
 <div id="@Html.Raw(Model.Id)">
     <div class="popup-content">
-        <h3 class="sic-title">
+@*        <h3 class="sic-title">
             Title</h3>
-        @*			<div class="section">
+        			<div class="section">
 *@
         <p class="sic-desc">
             Message</p>
@@ -64,7 +64,8 @@
             <div class="inner">
                 <div class="btn-wrap" style="margin-left: 0;">
                     <ul>
-                        <li><a id="popup-sic-save" href="#">Submit</a></li>
+                        <li><a id="popup-sic-submit" href="#">Submit</a></li>
+                        <li><a id="popup-sic-cancel" href="#">Cancel</a></li>
                     </ul>
                 </div>
             </div>

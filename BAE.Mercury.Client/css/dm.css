@@ -170,3 +170,7 @@ div#content.rv-popup #listContainer {overflow:auto!important;}
 div#content.rv-popup .msg_id_ref {display:none;}
 
 div#content.rv-popup .message-summary {width:90%;}
+
+/* TWEAK FOR SIC POPUP */
+div#sic-list select {width:100%!important;}
+div#sic-list div.sic-input input {width:100%;}
