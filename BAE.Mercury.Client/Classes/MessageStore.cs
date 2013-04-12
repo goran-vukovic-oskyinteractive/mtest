@@ -315,7 +315,7 @@ namespace BAE.Mercury.Client
             return (type == DMsic.SicType.Action) ? true : false;
         }
 
-        public void CloneSet(string username, int setId)
+        public int CloneSet(string username, int setId)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
             SqlConnection con = new SqlConnection(connectionString);
@@ -336,7 +336,6 @@ namespace BAE.Mercury.Client
                     bool active = (bool)reader["active"];
                     DateTime timestamp = (DateTime)reader["tstamp"];
                     set = new DMset(null, id, name, lockType, active, timestamp); //set name not a requirement here
-
                 }
                 reader.NextResult();
 
@@ -383,8 +382,18 @@ namespace BAE.Mercury.Client
                     sicWraps.Add(sicWrap);
                 }
                 reader.Close();
-                int setNo = InsertNode(com, 0, "COPY OF " + set.Name, false, 0);
+                string setName = "COPY OF " + set.Name;
+                com.CommandText = String.Format("isSetNameExist '{0}'", setName);
+                reader = com.ExecuteReader();
+                reader.Read();
+                int result = (int)reader["result"];
+                reader.Close();
+                if (result == 1)
+                    //set already exist
+                    return 1;
+                int setNo = InsertNode(com, 0, setName, false, 0);
                 //SELECT IDENT_CURRENT('dbo.DMNode')
+                //SqlConnection con = new SqlConnection(connectionString);
                 foreach (DMnodeWrap unitWrap in unitWraps)
                 {
                     if (unitWrap.ParentId == set.Id)
@@ -412,6 +421,7 @@ namespace BAE.Mercury.Client
                         }
                     }
                 }
+                return 0;
             }
             catch (SqlException sqlEx)
             {

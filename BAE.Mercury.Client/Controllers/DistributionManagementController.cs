@@ -111,8 +111,7 @@ namespace BAE.Mercury.Client.Controllers
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
 
-            int add = //messageStore.UpdateSet(User.Identity.Name, parser.SetId, n);
-                    messageStore.AddSet(User.Identity.Name, n);
+            int add = messageStore.AddSet(User.Identity.Name, n);
             if (add == 0)
             {
                 DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
@@ -204,10 +203,31 @@ namespace BAE.Mercury.Client.Controllers
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             DMidParser parser = new DMidParser(i);
-            messageStore.CloneSet(User.Identity.Name, parser.SetId);
-            DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
-            string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
-            return Json(html);            
+            //messageStore.CloneSet(User.Identity.Name, parser.SetId);
+            //DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+            //string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+            //return Json(html);
+            //string username = User.Identity.Name;
+            //BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+
+            int result = messageStore.CloneSet(User.Identity.Name, parser.SetId);
+            if (result == 0)
+            {
+                DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+                string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+                return Json(html);
+            }
+            else
+            {
+                if (result == 1)
+                {
+                    ErrorResponse("There is already a set with that name.");
+                    return null; // Json(String.Empty);
+                }
+                else
+                    throw new ApplicationException("unknown result saving a set name");
+
+            }
         }
 
         public ActionResult Index()

@@ -3,21 +3,28 @@
 @{ foreach (DMset set in dm.Children)
    {
        bool setLocked = set.LockType == DMset.EnLockType.LockedByOthers || set.LockType == DMset.EnLockType.LockedByCurrent;
-<li class="set @Html.Raw(setLocked ? "locked" : "") " ticks="@Html.Raw(set.Ticks)">
-    <div >
-        <a href="#"><span class="icon"></span><span id="ss_@Html.Raw(set.Id)" class="set-name"><strong>@Html.Raw(set.Name)</strong></span></a>
-        <div class="btn-set">
-            @{string active = set.Active ? "on" : ""; }
-            <a id="sa_@Html.Raw(set.Id)" href="#" class="checkbox @Html.Raw(active)">Check</a>
+    <li class="set @Html.Raw(setLocked ? "locked" : "") " ticks="@Html.Raw(set.Ticks)">
+        <div>
+            <a href="#">
+                <span class="icon"></span>
+                <span id="ss_@Html.Raw(set.Id)" class="set-name">
+                    <strong>@Html.Raw(set.Name)</strong>
+                 </span>
+            </a>
+            <div class="btn-set">
+                @{string active = set.Active ? "on" : ""; }
+                <a id="sa_@Html.Raw(set.Id)" href="#" class="checkbox @Html.Raw(active)">Check</a>
+            </div>
         </div>
-    </div>
-    <ul style="display: none;">
-        @{ foreach (DMunit unit in set.Children)
-            {
-             string unitLocked = setLocked ? "lock" : "";
-            <li class="@Html.Raw(unitLocked)"><a id="ss_@Html.Raw(set.Id)_@Html.Raw(unit.Id)" href="#">@Html.Raw(unit.Name)</a></li>
+        <ul style="display: none;">
+            @{ foreach (DMunit unit in set.Children)
+               {
+                   string unitLocked = setLocked ? "lock" : "";
+                <li class="@Html.Raw(unitLocked)">
+                    <a id="ss_@Html.Raw(set.Id)_@Html.Raw(unit.Id)" href="#">@Html.Raw(unit.Name)</a>
+                </li>
+               }
             }
-        }
-    </ul>
-</li> 
-} }
+        </ul>
+    </li> 
+   } }

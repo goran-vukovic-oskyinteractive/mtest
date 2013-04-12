@@ -175,34 +175,17 @@ function setLockType() {
 }
 
 
-//function noFunc(id) {
-//   // alert("no func");
-//}
 
+/*
 function setLoad(id) {
-
-//    var setList = $("#setbox-list");
-//    clickRebind(setList, "li.set > div > a", noFunc);
-//    clickRebind(setList, "[id^='s_']", noFunc);
-//    clickRebind(setList, ".checkbox", noFunc);
-//    return;
-
-//    if (isSetChanged())
-//        alertUnsaved();
-//        //dmAlert("Unsaved Changes", "There are unsaved changes for the currently viewed set. The changes need to be saved or cancelled before another set can be viewed.");
-//    
-//    else 
 
         treeLoad(id);
 
 
 }
+*/
 
 
-//function isSetLocked() {
-//    var setItem = $ID(id).parent("a").parent("div").parent("li");
-//    return setItem.hasClass("locked");
-//}
 
 function toggleSetLockIcon(id, lockType) {
     var lock = (lockType != Set.EnLockType.Unlocked); //lock icon for locked by others and by current
@@ -247,11 +230,7 @@ function setLock(id, lock, refresh, alert) {
 
         if (alert)
             dmAlert("Lock Set", "The set has been " + ((lock) ? "" : "un") + "locked.")
-    }
-    //    , function (message) {
-    //        dmAlert("Lock Set", message);
-    //    }
-);
+    });
 
 }
 
@@ -276,9 +255,6 @@ function setSave() {
         dmAlert("Save Set", "There are not any changes.");
         return;
     } else {
-        //    var id = highlightedSetGetId();
-        //    setAction(id, $CL("copy-yes"), null, "SetCopy", "#copy-set", $CL("copy-no"));
-        //var id = highlightedSetGetId();
         var myJsonString = JSON.stringify(currentSet);
         var action = function () {
             ajaxCall("SetSave", { data: myJsonString }, function () {
@@ -286,13 +262,10 @@ function setSave() {
                 //toggleSetLockIcon(currentSet.Id, Set.EnLockType.Unlocked); //the set will be unlocked on the server
                 setLockOff(); // (currentSet.Id, false, true, true); 
             }
-            //var zzz = JSON.parse(jqXHR.responseText);
-
 
             );
 
         }
-
 
         dmConfirm("Save Set", "Do you wish to save the changes?", action)
     }
@@ -427,14 +400,23 @@ function setMarkActive(id) {
 }
 
 function setActivate() {
-    var that = $(this);
-    var stateOn = that.hasClass("on");
-    if (!stateOn) {
-        //var span = $ID("set-activation-status");
+    if (isSetChanged()) {
+        //is this the same set
+        if (this.id != currentSet.Id) {
+            alertUnsaved();
+            return false;
+        }
+    } else {
 
-        var id = this.id; //highlightedSetGetId();
-        var action = function () { ajaxCall("SetActivate", { i: id}, function () { setMarkActive(id) }); }
-        dmConfirm("Activate Set", "Do you wish to activate this set?", action);
+        var that = $(this);
+        var stateOn = that.hasClass("on");
+        if (!stateOn) {
+            //var span = $ID("set-activation-status");
+
+            var id = this.id; //highlightedSetGetId();
+            var action = function () { ajaxCall("SetActivate", { i: id }, function () { setMarkActive(id) }); }
+            dmConfirm("Activate Set", "Do you wish to activate this set?", action);
+        }
     }
     return false;
 
@@ -474,11 +456,8 @@ function isNodeLocked() {
 }
 */
 
-function test() {
-    alert(this.id);
-}
 
-function nodeSelect() {
+function nodeSelect(event) {
     if (isSetChanged()) {
         //is this the same set
         if (this.id != currentSet.Id) {
@@ -490,9 +469,21 @@ function nodeSelect() {
     else {
         $('#setbox-list li div').removeClass('active');
         $('#setbox-list li ul li').removeClass('active');
+        var parser = new DMidParser(this.id);
+        var unit = parser.UnitId;
+        if (!unit) {
+            //set
+            var parent = $(this).parent("a");
+            //var test = $(this).parent("div").prev();// find("li.set > div > a");
+            var i = 5;
+            expandLevel(parent, event);
+        } else {
+            //unit
+        }
         //$('#setbox-list div').removeClass('active');
         var parser = new DMidParser(this.id);
         if (parser.UnitId) {
+            //unit
             var parent = $(this).parent("li");
             parent.addClass("active");
         } else {
@@ -523,7 +514,7 @@ function setsPopulate(data) {
     showSetBtns(false);
     setList.append(data);
     //clear the list
-    clickRebind(setList, "li.set > div > a", nodeExpand);
+    //clickRebind(setList, "li.set > div > a", nodeExpand);
     clickRebind(setList, "[id^='ss_']", nodeSelect);
     /*clickRebind(setList, "[id^='su_']", nodeSelect);*/
     clickRebind(setList, "[id^='sa_']", setActivate);

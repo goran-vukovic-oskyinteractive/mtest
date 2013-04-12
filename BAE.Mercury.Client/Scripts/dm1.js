@@ -515,13 +515,7 @@ function sicCopy(id, sic) {
     box.dialog({
         title: "Copy Sic",
         modal: true,
-        //width: 800,
-        autoResize: true,
-        //            close: function (event, ui) {
-        //                //alert("default close");
-        //                box.okBtn.off('click');
-        //                popupMsg.html("");
-        //            }
+        resizable: false,
         close: function () {
             submit.off("click");
             sicDesc.html("");
@@ -589,7 +583,8 @@ function getPopup(id, sic, type) {
             title: sicTitle,
             modal: true,
             width: 800,
-            autoResize:true,
+            resizable: false,
+            //autoResize:true,
             close: function () {
                 sicCleanUp(sicPopup);
             }
