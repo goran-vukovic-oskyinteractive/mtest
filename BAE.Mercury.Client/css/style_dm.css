@@ -148,10 +148,19 @@ ol li { list-style:decimal; padding:0 0 3px 10px; }
 #setbox ul#setbox-list li { margin:0; padding:0; font-size:13px; font-weight:normal; display:block; }
 #setbox ul#setbox-list li div { background:url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat; }
 #setbox ul#setbox-list li div.open {  background:url(../images/bg-mailbox_arrow_down.png) 15px 15px no-repeat; }
-#setbox ul#setbox-list li div.active {background-color:#7a0101;  }
-
-/*#setbox ul#setbox-list li div:hover { background:#cd3d3d url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat; }*/
 #setbox ul#setbox-list li div.open:hover { background:#ad1313 url(../images/bg-mailbox_arrow_down.png) 15px 15px no-repeat; }
+/*#setbox ul#setbox-list li div.active {background-color:#7a0101;  }*/
+/*#setbox ul#setbox-list li div:hover { background:#cd3d3d url(../images/bg-mailbox_arrow.png) 15px 15px no-repeat; }*/
+
+#setbox ul#setbox-list li div:hover{ background-color:#cd3d3d; }
+
+
+#setbox ul#setbox-list li div.active{ background-color:#7a0101; }
+/*#setbox ul#setbox-list li div a:hover{ background-color:green; }*/
+#setbox ul#setbox-list li div.active:hover{ background-color:#ad1313; }
+
+
+
 #setbox ul#setbox-list li a { display:block; border-top:1px solid #343434; padding:9px 0 9px 30px; color:#fff; overflow:hidden; }
 #setbox ul#setbox-list li ul li a:hover { background-color:#cd3d3d; }
 #setbox ul#setbox-list li ul li.active a {  background-color:#7a0101; }

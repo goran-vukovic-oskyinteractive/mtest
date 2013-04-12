@@ -452,9 +452,17 @@ function nodeExpand(event) {
             alertUnsaved();
     }
     else {
-        expandLevel($(this), event);
+        
         var parser = new DMidParser(id);
-        var select = $ID("ss_" + parser.SetId);
+        var unit = parser.UnitId;
+        if (!unit) {
+            //set
+            expandLevel($(this), event);
+        } else {
+            //unit
+        }
+
+        //var select = $ID("ss_" + parser.SetId);
         //select.click();
     }
     return false;
@@ -465,6 +473,11 @@ function isNodeLocked() {
     
 }
 */
+
+function test() {
+    alert(this.id);
+}
+
 function nodeSelect() {
     if (isSetChanged()) {
         //is this the same set
@@ -474,8 +487,30 @@ function nodeSelect() {
         }
         //else do nothing
     }
-    else
+    else {
+        $('#setbox-list li div').removeClass('active');
+        $('#setbox-list li ul li').removeClass('active');
+        //$('#setbox-list div').removeClass('active');
+        var parser = new DMidParser(this.id);
+        if (parser.UnitId) {
+            var parent = $(this).parent("li");
+            parent.addClass("active");
+        } else {
+            var parent = $(this).parent("a").parent('div');
+            parent.addClass("active");
+            //alert(parent.parent().html());
+            /*
+            if (parent.hasClass("active")) {
+            alert("it does");
+            parent.toggleClass('active');
+            parent.addClass("trash");
+            $('div.active').removeClass('active');
+            }
+            */
+        }
+        //alert("load");
         treeLoad(this.id);
+    }
     return true;
     //return false;
 }
@@ -490,6 +525,7 @@ function setsPopulate(data) {
     //clear the list
     clickRebind(setList, "li.set > div > a", nodeExpand);
     clickRebind(setList, "[id^='ss_']", nodeSelect);
+    /*clickRebind(setList, "[id^='su_']", nodeSelect);*/
     clickRebind(setList, "[id^='sa_']", setActivate);
     init_ajax_complete();
     dm_ajax_completed();

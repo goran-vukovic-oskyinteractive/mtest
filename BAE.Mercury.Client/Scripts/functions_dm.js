@@ -62,8 +62,8 @@ function dm_ajax_completed()
 	resizeApp();
 }
 
-function init_expandLevel()
-{
+function init_expandLevel() {
+    //return;
 	if( ($('#setbox-list li.set ul.child-set').length < 1) && ($('#setbox-list li.set > div > a').length > 0) )
 	{
 		$('#setbox-list li.set').find('ul').addClass('child-set').find('li').addClass('child').find('a').live('click', (function(event){ext_child_click(event, $(this));}));
@@ -73,9 +73,9 @@ function init_expandLevel()
 function ext_child_click(event, dom)
 {
     event.preventDefault();
-	$('#setbox-list div').removeClass('open');
-	$('#setbox-list li.child').removeClass('active');
-	$(dom).parent('li').addClass('active').parent('ul').siblings('div').addClass('active');
+	//$('#setbox-list div').removeClass('open');
+	//$('#setbox-list li.child').removeClass('active');
+	//$(dom).parent('li').addClass('active').parent('ul').siblings('div').addClass('active');
     }
 
 //    function expandLevel(event) {
@@ -100,15 +100,16 @@ function ext_child_click(event, dom)
 //        }
 //        addDMScroll();
 //    }
-function expandLevel(that, event) {
+    function expandLevel(that, event) {
+        //return;
     if (event != undefined) { event.preventDefault(); }
     init_expandLevel();
     removeScrollDM();
     var openMe = that.parent('div').parent('li').find('ul');
     var openMe_siblings = that.parent('div').parent('li').siblings().find('ul');
 
-    that.parent('div').parent('li').siblings().find('div').removeClass('open').removeClass('active');
-    $('#setbox-list li.child').removeClass('active');
+    //that.parent('div').parent('li').siblings().find('div').removeClass('open').removeClass('active');
+    //$('#setbox-list li.child').removeClass('active');
 
 
 /*
@@ -128,7 +129,7 @@ function expandLevel(that, event) {
         //that.parent('div').removeClass('open');                    
         that.parent('div').removeClass('open'); //.removeClass('active');
         openMe.slideUp('normal');
-        that.parent('div').addClass('active');
+        that.parent('div').removeClass('active');
         //alert("check now");
         //that.parent('div').css("background-color", "green");
     }
