@@ -489,8 +489,8 @@ function isValidSelect(data) {
 }
 function sicCopy(id, sic) {
     var box = $ID("copy-sic");
-    var sicTitle = box.find(".sic-title");
-    sicTitle.html("Copy Rule");
+//    var sicTitle = box.find(".sic-title");
+//    sicTitle.html("Copy Rule");
     var sicDesc = box.find(".sic-desc");
     sicDesc.html("Copy rule from " + getUnitAndAppointment(id));
     var submit = $CL("copy-sic-submit");
@@ -513,6 +513,7 @@ function sicCopy(id, sic) {
         box.dialog("close");
     });
     box.dialog({
+        title: "Copy Sic",
         modal: true,
         //width: 800,
         autoResize: true,

@@ -110,34 +110,32 @@ namespace BAE.Mercury.Client.Controllers
         {
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
-            messageStore.AddSet(User.Identity.Name, n);
-            DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
-            string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
-            return Json(html);
-        }
-        [HttpPost]
-        public JsonResult SetDelete(string i)
-        {
-            string username = User.Identity.Name;
-            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
-            DMidParser parser = new DMidParser(i);
-            DMset.EnLockType lockType = messageStore.LockType(username, parser.SetId);
-            switch (lockType)
+
+            int add = //messageStore.UpdateSet(User.Identity.Name, parser.SetId, n);
+                    messageStore.AddSet(User.Identity.Name, n);
+            if (add == 0)
             {
-                case DMset.EnLockType.LockedByOthers:
-                    return ErrorResponse("The set is locked by sombody else and cannot be deleted.");
-                case DMset.EnLockType.LockedByCurrent:
-                    return ErrorResponse("The set is locked by you and cannot be deleted.");
-                case DMset.EnLockType.Unlocked:
-                    messageStore.DeleteSet(User.Identity.Name, parser.SetId);
-                    DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
-                    string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
-                    return Json(html);
-                default:
-                    //a bug
-                    throw new ApplicationException("invalid state for deleting a set");
+                DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+                string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+                return Json(html);
+            }
+            else
+            {
+                if (add == 1)
+                {
+                    ErrorResponse("There is already a set with that name.");
+                    return null; // Json(String.Empty);
+                }
+                else
+                    throw new ApplicationException("unknown result saving a set name");
+
             }
 
+
+            //messageStore.AddSet(User.Identity.Name, n);
+            //DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+            //string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+            //return Json(html);
         }
         [HttpPost]
         public JsonResult SetEdit(string i, string n)
@@ -168,13 +166,37 @@ namespace BAE.Mercury.Client.Controllers
                             return null; // Json(String.Empty);
                         }
                         else
-                            throw new ApplicationException("unknown result saving a set name"); 
+                            throw new ApplicationException("unknown result saving a set name");
 
                     }
                 default:
                     //a bug
+                    throw new ApplicationException("invalid state for editing a set");
+            }
+        }
+        [HttpPost]
+        public JsonResult SetDelete(string i)
+        {
+            string username = User.Identity.Name;
+            BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
+            DMidParser parser = new DMidParser(i);
+            DMset.EnLockType lockType = messageStore.LockType(username, parser.SetId);
+            switch (lockType)
+            {
+                case DMset.EnLockType.LockedByOthers:
+                    return ErrorResponse("The set is locked by sombody else and cannot be deleted.");
+                case DMset.EnLockType.LockedByCurrent:
+                    return ErrorResponse("The set is locked by you and cannot be deleted.");
+                case DMset.EnLockType.Unlocked:
+                    messageStore.DeleteSet(User.Identity.Name, parser.SetId);
+                    DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
+                    string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
+                    return Json(html);
+                default:
+                    //a bug
                     throw new ApplicationException("invalid state for deleting a set");
             }
+
         }
         [HttpPost]
         public JsonResult SetCopy(string i)

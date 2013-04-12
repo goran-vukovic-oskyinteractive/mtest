@@ -202,16 +202,20 @@ namespace BAE.Mercury.Client
                     con.Close();
             }
         }
-        public void AddSet(string user, string nodeName)
+        public int AddSet(string user, string nodeName)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
             SqlConnection con = new SqlConnection(connectionString);
-            SqlCommand com = new SqlCommand(String.Format("addDistributionManagementNode {0}, {1}", 0, nodeName));
+            SqlCommand com = new SqlCommand(String.Format("addDistributionManagementNode {0}, '{1}'", 0, nodeName));
             com.Connection = con;
             try
             {
                 con.Open();
-                com.ExecuteNonQuery();
+                SqlDataReader reader = com.ExecuteReader();
+                reader.Read();
+                int result = (int)reader["result"];
+                //int result = (int) scalar;
+                return result;
             }
             catch (SqlException sqlEx)
             {
@@ -222,6 +226,35 @@ namespace BAE.Mercury.Client
                 if (con != null)
                     con.Close();
             }
+            return -1;
+        }
+
+        public int UpdateSet(string user, int nodeId, string nodeName)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand com = new SqlCommand(String.Format("editDistributionManagementNode {0}, '{1}'", nodeId, nodeName));
+
+            com.Connection = con;
+            try
+            {
+                con.Open();
+                SqlDataReader reader = com.ExecuteReader();
+                reader.Read();
+                int result = (int)reader["result"];
+                //int result = (int) scalar;
+                return result;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx.Message);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+            return -1;
         }
 
         public void DeleteSet(string user, int nodeId)
@@ -248,36 +281,6 @@ namespace BAE.Mercury.Client
             }
         }
 
-        public int UpdateSet(string user, int nodeId, string nodeName)
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
-            SqlConnection con = new SqlConnection(connectionString);
-            SqlCommand com = new SqlCommand(String.Format("editDistributionManagementNode {0}, '{1}'", nodeId, nodeName));
-            //com.Parameters.Add(new SqlParameter("@nodeId", nodeId));
-            //com.Parameters.Add(new SqlParameter("@nodeName", nodeName));
-            //com.CommandType = System.Data.CommandType.StoredProcedure;
-
-            com.Connection = con;
-            try
-            {
-                con.Open();
-                SqlDataReader reader = com.ExecuteReader();
-                reader.Read();
-                int result = (int) reader["result"]; 
-                //int result = (int) scalar;
-                return result;
-            }
-            catch (SqlException sqlEx)
-            {
-                Debug.WriteLine(sqlEx.Message);
-            }
-            finally
-            {
-                if (con != null)
-                    con.Close();
-            }
-            return -1;
-        }
 
         public void SetTimestamp(string user, int setId)
         {

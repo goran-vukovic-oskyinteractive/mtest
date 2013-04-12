@@ -358,18 +358,27 @@ function setUnlock() {
 
 //style = "visibility:hidden"
 
+function setAddFail(text) {
+    dmConfirm("Add Set", text + " Do you wish to try again?", setAdd);
+}
+
 function setAdd() {
-//    if (isSetChanged())
-//            alertUnsaved();
-//    else {
+    if (isSetChanged())
+            alertUnsaved();
+    else {
         var action = function (name) {
-            ajaxCall("SetAdd", { n: name }, setsPopulate);
+            ajaxCall("SetAdd", { n: name }, setsPopulate, setAddFail);
 
         }
         dmPrompt("Add Set", "Please enter the name of the set.", action);
         //setAction(null, $CL("add-set-submit"), $ID("set-name-add"), "SetAdd", "#add-set");
-//    }
+    }
 }
+
+function setEditFail(text) {
+    dmConfirm("Edit Set Name", text + " Do you wish to try again?", setEdit);
+}
+
 
 function setEdit() {
     var id = highlightedSetGetId();
@@ -383,7 +392,7 @@ function setEdit() {
         var data = new Object();
         data.i = id;
         data.n = text;
-        ajaxCall("SetEdit", data, setsPopulate);
+        ajaxCall("SetEdit", data, setsPopulate, setEditFail);
     }
     dmPrompt("Edit Set Name", "Please enter the name of the set.", action, text);
 }
@@ -493,13 +502,8 @@ function treeLoad(id) {
 }
 
 function ajaxCall(action, data, onDone, onFail) {
-    //alert(rootDir);
-    var baseUrl = document.URL;
-    var split = baseUrl.split("/");
-    var newUrl = ""//((split.length > 4) ? "/" + split[3] + "/" : "") 
-        + "DistributionManagement/" + action;
     var request = $.ajax({
-        url: newUrl,
+        url: "DistributionManagement/" + action,
         type: "POST",
         data: data,
         dataType: "json"
@@ -547,6 +551,7 @@ function sicPopulate(sicPopup, sic) {
         var entry = createEntry(sicPopup.list, template, sic.Children[i], i);
         sicPopup.list.append(entry);
     }
+    sicPopup.list.find(".rule:last").focus();
 }
 
 function sicCleanUp(sicPopup) {
@@ -677,6 +682,7 @@ function addEntry(sicList) {
     var template = $("#sic-entry-template");
     var entry = createEntry(sicList, template, null, i);
     sicList.append(entry);
+    sicList.find(".rule:last").focus();
     return false;
 }
 
@@ -692,7 +698,7 @@ function changeRuleType(ruleType, matchCtl, nameCtl) {
     switch (ruleType) {
         case 0:
             matchCtl.attr('disabled', 'disabled');
-            nameCtl.attr("readonly", true);
+            nameCtl.attr('disabled', 'disabled');
             break;
         case DMrule.EnRuleType.PrivacyMarking:
         case DMrule.EnRuleType.SIC:
@@ -701,6 +707,7 @@ function changeRuleType(ruleType, matchCtl, nameCtl) {
                 toggleIsAnything(matchCtl, true);
             else
                 toggleIsAnything(matchCtl, false);
+            nameCtl.attr('disabled', 'disabled');
             break;
         default:
             throw new Exception("invalid rule type");
@@ -711,12 +718,12 @@ function changeMatchType(ruleType, matchType, nameCtl) {
     nameCtl.val("");
     switch (matchType) {
         case 0:
-            nameCtl.attr("readonly", true);
+            nameCtl.attr('disabled', 'disabled');
             break;
         case DMrule.EnMatchType.IsAnything:
             if (ruleType == DMrule.EnRuleType.SIC) {
                 nameCtl.attr("maxlength", 0);
-                nameCtl.attr("readonly", true);
+                nameCtl.attr('disabled', 'disabled');
             }
             else {
                 throw new Error("invalid rule type");
@@ -727,11 +734,11 @@ function changeMatchType(ruleType, matchType, nameCtl) {
             switch (ruleType) {
                 case DMrule.EnRuleType.PrivacyMarking:
                     nameCtl.attr("maxlength", 128);
-                    nameCtl.removeAttr("readonly");
+                    nameCtl.removeAttr("disabled");
                     break;
                 case DMrule.EnRuleType.SIC:
                     nameCtl.attr("maxlength", 8);
-                    nameCtl.removeAttr("readonly");
+                    nameCtl.removeAttr("disabled");
                     break;
                 default:
                     throw new Error("invalid rule type");
@@ -769,6 +776,7 @@ function createEntry(sicList, template, rule, i) {
         changeRuleType(0, matchCtl, nameCtl);
         setSelectionValue(matchCtl, 0);
         changeMatchType(0, 0, nameCtl);
+        //set focus on rule
     }
     var entryId = "entry" + i;
     entry.attr("id", entryId);

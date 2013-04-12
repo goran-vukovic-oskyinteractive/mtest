@@ -15,6 +15,7 @@ if exists(select name from sysobjects where type = 'u' and name = 'DMNode')
 	Drop table DMNode
 go
 
+
 create table DMNode(
 	NodeId int not null identity,
 	ParentId int null,

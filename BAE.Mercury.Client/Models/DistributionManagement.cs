@@ -627,5 +627,37 @@ namespace BAE.Mercury.Client.Models
             }
         }
     }
+    public class _DMPopup
+    {
+        private string id = null;
+        private bool cancel, prompt;
+        public _DMPopup(string id, bool cancel, bool prompt)
+        {
+            this.id = id;
+            this.cancel = cancel;
+            this.prompt = prompt;
+        }
+        public string Id
+        {
+            get
+            {
+                return id;
+            }
+        }
+        public bool Cancel
+        {
+            get
+            {
+                return cancel;
+            }
+        }
+        public bool Prompt
+        {
+            get
+            {
+                return prompt;
+            }
+        }
+    }
 
 }

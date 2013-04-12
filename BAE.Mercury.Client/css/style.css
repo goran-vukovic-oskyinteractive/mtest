@@ -480,3 +480,6 @@ div.selectbox-wrapper ul li { list-style-type:none; display:block; margin:0; pad
 #popup-content .section .inner .btn-wrap {margin-left:11%;}
 
 
+ul.popup-btns {float:right;}
+ul.popup-btns li {float:left;}
+/*ul.popup-btns li > a {float:right;background-color:green}*/

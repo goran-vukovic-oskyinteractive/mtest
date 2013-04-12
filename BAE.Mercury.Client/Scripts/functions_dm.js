@@ -109,9 +109,28 @@ function expandLevel(that, event) {
 
     that.parent('div').parent('li').siblings().find('div').removeClass('open').removeClass('active');
     $('#setbox-list li.child').removeClass('active');
-    if ((that.parent('div').hasClass('open')) || (that.parent('div').hasClass('active'))) {
-        //that.parent('div').removeClass('open').removeClass('active');
+
+
+/*
+    var hasOpen = that.parent('div').hasClass('open');
+    var hasActive = that.parent('div').hasClass('active');
+    if (   hasOpen || hasActive ) { //        )    ||      
+        //);// || (that.parent('div').hasClass('active'))) {
+        //that.parent('div').removeClass('open');                    
+        that.parent('div').removeClass('open').removeClass('active');
         openMe.slideUp('normal');
+    }
+    */
+
+
+    if (that.parent('div').hasClass('open')) { //        )
+        //);// || (that.parent('div').hasClass('active'))) {
+        //that.parent('div').removeClass('open');                    
+        that.parent('div').removeClass('open'); //.removeClass('active');
+        openMe.slideUp('normal');
+        that.parent('div').addClass('active');
+        //alert("check now");
+        //that.parent('div').css("background-color", "green");
     }
     else {
         that.parent('div').addClass('open');

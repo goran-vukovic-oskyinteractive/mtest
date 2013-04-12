@@ -67,6 +67,12 @@
         this.showPrompt = function (title, message, action, text) {
             staticTextSet(title, message);
             box.input = box.find(".dm-input-box");
+            box.input.bind('keydown', function (e) {
+                if (e.keyCode == 13) {
+                    onSubmit();
+                    // Enter pressed... do anything here...
+                }
+            });
             if (!box.input.length)
                 throw new Error("popup input control not found");
             if (text)
@@ -75,7 +81,7 @@
             //box.input.select();
             //box.input.select();
             box.okBtn.off("click");
-            box.okBtn.click(function () {
+            var onSubmit = function () {
                 var val = box.input.attr("value").trim();
                 if (val.length <= 0) {
                     var popUp = $("#dm-alert").popUpBox();
@@ -85,8 +91,10 @@
                 } else {
                     action(val);
                     closeDialog();
+                    return false;
                 }
-            });
+            }
+            box.okBtn.click(onSubmit);
             cancelBtnSet();
 
             box.defaultClose = box.dialog("option", "close");
@@ -94,8 +102,10 @@
 
                 //alert("custom close");
                 box.cancelBtn.off('click');
-                if (box.input)
+                if (box.input) {
                     box.input.val("");
+                    box.input.off("keydown");
+                }
                 box.defaultClose.call();
             }
             });

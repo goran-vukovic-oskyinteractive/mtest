@@ -4,6 +4,8 @@
 @model BAE.Mercury.Client.Models.DistributionManagement
 @section CSS
 {
+
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
     <link href="~/css/style_dm.css" rel="stylesheet" type="text/css" media="all" />
     <link href="~/css/dm.css" rel="stylesheet" type="text/css" media="all" />
     <!--[if IE 7]>
@@ -72,7 +74,6 @@
 
 {
     <div class="col-left" id="setbox">
-        <div id="setbox-scroll">
             <h2>
                 Distribution Management</h2>
             <p class="title">
@@ -83,10 +84,14 @@
                         <img src="~/images/btn-dm_delete.png" alt="Delete" height="24" width="25" /></a>
                     <a id="btn-copy-set" href="#" class="popup-set-copy">
                         <img src="~/images/btn-dm_copy.png" alt="Copy" height="24" width="25" /></a>
+                </strong>
+                <strong>
                     <a id="btn-add-set" href="#" class="popup-set-add">
                         <img src="~/images/btn-dm_add.png" alt="Add" height="24" width="25" /></a>
                 </strong>
             </p>
+        <div id="setbox-scroll">
+            
             <ul id="setbox-list" >
             </ul>
         </div>
@@ -338,10 +343,11 @@
     </div>
 *@
     @{ Html.RenderPartial("_DMSicCopy", null); }
-@*    @{ Html.RenderPartial("_DMPopups", new {Id = "dm-alert", Cancel = false, Prompt = false}); }
-    @{ Html.RenderPartial("_DMPopups", new {Id = "dm-confirm", Cancel = true, Prompt = false}); }
-    @{ Html.RenderPartial("_DMPopups", new {Id= "dm-prompt", Cancel = true, Prompt = true}); }
-*@
+    @{ Html.RenderPartial("_DMPopups", new _DMPopup("dm-alert", false, false)); 
+        Html.RenderPartial("_DMPopups", new _DMPopup("dm-confirm", true, false)); 
+        Html.RenderPartial("_DMPopups", new _DMPopup("dm-prompt", true, true)); 
+        }
+
     @*    <div id="dm-alert">
             <div class="popup-content">
               <h3>Title</h3>
@@ -404,7 +410,7 @@
     </div>
 
 *@
-
+@*
  <!-- Dialog for jQUERY UI Modal -->
     
     <div id="dm-alert" class="dialog-normal">
@@ -469,3 +475,4 @@
 
     <!-- hidden div end -->
 </div>
+*@
