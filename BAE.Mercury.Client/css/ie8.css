@@ -1,0 +1,6 @@
+/**** IE 7 CSS ****/
+/*#email-content .detail ul li a,
+#email-content .attachment ul li a,
+#email-content .subject-title .label a {behavior: url(/PIE.htc); position:relative;}
+*/
+#email-content .detail ul li.no-access a {color:#b9b8b8}

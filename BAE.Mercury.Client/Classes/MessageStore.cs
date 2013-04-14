@@ -173,7 +173,7 @@ namespace BAE.Mercury.Client
                                 string name = PackSic(sic);
 
                                 int sicId = sic.SicId;
-                                if (sicId == 0)
+                                if (sic.IsNew)
                                 {
                                     //this is a new item, format "an_setNo_unitNo_appNo_0seqNo"
                                     char[] array = sic.Id.ToCharArray();
@@ -183,8 +183,6 @@ namespace BAE.Mercury.Client
                                     sicId = newItems[key];
                                 }
 
-                                if (sicId == 0)
-                                    throw new ApplicationException("error sic node id");
                                 string command = String.Format("editDistributionManagementNode {0}, '{1}', {2}, {3}", sicId, name, SetSicBool(sic.SicType), 0);
                                 SqlCommand com = new SqlCommand(command);
                                 com.Connection = con;
@@ -197,7 +195,7 @@ namespace BAE.Mercury.Client
                                 string name = PackSic(sic);
 
                                 int sicId = sic.SicId;
-                                if (sicId == 0)
+                                if (sic.IsNew)
                                 {
                                     //this is a new item, format "an_setNo_unitNo_appNo_0seqNo"
                                     char[] array = sic.Id.ToCharArray();
@@ -208,8 +206,6 @@ namespace BAE.Mercury.Client
                                 }
                                 
                                 
-                                if (sicId == 0)
-                                    throw new ApplicationException("error sic node id");
                                 SqlCommand com = new SqlCommand(String.Format("delDistributionManagementNode {0}", sicId));
                                 com.Connection = con;
                                 com.ExecuteNonQuery();

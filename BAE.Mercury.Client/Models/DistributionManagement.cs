@@ -455,6 +455,7 @@ namespace BAE.Mercury.Client.Models
             //setId, unitId,
             appointmentId, sicId;
         private DMsic.SicType type;
+        private bool isNew = false;
 
 
         public string Id
@@ -464,7 +465,11 @@ namespace BAE.Mercury.Client.Models
                 this.id = value;
                 DMidParser parser = new DMidParser(id);
                 appointmentId = parser.AppointmentId;
+
                 sicId = parser.SicId;
+                string[] ids = this.id.Split('_');
+                if (ids[4].StartsWith("0"))
+                    isNew = true;
             }
             get
             {
@@ -524,6 +529,13 @@ namespace BAE.Mercury.Client.Models
             get
             {
                 return type;
+            }
+        }
+        public bool IsNew
+        {
+            get
+            {
+                return isNew;
             }
         }
     }

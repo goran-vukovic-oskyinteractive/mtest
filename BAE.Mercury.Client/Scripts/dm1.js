@@ -28,39 +28,6 @@ Change.EnType = { Delete: -1, Edit: 0, Add: 1 };
 
 
 
-/*
-function ChangeList(id) {
-    if (!id)
-        throw new Error("invalid set id");    
-    this.Id = id;
-    this.Changes = [];
-    this.ClearChanges = function () {
-        this.Changes.length = 0;
-    }
-    this.HasChanges = function () {
-        return (this.Changes.length > 0);
-    }
-    this.AddChange = function (change) {
-        if (!(change instanceof Change))
-            throw new Error("invalid change");
-        if (!change.Sic.Id)
-            throw new Error("sic must have an id");
-        if (change.Type == Change.EnType.Add || change.Type == Change.EnType.Edit) {
-            if (change.Sic.Children.length <= 0)
-                throw new Error("this sic must have rules");
-        }
-        this.Changes.push(change);
-        //on first update notify the server
-        if (this.Changes.length == 1)
-            this.LockSet();
-    }
-    this.LockSet = function () {
-        if (this.Changes.length > 0)
-            setLock(this.Id, true);
-    }
-
-}
-*/
 
 function Set(setId, lock, ticks, appointments) {
     if (!setId)
@@ -259,13 +226,6 @@ function isEmptyAppointment(id) {
         throw new Error("invalid number of tables");
 }
 
-/*
-
-function removeRow(genId, type) {
-    var rowId = id.replace("", "");
-    var rowOld = $ID(rowId);
-}
-*/
 function getTable(id, type) {
     var genId = getAppointmentGenId(id);
     var jqIds = JQID[type];
@@ -340,12 +300,6 @@ function removeNode(id) {
 }
 
 
-/*
-function errorMessage(error) {
-    alert(error);
-    return null;
-}
-*/
 function sicValidate(sicPopup, id, change) {
 
     var valid = true;
@@ -384,22 +338,6 @@ function sicValidate(sicPopup, id, change) {
             }
         }
         name = name.trim().toUpperCase();
-        /*
-        switch (type) {
-        case DMrule.EnRuleType.SIC:
-        //                if (match == DMrule.EnRuleType.IsAnything)
-        //                    if (name.length
-        break;
-        case DMrule.EnRuleType.PrivacyMarking:
-        break;
-        default:
-        throw new Error("invalid rule type");
-        }
-        if (name.length <= 0) {
-            highlightControl(nameCtl);
-            valid = false;
-        }
-        */
         if (valid) {
             var entry = new DMrule(name, ruleType, matchType);
             change.sic.AddNode(entry);
@@ -415,20 +353,6 @@ function sicValidate(sicPopup, id, change) {
     }
     return true;
 }
-/*
-function addDataToChangedList(type, data) {
-}
-function ConvertSic(sic) {
-    var dmsic = new DMsic(sic.Id, sic.Type);
-    for (var i = 0; i < sic.Children.length; i++) {
-        dmsic.AddNode(sic.Children[i]);
-    }
-    return dmsic;
-}
-function getSicId(actionId) {
-    
-}
-*/
 function sicSave(id, action, sicPopup, oldData) {
 
     var data = { sic: null };
@@ -491,8 +415,6 @@ function isValidSelect(data) {
 }
 function sicCopy(id, sic) {
     var box = $ID("copy-sic");
-//    var sicTitle = box.find(".sic-title");
-//    sicTitle.html("Copy Rule");
     var sicDesc = box.find(".sic-desc");
     sicDesc.html("Copy rule from " + getUnitAndAppointment(id));
     var submit = $CL("copy-sic-submit");
@@ -500,7 +422,6 @@ function sicCopy(id, sic) {
         var data = new Object();
         if (!isValidSelect(data))
             return; 
-        //alert(appointmentId);
         var addId = data.appointmentId.replace("dw", "ac");
         sic.Id = addId;
         addNode(sic);
@@ -525,26 +446,6 @@ function sicCopy(id, sic) {
     });
     box.dialog("open");
 
-/*
-    var colorbox = $.colorbox({ href: "#copy-sic", inline: true, width: "700px",
-        onCleanup: function () {
-            submit.off('click');
-            var unitCtl = $ID("sic-unit");
-            resetListbox(unitCtl);
-            //deHighlightControl(unitCtl);
-            //setSelectionValue(unitCtl, 0);
-            var appCtl = $ID("sic-appointment");
-            //deHighlightControl(appCtl);
-            //setSelectionValue(appCtl, 0);
-            resetListbox(appCtl);
-
-
-
-        }
-    });
-    $("#cboxLoadingOverlay").remove();
-    $("#cboxLoadingGraphic").remove();
-*/
 }
 
 function getUnitAndAppointment(id) {
@@ -576,10 +477,6 @@ function getPopup(id, sic, type) {
         sicPopup.dialog("close");
     });
 
-//    $("#popup-sic-submit").click(function () {
-//        sicSave(id, type, sicPopup, sic)
-//          });
-    //var box = $ID("sic-popup");
     var width = sicPopup.width();
     sicPopup.dialog({
             title: sicTitle,
@@ -611,26 +508,9 @@ function sicDelete(id) {
      };
     dmConfirm("Delete Rule", "Are you sure you want to delete this rule for " + getUnitAndAppointment(id), action);
 }
-/*
-function getPopup(id, sic, type) {
-
-
-    var sicPopup = $("#sic-popup");
-    var sicList = sicPopup.find("#sic-list");
-    sicPopup.list = sicList;
-    clickRebind(sicPopup, ".btn-plus", function () { addEntry(sicList) });
-    $("#popup-sic-submit").click(function () { sicSave(id, type, sicPopup, sic) });
-    var colorbox = $.colorbox({ href: "#sic-popup", inline: true, width: "700px", onCleanup: function () { sicCleanUp(sicPopup); } });
-    return sicPopup;
-}
-*/
 function nodePlus() {
     var id = $(this)[0].id;
-    ////alert("nodePlus");
-    //var sic = new Sic(null);
     var sicPopup = getPopup(id, null, Change.EnType.Add);
-    //(Privacy marking = CCCCC or Privacy marking = DDDDD) AND (SIC=BBBBBBB or SIC=FFFFFF)
-    //sicPopulate(sicPopup, sic);
     return false;
 
 
@@ -662,28 +542,3 @@ function nodeCopy() {
     sicCopy(id, sic);
 }
 
-/*
-function setFunctions(action, id, name) {
-
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        data: {
-            i: id,
-            n: name
-        },
-        url: "DistributionManagement/" + action,
-        success: function (data) {
-            init(data);
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert(xhr.status);
-            alert(thrownError);
-        }
-    }).complete(function () {
-    });
-
-    return false;
-}
-*/
