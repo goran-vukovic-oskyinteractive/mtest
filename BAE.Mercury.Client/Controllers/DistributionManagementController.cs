@@ -131,10 +131,6 @@ namespace BAE.Mercury.Client.Controllers
             }
 
 
-            //messageStore.AddSet(User.Identity.Name, n);
-            //DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
-            //string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
-            //return Json(html);
         }
         [HttpPost]
         public JsonResult SetEdit(string i, string n)
@@ -203,12 +199,6 @@ namespace BAE.Mercury.Client.Controllers
             string username = User.Identity.Name;
             BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
             DMidParser parser = new DMidParser(i);
-            //messageStore.CloneSet(User.Identity.Name, parser.SetId);
-            //DistributionManagement distributionManagement = messageStore.GetDistributionManagement(username);
-            //string html = RenderPartialViewToString("~/Views/DistributionManagement/_DMSets.cshtml", distributionManagement);
-            //return Json(html);
-            //string username = User.Identity.Name;
-            //BAE.Mercury.Client.MessageStore messageStore = new MessageStore();
 
             int result = messageStore.CloneSet(User.Identity.Name, parser.SetId);
             if (result == 0)

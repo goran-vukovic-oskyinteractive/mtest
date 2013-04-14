@@ -8,13 +8,17 @@ function viewportChangeDM() {
     var h2 = $('#buttons').outerHeight(true);
     var h3 = $('#left-menu-collapse').outerHeight(true);
     var h4 = $('ul#left-menu').outerHeight(true);
+
+    //added by Firdaus 20130411
+    var h5 = $("#setbox > h2").eq(0).height() + $('p.title').outerHeight(true) + 20;
+    //alert( h1 );
     if ($("ul#left-menu").is(":visible"))
     {
-        $("#setbox-scroll").css("height", viewportHeight - h1 - h2 - h3 - h4); /* setbox list */
+        $("#setbox-scroll").css("height", viewportHeight - h1 - h2 - h3 - h4 - h5 ); /* setbox list */
     }
     else
     {
-        $("#setbox-scroll").css("height", viewportHeight - h1 - h2 - h3); /* setbox list */
+        $("#setbox-scroll").css("height", viewportHeight - h1 - h2 - h3 - h5 ); /* setbox list */
     }
     //end added by firdaus
 
@@ -73,33 +77,8 @@ function init_expandLevel() {
 function ext_child_click(event, dom)
 {
     event.preventDefault();
-	//$('#setbox-list div').removeClass('open');
-	//$('#setbox-list li.child').removeClass('active');
-	//$(dom).parent('li').addClass('active').parent('ul').siblings('div').addClass('active');
     }
 
-//    function expandLevel(event) {
-//        if (event != undefined) { event.preventDefault(); }
-//        init_expandLevel();
-//        removeScrollDM();
-//        var openMe = $(this).parent('div').parent('li').find('ul');
-//        var openMe_siblings = $(this).parent('div').parent('li').siblings().find('ul');
-
-//        $(this).parent('div').parent('li').siblings().find('div').removeClass('open').removeClass('active');
-//        $('#setbox-list li.child').removeClass('active');
-//        if (($(this).parent('div').hasClass('open')) || ($(this).parent('div').hasClass('active'))) {
-//            $(this).parent('div').removeClass('open').removeClass('active');
-//            openMe.slideUp('normal');
-//        }
-//        else {
-//            $(this).parent('div').addClass('open');
-//            openMe_siblings.slideUp('normal', function () {
-//                openMe.slideDown('normal');
-//                openMe.css('zoom', '1'); //ie7 fix	        	
-//            });
-//        }
-//        addDMScroll();
-//    }
     function expandLevel(that, event) {
         //return;
     if (event != undefined) { event.preventDefault(); }
@@ -108,32 +87,18 @@ function ext_child_click(event, dom)
     var openMe = that.parent('div').parent('li').find('ul');
     var openMe_siblings = that.parent('div').parent('li').siblings().find('ul');
 
-    //that.parent('div').parent('li').siblings().find('div').removeClass('open').removeClass('active');
-    //$('#setbox-list li.child').removeClass('active');
 
 
-/*
-    var hasOpen = that.parent('div').hasClass('open');
-    var hasActive = that.parent('div').hasClass('active');
-    if (   hasOpen || hasActive ) { //        )    ||      
-        //);// || (that.parent('div').hasClass('active'))) {
-        //that.parent('div').removeClass('open');                    
-        that.parent('div').removeClass('open').removeClass('active');
-        openMe.slideUp('normal');
-    }
-    */
 
 
-    if (that.parent('div').hasClass('open')) { //        )
-        //);// || (that.parent('div').hasClass('active'))) {
-        //that.parent('div').removeClass('open');                    
+    if (that.parent('div').hasClass('open')) { 
+         
         that.parent('div').removeClass('open'); //.removeClass('active');
         openMe.slideUp('normal');
         that.parent('div').removeClass('active');
-        //alert("check now");
-        //that.parent('div').css("background-color", "green");
     }
     else {
+        that.parent().parent().parent().children("li.set").children("div.open").removeClass("open");
         that.parent('div').addClass('open');
         openMe_siblings.slideUp('normal', function () {
             openMe.slideDown('normal');
@@ -294,8 +259,11 @@ $(document).ready(function () {
         var h2 = $('#buttons').outerHeight(true);
         var h3 = $('#left-menu-collapse').outerHeight(true);
         var h4 = $('ul#left-menu').outerHeight(true);
-        var visibleHeight = viewportHeight - h1 - h2 - h3 - 11; //unknown? where the 11px
-        var hiddenHeight = viewportHeight - h1 - h2 - h3 - h4;
+
+        var h5 = $("#setbox > h2").eq(0).height() + $('p.title').outerHeight(true) + 30;
+
+        var visibleHeight = viewportHeight - h1 - h2 - h3 - h5; //unknown? where the 11px
+        var hiddenHeight = viewportHeight - h1 - h2 - h3 - h4 - h5;
 
         // create the object literal
         //http://stackoverflow.com/questions/2274242/using-a-variable-for-a-javascript-object-key

@@ -236,7 +236,7 @@ function setLock(id, lock, refresh, alert) {
 
 function highlightedSetGetId() {
     //what set is highlighted
-    var highlighted = $(".open");
+    var highlighted = $ID("setbox-list").find(".active");
     if (!highlighted[0]) {
         dmAlert("Select Set", "Please select a set before clicking that button.");
         return null;
@@ -467,7 +467,8 @@ function nodeSelect(event) {
         //else do nothing
     }
     else {
-        $('#setbox-list li div').removeClass('active');
+        $('#setbox-list li div').removeClass('active');//.removeClass('open');
+        //$('#setbox-list li div');
         $('#setbox-list li ul li').removeClass('active');
         var parser = new DMidParser(this.id);
         var unit = parser.UnitId;

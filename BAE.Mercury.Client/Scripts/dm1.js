@@ -198,10 +198,12 @@ function getRow(tableTemplate, id, sic) {
         verifyNodeTag(table, "table");
         var seqNo = getNewSeqNo(table);
         seqId = genId + "_0" + seqNo;
+        sic.Id = id[0] + "n" + seqId;
     } else {
         var seqNo = getSicExactId(id);
         seqId = genId + "_" + seqNo;
     }
+
     var del = row.find("td.delete > a");
     del.attr("id", jqIds.del + seqId);
     del.click(nodeMinus);

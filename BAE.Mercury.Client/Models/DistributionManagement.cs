@@ -56,7 +56,7 @@ namespace BAE.Mercury.Client.Models
         private List<DMnode> children = new List<DMnode>();
         private DMnode parent;
         private int id;
-        private string name;        
+        private string name;
         //public DMnode() { }
         public DMnode(DMnode parent, int id, string name)
         {
@@ -186,12 +186,12 @@ namespace BAE.Mercury.Client.Models
             List<DMrule> children = this.Children.Cast<DMrule>().ToList();
             children.Sort();
             StringBuilder longNameSB = new StringBuilder("("), dataSB = new StringBuilder("[");
-            for(int i = 0; i < children.Count; i++)
+            for (int i = 0; i < children.Count; i++)
             {
                 DMrule rule = (DMrule)children[i];
                 if (i > 0)
                 {
-                    if (((DMrule)this.Children[i -1]).RuleType == rule.RuleType)
+                    if (((DMrule)this.Children[i - 1]).RuleType == rule.RuleType)
                         longNameSB.Append(" OR ");
                     else
                         longNameSB.Append(") AND (");
@@ -266,7 +266,7 @@ namespace BAE.Mercury.Client.Models
                 throw new ApplicationException("maximum number of rules exceeded");
             //(Privacy marking = CCCCC or Privacy marking starts with DDDDD) AND (SIC=BBBBBBB or SIC=FFFFFF)
             //some checks
-            DMrule rule = (DMrule) node;
+            DMrule rule = (DMrule)node;
             if (!Enum.IsDefined(typeof(DMrule.EnRuleType), rule.RuleType))
                 throw new ApplicationException("invalid sic rule type");
             if (!Enum.IsDefined(typeof(DMrule.EnMatchType), rule.MatchType))
@@ -303,7 +303,7 @@ namespace BAE.Mercury.Client.Models
         }
         public override void AddChild(DMnode node)
         {
-            if (((DMsic) node).Type == DMsic.SicType.Action)
+            if (((DMsic)node).Type == DMsic.SicType.Action)
                 base.AddChild(node);
             else
                 infos.Add(node);
@@ -315,8 +315,9 @@ namespace BAE.Mercury.Client.Models
         //private bool locked;
         private string dutyOfficer;
         public DMunit(DMnode parent, int id, string name, string dutyOfficer)
-            : base(parent, id, name) {
-                this.dutyOfficer = dutyOfficer;
+            : base(parent, id, name)
+        {
+            this.dutyOfficer = dutyOfficer;
         }
         public string DutyOfficer
         {
@@ -435,19 +436,21 @@ namespace BAE.Mercury.Client.Models
         public DMrule.EnMatchType EnumMatchType
         {
 
-            get{
+            get
+            {
                 return matchType;
             }
 
         }
         public DMrule.EnRuleType EnumRuleType
         {
-            get{
+            get
+            {
                 return ruleType;
             }
-            
+
         }
-   
+
     }
 
 
@@ -456,7 +459,8 @@ namespace BAE.Mercury.Client.Models
     public class RetSic
     {
         List<RetRule> children = new List<RetRule>();
-        private int 
+        private string id;
+        private int
             //setId, unitId,
             appointmentId, sicId;
         private DMsic.SicType type;
@@ -466,11 +470,16 @@ namespace BAE.Mercury.Client.Models
         {
             set
             {
-                DMidParser parser = new DMidParser(value);
+                this.id = value;
+                DMidParser parser = new DMidParser(id);
                 //setId = parser.SetId;
                 //unitId = parser.UnitId;
                 appointmentId = parser.AppointmentId;
                 sicId = parser.SicId;
+            }
+            get
+            {
+                return id;
             }
         }
         public List<RetRule> Children
@@ -541,7 +550,7 @@ namespace BAE.Mercury.Client.Models
         {
             set
             {
-                type = (EnType) Int32.Parse(value);
+                type = (EnType)Int32.Parse(value);
             }
         }
         public RetSic Sic

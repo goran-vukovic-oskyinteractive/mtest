@@ -140,11 +140,11 @@ namespace BAE.Mercury.Client
             }
         }
         
-        
         public void SetSave(string user, RetChangeList changeList)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
             SqlConnection con = new SqlConnection(connectionString);
+            Dictionary<string, int> newItems = new Dictionary<string, int>();
             try
             {
                 con.Open();
@@ -159,18 +159,35 @@ namespace BAE.Mercury.Client
                                 string name = PackSic(sic);
                                 if (sic.AppointmentId == 0)
                                     throw new ApplicationException("invalid set id");
-                                SqlCommand com = new SqlCommand(String.Format("addDistributionManagementNode {0}, '{1}', {2}, {3}", sic.AppointmentId, name, SetSicBool(sic.SicType), 0));
+                                
+                                SqlCommand com = new SqlCommand(); //String.Format("addDistributionManagementNode {0}, '{1}', {2}, {3}", sic.AppointmentId, name, SetSicBool(sic.SicType), 0));
                                 com.Connection = con;
-                                com.ExecuteNonQuery();
+                                int sicId = InsertNode(com, sic.AppointmentId, name, SetSicBool(sic.SicType), 0);
+                                //new sic does not have an id, so create a register in case there is also an edit or delete
+                                newItems.Add(sic.Id, sicId);
+                                //com.Connection = con;
+                                //com.ExecuteNonQuery();
                             }
                             break;
                         case RetChange.EnType.Edit:
                             {
                                 RetSic sic = change.Sic;
                                 string name = PackSic(sic);
-                                if (sic.SicId == 0)
+                                string id = sic.Id;
+                                string[] ids = id.Split('_');
+                                int sicId = sic.SicId;
+                                if (sicId == 0)
+                                {
+                                        //this is a new item, format "an_setNo_unitNo_appNo_0seqNo"
+                                        char[] array = id.ToCharArray();
+                                        array[0] = 'a';
+                                        array[1] = 'n';
+                                        string key = new string(array);
+                                        sicId = newItems[key];
+                                }
+                                if (sicId == 0)
                                     throw new ApplicationException("cannot change this node");
-                                string command = String.Format("editDistributionManagementNode {0}, '{1}', {2}, {3}", sic.SicId, name, SetSicBool(sic.SicType), 0);
+                                string command = String.Format("editDistributionManagementNode {0}, '{1}', {2}, {3}", sicId, name, SetSicBool(sic.SicType), 0);
                                 SqlCommand com = new SqlCommand(command);
                                 com.Connection = con;
                                 com.ExecuteNonQuery();
@@ -206,7 +223,7 @@ namespace BAE.Mercury.Client
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MessageContext"].ToString();
             SqlConnection con = new SqlConnection(connectionString);
-            SqlCommand com = new SqlCommand(String.Format("addDistributionManagementNode {0}, '{1}'", 0, nodeName));
+            SqlCommand com = new SqlCommand(String.Format("isSetNameExist '{0}'", nodeName));
             com.Connection = con;
             try
             {
@@ -214,8 +231,15 @@ namespace BAE.Mercury.Client
                 SqlDataReader reader = com.ExecuteReader();
                 reader.Read();
                 int result = (int)reader["result"];
-                //int result = (int) scalar;
-                return result;
+                reader.Close();
+                if (result == 1)
+                    return 1;
+                else
+                {
+                    com = new SqlCommand(String.Format("addDistributionManagementNode {0}, '{1}'", 0, nodeName));
+                    com.ExecuteNonQuery();
+                    return 0;
+                }
             }
             catch (SqlException sqlEx)
             {
