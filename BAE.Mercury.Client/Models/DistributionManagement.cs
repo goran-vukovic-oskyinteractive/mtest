@@ -57,7 +57,6 @@ namespace BAE.Mercury.Client.Models
         private DMnode parent;
         private int id;
         private string name;
-        //public DMnode() { }
         public DMnode(DMnode parent, int id, string name)
         {
             this.id = id;
@@ -265,7 +264,7 @@ namespace BAE.Mercury.Client.Models
             if (this.Children.Count >= 25)
                 throw new ApplicationException("maximum number of rules exceeded");
             //(Privacy marking = CCCCC or Privacy marking starts with DDDDD) AND (SIC=BBBBBBB or SIC=FFFFFF)
-            //some checks
+            //checks
             DMrule rule = (DMrule)node;
             if (!Enum.IsDefined(typeof(DMrule.EnRuleType), rule.RuleType))
                 throw new ApplicationException("invalid sic rule type");
@@ -312,7 +311,6 @@ namespace BAE.Mercury.Client.Models
     }
     public class DMunit : DMnode
     {
-        //private bool locked;
         private string dutyOfficer;
         public DMunit(DMnode parent, int id, string name, string dutyOfficer)
             : base(parent, id, name)
@@ -326,13 +324,6 @@ namespace BAE.Mercury.Client.Models
                 return dutyOfficer;
             }
         }
-        //public bool Locked
-        //{
-        //    get
-        //    {
-        //        return locked;
-        //    }
-        //}
 
     }
     public class DMset : DMnode
@@ -472,8 +463,6 @@ namespace BAE.Mercury.Client.Models
             {
                 this.id = value;
                 DMidParser parser = new DMidParser(id);
-                //setId = parser.SetId;
-                //unitId = parser.UnitId;
                 appointmentId = parser.AppointmentId;
                 sicId = parser.SicId;
             }
@@ -610,13 +599,6 @@ namespace BAE.Mercury.Client.Models
 
 
         }
-        //public DateTime Timestamp
-        //{
-        //    get
-        //    {
-        //        return new DateTime(ticks);
-        //    }
-        //}
     }
     //end return info
 

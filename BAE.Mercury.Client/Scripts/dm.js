@@ -176,23 +176,11 @@ function setLockType() {
 
 
 
-/*
-function setLoad(id) {
-
-        treeLoad(id);
-
-
-}
-*/
 
 
 
 function toggleSetLockIcon(id, lockType) {
     var lock = (lockType != Set.EnLockType.Unlocked); //lock icon for locked by others and by current
-//    if (lock)
-//        alert("lock ON");
-//    else
-//        alert("lock OFF");
     var setItem = $ID(id).parent("a").parent("div").parent("li");
     setItem.toggleClass("locked", lock);
     //propagate change to items below
@@ -219,7 +207,6 @@ function setLock(id, lock, refresh, alert) {
 
         //toggle set lock
         showLockBtn(lockBtnVisible(currentSet.LockType()));
-        //lockBtnVisible(currentSet.LockType());
 
         var parser = new DMidParser(id);
         var setId = "ss_" + parser.SetId;
@@ -235,7 +222,6 @@ function setLock(id, lock, refresh, alert) {
 }
 
 function highlightedSetGetId() {
-    //what set is highlighted
     var highlighted = $ID("setbox-list").find(".active");
     if (!highlighted[0]) {
         dmAlert("Select Set", "Please select a set before clicking that button.");
@@ -259,8 +245,7 @@ function setSave() {
         var action = function () {
             ajaxCall("SetSave", { data: myJsonString }, function () {
 
-                //toggleSetLockIcon(currentSet.Id, Set.EnLockType.Unlocked); //the set will be unlocked on the server
-                setLockOff(); // (currentSet.Id, false, true, true); 
+                setLockOff(); 
             }
 
             );
@@ -276,11 +261,9 @@ function setCancel() {
         dmAlert("Cancel Changes", "There are not any changes");
         return;
     } else {
-        //var id = highlightedSetGetId();
     var action = function () {
         if (currentSet && currentSet.HasChanges()) {
-            setLockOff(); // (currentSet.Id, false, true, true);
-            //treeLoad(currentSet.Id);
+            setLockOff(); 
         }
     }
 
@@ -290,13 +273,6 @@ function setCancel() {
 }
 
 
-//function showDialog() {
-//    $("#dialog-modal").dialog({
-
-//        width: 600,
-//        height: 400
-//    });
-//}
 
 function dmAlert(title, message) {
     var popUp = $("#dm-alert").popUpBox();
@@ -321,15 +297,13 @@ function setUnlock() {
         throw new Error("The set is already locked by you.");
     var action = function () {
         if (currentSet) {
-            setLockOff();// (currentSet.Id, false, true, true);
-            //treeLoad(currentSet.Id);
+            setLockOff();
         }
     }
     dmConfirm("Unlock Set", "Do you wish to unlock the set? You will lose all the changes.", action);
 
 }
 
-//style = "visibility:hidden"
 
 function setAddFail(text) {
     dmConfirm("Add Set", text + " Do you wish to try again?", setAdd);
@@ -344,7 +318,6 @@ function setAdd() {
 
         }
         dmPrompt("Add Set", "Please enter the name of the set.", action);
-        //setAction(null, $CL("add-set-submit"), $ID("set-name-add"), "SetAdd", "#add-set");
     }
 }
 
@@ -411,9 +384,8 @@ function setActivate() {
         var that = $(this);
         var stateOn = that.hasClass("on");
         if (!stateOn) {
-            //var span = $ID("set-activation-status");
 
-            var id = this.id; //highlightedSetGetId();
+            var id = this.id; 
             var action = function () { ajaxCall("SetActivate", { i: id }, function () { setMarkActive(id) }); }
             dmConfirm("Activate Set", "Do you wish to activate this set?", action);
         }
@@ -444,17 +416,10 @@ function nodeExpand(event) {
             //unit
         }
 
-        //var select = $ID("ss_" + parser.SetId);
-        //select.click();
     }
     return false;
 }
 
-/*
-function isNodeLocked() {
-    
-}
-*/
 
 
 function nodeSelect(event) {
@@ -468,20 +433,17 @@ function nodeSelect(event) {
     }
     else {
         $('#setbox-list li div').removeClass('active');//.removeClass('open');
-        //$('#setbox-list li div');
         $('#setbox-list li ul li').removeClass('active');
         var parser = new DMidParser(this.id);
         var unit = parser.UnitId;
         if (!unit) {
             //set
             var parent = $(this).parent("a");
-            //var test = $(this).parent("div").prev();// find("li.set > div > a");
             var i = 5;
             expandLevel(parent, event);
         } else {
             //unit
         }
-        //$('#setbox-list div').removeClass('active');
         var parser = new DMidParser(this.id);
         if (parser.UnitId) {
             //unit
@@ -490,21 +452,10 @@ function nodeSelect(event) {
         } else {
             var parent = $(this).parent("a").parent('div');
             parent.addClass("active");
-            //alert(parent.parent().html());
-            /*
-            if (parent.hasClass("active")) {
-            alert("it does");
-            parent.toggleClass('active');
-            parent.addClass("trash");
-            $('div.active').removeClass('active');
-            }
-            */
         }
-        //alert("load");
         treeLoad(this.id);
     }
     return true;
-    //return false;
 }
 
 
@@ -514,10 +465,7 @@ function setsPopulate(data) {
     showLockBtn(false);
     showSetBtns(false);
     setList.append(data);
-    //clear the list
-    //clickRebind(setList, "li.set > div > a", nodeExpand);
     clickRebind(setList, "[id^='ss_']", nodeSelect);
-    /*clickRebind(setList, "[id^='su_']", nodeSelect);*/
     clickRebind(setList, "[id^='sa_']", setActivate);
     init_ajax_complete();
     dm_ajax_completed();
@@ -545,7 +493,6 @@ function ajaxCall(action, data, onDone, onFail) {
             onFail(jqXHR.responseText);
         else
         //NOTE: this is for debug only
-
             dmAlert("Request failed", jqXHR.responseText);
     });
 
@@ -585,7 +532,6 @@ function sicPopulate(sicPopup, sic) {
 function sicCleanUp(sicPopup) {
     sicPopup.find("#popup-sic-submit").off('click');
     sicPopup.find("#popup-sic-cancel").off('click');
-    //sicPopup.find(".btn-plus").off('click');
     var typeCtl = sicPopup.find("#sic-type");
     setSelectionValue(typeCtl, 0);
     typeCtl.css("background-color", "#fff");
@@ -620,17 +566,10 @@ function lockBtnVisible(lockType) {
     }
 }
 function showSetBtns(show) {
-    //display add (always)
-    //if set selected display copy
     var editSet = $ID("edit-set");
     editSet.css("visibility", (show) ? "visible" : "hidden");
-    //else if unit selected hide copy
-    //if unlocked display edit and delete    
 }
 function populateTree(data) {
-    ////alert(data);
-    //get the graph
-    //removeScroll();
     var id = data.Id;
     var lockType = data.LockType;
     var listUnitAppointments = data.ListUnitAppointments;
@@ -647,7 +586,6 @@ function populateTree(data) {
         showSetBtns(false);
     }
 
-    //throw new Error("here");
     toggleSetLockIcon(id, lockType);
 
     var unitListHtml = data.UnitListHtml;
@@ -659,7 +597,6 @@ function populateTree(data) {
     var graph = $("#graph");
     graph.empty();
     graph.append(data.SetHtml);
-    //var divSet = graph.children(".set");
 
 
     clickRebind(graph, "[id^='aa_']", nodePlus);
@@ -671,32 +608,7 @@ function populateTree(data) {
     clickRebind(graph, "[id^='ac_']", nodeCopy);
     $('.tooltip').hover(doToolTip);
 
-    //populate the appointment list
 
-/*
-    var appointmentList = $ID("sic-appointment");
-    appointmentList.find("option:gt(0)").remove();
-
-
-    var appointments = $("td.appointment");
-
-    appointments.each(function () {
-        var divName = $(this).children("div.appointment");
-        var name = divName.html();
-        var divId = $(this).next().children();
-        //var divId = $(this).children("div");
-        var id = divId.attr("id");
-        var option = $("<option>" + name + "</option>");
-        //var option = $("<option value='" + id + "'>" + name + "</option>");
-        appointmentList.append(option);
-        option.val(id);
-        //alert(option.val());
-
-    });
-
-
-    //addScroll();
-*/
 }
 
 
@@ -794,10 +706,6 @@ function createEntry(sicList, template, rule, i) {
         changeRuleType(rule.RuleType, matchCtl, nameCtl);
         setSelectionValue(matchCtl, rule.MatchType);
         changeMatchType(rule.RuleType, rule.MatchType, nameCtl);
-        //        if (rule.RuleType == DMrule.EnRuleType.PrivacyMarking)
-//            toggleIsAnything(matchCtl, true);
-//        else
-//            toggleIsAnything(matchCtl, false);
         nameCtl.val(rule.Name);
     } else { //we are adding a blank entry
         setSelectionValue(ruleCtl, 0);
@@ -893,21 +801,8 @@ function isEqual(data, oldData) {
     return false;
 }
 
-/*
-function colorboxClose() {
-    cbox.close();
-}
-*/
 $(document).ready(function () {
 
-    // Tooltip
-    //    $('.tooltip').hover(function (event) {
-    //        event.preventDefault();
-    //        $(this).children('span.tooltip-content').fadeToggle();
-    //    });
-
-    //    changeList = null;
-    //cbox = jQuery.colorbox;
 
     $.ajaxSetup({
         cache: false
@@ -956,42 +851,7 @@ $(document).ready(function () {
 
 
 
-/*
-    //set select
-    $("[id^=sa_]").click(function () {
 
-        treeLoad(this.id);
-        return;
-    });
-*/
-/*
-    //miscellaneous
-    $CL("answer-cancel").click(function () {
-        colorboxClose();
-    });
-*/
-
-    /*
-    $(".edit").click(function () {
-    //alert("edit");
-    return false;
-    });
-
-    $(".remove").click(function () {
-    //alert("minus");
-    return false;
-    });
-    $(".name").focus(function () {
-    $(this).css("background-color", "inherit");
-    return false;
-    });
-    */
-
-    $("[id^=ad_]").click(function () {
-        //alert("minus");
-        //treeLoad(this.id);
-        return;
-    });
 
 
     $("#sic-unit").change(function () {
@@ -1006,82 +866,24 @@ $(document).ready(function () {
 
 
     $('option[disabled]').css({ 'color': '#cccccc' });
-    /*
-    $('select').change(function () {
-    if (this.options[this.selectedIndex].disabled) {
-    if (this.options.length == 0) {
-    this.selectedIndex = -1;
-    } else {
-    this.selectedIndex--;
-    }
-    $(this).trigger('change');
-    }
-    });
-
-    */
     $('select').each(function (it) {
         if (this.options[this.selectedIndex].disabled)
             this.onchange();
     });
 
-    /*
-    $(".rule").change(function () {
-
-    var sicType = $('option:selected', $(this)).val();
-    if (sicType == DMrule.EnRuleType.SIC)
-    toggleIsAnything(true);
-    else
-    toggleIsAnything(false);
-    return false;
-    });
-    $(".match").change(function () {
-    alert("change");
-    return false;
-    var sicType = $('option:selected', $(this)).val();
-    //var anything = $ID("match-anything");
-    if (sicType == DMrule.EnRuleType.SIC)
-    toggleIsAnything(true);
-    else
-    toggleIsAnything(false);
-    });
-    */
 
 
 
     $(".col > .rule").change(function () {
-        //setSelectionValue($(this), 0);
-        //return false;
         var that = $(this);
-        //var rule = getIntSelectionValue(that);
-        var ruleType = getIntSelectionValue(that); // $('option:selected', that).val();
-        var matchCtl = that.parent("div").next().children(".match"); //.html()//that.parent("div").next().next().children(".rule");
+        var ruleType = getIntSelectionValue(that); 
+        var matchCtl = that.parent("div").next().children(".match"); 
         setSelectionValue(matchCtl, 0);
-        /*
-        if (ruleType == 0) {
-        matchCtl.attr('disabled', 'disabled');
-        } else {
-        matchCtl.removeAttr('disabled');
-        if (ruleType == DMrule.EnRuleType.PrivacyMarking)
-        toggleIsAnything(matchCtl, true);
-        else
-        toggleIsAnything(matchCtl, false);
-
-        }
-        */
         var nameCtl = that.parent("div").next().next().children("input");
         nameCtl.val("");
         nameCtl.attr("readonly", true);
         changeRuleType(ruleType, matchCtl, nameCtl);
         return false;
-        /*
-        changeRuleType(nameCtl, rule)
-        var sicType = $('option:selected', that.val());
-        if (sicType == DMrule.EnRuleType.SIC)
-        toggleIsAnything(true);
-        else
-        toggleIsAnything(false);
-        return false;
-        */
     });
 
 
@@ -1093,48 +895,9 @@ $(document).ready(function () {
         var matchType = getIntSelectionValue(that);
         var nameCtl = that.parent("div").next().children("input");
         nameCtl.removeAttr("readonly");
-        //nameCtl.removeAttr("readonly");
-        //changeRuleType(ruleType, that, nameCtl );
         changeMatchType(ruleType, matchType, nameCtl);
     });
 
-    /*
-    $('.appointment .add .popup-inline').live('click', function (event) {
-    event.preventDefault();
-    var hidden_dom = $(this).attr('href');
-    //ie7 fixchange
-    if (ie7) {
-    hidden_dom = hidden_dom.split('/');
-    hidden_dom = hidden_dom[hidden_dom.length - 1];
-    }
-
-    if ($(hidden_dom).length > 0) {
-    $.colorbox({
-    inline: true,
-    width: "700px",
-    href: hidden_dom
-    });
-    }
-    });
-    */
-    //    function showDialog() {
-    //        $("#dialog-modal").dialog({
-
-    //            width: 600,
-    //            height: 400,
-    //            open: function (event, ui) {
-    //                var textarea = $('<textarea style="height: 276px;">');
-    //                $(this).html(textarea);
-    //                $(textarea).redactor({ autoresize: false });
-    //                $(textarea).setCode('<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>');
-    //            }
-    //        });
-    //    }
-
-    //    $("#btn-unlock").click(function () {
-    //        $("#jqdialog").dialog({ modal: false });
-    //        return false;
-    //    });
 
     window.onbeforeunload = function () {
         if (isSetChanged()) {
@@ -1142,19 +905,11 @@ $(document).ready(function () {
         }
     }
     $(function () {
-        // this initializes the dialog (and uses some common options that I do)
         $("#jqdialog").dialog({ modal: false });
 
-        // next add the onclick handler
     });
 
-    //$("#setbox-list").find("a").on('click', function () { return false; })
-    //    $("#setbox-list").click(function (e) {
-    //        e.stopPropagation();
-    //    })
 
 
 
 })
-
-

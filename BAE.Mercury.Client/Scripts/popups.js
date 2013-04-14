@@ -1,4 +1,5 @@
-﻿(function ($) {
+﻿//jquery plugin
+(function ($) {
     $.fn.popUpBox = function () {
         var box = $(this);
         if (!box.length)
@@ -70,16 +71,12 @@
             box.input.bind('keydown', function (e) {
                 if (e.keyCode == 13) {
                     onSubmit();
-                    // Enter pressed... do anything here...
                 }
             });
             if (!box.input.length)
                 throw new Error("popup input control not found");
             if (text)
                 box.input.val(text);
-            //box.input.focus();
-            //box.input.select();
-            //box.input.select();
             box.okBtn.off("click");
             var onSubmit = function () {
                 var val = box.input.attr("value").trim();

@@ -97,10 +97,9 @@ namespace BAE.Mercury.Client.Controllers
                         //update the set
                         messageStore.SetSave(username, changeList);
                         messageStore.SetTimestamp(username, parser.SetId);
-                        //messageStore.LockSet(username, parser.SetId, false);
                     }
                     break;
-                default://if (lockType == DMset.LockType.Unlocked)
+                default:
                     //a bug
                     throw new ApplicationException("invalid state for saving a set");
             }
@@ -123,7 +122,7 @@ namespace BAE.Mercury.Client.Controllers
                 if (add == 1)
                 {
                     ErrorResponse("There is already a set with that name.");
-                    return null; // Json(String.Empty);
+                    return null; 
                 }
                 else
                     throw new ApplicationException("unknown result saving a set name");
@@ -158,7 +157,7 @@ namespace BAE.Mercury.Client.Controllers
                         if (update == 1)
                         {
                             ErrorResponse("There is already a set with that name.");
-                            return null; // Json(String.Empty);
+                            return null; 
                         }
                         else
                             throw new ApplicationException("unknown result saving a set name");
@@ -241,9 +240,7 @@ namespace BAE.Mercury.Client.Controllers
             {
                 try
                 {
-                    //throw new Exception("my test");
                     ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
-                    //View view = new ViewContext(
                     ViewContext viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
                     viewResult.View.Render(viewContext, sw);
 
@@ -275,7 +272,6 @@ namespace BAE.Mercury.Client.Controllers
                 foreach (DMappointment appointment in unit.Children)
                 {
                     string appointmentId = String.Format("dw_{0}_{1}_{2}", unit.Parent.Id, unit.Id, appointment.Id);
-                    //sb.Append(String.Format("<option value='{0}'>{1}</option>", appointmentId, appointment.Name));
                     sb.Append(ListOption(appointment.Name, appointmentId));
                 }
                 appointmentListHtml = sb.ToString();
@@ -389,8 +385,6 @@ namespace BAE.Mercury.Client.Controllers
                 sb.Append(ListOption(unit.Name, unitId));
             }
             string unitListHtml = sb.ToString();
-            //string unitListHtml = RenderPartialViewToString("~/Views/DistributionManagement/_DMunitList.cshtml", set);
-            //string appointmentListHtml = RenderPartialViewToString("~/Views/DistributionManagement/_DMappointmentList.cshtml", set);
             SetAndLists setAndList = new SetAndLists(i, set.LockType, set.Ticks, parser.UnitId != -1, setHtml, unitListHtml, listUnitAppointments);
             return Json(setAndList);
         }

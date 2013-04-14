@@ -17,7 +17,7 @@ namespace BAE.Mercury.Client
     {
         public string GetDutyOfficer(int option)
         {
-            //this is a totally silly method to simulate the duty officer field from the databse
+            //this is only a simple silly method to simulate the duty officer field in the databse, please replace with a real sql query
             if (option == 0)
                 return "King Cobra";
             else if (option == 1)
@@ -165,28 +165,26 @@ namespace BAE.Mercury.Client
                                 int sicId = InsertNode(com, sic.AppointmentId, name, SetSicBool(sic.SicType), 0);
                                 //new sic does not have an id, so create a register in case there is also an edit or delete
                                 newItems.Add(sic.Id, sicId);
-                                //com.Connection = con;
-                                //com.ExecuteNonQuery();
                             }
                             break;
                         case RetChange.EnType.Edit:
                             {
                                 RetSic sic = change.Sic;
                                 string name = PackSic(sic);
-                                string id = sic.Id;
-                                string[] ids = id.Split('_');
+
                                 int sicId = sic.SicId;
                                 if (sicId == 0)
                                 {
-                                        //this is a new item, format "an_setNo_unitNo_appNo_0seqNo"
-                                        char[] array = id.ToCharArray();
-                                        array[0] = 'a';
-                                        array[1] = 'n';
-                                        string key = new string(array);
-                                        sicId = newItems[key];
+                                    //this is a new item, format "an_setNo_unitNo_appNo_0seqNo"
+                                    char[] array = sic.Id.ToCharArray();
+                                    array[0] = 'a';
+                                    array[1] = 'n';
+                                    string key = new string(array);
+                                    sicId = newItems[key];
                                 }
+
                                 if (sicId == 0)
-                                    throw new ApplicationException("cannot change this node");
+                                    throw new ApplicationException("error sic node id");
                                 string command = String.Format("editDistributionManagementNode {0}, '{1}', {2}, {3}", sicId, name, SetSicBool(sic.SicType), 0);
                                 SqlCommand com = new SqlCommand(command);
                                 com.Connection = con;
@@ -197,9 +195,22 @@ namespace BAE.Mercury.Client
                             {
                                 RetSic sic = change.Sic;
                                 string name = PackSic(sic);
-                                if (sic.SicId == 0)
-                                    throw new ApplicationException("cannot delete this node");
-                                SqlCommand com = new SqlCommand(String.Format("delDistributionManagementNode {0}", sic.SicId));
+
+                                int sicId = sic.SicId;
+                                if (sicId == 0)
+                                {
+                                    //this is a new item, format "an_setNo_unitNo_appNo_0seqNo"
+                                    char[] array = sic.Id.ToCharArray();
+                                    array[0] = 'a';
+                                    array[1] = 'n';
+                                    string key = new string(array);
+                                    sicId = newItems[key];
+                                }
+                                
+                                
+                                if (sicId == 0)
+                                    throw new ApplicationException("error sic node id");
+                                SqlCommand com = new SqlCommand(String.Format("delDistributionManagementNode {0}", sicId));
                                 com.Connection = con;
                                 com.ExecuteNonQuery();
                             }
@@ -416,8 +427,6 @@ namespace BAE.Mercury.Client
                     //set already exist
                     return 1;
                 int setNo = InsertNode(com, 0, setName, false, 0);
-                //SELECT IDENT_CURRENT('dbo.DMNode')
-                //SqlConnection con = new SqlConnection(connectionString);
                 foreach (DMnodeWrap unitWrap in unitWraps)
                 {
                     if (unitWrap.ParentId == set.Id)
@@ -555,7 +564,6 @@ namespace BAE.Mercury.Client
                     int id = (int)reader["nodeid"];
                     int parentId = (int)reader["nodeparentid"];
 
-                    //DMset.LockType locked = LockType(username, (int)reader["locked"]);
                     string dutyOfficer = GetDutyOfficer((int)reader["locked"]);
                     DMunit unit = new DMunit(null, id, name, dutyOfficer);
                     DMnodeWrap unitWrap = new DMnodeWrap(unit, parentId);
@@ -619,10 +627,6 @@ namespace BAE.Mercury.Client
                                                 DMrule ruleInstance = new DMrule(sic, name, type, match);
                                                 sic.AddChild(ruleInstance);
                                         }
-                                        //if (sic.Type == DMSic.SicType.Action)
-                                        //    appointment.AddAction(sic);
-                                        //else
-                                        //    appointment.AddInfo(sic);
                                         appointment.AddChild(sic);
                                         sic.DataFinalize();
                                     }
