@@ -244,6 +244,7 @@ namespace BAE.Mercury.Client
                 else
                 {
                     com = new SqlCommand(String.Format("addDistributionManagementNode {0}, '{1}'", 0, nodeName));
+                    com.Connection = con;
                     com.ExecuteNonQuery();
                     return 0;
                 }
